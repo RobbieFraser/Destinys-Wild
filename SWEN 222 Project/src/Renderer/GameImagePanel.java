@@ -60,7 +60,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public void drawGround(Graphics g){
 		BufferedImage ground;
 		try {
-			ground = ImageIO.read(new File("data/ground.png"));
+			ground = ImageIO.read(new File("data/images/ground.png"));
 			g.drawImage(ground, gX, gY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,7 +70,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public void drawNorthWall(Graphics g, String file){
 		BufferedImage wall;
 		try {
-			wall = ImageIO.read(new File("data/treesNorth1.png"));
+			wall = ImageIO.read(new File("data/images/treesNorth1.png"));
 			g.drawImage(wall, wnX, wnY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public void drawCompass(Graphics g){
 		BufferedImage compass;
 		try {
-			compass = ImageIO.read(new File("data/compassNorth.png"));
+			compass = ImageIO.read(new File("data/images/compassNorth.png"));
 			g.drawImage(compass, cX, cY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -99,7 +99,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		
 		BufferedImage character;
 		try {
-			character = ImageIO.read(new File("data/" + file + ".png"));
+			character = ImageIO.read(new File("data/images/" + file + ".png"));
 			g.drawImage(character, newX, newY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -118,7 +118,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		
 		BufferedImage object;
 		try {
-			object = ImageIO.read(new File("data/" + file + ".png"));
+			object = ImageIO.read(new File("data/images/" + file + ".png"));
 			g.drawImage(object, newX, newY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
