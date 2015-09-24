@@ -2,7 +2,7 @@ package game;
 
 public class DestinysWild {
 
-	private Board board = XMLParser.initialiseBoard("data/board.xml");;
+	private Board board = XMLParser.initialiseBoard("data/state.xml");
 
 	public DestinysWild(){
 		board.printBoard();
