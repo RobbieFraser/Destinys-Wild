@@ -10,6 +10,7 @@ public class DestinysWild {
 		//board.getBoard()[2][2].printRoom();
 		//System.out.println();
 		//board.getBoard()[1][2].printRoom();
+		System.out.println("Matt");
 
 	}
 
