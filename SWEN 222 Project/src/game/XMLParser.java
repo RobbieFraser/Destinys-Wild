@@ -24,10 +24,9 @@ public class XMLParser {
 		
 		Board board = new Board();
 
-		SAXBuilder builder = new SAXBuilder();
-		File xmlFile = new File(filename);
-
         try{
+    		SAXBuilder builder = new SAXBuilder();
+    		File xmlFile = new File(filename);
     		Document document = (Document) builder.build(xmlFile);
     		Element rootNode = document.getRootElement();
     		List<Element> roomTags = rootNode.getChildren("Room");
@@ -100,19 +99,19 @@ public class XMLParser {
         				
         			}
     			}
-
+    			
     			System.out.println("Loading room with ID: " + id);
     			board.addRoom(currentRoom, roomx, roomy);
     		}
-
 
 
         }
         catch(FileNotFoundException e){
         	if(filename.equals("data/state.xml")){
         		System.out.println("No current save state found. Loading original board");
-        		initialiseBoard("data/board.xml");
+        		return initialiseBoard("data/board.xml");
         	}
+        	System.out.println(filename);
         	System.out.println("wrong filepath");
         }
         catch(Exception e){
