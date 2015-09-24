@@ -18,11 +18,13 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MenuInterface {
 	private JFrame frame;
@@ -40,7 +42,7 @@ public class MenuInterface {
 		ImagePanel imagePanel = new ImagePanel("forest.png");
 		frame.setContentPane(imagePanel);
 		frame.setResizable(false);
-		
+
 		//initialise key binding
 		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("N"), "New Game");
 		ButtonAction newGame = new ButtonAction("New Game", "This button starts a new game", new Integer(KeyEvent.VK_N));
@@ -82,19 +84,28 @@ public class MenuInterface {
 		btnNewGame.setBounds(25, 30, 150, 80);
 		btnNewGame.setBorder(blackline);
 		menuPanel.add(btnNewGame);
-		
+
 		//Load Game button
 		JButton btnLoadGame = new JButton("Load Game");
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Load button pressed.");
+				JFileChooser chooser = new JFileChooser();
+				//direct the user to the save games folder
+				chooser.setCurrentDirectory(new File("data/savegames"));
+				int result = chooser.showOpenDialog(btnLoadGame);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					System.out.println("You chose to open this file: " +
+							chooser.getSelectedFile().getName());
+					File loadGame = chooser.getSelectedFile();
+					//TODO: Once the game is loaded in, begin playing!
+				}
 			}
 		});
 		btnLoadGame.setBounds(25, 150, 150, 80);
 		btnLoadGame.setBorder(blackline);
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
-		
+
 
 		//Quit Game button
 		ImageIcon quitGameImage = new ImageIcon(loadImage("quitgamebutton.png"));
@@ -111,26 +122,26 @@ public class MenuInterface {
 		btnQuitGame.setBounds(25, 270, 150, 80);
 		btnQuitGame.setBorder(blackline);
 		menuPanel.add(btnQuitGame);
-		
+
 		//play song
 		final PlayMusic music = new PlayMusic();
 		//music.playSound("SayMyName48.mp3");
-		
+
 		//Toggle Music Button
-//		JButton toggleMusicButton = new JButton("Toggle Music");
-//		toggleMusicButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				music.toggleMusic();
-//			}
-//		});
-//		toggleMusicButton.setBounds(830, 520, 150, 40);
-//		frame.getContentPane().add(toggleMusicButton);
-				
+		//		JButton toggleMusicButton = new JButton("Toggle Music");
+		//		toggleMusicButton.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent e) {
+		//				music.toggleMusic();
+		//			}
+		//		});
+		//		toggleMusicButton.setBounds(830, 520, 150, 40);
+		//		frame.getContentPane().add(toggleMusicButton);
+
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(menuPanel);
 	}
-	
+
 	/**
 	 * Outline for saving game state:
 	 * There should be a "New Game" button, and
@@ -143,7 +154,7 @@ public class MenuInterface {
 	 * retrieve their save file.
 	 *
 	 */
-	
+
 	/**
 	 * This method should load an image in from a filename.
 	 * @param filename
