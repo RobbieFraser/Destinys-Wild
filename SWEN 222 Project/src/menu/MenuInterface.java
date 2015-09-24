@@ -88,7 +88,7 @@ public class MenuInterface {
 		menuPanel.add(btnQuitGame);
 
 		//play song
-		//PlayMusic.playSound("SayMyName48.mp3");
+		PlayMusic.playSound("SayMyName48.mp3");
 
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);
