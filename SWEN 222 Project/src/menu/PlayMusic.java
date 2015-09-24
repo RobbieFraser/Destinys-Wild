@@ -4,9 +4,9 @@ import java.io.FileInputStream;
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
-	private static final String MEDIA_PATH = "data/music/";
+	private final String MEDIA_PATH = "data/music/";
 
-	public static synchronized void playSound(String fileName) {
+	public synchronized void playSound(String fileName) {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -18,7 +18,7 @@ public class PlayMusic {
 		}).start();
 	}
 
-	public static void playMusic(String fileName) {
+	public void playMusic(String fileName) {
 		try {
 			FileInputStream musicInputStream = new FileInputStream(MEDIA_PATH + fileName);
 			Player playMP3 = new Player(musicInputStream);
