@@ -67,7 +67,7 @@ public class MenuInterface {
 		JPanel menuPanel = new JPanel();
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 		menuPanel.setBorder(blackline);
-		menuPanel.setOpaque(false);
+		//menuPanel.setOpaque(false);
 		menuPanel.setLayout(null);
 		menuPanel.setBounds(380, 140, 200, 400);
 
@@ -79,9 +79,21 @@ public class MenuInterface {
 				System.out.println("New Game button pressed");
 			}
 		});
-		btnNewGame.setBounds(25, 50, 150, 100);
+		btnNewGame.setBounds(25, 30, 150, 80);
 		btnNewGame.setBorder(blackline);
 		menuPanel.add(btnNewGame);
+		
+		//Load Game button
+		JButton btnLoadGame = new JButton("Load Game");
+		btnLoadGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Load button pressed.");
+			}
+		});
+		btnLoadGame.setBounds(25, 150, 150, 80);
+		btnLoadGame.setBorder(blackline);
+		btnLoadGame.setOpaque(false);
+		menuPanel.add(btnLoadGame);
 		
 
 		//Quit Game button
@@ -96,13 +108,13 @@ public class MenuInterface {
 				}
 			}
 		});
-		btnQuitGame.setBounds(25, 200, 150, 100);
+		btnQuitGame.setBounds(25, 270, 150, 80);
 		btnQuitGame.setBorder(blackline);
 		menuPanel.add(btnQuitGame);
 		
 		//play song
 		final PlayMusic music = new PlayMusic();
-		music.playSound("SayMyName48.mp3");
+		//music.playSound("SayMyName48.mp3");
 		
 		//Toggle Music Button
 //		JButton toggleMusicButton = new JButton("Toggle Music");
@@ -120,7 +132,16 @@ public class MenuInterface {
 	}
 	
 	/**
-	 * 
+	 * Outline for saving game state:
+	 * There should be a "New Game" button, and
+	 * a "Load Game" button. 
+	 * New Game - User should be prompted to enter
+	 * their player name. A file should be made in
+	 * the savedgames folder under their name.
+	 * Load Game - File selecting interface should pop
+	 * up, which the user should navigate through and
+	 * retrieve their save file.
+	 *
 	 */
 	
 	/**

@@ -1,6 +1,5 @@
 package menu;
 import java.io.FileInputStream;
-
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
