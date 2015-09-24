@@ -1,9 +1,6 @@
 package menu;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 public class ImagePanel extends JComponent{

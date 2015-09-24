@@ -1,15 +1,12 @@
 package Renderer;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JFrame;
 
 public class TestFrame extends JFrame {
 	
-	GameImagePanel gamePanel = new GameImagePanel();
-	//LevelEditorPanel gamePanel = new LevelEditorPanel();
+//	GameImagePanel gamePanel = new GameImagePanel();
+	LevelEditorPanel gamePanel = new LevelEditorPanel();
 	
 	public TestFrame(){
 		super("Test Renderer");

@@ -2,7 +2,7 @@ package menu;
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
-	private static final String MEDIA_PATH = "media/";
+	private static final String MEDIA_PATH = "data/music/";
 
 	public static synchronized void playSound(String fileName) {
 		new Thread(new Runnable() {

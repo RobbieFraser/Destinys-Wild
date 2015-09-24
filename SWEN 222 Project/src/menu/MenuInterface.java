@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -25,7 +26,7 @@ import javax.swing.border.Border;
 
 public class MenuInterface {
 	private JFrame frame;
-	private static final String IMAGE_PATH = "media/";
+	private static final String IMAGE_PATH = "data/images/";
 
 
 	public MenuInterface() {
@@ -99,11 +100,11 @@ public class MenuInterface {
 		btnQuitGame.setBorder(blackline);
 		menuPanel.add(btnQuitGame);
 		
-//		//play song
-//		final PlayMusic music = new PlayMusic();
-//		//music.playSound("SayMyName48.mp3");
-//		
-//		//Toggle Music Button
+		//play song
+		final PlayMusic music = new PlayMusic();
+		music.playSound("SayMyName48.mp3");
+		
+		//Toggle Music Button
 //		JButton toggleMusicButton = new JButton("Toggle Music");
 //		toggleMusicButton.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
@@ -126,9 +127,8 @@ public class MenuInterface {
 	public static Image loadImage(String filename) {
 		// using the URL means the image loads when stored
 		// in a jar or expanded into individual files.
-		java.net.URL imageURL = ImagePanel.class.getResource(IMAGE_PATH + filename);
 		try {
-			Image img = ImageIO.read(imageURL);
+			Image img = ImageIO.read(new File(IMAGE_PATH + filename));
 			return img;
 		} catch (IOException e) {
 			// we've encountered an error loading the image. There's not much we
