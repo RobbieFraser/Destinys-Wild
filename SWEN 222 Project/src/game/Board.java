@@ -4,6 +4,7 @@ public class Board {
 	private Room[][] board = new Room[5][5];
 
 	public Board(){
+		//yo
 	}
 
 	/**
