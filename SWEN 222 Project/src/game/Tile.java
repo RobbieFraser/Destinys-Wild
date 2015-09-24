@@ -5,6 +5,7 @@ import java.awt.Point;
 public class Tile {
 	private Point coords; //centre of the tile
 	private Room room; //room that this tile belongs to
+	private int test;
 
 	private double height = 34; //height of the tile
 	private double width = 70; //width of the tile
