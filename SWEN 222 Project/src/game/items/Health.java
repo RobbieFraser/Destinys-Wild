@@ -9,13 +9,10 @@ public class Health implements Item{
 	private Point coords;
 	
 	private int health; //health that will be restored upon use
-
-	private int room;
 	
-	public Health(String type, Point coords, int room, int health){
+	public Health(String type, Point coords, int health){
 		this.type = type;
 		this.coords = coords;
-		this.room = room;
 		this.health = health;
 	}
 
@@ -61,18 +58,9 @@ public class Health implements Item{
 		this.health = health;
 	}
 
-	/**
-	 * @return the room
-	 */
-	public int getRoom() {
-		return room;
-	}
-
-	/**
-	 * @param room the room to set
-	 */
-	public void setRoom(int room) {
-		this.room = room;
+	@Override
+	public int getScore() {
+		return 0;
 	}
 	
 }

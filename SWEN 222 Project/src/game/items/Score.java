@@ -10,12 +10,9 @@ public class Score implements Item{
 	
 	private int score; //score that will be gained upon pickup
 
-	private int room;
-
-	public Score(String type, Point coords, int room, int score){
+	public Score(String type, Point coords, int score){
 		this.type = type;
 		this.coords = coords;
-		this.room = room;
 		this.score = score;
 	}
 
@@ -33,19 +30,6 @@ public class Score implements Item{
 		this.score = score;
 	}
 
-	/**
-	 * @return the room
-	 */
-	public int getRoom() {
-		return room;
-	}
-
-	/**
-	 * @param room the room to set
-	 */
-	public void setRoom(int room) {
-		this.room = room;
-	}
 
 	/**
 	 * @return the coords
@@ -75,6 +59,11 @@ public class Score implements Item{
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	@Override
+	public int getHealth() {
+		return 0;
 	}
 
 }

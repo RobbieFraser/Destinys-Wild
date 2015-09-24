@@ -1,11 +1,5 @@
 package game;
 
-import game.npcs.EnemyStill;
-import game.npcs.EnemyWalker;
-import game.npcs.FriendlyStill;
-import game.npcs.NPC;
-import game.obstacles.Block;
-
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +8,15 @@ import java.util.List;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+
+import game.items.Health;
+import game.items.Item;
+import game.items.Score;
+import game.npcs.EnemyStill;
+import game.npcs.EnemyWalker;
+import game.npcs.FriendlyStill;
+import game.npcs.NPC;
+import game.obstacles.Block;
 
 public class XMLParser {
 
@@ -66,13 +69,13 @@ public class XMLParser {
         			for(Element ele : npcTags){ // Initialising NPC's
         				String npcType = ele.getChildText("Npctype");
         				
-        				String type = ele.getChildText("Type"); // NPC parameters
+        				String type = ele.getChildText("Type"); // NPC parameters-------
 
            				int npcx = Integer.valueOf(ele.getChildText("Posx"));
         				int npcy = Integer.valueOf(ele.getChildText("Posy"));
 
         				int damage = Integer.valueOf(ele.getChildText("Damage"));
-        				int speed = Integer.valueOf(ele.getChildText("Speed")); //---
+        				int speed = Integer.valueOf(ele.getChildText("Speed")); //------
 
         				NPC temp = null;
 
@@ -96,6 +99,44 @@ public class XMLParser {
         				}
         				
         				currentRoom.addNpcs(temp, npcx, npcy); //adds all npc's to the current room
+        				
+        			}
+    			}
+    			
+    			if(e.getChild("Items") != null){
+    				
+        			List<Element> item = e.getChildren("Items");
+        			List<Element> itemTags = item.get(0).getChildren("Item");
+        			
+        			for(Element elem : itemTags){ // Initialising Items
+        				String itemType = elem.getChildText("Itemtype");
+        				
+        				String type = elem.getChildText("Type"); // Item parameters-------
+
+           				int itemx = Integer.valueOf(elem.getChildText("Posx"));
+        				int itemy = Integer.valueOf(elem.getChildText("Posy"));
+
+        				int health = Integer.valueOf(elem.getChildText("Health"));
+        				int score = Integer.valueOf(elem.getChildText("Score")); //------
+
+        				Item temp = null;
+
+        				Point coords = new Point(itemx, itemy);
+
+        				switch(itemType){
+        					case "health":
+        						temp = new Health(type, coords, health);
+        						break;
+
+        					case "score":
+        						temp = new Score(type, coords, score);
+        						break;
+        						
+        					default:
+        						System.out.println("Misidentifed Item");
+        				}
+        				
+        				currentRoom.addItems(temp, itemx, itemy); //adds all items to the current room
         				
         			}
     			}

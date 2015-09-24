@@ -7,9 +7,9 @@ public class DestinysWild {
 	public DestinysWild(){
 		board.printBoard();
 		System.out.println();
-		//board.getBoard()[2][2].printRoom();
-		//System.out.println();
-		//board.getBoard()[1][2].printRoom();
+		board.getBoard()[2][2].printRoom();
+		System.out.println();
+		board.getBoard()[1][2].printRoom();
 
 	}
 

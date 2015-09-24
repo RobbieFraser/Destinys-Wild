@@ -1,12 +1,10 @@
 package game;
 
+import java.awt.Point;
+
+import game.items.Item;
 import game.npcs.NPC;
 import game.obstacles.Obstacle;
-
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Room {
 	private int north; //ID's of the surrounding rooms
@@ -23,6 +21,8 @@ public class Room {
 	private Obstacle[][] obstacles = new Obstacle[10][10];
 
 	private NPC[][] npcs = new NPC[obstacles.length][obstacles[0].length];
+	
+	private Item[][] items = new Item[obstacles.length][obstacles[0].length];
 
 	public Room(int north, int east, int south, int west, int ID, Point boardPos){
 		this.north = north;
@@ -47,6 +47,9 @@ public class Room {
 				else if(obstacles[i][j] != null){
 					System.out.print(obstacles[i][j].getType() + " | ");
 				}
+				else if(items[i][j] != null){
+					System.out.print(items[i][j].getType() + " | ");
+				}
 				else{
 					System.out.print("null | ");
 				}
@@ -61,6 +64,14 @@ public class Room {
 	
 	public void addNpcs(NPC npc, int x, int y){
 		npcs[x][y] = npc;
+	}
+	
+	public void addItems(Item item, int x, int y){
+		items[x][y] = item;
+	}
+	
+	public Item[][] getItems(){
+		return items;
 	}
 
 

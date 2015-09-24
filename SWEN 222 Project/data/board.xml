@@ -27,7 +27,7 @@
 		<Posy>7</Posy>
 		<Damage>10</Damage>
 		<Type>spike</Type>
-		<Speed>-1</Speed>
+		<Speed>0</Speed>
       </Npc>
       <Npc>
 		<Npctype>enemywalker</Npctype>      
@@ -38,6 +38,16 @@
       	<Speed>5</Speed>
       </Npc>
     </Npcs>
+    <Items>
+    	<Item>
+    		<Itemtype>health</Itemtype>
+    		<Type>apple</Type>
+    		<Posx>1</Posx>
+    		<Posy>3</Posy>
+    		<Health>10</Health>
+    		<Score>0</Score>
+    	</Item>
+    </Items>
   </Room>
   <Room>
   	<Id>1</Id>
