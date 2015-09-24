@@ -1,4 +1,6 @@
 package menu;
+import java.io.FileInputStream;
+
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
@@ -18,8 +20,8 @@ public class PlayMusic {
 
 	public static void playMusic(String fileName) {
 		try {
-			java.net.URL songURL = PlayMusic.class.getResource(MEDIA_PATH + fileName);
-			Player playMP3 = new Player(songURL.openStream());
+			FileInputStream musicInputStream = new FileInputStream(MEDIA_PATH + fileName);
+			Player playMP3 = new Player(musicInputStream);
 			playMP3.play();
 		} catch (Exception exc) {
 			exc.printStackTrace();
