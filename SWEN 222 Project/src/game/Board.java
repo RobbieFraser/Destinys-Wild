@@ -7,13 +7,9 @@ import javax.swing.JOptionPane;
 import clientServer.GameClient;
 import clientServer.GameServer;
 
-public class Board extends Canvas implements Runnable {
+public class Board {
 
 	private Room[][] board = new Room[5][5];
-	private GameClient client;
-	private GameServer server;
-	private boolean running = false;
-	public int tickCount = 0;
 
 	public Board() {
 
