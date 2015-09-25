@@ -1,7 +1,12 @@
 package game;
 
+import clientServer.GameClient;
+import clientServer.GameServer;
+
 public class Board {
 	private Room[][] board = new Room[5][5];
+	private GameClient client;
+	private GameServer server;
 
 	public Board() {
 
