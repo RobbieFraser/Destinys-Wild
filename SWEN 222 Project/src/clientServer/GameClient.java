@@ -44,7 +44,7 @@ public class GameClient extends Thread{
 	}
 	
 	public void sendData(byte[] data){
-		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1331);
+		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1531);
 		try{
 			this.socket.send(packet);
 		}

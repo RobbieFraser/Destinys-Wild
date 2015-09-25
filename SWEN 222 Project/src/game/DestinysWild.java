@@ -94,6 +94,7 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public static void main(String[] args){
-		DestinysWild game = new DestinysWild();
+		//DestinysWild game = new DestinysWild();
+		new DestinysWild().start();
 	}
 }
