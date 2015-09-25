@@ -1,4 +1,4 @@
-package clientServer.packet;
+package clientServer.packets;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
@@ -19,14 +19,21 @@ public class LoginPacket extends Packet{
 	
 	@Override
 	public void writeData(GameClient client) {
-		// TODO Auto-generated method stub
-		
+		client.sendData(getData());
 	}
 
 	@Override
 	public void writeData(GameServer server) {
-		// TODO Auto-generated method stub
-		
+		server.sendDataToAllClients(getData());
+	}
+
+	@Override
+	public byte[] getData() {
+		return ("00" + this.userName).getBytes();
+	}
+
+	public String getUserName() {
+		return userName;
 	}
 
 }

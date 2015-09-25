@@ -1,4 +1,4 @@
-package clientServer.packet;
+package clientServer.packets;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
@@ -26,6 +26,16 @@ public abstract class Packet {
 	
 	public abstract void writeData(GameClient client);
 	public abstract void writeData(GameServer server);
+	public abstract byte[] getData();
+	
+	public static PacketTypes getPacket(String packetID){
+		try{
+			return getPacket(Integer.parseInt(packetID));
+		}
+		catch(NumberFormatException e){
+			return PacketTypes.INVALID;
+		}
+	}
 	
 	public String readData(byte[] data){
 		String message = new String(data).trim();

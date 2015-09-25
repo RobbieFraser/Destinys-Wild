@@ -17,5 +17,13 @@ public class PlayerMulti extends Player {
 	public void tick(){
 		
 	}
+	
+	public InetAddress getIP(){
+		return ipAddress;
+	}
+	
+	public int getPort(){
+		return port;
+	}
 
 }
