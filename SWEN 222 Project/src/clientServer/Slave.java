@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public final class Slave extends Thread implements KeyListener  {
@@ -15,6 +16,7 @@ public final class Slave extends Thread implements KeyListener  {
 	private DataOutputStream output;
 	private DataInputStream input;
 	private int uid;
+	private int totalSent;
 
 
 	/**
@@ -26,10 +28,19 @@ public final class Slave extends Thread implements KeyListener  {
 		this.socket = socket;
 	}
 
+	public void run(){
+		try{
+			DataInputStream input = new DataInputStream(socket.getInputStream());
+			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+		}
+		catch(IOException ex){
+
+		}
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		//UNUSED, left due to implementation requirements
 	}
 
 	@Override
@@ -40,8 +51,7 @@ public final class Slave extends Thread implements KeyListener  {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		//UNUSED, left due to implementation requirements
 	}
 
 }

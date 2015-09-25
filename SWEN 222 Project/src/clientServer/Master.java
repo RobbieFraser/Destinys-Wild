@@ -1,5 +1,8 @@
 package clientServer;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 import game.Board;
@@ -16,6 +19,16 @@ public final class Master extends Thread {
 		this.broadcastClock = broadcastClock;
 		this.socket = socket;
 		this.playerID = playerID;
+	}
+
+	public void run(){
+		try{
+			DataInputStream input = new DataInputStream(socket.getInputStream());
+			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+		}
+		catch(IOException ex){
+
+		}
 	}
 
 }
