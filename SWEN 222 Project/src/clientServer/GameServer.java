@@ -27,13 +27,15 @@ public class GameServer extends Thread{
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data,data.length);
 			try {
-				socket.receive(packet);
+				this.socket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			String msg = new String(packet.getData());
-			if(msg.equalsIgnoreCase("ping")){
-				System.out.println("CLIENT > " + new String(packet.getData()));
+			System.out.println(msg);
+			System.out.println("CLIENT [ " +packet.getAddress().getHostAddress() + ":" + packet.getPort() + "] >"
+				+ msg);
+			if(msg.trim().equalsIgnoreCase("ping")){
 				sendData("pong".getBytes(),packet.getAddress(),packet.getPort());
 			}
 		}
@@ -42,7 +44,7 @@ public class GameServer extends Thread{
 	public void sendData(byte[] data,InetAddress ipAddress, int port){
 		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1331);
 		try{
-			socket.send(packet);
+			this.socket.send(packet);
 		}
 		catch(IOException e){
 			e.printStackTrace();

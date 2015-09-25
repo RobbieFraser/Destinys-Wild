@@ -32,18 +32,20 @@ public class GameClient extends Thread{
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data,data.length);
 			try {
-				socket.receive(packet);
+				this.socket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("SERVER > " + new String(packet.getData()));
+			String msg = new String(packet.getData());
+			System.out.println(msg);
+			System.out.println("SERVER > " + msg);
 		}
 	}
 	
 	public void sendData(byte[] data){
 		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1331);
 		try{
-			socket.send(packet);
+			this.socket.send(packet);
 		}
 		catch(IOException e){
 			e.printStackTrace();
