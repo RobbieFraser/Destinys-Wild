@@ -1,5 +1,5 @@
 package clientServer;
 
-public class Master {
+public final class Master extends Thread {
 
 }
