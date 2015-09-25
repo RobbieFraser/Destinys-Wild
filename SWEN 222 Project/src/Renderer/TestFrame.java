@@ -1,15 +1,22 @@
 package Renderer;
 
 import java.awt.Color;
+
 import javax.swing.JFrame;
+
+import game.Board;
 
 public class TestFrame extends JFrame {
 	
-//	GameImagePanel gamePanel = new GameImagePanel();
-	LevelEditorPanel gamePanel = new LevelEditorPanel();
+	private Board board;
 	
-	public TestFrame(){
+	private GameImagePanel gamePanel;
+	//private LevelEditorPanel gamePanel = new LevelEditorPanel();
+	
+	public TestFrame(Board board){
 		super("Test Renderer");
+		this.board = board;
+		gamePanel = new GameImagePanel(board);
 		setUp();
 	}
 	

@@ -15,7 +15,7 @@
 		<Posy>3</Posy>
       </Obstacle>
       <Obstacle>
-      	<Type>hole</Type>
+      	<Type>brokenstone1</Type>
       	<Posx>2</Posx>
       	<Posy>7</Posy>
       </Obstacle>

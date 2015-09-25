@@ -13,7 +13,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import game.Board;
+import game.Room;
+
 public class GameImagePanel extends JPanel implements MouseListener, KeyListener {
+	
+	private Board board;
+	private Point curRoomCoords = new Point(2,2);
+	private Room curRoom;
 	
 	private int gX = 10;
 	private int gY = 300;
@@ -36,25 +43,27 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 	
-	public GameImagePanel(){
+	public GameImagePanel(Board board){
+		this.board = board;
+		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
 		addMouseListener(this);
 	}
 	
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawNorthWall(g, "treesNorth1");
+//        drawNorthWall(g, "treesNorth1");
         drawGround(g);
-        drawCompass(g);
-        drawObject(g, "stoneCube", 6, 5);
-        drawObject(g, "stoneCube", 5, 5);
-        drawCharacter(g, "personIdleWest", 6, 6);
-        drawObject(g, "mossyStone1", 6, 7);
-        drawObject(g, "brokenStone1", 3, 2);
-        drawCharacter(g, "personIdleWest", 4, 5);
-        drawCharacter(g, "personIdleSouth", 2, 5);
-        tile.Draw(g);
-        
+//        drawCompass(g);
+//        drawObject(g, "stoneCube", 6, 5);
+//        drawObject(g, "stoneCube", 5, 5);
+//        drawCharacter(g, "personIdleWest", 6, 6);
+//        drawObject(g, "mossyStone1", 6, 7);
+//        drawObject(g, "brokenStone1", 3, 2);
+//        drawCharacter(g, "personIdleWest", 4, 5);
+//        drawCharacter(g, "personIdleSouth", 2, 5);
+//        tile.Draw(g);
+        drawObstacles(g);
     }
 	
 	public void drawGround(Graphics g){
@@ -64,6 +73,16 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			g.drawImage(ground, gX, gY, null);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void drawObstacles(Graphics g){
+		for(int i = 0; i < 10; i++){
+			for(int j = 9; j >= 0; j--){
+				if(curRoom.getObstacles()[i][j] != null){
+					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+				}
+			}
 		}
 	}
 	
