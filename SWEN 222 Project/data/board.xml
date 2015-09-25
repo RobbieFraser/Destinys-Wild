@@ -67,6 +67,7 @@
     <West>-1</West>
     <Obstacles>
     	<Obstacle>
+    	    <Obstype>block</Obstype>
     		<Type>brokenblock</Type>
       		<Posx>5</Posx>
       		<Posy>7</Posy>

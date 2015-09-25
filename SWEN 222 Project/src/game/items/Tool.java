@@ -10,7 +10,29 @@ public class Tool implements Item{
 	public Tool(String type){
 		this.type = type;
 		switch(type){
-			case "": //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+			case "machete":
+				breakable = "vine";
+				break;
+
+			case "axe":
+				breakable = "thorn";
+				break;
+
+			case "pickaxe":
+				breakable = "cobblestone";
+				break;
+
+			case "jetfuel":
+				breakable = "";
+				break;
+
+			case "bucket":
+				breakable = "fire";
+				break;
+
+			case "spade":
+				breakable = "mound";
+				break;
 		}
 	}
 
