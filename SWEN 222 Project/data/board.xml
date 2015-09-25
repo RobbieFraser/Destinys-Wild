@@ -47,14 +47,15 @@
       </Npc>
     </Npcs>
     <Items>
-    	<Item>
-    		<Itemtype>health</Itemtype>
-    		<Type>apple</Type>
-    		<Posx>1</Posx>
-    		<Posy>3</Posy>
-    		<Health>10</Health>
-    		<Score>0</Score>
-    	</Item>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>01</Id> <!-- 0 = room id, 1 = item id -->
+    	<Posx>1</Posx>
+    	<Posy>3</Posy>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
     </Items>
   </Room>
   <Room>

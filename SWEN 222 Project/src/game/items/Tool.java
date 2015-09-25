@@ -5,9 +5,11 @@ import java.awt.Point;
 public class Tool implements Item{
 
 	private String type;
+	private int id;
 	private String breakable; //the breakable that this tool can remove
 
-	public Tool(String type){
+	public Tool(String type, int id){
+		this.id = id;
 		this.type = type;
 		switch(type){
 			case "machete":
@@ -41,6 +43,10 @@ public class Tool implements Item{
 	 */
 	public String getType() {
 		return type;
+	}
+
+	public int getId(){
+		return id;
 	}
 
 	/**

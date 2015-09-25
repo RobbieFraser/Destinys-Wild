@@ -4,6 +4,7 @@ import Renderer.TestFrame;
 
 public class DestinysWild {
 	private Board board;
+	private Player currentPlayer;
 
 	public DestinysWild() {
 		//read board in from file

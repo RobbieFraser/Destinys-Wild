@@ -1,0 +1,15 @@
+<Player>
+  <Name>player1</Name>
+  <Posx>282</Posx>
+  <Posy>509</Posy>
+  <Health>90</Health>
+  <Currentroom>0</Currentroom>
+  <Score>100</Score>
+  <Speed>5</Speed>
+  <Visitedrooms>
+    <Roomid>0</Roomid>
+  </Visitedrooms>
+  <Inventory>
+      <Itemid>12</Itemid>
+  </Inventory>
+</Player>

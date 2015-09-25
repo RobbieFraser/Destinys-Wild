@@ -7,12 +7,15 @@ public class Score implements Item{
 	private String type;
 
 	private Point coords;
-	
+
+	private int id;
+
 	private int score; //score that will be gained upon pickup
 
-	public Score(String type, Point coords, int score){
+	public Score(String type, Point coords, int score, int id){
 		this.type = type;
 		this.coords = coords;
+		this.id = id;
 		this.score = score;
 	}
 
@@ -21,6 +24,10 @@ public class Score implements Item{
 	 */
 	public int getScore() {
 		return score;
+	}
+
+	public int getId(){
+		return id;
 	}
 
 	/**

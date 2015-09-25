@@ -10,7 +10,7 @@ public class Player {
 	private String name;
 	private Point coords;
 	private int health = 100;
-	private Room currentRoom;
+	private int currentRoom; //id of room
 	private List<Integer> visitedRooms = new ArrayList<>();
 	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
@@ -19,14 +19,14 @@ public class Player {
 	public Player(){
 
 	}
-	
+
 	/**
 	 * Constructor for new players
 	 * @param name name of player
 	 * @param coords coords of player
 	 * @param currentRoom starting room for the player
 	 */
-	public Player(String name, Point coords, Room currentRoom){
+	public Player(String name, Point coords, int currentRoom){
 		this.name = name;
 		this.coords = coords;
 		this.currentRoom = currentRoom;
@@ -44,7 +44,7 @@ public class Player {
 	 * @param score current score of the player
 	 */
 	public Player(String name, Point coords, int health,
-			Room currentRoom, List<Integer> visitedRooms, List<Item> inventory, int score){
+			int currentRoom, List<Integer> visitedRooms, List<Item> inventory, int score){
 		this.name = name;
 		this.coords = coords;
 		this.health = health;
@@ -78,11 +78,11 @@ public class Player {
 		this.health = health;
 	}
 
-	public Room getCurrentRoom() {
+	public int getCurrentRoom() {
 		return currentRoom;
 	}
 
-	public void setCurrentRoom(Room currentRoom) {
+	public void setCurrentRoom(int currentRoom) {
 		this.currentRoom = currentRoom;
 	}
 

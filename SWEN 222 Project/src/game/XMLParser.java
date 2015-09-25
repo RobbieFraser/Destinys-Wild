@@ -50,7 +50,7 @@ public class XMLParser {
 				int west = Integer.valueOf(room.getChildText("West")); //----------------
 
 				Room currentRoom = new Room(north, east, south, west, id, point);
-				
+
 				initialiseObstacles(room, currentRoom);
 				initialiseNPCS(room, currentRoom);
 				initialiseItems(room, currentRoom);
@@ -168,6 +168,8 @@ public class XMLParser {
 			int itemx = Integer.valueOf(item.getChildText("Posx"));
 			int itemy = Integer.valueOf(item.getChildText("Posy"));
 
+			int itemid = Integer.valueOf(item.getChildText("Id"));
+
 			int health = Integer.valueOf(item.getChildText("Health"));
 			int score = Integer.valueOf(item.getChildText("Score")); //------
 
@@ -177,13 +179,13 @@ public class XMLParser {
 
 			switch (itemType){
 			case "health":
-				temp = new Health(type, coords, health);
+				temp = new Health(type, coords, health, itemid);
 				break;
 			case "score":
-				temp = new Score(type, coords, score);
+				temp = new Score(type, coords, score, itemid);
 				break;
 			case "key":
-				temp = new Key(type, coords);
+				temp = new Key(itemid, coords);
 				break;
 			default:
 				System.out.println("Misidentifed Item");
@@ -191,7 +193,7 @@ public class XMLParser {
 			currentRoom.addItems(temp, itemx, itemy); //adds all items to the current room
 		}
 	}
-	
+
 	/**
 	 * Loads save states for the current game
 	 */
@@ -202,9 +204,13 @@ public class XMLParser {
 
 
 	/**
-	 * Saves the game states to an XML file
+	 * Saves the current game board to an XML file
 	 */
-	public void saveState(){
+	public void saveBoard(){
+		savePlayer();
+	}
+
+	public void savePlayer(){
 
 	}
 

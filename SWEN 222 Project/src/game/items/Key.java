@@ -4,15 +4,15 @@ import java.awt.Point;
 
 public class Key implements Item{
 
-	private String id; //1-4
+	private int id;
 	private Point coords;
 
-	public Key(String id, Point coords){
+	public Key(int id, Point coords){
 		this.id = id;
 		this.coords = coords;
 	}
 
-	public String getId(){
+	public int getId(){
 		return id;
 	}
 

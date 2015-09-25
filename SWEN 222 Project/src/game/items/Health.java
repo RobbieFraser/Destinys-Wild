@@ -7,11 +7,14 @@ public class Health implements Item{
 	private String type;
 
 	private Point coords;
-	
+
+	private int id;
+
 	private int health; //health that will be restored upon use
-	
-	public Health(String type, Point coords, int health){
+
+	public Health(String type, Point coords, int health, int id){
 		this.type = type;
+		this.id = id;
 		this.coords = coords;
 		this.health = health;
 	}
@@ -21,6 +24,10 @@ public class Health implements Item{
 	 */
 	public String getType() {
 		return type;
+	}
+
+	public int getId(){
+		return id;
 	}
 
 	/**
@@ -62,5 +69,5 @@ public class Health implements Item{
 	public int getScore() {
 		return 0;
 	}
-	
+
 }
