@@ -13,6 +13,7 @@ public class GameClient extends Thread{
 
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
+	//testing change
 	private Board board;
 	
 	public GameClient(Board board,String ipAddress){
