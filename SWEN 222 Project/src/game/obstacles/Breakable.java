@@ -1,16 +1,19 @@
 package game.obstacles;
 
+import game.items.Tool;
+
 import java.awt.Point;
 
-public class Breakable implements Obstacle{
+public class Breakable implements Obstacle {
 
 	private String type;
 	private Point coords;
+	private Tool tool;
 
-	public Breakable(String type, Point coords){
-	this.type = type;
-	this.coords = coords;
-
+	public Breakable(String type, Point coords, Tool tool) {
+		this.type = type;
+		this.coords = coords;
+		this.tool = tool;
 	}
 
 	@Override
@@ -22,5 +25,11 @@ public class Breakable implements Obstacle{
 	public Point getCoords() {
 		return coords;
 	}
+
+	public Tool getTool(){
+		return tool;
+	}
+
+
 
 }
