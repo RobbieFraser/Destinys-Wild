@@ -75,7 +75,7 @@ public class MenuInterface {
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter your name!");
-				System.out.println("User's name was: "+name);
+				System.out.println("User's name wass: "+name);
 			}
 		});
 		btnNewGame.setBounds(25, 30, 150, 80);
