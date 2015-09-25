@@ -74,10 +74,8 @@ public class MenuInterface {
 		JButton btnNewGame = new JButton(newGameImage);
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Set up text field
-			    JTextField nameInput = new JTextField(30);
-			    nameInput.setBounds(430, 13, 200, 20);
-				frame.getContentPane().add(nameInput);
+				String name = JOptionPane.showInputDialog("Enter your name!");
+				System.out.println("User's name was: "+name);
 			}
 		});
 		btnNewGame.setBounds(25, 30, 150, 80);
