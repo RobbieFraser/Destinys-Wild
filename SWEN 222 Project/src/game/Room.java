@@ -21,7 +21,7 @@ public class Room {
 	private Obstacle[][] obstacles = new Obstacle[10][10];
 
 	private NPC[][] npcs = new NPC[obstacles.length][obstacles[0].length];
-	
+
 	private Item[][] items = new Item[obstacles.length][obstacles[0].length];
 
 	public Room(int north, int east, int south, int west, int ID, Point boardPos){
@@ -36,7 +36,7 @@ public class Room {
 	public Room(){
 
 	}
-	
+
 	public void printRoom(){
 		for(int i=0; i<obstacles.length; i++){
 			System.out.print("| ");
@@ -57,19 +57,31 @@ public class Room {
 			System.out.println();
 		}
 	}
-	
+
 	public void addObstacle(Obstacle obs, int x, int y){
 		obstacles[x][y] = obs;
 	}
-	
+
 	public void addNpcs(NPC npc, int x, int y){
 		npcs[x][y] = npc;
 	}
-	
+
 	public void addItems(Item item, int x, int y){
 		items[x][y] = item;
 	}
-	
+
+	public void removeObstacle(Obstacle obs){
+		obstacles[obs.getCoords().x][obs.getCoords().y] = null;
+	}
+
+	public void removeNpcs(NPC npc){
+		npcs[npc.getCoords().x][npc.getCoords().y] = null;
+	}
+
+	public void removeItems(Item item){
+		items[item.getCoords().x][item.getCoords().y] = null;
+	}
+
 	public Item[][] getItems(){
 		return items;
 	}
