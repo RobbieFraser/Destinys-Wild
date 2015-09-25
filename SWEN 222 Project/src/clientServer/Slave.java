@@ -15,7 +15,6 @@ public final class Slave extends Thread implements KeyListener  {
 	private DataOutputStream output;
 	private DataInputStream input;
 	private int uid;
-	private int totalSent;
 
 
 	/**
