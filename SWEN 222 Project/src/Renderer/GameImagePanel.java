@@ -18,30 +18,30 @@ import game.Room;
 
 public class GameImagePanel extends JPanel implements MouseListener, KeyListener {
 	
-	private Board board;
-	private Point curRoomCoords = new Point(2,2);
-	private Room curRoom;
+	private Board board; //The main Board object given from the main Game class
+	private Point curRoomCoords = new Point(2,2); //Temporary?
+	private Room curRoom; //The current Room Object
 	
-	private BufferedImage defaultCube;
+	private BufferedImage defaultCube; //The default image
 	
-	private int gX = 10;
-	private int gY = 300;
+	private int gX = 10; //Ground x
+	private int gY = 300; //Ground y
 	
-	private int obX = 0;
-	private int obY = 104;
-	private int obW = 34;
-	private int obH = 16;
+	private int obX = 0; //Object x
+	private int obY = 104; //Object y
+	private int obW = 34; //Object width
+	private int obH = 16; //Object Height
 	
-	private int charX = 24;
-	private int charY = 82;
-	private int charW = 34;
-	private int charH = 16;
+	private int charX = 24; //Player x
+	private int charY = 82; //Player y
+	private int charW = 34; //Player width 
+	private int charH = 16; //Player Height
 	
-	private int cX = 500;
-	private int cY = 50;
+	private int cX = 500; //Compass x
+	private int cY = 50; //Compass y
 	
-	private int wnX = -24;
-	private int wnY = 54;
+	private int wnX = -24; //Wall North x
+	private int wnY = 54; //Wall North y
 	
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 	
@@ -52,6 +52,13 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		addMouseListener(this);
 	}
 	
+	/*
+	 * Sets the default image
+	 * 
+	 * -The default image is used when a file cannot be found in the data folder
+	 * -Useful so that if there is no image for a certain type of obstacle/NPC/item,
+	 *  something will still be drawn
+	 */
 	public void setDefault(){
 		try {
 			defaultCube = ImageIO.read(new File("data/images/wireframecube.png"));
@@ -59,6 +66,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			e.printStackTrace();
 		}
 	}
+	
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -87,6 +95,13 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		}
 	}
 	
+	/*
+	 * Draws all obstacles in current room
+	 * 
+	 * -Loops through the obstacles array stored in the current room
+	 * -Loops from back to front so that all obstacles are displayed correctly
+	 * -Calls the drawObject() method to draw each obstacle 
+	 */
 	public void drawObstacles(Graphics g){
 		for(int i = 0; i < 10; i++){
 			for(int j = 9; j >= 0; j--){
@@ -136,6 +151,13 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		}
 	}
 	
+	/*
+	 * Draws an object given a file name and an x and y
+	 * 
+	 * -Algorithm works out placement coordinates
+	 * -Loads Buffered image using filename
+	 * -Draws Buffered image to panel at correct coordinates
+	 */
 	public void drawObject(Graphics g, String file, int x, int y){
 		int newX = 0;
 		int newY = 0;
