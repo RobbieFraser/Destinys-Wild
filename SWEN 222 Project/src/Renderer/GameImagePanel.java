@@ -22,6 +22,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private Point curRoomCoords = new Point(2,2);
 	private Room curRoom;
 	
+	private BufferedImage defaultCube;
+	
 	private int gX = 10;
 	private int gY = 300;
 	
@@ -46,7 +48,16 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public GameImagePanel(Board board){
 		this.board = board;
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
+		setDefault();
 		addMouseListener(this);
+	}
+	
+	public void setDefault(){
+		try {
+			defaultCube = ImageIO.read(new File("data/images/wireframecube.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -140,7 +151,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			object = ImageIO.read(new File("data/images/" + file + ".png"));
 			g.drawImage(object, newX, newY, null);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			g.drawImage(defaultCube, newX, newY, null);
 		}
 	}
 
