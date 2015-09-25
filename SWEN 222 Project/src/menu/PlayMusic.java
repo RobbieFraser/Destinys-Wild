@@ -2,9 +2,7 @@ package menu;
 
 import java.io.FileInputStream;
 
-//import javazoom.jlme.decoder.JavaLayerException;
-import javazoom.jlme.decoder.*;
-import javazoom.jlme.util.Player;
+import javazoom.jl.player.Player;
 
 public class PlayMusic {
 	private final String MEDIA_PATH = "data/music/";
