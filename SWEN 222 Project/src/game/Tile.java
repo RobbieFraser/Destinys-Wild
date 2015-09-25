@@ -11,10 +11,17 @@ public class Tile {
 	private double width = 70; //width of the tile
 
 
-	public Tile(Point coords){
+	public Tile(Point coords) {
 		this.coords = coords;
 	}
 
+	/**
+	 * This method should check whether a given point is
+	 * contained within this tile.
+	 * @param p point being checked
+	 * @return true if point is contained within tile,
+	 * 		otherwise false.
+	 */
 	public boolean isOn(Point p){
 		double px = p.getX();
 		double py = p.getY();
@@ -22,7 +29,7 @@ public class Tile {
 		double dx = Math.abs(px - coords.getX());
 		double dy = Math.abs(py - coords.getY());
 
-		if((dx/(width/2)) + (dy/(height/2)) <= 1){
+		if ((dx/(width/2)) + (dy/(height/2)) <= 1){
 			return true;
 		}
 		return false;

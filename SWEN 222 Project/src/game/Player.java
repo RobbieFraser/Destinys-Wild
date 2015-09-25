@@ -19,6 +19,7 @@ public class Player {
 	public Player(){
 
 	}
+	
 	/**
 	 * Constructor for new players
 	 * @param name name of player
@@ -32,16 +33,18 @@ public class Player {
 	}
 
 	/**
-	 * Constructor for loading existing player
+	 * Constructor for loading existing player. This will be necessary
+	 * because players may load in previous games.
 	 * @param name name of the player
-	 * @param coords coords of the player
+	 * @param coords location of the player
 	 * @param health player's health
 	 * @param currentRoom room player is currently in
 	 * @param visitedRooms rooms player has visited
 	 * @param inventory list of items the player currently has
 	 * @param score current score of the player
 	 */
-	public Player(String name, Point coords, int health, Room currentRoom, List<Integer> visitedRooms, List<Item> inventory, int score){
+	public Player(String name, Point coords, int health,
+			Room currentRoom, List<Integer> visitedRooms, List<Item> inventory, int score){
 		this.name = name;
 		this.coords = coords;
 		this.health = health;
@@ -114,7 +117,5 @@ public class Player {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-
-
 
 }

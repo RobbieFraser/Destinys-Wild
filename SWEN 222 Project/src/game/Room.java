@@ -7,24 +7,24 @@ import game.npcs.NPC;
 import game.obstacles.Obstacle;
 
 public class Room {
-	private int north; //ID's of the surrounding rooms
+	 //ID's of the surrounding rooms
+	private int north;
 	private int east;
 	private int south;
 	private int west;
-
 	private int ID;
-
 	private Point boardPos;
-
 	private Tile[][] tiles = new Tile[10][10];
-
 	private Obstacle[][] obstacles = new Obstacle[10][10];
-
 	private NPC[][] npcs = new NPC[obstacles.length][obstacles[0].length];
-
 	private Item[][] items = new Item[obstacles.length][obstacles[0].length];
 
-	public Room(int north, int east, int south, int west, int ID, Point boardPos){
+	/**
+	 * Constructor for Room. Each room has a position on the board, a unique
+	 * id, and up to four connecting rooms.
+	 */
+	public Room(int north, int east, int south,
+			int west, int ID, Point boardPos) {
 		this.north = north;
 		this.east = east;
 		this.south = south;
@@ -38,19 +38,19 @@ public class Room {
 	}
 
 	public void printRoom(){
-		for(int i=0; i<obstacles.length; i++){
+		for (int i = 0; i < obstacles.length; i++) {
 			System.out.print("| ");
-			for(int j=0; j<obstacles.length; j++){
-				if(npcs[i][j] != null){
+			for (int j = 0; j < obstacles.length; j++) {
+				if (npcs[i][j] != null){
 					System.out.print(npcs[i][j].getType() + " | ");
 				}
-				else if(obstacles[i][j] != null){
+				else if (obstacles[i][j] != null) {
 					System.out.print(obstacles[i][j].getType() + " | ");
 				}
-				else if(items[i][j] != null){
+				else if (items[i][j] != null) {
 					System.out.print(items[i][j].getType() + " | ");
 				}
-				else{
+				else {
 					System.out.print("null | ");
 				}
 			}
@@ -86,7 +86,6 @@ public class Room {
 		return items;
 	}
 
-
 	public Point getBoardPos() {
 		return boardPos;
 	}
@@ -98,7 +97,6 @@ public class Room {
 	public Tile[][] getTile() {
 		return tiles;
 	}
-
 
 	/**
 	 * @return the npcs

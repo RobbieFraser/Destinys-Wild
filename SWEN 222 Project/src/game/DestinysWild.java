@@ -3,10 +3,12 @@ package game;
 import Renderer.TestFrame;
 
 public class DestinysWild {
+	private Board board;
 
-	private Board board = XMLParser.initialiseBoard("data/state.xml");
-
-	public DestinysWild(){
+	public DestinysWild() {
+		//read board in from file
+		board = XMLParser.initialiseBoard("data/state.xml");
+		
 		board.printBoard();
 		System.out.println();
 		board.getBoard()[2][2].printRoom();
@@ -24,6 +26,6 @@ public class DestinysWild {
 	}
 
 	public static void main(String[] args){
-		new DestinysWild();
+		DestinysWild game = new DestinysWild();
 	}
 }

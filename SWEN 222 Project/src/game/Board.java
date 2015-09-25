@@ -3,7 +3,7 @@ package game;
 public class Board {
 	private Room[][] board = new Room[5][5];
 
-	public Board(){
+	public Board() {
 
 	}
 
@@ -18,14 +18,18 @@ public class Board {
 		board[x][y] = room;
 	}
 
+	/**
+	 * This method should provide a basic, text based
+	 * look at the board in its current state.
+	 */
 	public void printBoard(){
-		for(int i=0; i<board.length; i++){
+		for (int i = 0; i < board.length; i++){
 			System.out.print("| ");
-			for(int j=0; j<board[i].length;j++){
-				if(board[i][j] == null){
+			for (int j = 0; j < board[i].length; j++){
+				if (board[i][j] == null){
 					System.out.print("null | ");
 				}
-				else{
+				else {
 					System.out.print(board[i][j].getID() + " | ");
 				}
 			}
