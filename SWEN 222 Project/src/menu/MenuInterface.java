@@ -25,7 +25,7 @@ import javax.swing.border.Border;
 public class MenuInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
-	private boolean isPlaying = true;
+	private boolean isPlaying;
 
 	public MenuInterface() {
 		initialise();
@@ -109,24 +109,25 @@ public class MenuInterface {
 		//play song
 		final PlayMusic music = new PlayMusic();
 		music.playSound("SayMyName48.mp3");
+		isPlaying = true;
 
 		//Toggle Music Button
-				JButton toggleMusicButton = new JButton("Toggle Music");
-				toggleMusicButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if(isPlaying){
-							music.stopPlaying();
-							isPlaying = false;
-						}
-						else{
-							//final PlayMusic music = new PlayMusic();
-							music.playSound("SayMyName48.mp3");
-							isPlaying = true;
-						}
-					}
-				});
-				toggleMusicButton.setBounds(830, 520, 150, 40);
-				frame.getContentPane().add(toggleMusicButton);
+		JButton toggleMusicButton = new JButton("Toggle Music");
+		toggleMusicButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isPlaying) {
+					music.stopPlaying();
+					isPlaying = false;
+				}
+				else{
+					//final PlayMusic music = new PlayMusic();
+					music.playSound("SayMyName48.mp3");
+					isPlaying = true;
+				}
+			}
+		});
+		toggleMusicButton.setBounds(830, 520, 150, 40);
+		frame.getContentPane().add(toggleMusicButton);
 
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);

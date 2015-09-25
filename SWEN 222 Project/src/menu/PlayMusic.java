@@ -2,6 +2,7 @@ package menu;
 
 import java.io.FileInputStream;
 
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
@@ -36,15 +37,13 @@ public class PlayMusic {
 	public void startPlaying(){
 		try {
 			playMP3.play();
-		} catch (Exception e) {
-
-//		} catch (JavaLayerException e) {
+		} catch (JavaLayerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void stopPlaying(){
-		//playMP3.close();
+		playMP3.close();
 	}
 }
