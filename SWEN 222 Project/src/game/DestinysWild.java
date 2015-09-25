@@ -18,13 +18,13 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public DestinysWild() {
 		//read board in from file
-		board = XMLParser.initialiseBoard("data/state.xml");
-		
-		board.printBoard();
-		System.out.println();
-		board.getBoard()[2][2].printRoom();
-		System.out.println();
-		board.getBoard()[1][2].printRoom();
+//		board = XMLParser.initialiseBoard("data/state.xml");
+//		
+//		board.printBoard();
+//		System.out.println();
+//		board.getBoard()[2][2].printRoom();
+//		System.out.println();
+//		board.getBoard()[1][2].printRoom();
 		//TestFrame test = new TestFrame(board);
 	}
 
