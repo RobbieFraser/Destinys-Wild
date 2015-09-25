@@ -9,11 +9,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class GameServer {
+public class GameServer extends Thread{
 	private DatagramSocket socket;
 	private Board board;
 	
-	public GameServer(Board board,String ipAddress){
+	public GameServer(Board board){
 		this.board = board;
 		try {
 			this.socket = new DatagramSocket();
