@@ -4,15 +4,15 @@ import java.awt.Point;
 
 public class Block implements Obstacle{
 	private String type;
-	Point coords;
-	
+	private Point coords;
+
 	public Block(String type, Point coords){
 		this.type = type;
 		this.coords = coords;
 	}
-	
+
 	public Block(){
-		
+
 	}
 
 	/**
@@ -42,5 +42,5 @@ public class Block implements Obstacle{
 	public void setCoords(Point coords) {
 		this.coords = coords;
 	}
-	
+
 }
