@@ -25,7 +25,7 @@ import javax.swing.border.Border;
 public class MenuInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
-
+	private boolean isPlaying = true;
 
 	public MenuInterface() {
 		initialise();
@@ -43,7 +43,7 @@ public class MenuInterface {
 		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("N"), "New Game");
 		ButtonAction newGame = new ButtonAction("New Game", "This button starts a new game", new Integer(KeyEvent.VK_N));
 		imagePanel.getActionMap().put("New Game", newGame);
-		
+
 		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("L"), "Load Game");
 		ButtonAction loadGame = new ButtonAction("Load Game", "This button loads a previous game.", new Integer(KeyEvent.VK_L));
 		imagePanel.getActionMap().put("Load Game", loadGame);
@@ -106,29 +106,37 @@ public class MenuInterface {
 
 		//play song
 		final PlayMusic music = new PlayMusic();
-		//music.playSound("SayMyName48.mp3");
+		music.playSound("SayMyName48.mp3");
 
 		//Toggle Music Button
-		//		JButton toggleMusicButton = new JButton("Toggle Music");
-		//		toggleMusicButton.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				music.toggleMusic();
-		//			}
-		//		});
-		//		toggleMusicButton.setBounds(830, 520, 150, 40);
-		//		frame.getContentPane().add(toggleMusicButton);
+				JButton toggleMusicButton = new JButton("Toggle Music");
+				toggleMusicButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(isPlaying){
+							music.stopPlaying();
+							isPlaying = false;
+						}
+						else{
+							//final PlayMusic music = new PlayMusic();
+							music.playSound("SayMyName48.mp3");
+							isPlaying = true;
+						}
+					}
+				});
+				toggleMusicButton.setBounds(830, 520, 150, 40);
+				frame.getContentPane().add(toggleMusicButton);
 
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(menuPanel);
 	}
-	
+
 	private void newGameButtonPressed() {
 		String name = JOptionPane.showInputDialog("Enter your name!");
 		System.out.println("User's name was: "+name);
 		//TODO: Begin Game
 	}
-	
+
 	private void loadGame() {
 		JFileChooser chooser = new JFileChooser();
 		//direct the user to the save games folder
@@ -141,7 +149,7 @@ public class MenuInterface {
 			//TODO: Once the game is loaded in, begin playing!
 		}
 	}
-	
+
 	private void escapeGame() {
 		int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
 		if (result == JOptionPane.OK_OPTION) {
@@ -153,7 +161,7 @@ public class MenuInterface {
 	/**
 	 * Outline for saving game state:
 	 * There should be a "New Game" button, and
-	 * a "Load Game" button. 
+	 * a "Load Game" button.
 	 * New Game - User should be prompted to enter
 	 * their player name. A file should be made in
 	 * the savedgames folder under their name.
@@ -180,7 +188,7 @@ public class MenuInterface {
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
-	
+
 	/**
 	 * Launch the application.
 	 */
