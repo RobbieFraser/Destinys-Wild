@@ -78,7 +78,6 @@ public class DestinysWild extends Canvas implements Runnable{
 			try {
 				Thread.sleep(2);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
