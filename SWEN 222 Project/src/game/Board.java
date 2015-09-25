@@ -1,12 +1,16 @@
 package game;
 
+import java.awt.Canvas;
+
 import clientServer.GameClient;
 import clientServer.GameServer;
 
-public class Board {
+public class Board extends Canvas implements Runnable {
 	private Room[][] board = new Room[5][5];
 	private GameClient client;
 	private GameServer server;
+	private boolean running = false;
+	public int tickCount = 0;
 
 	public Board() {
 
@@ -41,7 +45,54 @@ public class Board {
 			System.out.println();
 		}
 	}
+	
+	public synchronized void start(){
+		running = true;
+		new Thread(this).start();
+	}
+	
+	public synchronized void stop(){
+		running = false;
+	}
 
+	@Override
+	public void run() {
+		long lastTime = System.nanoTime();
+		double nsPerTick = 1000000000D/60D;
+		int ticks = 0;
+		double diff = 0;
+		long lastTimer = System.currentTimeMillis();
+		
+		while(running){
+			long now = System.nanoTime();
+			diff+=((now-lastTime)/nsPerTick);
+			lastTime = now;
+			while(diff>=1){
+				ticks++;
+				tick();
+				diff--;
+			}
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(System.currentTimeMillis()-lastTimer>=1000){
+				lastTimer+=1000;
+				System.out.println("Ticks: " + ticks);
+				ticks = 0;
+			}
+		}
+	}
+
+	private void tick() {
+		tickCount++;
+	}
+
+	public static void main(String[] args){
+		 new Board().start();
+	}
 
 
 }
