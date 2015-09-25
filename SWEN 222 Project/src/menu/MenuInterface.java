@@ -43,6 +43,10 @@ public class MenuInterface {
 		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("N"), "New Game");
 		ButtonAction newGame = new ButtonAction("New Game", "This button starts a new game", new Integer(KeyEvent.VK_N));
 		imagePanel.getActionMap().put("New Game", newGame);
+		
+		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("L"), "Load Game");
+		ButtonAction loadGame = new ButtonAction("Load Game", "This button loads a previous game.", new Integer(KeyEvent.VK_L));
+		imagePanel.getActionMap().put("Load Game", loadGame);
 
 		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("Q"), "Quit Game");
 		ButtonAction exitGame = new ButtonAction("Quit Game", "This button exits the game.", new Integer(KeyEvent.VK_Q));
@@ -52,12 +56,7 @@ public class MenuInterface {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				//Should get in here if the window is closed
-				int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
-				if (result == JOptionPane.OK_OPTION) {
-					//User really wants to exit
-					System.exit(0);
-				}
+				escapeGame();
 			}
 		});
 
@@ -74,9 +73,7 @@ public class MenuInterface {
 		JButton btnNewGame = new JButton(newGameImage);
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String name = JOptionPane.showInputDialog("Enter your name!");
-				System.out.println("User's name was: "+name);
-				//TODO: Being Game
+				newGameButtonPressed();
 			}
 		});
 		btnNewGame.setBounds(25, 30, 150, 80);
@@ -87,16 +84,7 @@ public class MenuInterface {
 		JButton btnLoadGame = new JButton("Load Game");
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				//direct the user to the save games folder
-				chooser.setCurrentDirectory(new File("data/savegames"));
-				int result = chooser.showOpenDialog(btnLoadGame);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					System.out.println("You chose to open this file: " +
-							chooser.getSelectedFile().getName());
-					File loadGame = chooser.getSelectedFile();
-					//TODO: Once the game is loaded in, begin playing!
-				}
+				loadGame();
 			}
 		});
 		btnLoadGame.setBounds(25, 150, 150, 80);
@@ -104,17 +92,12 @@ public class MenuInterface {
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
 
-
 		//Quit Game button
 		ImageIcon quitGameImage = new ImageIcon(loadImage("quitgamebutton.png"));
 		JButton btnQuitGame = new JButton(quitGameImage);
 		btnQuitGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
-				if (result == JOptionPane.OK_OPTION) {
-					//User really wants to exit
-					System.exit(0);
-				}
+				escapeGame();
 			}
 		});
 		btnQuitGame.setBounds(25, 270, 150, 80);
@@ -138,6 +121,33 @@ public class MenuInterface {
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(menuPanel);
+	}
+	
+	private void newGameButtonPressed() {
+		String name = JOptionPane.showInputDialog("Enter your name!");
+		System.out.println("User's name was: "+name);
+		//TODO: Begin Game
+	}
+	
+	private void loadGame() {
+		JFileChooser chooser = new JFileChooser();
+		//direct the user to the save games folder
+		chooser.setCurrentDirectory(new File("data/savegames"));
+		int result = chooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			System.out.println("You chose to open this file: " +
+					chooser.getSelectedFile().getName());
+			File saveGame = chooser.getSelectedFile();
+			//TODO: Once the game is loaded in, begin playing!
+		}
+	}
+	
+	private void escapeGame() {
+		int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
+		if (result == JOptionPane.OK_OPTION) {
+			//User really wants to exit
+			System.exit(0);
+		}
 	}
 
 	/**
@@ -170,7 +180,7 @@ public class MenuInterface {
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -197,14 +207,13 @@ public class MenuInterface {
 			String id = e.getActionCommand();
 			switch(id.toLowerCase()) {
 			case "q":
-				int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
-				if (result == JOptionPane.OK_OPTION) {
-					//User really wants to exit
-					System.exit(0);
-				}
+				escapeGame();
+				break;
+			case "l":
+				loadGame();
 				break;
 			case "n":
-				System.out.println("N pressed");
+				newGameButtonPressed();
 				break;
 			}
 		}
