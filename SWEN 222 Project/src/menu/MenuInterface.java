@@ -62,10 +62,12 @@ public class MenuInterface {
 
 		//set up menupanel
 		JPanel menuPanel = new JPanel();
-		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
-		menuPanel.setBorder(blackline);
+		//Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
+		//menuPanel.setBorder(blackline);
 		//menuPanel.setOpaque(false);
 		menuPanel.setLayout(null);
+		menuPanel.setBackground(new Color(0,0,0,0));
+		menuPanel.setOpaque(false);
 		menuPanel.setBounds(380, 140, 200, 400);
 
 		//New Game button
@@ -77,7 +79,7 @@ public class MenuInterface {
 			}
 		});
 		btnNewGame.setBounds(25, 30, 150, 80);
-		btnNewGame.setBorder(blackline);
+		//btnNewGame.setBorder(blackline);
 		menuPanel.add(btnNewGame);
 
 		//Load Game button
@@ -88,7 +90,7 @@ public class MenuInterface {
 			}
 		});
 		btnLoadGame.setBounds(25, 150, 150, 80);
-		btnLoadGame.setBorder(blackline);
+	//	btnLoadGame.setBorder(blackline);
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
 
@@ -101,7 +103,7 @@ public class MenuInterface {
 			}
 		});
 		btnQuitGame.setBounds(25, 270, 150, 80);
-		btnQuitGame.setBorder(blackline);
+		//btnQuitGame.setBorder(blackline);
 		menuPanel.add(btnQuitGame);
 
 		//play song
