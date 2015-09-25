@@ -8,12 +8,10 @@ public class Breakable implements Obstacle {
 
 	private String type;
 	private Point coords;
-	private Tool tool;
 
-	public Breakable(String type, Point coords, Tool tool) {
+	public Breakable(String type, Point coords) {
 		this.type = type;
 		this.coords = coords;
-		this.tool = tool;
 	}
 
 	@Override
@@ -24,10 +22,6 @@ public class Breakable implements Obstacle {
 	@Override
 	public Point getCoords() {
 		return coords;
-	}
-
-	public Tool getTool(){
-		return tool;
 	}
 
 

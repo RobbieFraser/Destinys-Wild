@@ -5,9 +5,13 @@ import java.awt.Point;
 public class Tool implements Item{
 
 	private String type;
+	private String breakable; //the breakable that this tool can remove
 
 	public Tool(String type){
 		this.type = type;
+		switch(type){
+			case "": //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+		}
 	}
 
 	/**

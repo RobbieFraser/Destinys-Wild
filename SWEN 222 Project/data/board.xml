@@ -10,13 +10,21 @@
     <West>-1</West>
     <Obstacles>
       <Obstacle>
+        <Obstype>block</Obstype>
 		<Type>stoneblock</Type>
 		<Posx>3</Posx>
 		<Posy>3</Posy>
       </Obstacle>
       <Obstacle>
+        <Obstype>block</Obstype>
       	<Type>brokenstone1</Type>
       	<Posx>2</Posx>
+      	<Posy>7</Posy>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+      	<Type>cobblestone</Type>
+      	<Posx>3</Posx>
       	<Posy>7</Posy>
       </Obstacle>
     </Obstacles>
@@ -30,7 +38,7 @@
 		<Speed>0</Speed>
       </Npc>
       <Npc>
-		<Npctype>enemywalker</Npctype>      
+		<Npctype>enemywalker</Npctype>
       	<Posx>0</Posx>
       	<Posy>9</Posy>
       	<Damage>15</Damage>

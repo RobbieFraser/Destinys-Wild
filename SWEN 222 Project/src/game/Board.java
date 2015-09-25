@@ -4,7 +4,7 @@ public class Board {
 	private Room[][] board = new Room[5][5];
 
 	public Board(){
-		//yo
+
 	}
 
 	/**
@@ -13,11 +13,11 @@ public class Board {
 	public Room[][] getBoard() {
 		return board;
 	}
-	
+
 	public void addRoom(Room room, int x, int y){
 		board[x][y] = room;
 	}
-	
+
 	public void printBoard(){
 		for(int i=0; i<board.length; i++){
 			System.out.print("| ");
