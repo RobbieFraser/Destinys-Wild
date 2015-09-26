@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
+import game.XMLParser;
+
 public class MenuInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
@@ -35,7 +37,7 @@ public class MenuInterface {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 
-		ImagePanel imagePanel = new ImagePanel("forest.png");
+		ImagePanel imagePanel = new ImagePanel("titleScreen.png");
 		frame.setContentPane(imagePanel);
 		frame.setResizable(false);
 
@@ -68,7 +70,7 @@ public class MenuInterface {
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(new Color(0,0,0,0));
 		menuPanel.setOpaque(false);
-		menuPanel.setBounds(380, 140, 200, 400);
+		menuPanel.setBounds(430, 250, 200, 400);
 
 		//New Game button
 		ImageIcon newGameImage = new ImageIcon(loadImage("playgamebutton.png"));
@@ -126,7 +128,7 @@ public class MenuInterface {
 				}
 			}
 		});
-		toggleMusicButton.setBounds(830, 520, 150, 40);
+		toggleMusicButton.setBounds(925, 675, 150, 40);
 		frame.getContentPane().add(toggleMusicButton);
 
 		frame.getContentPane().requestFocus();
@@ -146,10 +148,8 @@ public class MenuInterface {
 		chooser.setCurrentDirectory(new File("data/savegames"));
 		int result = chooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to open this file: " +
-					chooser.getSelectedFile().getName());
 			File saveGame = chooser.getSelectedFile();
-			//TODO: Once the game is loaded in, begin playing!
+			XMLParser.loadState(saveGame);
 		}
 	}
 
