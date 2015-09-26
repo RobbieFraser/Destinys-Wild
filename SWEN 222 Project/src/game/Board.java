@@ -1,7 +1,6 @@
 package game;
 
 import java.awt.Canvas;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -11,7 +10,6 @@ import clientServer.GameServer;
 public class Board {
 
 	private Room[][] board = new Room[5][5];
-	private ArrayList<Player> playerList = new ArrayList<Player>();
 
 	public Board() {
 
@@ -26,10 +24,6 @@ public class Board {
 
 	public void addRoom(Room room, int x, int y) {
 		board[x][y] = room;
-	}
-
-	public void addPlayer(Player player){
-		playerList.add(player);
 	}
 
 	/**
@@ -50,6 +44,6 @@ public class Board {
 		}
 	}
 
-
+	
 
 }

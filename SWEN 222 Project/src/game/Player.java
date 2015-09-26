@@ -12,7 +12,7 @@ public class Player {
 	private int health = 100;
 	private int currentRoom; //id of room
 	private List<Integer> visitedRooms = new ArrayList<>();
-	private List<Item> inventory = new ArrayList<>();
+	private List<Integer> inventory = new ArrayList<>();
 	private int score = 0;
 	private int speed = 5;
 
@@ -44,7 +44,7 @@ public class Player {
 	 * @param score current score of the player
 	 */
 	public Player(String name, Point coords, int health,
-			int currentRoom, List<Integer> visitedRooms, List<Item> inventory, int score){
+			int currentRoom, List<Integer> visitedRooms, List<Integer> inventory, int score){
 		this.name = name;
 		this.coords = coords;
 		this.health = health;
@@ -54,12 +54,22 @@ public class Player {
 		this.score = score;
 	}
 
-	public String getName() {
-		return name;
+	/**
+	 * adds any room (by id) to the visited Room list
+	 */
+	public void addRoom(int id){
+		visitedRooms.add(id);
 	}
 
-	public String getUserName(){
-		return this.name;
+	/**
+	 * adds the current room to the list of visited rooms for the player
+	 */
+	public void addCurrentRoom(){
+		visitedRooms.add(currentRoom);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {
@@ -94,16 +104,8 @@ public class Player {
 		return visitedRooms;
 	}
 
-	public void setVisitedRooms(List<Integer> visitedRooms) {
-		this.visitedRooms = visitedRooms;
-	}
-
-	public List<Item> getInventory() {
+	public List<Integer> getInventory() {
 		return inventory;
-	}
-
-	public void setInventory(List<Item> inventory) {
-		this.inventory = inventory;
 	}
 
 	public int getScore() {

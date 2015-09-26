@@ -1,37 +1,58 @@
 package game;
 
 import java.awt.Canvas;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
-import clientServer.packets.LoginPacket;
-import Renderer.TestFrame;
 
 public class DestinysWild extends Canvas implements Runnable{
 	private Board board;
-	private Player currentPlayer;
+	private static Player currentPlayer;
 	private GameClient client;
 	private GameServer server;
 	private boolean running = false;
 	public int tickCount = 0;
 
 	public DestinysWild() {
-		//read board in from file
-//		board = XMLParser.initialiseBoard("data/state.xml");
-//
-//		board.printBoard();
-//		System.out.println();
-//		board.getBoard()[2][2].printRoom();
-//		System.out.println();
-//		board.getBoard()[1][2].printRoom();
 		//TestFrame test = new TestFrame(board);
+		testPlayerSave();
+		//start();
+		//testBoardInitialisation();
+
+	}
+
+	public void testPlayerSave(){
+		List<Integer> inv = new ArrayList<>();
+		inv.add(01);
+
+		List<Integer> roomsV = new ArrayList<>();
+		roomsV.add(0);
+
+		currentPlayer = new Player("Robbie", new Point(50, 50), 99, 0, roomsV, inv, 9999);
+		XMLParser.saveBoard();
+	}
+
+	public void testBoardInitialisation(){
+		board = XMLParser.initialiseBoard("data/state.xml");
+
+		board.printBoard();
+		System.out.println();
+		board.getBoard()[2][2].printRoom();
+		System.out.println();
+		board.getBoard()[1][2].printRoom();
 	}
 
 	public Board getBoard() {
 		return board;
+	}
+
+	public static Player getPlayer(){
+		return currentPlayer;
 	}
 
 	public void setBoard(Board board) {
@@ -40,9 +61,7 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public void initialise() {
 		if (client != null) {
-			//client.sendData("ping".getBytes());
-			LoginPacket loginPacket = new LoginPacket("Dr McSwag");
-			loginPacket.writeData(client);
+			client.sendData("ping".getBytes());
 		}
 	}
 
@@ -97,7 +116,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public static void main(String[] args){
-		//DestinysWild game = new DestinysWild();
-		new DestinysWild().start();
+		DestinysWild game = new DestinysWild();
 	}
 }

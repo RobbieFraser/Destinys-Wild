@@ -15,11 +15,14 @@ import game.obstacles.Obstacle;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 public class XMLParser {
 
@@ -197,7 +200,7 @@ public class XMLParser {
 	/**
 	 * Loads save states for the current game
 	 */
-	public void loadState(){
+	public static void loadState(){
 		initialiseBoard("data/state.xml");
 	}
 
@@ -206,12 +209,51 @@ public class XMLParser {
 	/**
 	 * Saves the current game board to an XML file
 	 */
-	public void saveBoard(){
-		savePlayer();
+	public static void saveBoard(){
+		System.out.println("Saving player");
+		savePlayer(); //save the player info separately
+		System.out.println("Player saved");
 	}
 
-	public void savePlayer(){
+	public static void savePlayer(){
+		Player player = DestinysWild.getPlayer();
 
+		try{
+			Element playerTag = new Element("Player"); //Root element name
+			Document doc = new Document(playerTag);
+
+			playerTag.addContent(new Element("Name").setText(player.getName()));
+			playerTag.addContent(new Element("Posx").setText(String.valueOf(player.getCoords().x)));
+			playerTag.addContent(new Element("Posy").setText(String.valueOf(player.getCoords().y)));
+			playerTag.addContent(new Element("Health").setText(String.valueOf(player.getHealth())));
+			playerTag.addContent(new Element("Currentroom").setText(String.valueOf(player.getCurrentRoom())));
+			playerTag.addContent(new Element("Score").setText(String.valueOf(player.getScore())));
+			playerTag.addContent(new Element("Speed").setText(String.valueOf(player.getSpeed())));
+
+			Element visitedRooms = new Element("Visitedrooms");
+
+			for(Integer roomId : player.getVisitedRooms()){
+				visitedRooms.addContent(new Element("Roomid").setText(String.valueOf(roomId)));
+			}
+
+			playerTag.addContent(visitedRooms);
+
+			Element inventory = new Element("Inventory");
+
+			for(Integer itemId : player.getInventory()){
+				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId)));
+			}
+
+			playerTag.addContent(inventory);
+
+
+			XMLOutputter xmlOutput = new XMLOutputter();
+			xmlOutput.setFormat(Format.getPrettyFormat());
+			xmlOutput.output(doc, new FileWriter("data/savegames/"+ player.getName() + ".xml"));
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage() + "<--- ERROR");
+		}
 	}
 
 
