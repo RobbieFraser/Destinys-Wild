@@ -7,4 +7,5 @@ public interface NPC {
 	public int getSpeed();
 	public String getType();
 	public Point getCoords();
+	public String toString();
 }

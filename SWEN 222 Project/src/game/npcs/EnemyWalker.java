@@ -49,6 +49,10 @@ public class EnemyWalker implements NPC{
 	public void setCoords(Point coords) {
 		this.coords = coords;
 	}
+	
+	public String toString(){
+		return "enemywalker";
+	}
 
 
 }

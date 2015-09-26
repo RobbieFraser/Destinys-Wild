@@ -56,11 +56,12 @@ public class XMLParser {
 
 				initialiseObstacles(room, currentRoom);
 				initialiseNPCS(room, currentRoom);
-				initialiseItems(room, currentRoom);
+				initialiseOnBoardItems(room, currentRoom);
 
 				System.out.println("Loading room with ID: " + id);
 				board.addRoom(currentRoom, roomX, roomY);
 			}
+			initialiseOffBoardItems(rootNode);
 
 
 		}
@@ -88,7 +89,7 @@ public class XMLParser {
 		List<Element> obsTags = obs.get(0).getChildren("Obstacle");
 
 		for (Element obstacle : obsTags){ //Initialising Obstacles
-			String type = obstacle.getChildText("Type"); //-----------Obstacle parameters
+			String type = obstacle.getChildText("Type"); //Obstacle parameters-----------
 			String obsType = obstacle.getChildText("Obstype");
 
 			int obsx = Integer.valueOf(obstacle.getChildText("Posx"));
@@ -118,10 +119,9 @@ public class XMLParser {
 			return;
 		}
 		//Room contains Non playing characters
-		List<Element> npcs = room.getChildren("Npcs");
-		List<Element> npcTags = npcs.get(0).getChildren("Npc");
-
-		for (Element npc : npcTags){ // Initialising NPC's
+		List<Element> npcs = room.getChild("Npcs").getChildren("Npc");
+		
+		for (Element npc : npcs){ // Initialising NPC's
 			String npcType = npc.getChildText("Npctype");
 
 			String type = npc.getChildText("Type"); // NPC parameters-------
@@ -155,15 +155,32 @@ public class XMLParser {
 		}
 	}
 
-	private static void initialiseItems(Element room, Room currentRoom) {
+	private static void initialiseOnBoardItems(Element room, Room currentRoom) {
 		if (room.getChild("Items") == null) {
 			return;
 		}
+		
+		List<Element> items = room.getChildren("Items").get(0).getChildren("Item");
+		
+		initialiseItems(items, currentRoom);
 
-		List<Element> items = room.getChildren("Items");
-		List<Element> itemTags = items.get(0).getChildren("Item");
-
-		for (Element item : itemTags){ // Initialising Items
+	}
+	
+	public static void initialiseOffBoardItems(Element rootNode){
+		if(rootNode.getChild("Offboarditems") == null){
+			System.out.println("No offboard items found");
+			return;
+		}
+		
+		List<Element> items = rootNode.getChildren("Items").get(0).getChildren("Item");
+		
+		initialiseItems(items, null);
+		
+		
+	}
+	
+	public static void initialiseItems(List<Element> itemList, Room currentRoom){
+		for (Element item : itemList){ // Initialising Items
 			String itemType = item.getChildText("Itemtype");
 
 			String type = item.getChildText("Type"); // Item parameters-------
@@ -174,7 +191,7 @@ public class XMLParser {
 			int itemid = Integer.valueOf(item.getChildText("Id"));
 
 			int health = Integer.valueOf(item.getChildText("Health"));
-			int score = Integer.valueOf(item.getChildText("Score")); //------
+			int score = Integer.valueOf(item.getChildText("Score")); //-------
 
 			Item temp = null;
 
@@ -193,7 +210,13 @@ public class XMLParser {
 			default:
 				System.out.println("Misidentifed Item");
 			}
-			currentRoom.addItems(temp, itemx, itemy); //adds all items to the current room
+			
+			if(currentRoom != null){
+				currentRoom.addItems(temp, itemx, itemy); //adds all items to the current room
+			}
+			else{
+				DestinysWild.getBoard().getOffBoardItems().add(temp); //adds items to off board list
+			}
 		}
 	}
 
@@ -201,8 +224,12 @@ public class XMLParser {
 	 * Loads save states for the current game
 	 */
 	public static void loadState(File playerFile){
+		System.out.println("Loading board from savestate.xml");
 		initialiseBoard("data/savestate.xml");
+		System.out.println("Board Loaded");
+		System.out.println("Loading player file from " + playerFile.getName());
 		loadPlayer(playerFile);
+		System.out.println("Player Loaded");
 	}
 
 	public static void loadPlayer(File playerFile){
@@ -211,17 +238,20 @@ public class XMLParser {
 			Document document = (Document) builder.build(playerFile);
 			Element playerTag = document.getRootElement();
 			
-			String name = playerTag.getChildText("Name");
-			
 			Player player = new Player();
+			
+			String name = playerTag.getChildText("Name"); //Player parameters--------------------
 			
 			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
 			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
 			
 			int health = Integer.valueOf(playerTag.getChildText("Health"));
-			int currentRoom = Integer.valueOf(playerTag.getChildText("Currentroom"));
 			int score = Integer.valueOf(playerTag.getChildText("Score"));
 			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
+			
+			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
+			Room currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoomId);//-----------
+			
 			
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
 			
@@ -235,20 +265,20 @@ public class XMLParser {
 			
 			for(Element room : visitedRooms){
 				int roomId = Integer.valueOf(room.getChildText("Roomid"));
-				
-				
-				
-				for(int i=0; i<DestinysWild.getBoard().getBoard().length; i++){
-					for(int j=0; j<DestinysWild.getBoard().getBoard()[0].length; j++){
-
-					}
-				}
+				player.addRoom(DestinysWild.getBoard().getRoomFromId(roomId));
 
 			}
 			
+			player.setName(name);
+			player.setCoords(new Point(playerx, playery));
+			player.setHealth(health);
+			player.setCurrentRoom(currentRoom);
+			player.setScore(score);
+			player.setSpeed(speed);
+			
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage() + " <----- ERROR");
 		}
 	}
 
@@ -257,10 +287,75 @@ public class XMLParser {
 	/**
 	 * Saves the current game board to an XML file
 	 */
-	public static void saveBoard(){
+	public static void saveGame(){
+		String SAVE_FILE = "savestate.xml"; //This is the file that will be used and overwritten each time the board is saved
 		System.out.println("Saving player");
 		savePlayer(); //save the player info separately
 		System.out.println("Player saved");
+		System.out.println("Saving board state to " + SAVE_FILE);
+		saveBoard(SAVE_FILE);
+	}
+	
+	public static void saveBoard(String filename){
+		Board board = DestinysWild.getBoard();
+		
+		
+		try{
+			Element boardTag = new Element("Rooms"); //Root element name
+			Document doc = new Document(boardTag);
+			
+			Element roomTags = new Element("Room");//<Rooms><Room>
+			Element obsTags = new Element("Obstacles");//<Rooms><Room><Obstacles>
+			Element npcTags = new Element("Npcs");//<Rooms><Room><Obstacles></Obstacles><Npcs>
+			Element itemTags = new Element("Items");
+			
+			Room[][] roomArray = board.getBoard();
+			
+			for(int i=0; i<board.getBoard().length; i++){
+				for(int j=0; j<board.getBoard()[0].length; j++){
+					Room current = roomArray[i][j];
+					roomTags.addContent(new Element("Id").setText(String.valueOf(current.getId())));
+					roomTags.addContent(new Element("Posx").setText(String.valueOf(current.getBoardPos().x)));
+					roomTags.addContent(new Element("Posy").setText(String.valueOf(current.getBoardPos().y)));
+					roomTags.addContent(new Element("North").setText(String.valueOf(current.getNorth())));
+					roomTags.addContent(new Element("East").setText(String.valueOf(current.getEast())));
+					roomTags.addContent(new Element("South").setText(String.valueOf(current.getSouth())));
+					roomTags.addContent(new Element("West").setText(String.valueOf(current.getWest())));
+					saveObstacles(current, obsTags);
+					saveNpcs(current, npcTags);
+					saveItems(current, itemTags);
+				}
+			}
+			//TODO complete this method
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage() + " <--- ERROR");
+		}
+	}
+	
+	public static void saveObstacles(Room current, Element obsTag){
+		Element obstacle = new Element("Obstacle");
+		
+		for(int i=0; i<current.getObstacles().length; i++){
+			for(int j=0; j<current.getObstacles()[0].length; j++){
+				Obstacle currObs = current.getObstacles()[i][j];
+				if(currObs != null){
+					obstacle.addContent(new Element("Obstype").setText(currObs.toString()));
+					obstacle.addContent(new Element("Type").setText(currObs.getType()));
+					obstacle.addContent(new Element("Posx").setText(String.valueOf(currObs.getCoords().x)));
+					obstacle.addContent(new Element("Posy").setText(String.valueOf(currObs.getCoords().y)));
+				}
+			}
+		}
+		//TODO complete this method
+	}
+	
+	public static void saveNpcs(Room current, Element obsTag){
+	//TODO complete this method
+	}
+	
+	public static void saveItems(Room current, Element obsTag){
+	//TODO complete this method
 	}
 
 	public static void savePlayer(){
@@ -300,7 +395,7 @@ public class XMLParser {
 			xmlOutput.output(doc, new FileWriter("data/savegames/"+ player.getName() + ".xml"));
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage() + "<--- ERROR");
+			System.out.println(e.getMessage() + " <--- ERROR");
 		}
 	}
 

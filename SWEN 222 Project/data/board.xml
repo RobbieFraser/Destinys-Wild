@@ -74,5 +74,16 @@
       		<Posy>7</Posy>
     	</Obstacle>
     </Obstacles>
+    <Items>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>11</Id> <!-- 1 = item id, 0 = room id -->
+    	<Posx>1</Posx>
+    	<Posy>3</Posy>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
+    </Items>
   </Room>
 </Rooms>

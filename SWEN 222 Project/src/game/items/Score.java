@@ -72,5 +72,9 @@ public class Score implements Item{
 	public int getHealth() {
 		return 0;
 	}
+	
+	public String toString(){
+		return "score";
+	}
 
 }

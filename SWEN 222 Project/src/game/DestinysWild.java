@@ -38,7 +38,7 @@ public class DestinysWild extends Canvas implements Runnable{
 		roomsV.add(room);
 
 		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
-		XMLParser.saveBoard();
+		XMLParser.saveGame();
 	}
 
 	public void testBoardInitialisation(){

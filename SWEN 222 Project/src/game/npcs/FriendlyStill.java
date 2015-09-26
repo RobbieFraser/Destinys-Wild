@@ -35,6 +35,10 @@ public class FriendlyStill implements NPC{
 	public int getSpeed() {
 		return 0;
 	}
+	
+	public String toString(){
+		return "friendlystill";
+	}
 
 
 }

@@ -23,6 +23,10 @@ public class Breakable implements Obstacle {
 	public Point getCoords() {
 		return coords;
 	}
+	
+	public String toString(){
+		return "breakable";
+	}
 
 
 

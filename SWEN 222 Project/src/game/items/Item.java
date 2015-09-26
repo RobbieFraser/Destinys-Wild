@@ -8,4 +8,5 @@ public interface Item {
 	public Point getCoords();
 	public int getHealth();
 	public int getId();
+	public String toString();
 }

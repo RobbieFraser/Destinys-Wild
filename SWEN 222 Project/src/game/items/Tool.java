@@ -16,8 +16,8 @@ public class Tool implements Item{
 				breakable = "vine";
 				break;
 
-			case "axe":
-				breakable = "thorn";
+			case "torch":
+				breakable = "";
 				break;
 
 			case "pickaxe":
@@ -72,6 +72,10 @@ public class Tool implements Item{
 	public int getHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public String toString(){
+		return "tool";
 	}
 
 

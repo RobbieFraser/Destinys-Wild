@@ -42,6 +42,10 @@ public class EnemyStill implements NPC{
 	public int getSpeed() {
 		return 0;
 	}
+	
+	public String toString(){
+		return "enemystill";
+	}
 
 
 }

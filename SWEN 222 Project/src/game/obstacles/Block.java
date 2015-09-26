@@ -43,4 +43,9 @@ public class Block implements Obstacle{
 		this.coords = coords;
 	}
 
+	@Override
+	public String toString() {
+		return "block";
+	}
+
 }

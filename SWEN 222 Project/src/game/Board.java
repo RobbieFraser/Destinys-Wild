@@ -23,6 +23,14 @@ public class Board {
 	}
 	
 	public Room getRoomFromId(int id){
+		for(int i=0; i<board.length; i++){
+			for(int j=0; j<board[0].length; j++){
+				if(id == board[i][j].getId()){
+					return board[i][j];
+				}
+			}
+		}
+		System.out.println("Could not find room with id: " + id + " on the board :(");
 		return null;
 	}
 
