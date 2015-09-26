@@ -1,4 +1,4 @@
-package menu;
+package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;

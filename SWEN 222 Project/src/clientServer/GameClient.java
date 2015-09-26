@@ -13,7 +13,6 @@ public class GameClient extends Thread{
 
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
-	//testing change
 	private Board board;
 
 	public GameClient(Board board,String ipAddress){
@@ -28,8 +27,8 @@ public class GameClient extends Thread{
 		}
 	}
 
-	public void run(){
-		while(true){
+	public void run() {
+		while (true) {
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data,data.length);
 			try {
