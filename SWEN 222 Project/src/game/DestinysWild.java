@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import Renderer.TestFrame;
 import clientServer.GameClient;
 import clientServer.GameServer;
+import clientServer.packets.LoginPacket;
 import game.items.Health;
 import game.items.Item;
 
@@ -65,9 +66,14 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public void initialise() {
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
-		currentPlayer = new PlayerMulti("Robbie", new Point(50, 50),room,	 null,-1);
+		PlayerMulti currentPlayer = new PlayerMulti("Robbie", new Point(50, 50),room,	 null,-1);
+		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		if (client != null) {
-			client.sendData("ping".getBytes());
+			//client.sendData("ping".getBytes());
+			if(server!=null){
+				server.addConnection(currentPlayer, packet);
+			}
+			packet.writeData(client);
 		}
 	}
 

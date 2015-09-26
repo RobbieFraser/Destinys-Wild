@@ -26,7 +26,7 @@ public class GameClient extends Thread {
 	public GameClient(Board board, String ipAddress) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(9681);
+			this.socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName(ipAddress);
 		} catch (SocketException e) {
 			System.out.println("Socket exception.");
@@ -63,19 +63,23 @@ public class GameClient extends Thread {
 			break;
 		case LOGIN:
 			packet = new LoginPacket(data);
-			System.out.println("[" + address.getHostAddress() + ":" + port
-					+ "]" + ((LoginPacket) packet).getUserName()
-					+ "has joined the game");
-			Point point = new Point(1, 1);
-			PlayerMulti pm = new PlayerMulti(
-					((LoginPacket) packet).getUserName(), point, new Room(-1,
-							-1, -1, -1, 11, new Point(4, 4)), address, port);
-			board.getPlayers().add(pm);
+			handleLogin((LoginPacket)packet,address,port);
 			break;
 		case DISCONNECT:
 			break;
 		}
 
+	}
+
+	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
+		System.out.println("[" + address.getHostAddress() + ":" + port
+				+ "]" + ((LoginPacket) packet).getUserName()
+				+ "has entered the Wild");
+		Point point = new Point(1, 1);
+		PlayerMulti pm = new PlayerMulti(
+				((LoginPacket) packet).getUserName(), point, new Room(-1,
+						-1, -1, -1, 11, new Point(4, 4)), address, port);
+		board.getPlayers().add(pm);
 	}
 
 	public void sendData(byte[] data) {
