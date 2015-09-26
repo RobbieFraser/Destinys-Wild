@@ -41,8 +41,10 @@ public class GameClient extends Thread {
 	public void run() {
 		while (true) {
 			byte[] data = new byte[1024];
+			System.out.println("About to parse packet");
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
+				System.out.println("About to parse packet");
 				this.socket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
