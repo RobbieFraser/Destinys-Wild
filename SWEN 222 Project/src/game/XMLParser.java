@@ -206,7 +206,12 @@ public class XMLParser {
 	}
 
 	public static void loadPlayer(File playerFile){
+		try{
 
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 	}
 
 
