@@ -2,9 +2,11 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -26,12 +28,18 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
+import game.Player;
+
 public class GameInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
-	private boolean isPlaying;
+	private Player player; //player whose game state will be drawn
 
-	public GameInterface() {
+	public GameInterface(Player player) {
+		this.player = player;
+		//TODO: If statement here: if the player is loading from another game state, then
+		//their items will need to be drawn in, which means that the initialise method will
+		//need to be altered
 		initialise();
 	}
 
@@ -47,22 +55,18 @@ public class GameInterface {
 				escapeGame();
 			}
 		});
-		//set up border
+		// set up border
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 		
 		// set up inventory panel
-		// when drawn, the panel should contain black lines separating out the three sections:
-		// Food - Max 4
-		// Tools - Max 6
-		// Key - Max 1 at a time
 		JPanel inventoryPanel = new JPanel(); //will be a custom drawn panel
 		inventoryPanel.setBorder(blackline);
 		inventoryPanel.setBounds(20, 570, 820, 140);
 		inventoryPanel.setLayout(null);
 		
-		//setting up food panel
-		//setting up food slots - these will be filled in when the player has picked up food
-		//4 slots
+		// setting up food panel
+		// setting up food slots - these will be filled in when the player has picked up food
+		// 5 slots
 		for (int i = 0; i < 5; ++i) {
 			JLabel inventoryBox = new JLabel();
 			inventoryBox.setBorder(blackline);
@@ -70,8 +74,8 @@ public class GameInterface {
 			inventoryPanel.add(inventoryBox);
 		}
 		
-		//set up tool belt
-		//max 6 tools
+		// set up tool belt
+		// max 6 tools
 		for (int i = 0; i < 2; ++i) {
 			//2 rows of tools, each row contains 3 slots
 			for (int j = 0; j < 3; ++j) {
@@ -91,38 +95,18 @@ public class GameInterface {
 		
 		frame.getContentPane().add(inventoryPanel);
 		
-		//set up panel which will contain minimap
+		// set up panel which will contain minimap
 		JPanel mapPanel = new JPanel();
 		mapPanel.setBorder(blackline);
 		mapPanel.setBounds(860, 490, 220, 220);
 		frame.getContentPane().add(mapPanel);
 		
-		
-		
-//		//play song
-//		final PlayMusic music = new PlayMusic();
-//		music.playSound("SayMyName48.mp3");
-//		isPlaying = true;
-//
-//		//Toggle Music Button
-//		JButton toggleMusicButton = new JButton("Toggle Music");
-//		toggleMusicButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				if (isPlaying) {
-//					music.stopPlaying();
-//					isPlaying = false;
-//				}
-//				else {
-//					//final PlayMusic music = new PlayMusic();
-//					music.playSound("SayMyName48.mp3");
-//					isPlaying = true;
-//				}
-//			}
-//		});
-//		toggleMusicButton.setBounds(830, 520, 150, 40);
-//		frame.getContentPane().add(toggleMusicButton);
-
-		frame.getContentPane().requestFocus();
+		// add score display template
+		JPanel scoreDisplay = new JPanel();
+		scoreDisplay.setBorder(blackline);
+		scoreDisplay.setBounds(20, 535, 135, 30);
+		frame.getContentPane().add(scoreDisplay);
+	
 		frame.getContentPane().setLayout(null);
 	}
 
@@ -159,7 +143,8 @@ public class GameInterface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameInterface game = new GameInterface();
+					Player player = new Player("Sam", new Point(0,0), 0);
+					GameInterface game = new GameInterface(player);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
