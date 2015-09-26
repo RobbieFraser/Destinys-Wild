@@ -227,7 +227,7 @@ public class XMLParser {
 			
 			for(Element invItem : inventory){
 				int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
-				for
+
 			}
 			
 		}

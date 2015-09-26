@@ -1,34 +1,24 @@
 package view;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
 import game.Player;
+import game.Room;
 
 public class GameInterface {
 	private JFrame frame;
@@ -168,7 +158,7 @@ public class GameInterface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Player player = new Player("Sam", new Point(0,0), 0);
+					Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
 					GameInterface game = new GameInterface(player);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
