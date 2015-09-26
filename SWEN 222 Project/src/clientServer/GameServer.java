@@ -39,7 +39,7 @@ public class GameServer extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
+			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
 //			String msg = new String(packet.getData());
 //			System.out.println(msg);
 //			System.out.println("CLIENT [ "
@@ -55,23 +55,18 @@ public class GameServer extends Thread {
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
 		PacketTypes packetTypes = Packet.getPacket(msg.substring(0, 2));
+		LoginPacket packet = null;
 		switch (packetTypes) {
 		default:
 		case INVALID:
 			break;
 		case LOGIN:
-			LoginPacket packet = new LoginPacket(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port
-					+ "]" + packet.getUserName() + "has connected");
+					+ "]" + ((LoginPacket) packet).getUserName() + "has connected");
 			Point point = new Point(1, 1);
-			PlayerMulti pm = null;
-			if (address.getHostAddress().equalsIgnoreCase("127.0.0.1")) {
-				pm = new PlayerMulti(packet.getUserName(), point, 1, address,
-						port);
-			} else {
-				pm = new PlayerMulti(packet.getUserName(), point, 1, address,
-						port);
-			}
+			PlayerMulti pm = new PlayerMulti(packet.getUserName(), point, 1, address,
+					port);
+			addConnection(pm,(LoginPacket)packet);
 			if (pm != null) {
 				this.connectedPlayers.add(pm);
 			}
@@ -80,6 +75,28 @@ public class GameServer extends Thread {
 			break;
 		}
 
+	}
+
+	private void addConnection(PlayerMulti player, LoginPacket packet) {
+		boolean alreadyConnected = false;
+		for(PlayerMulti pm : this.connectedPlayers){
+			if(player.getUserName().equalsIgnoreCase(pm.getUserName())){
+				if(pm.getIP()==null){
+					pm.setIP(player.getIP());
+				}
+				if(pm.getPort()==-1){
+					pm.setPort(player.getPort());
+				}
+				alreadyConnected = true;
+			}
+			else{
+				sendData(packet.getData(),pm.getIP(),pm.getPort());
+			}
+		}
+		if(!alreadyConnected){
+			this.connectedPlayers.add(player);
+			packet.writeData(this);
+		}
 	}
 
 	public void sendData(byte[] data, InetAddress ipAddress, int port) {

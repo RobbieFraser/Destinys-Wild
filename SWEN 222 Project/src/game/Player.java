@@ -58,6 +58,10 @@ public class Player {
 		return name;
 	}
 
+	public String getUserName(){
+		return this.name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
