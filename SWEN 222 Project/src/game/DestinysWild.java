@@ -66,7 +66,8 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public void initialise() {
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
-		PlayerMulti currentPlayer = new PlayerMulti("Robbie", new Point(50, 50),room,	 null,-1);
+		PlayerMulti currentPlayer = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"), new Point(50, 50),room,	 null,-1);
+		System.out.println(currentPlayer.getName());
 		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		//if (client != null) {
 			//client.sendData("ping".getBytes());

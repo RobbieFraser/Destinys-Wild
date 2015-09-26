@@ -25,6 +25,7 @@ public class GameClient extends Thread {
 
 	public GameClient(Board board, String ipAddress) {
 		this.board = board;
+		System.out.println("Client initialisng");
 		try {
 			this.socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName(ipAddress);
@@ -46,6 +47,7 @@ public class GameClient extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println("About to parse packet");
 			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
 			//String msg = new String(packet.getData());
 			//System.out.println(msg);
@@ -62,6 +64,7 @@ public class GameClient extends Thread {
 		case INVALID:
 			break;
 		case LOGIN:
+			System.out.println("Working");
 			packet = new LoginPacket(data);
 			handleLogin((LoginPacket)packet,address,port);
 			break;

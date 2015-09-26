@@ -66,7 +66,7 @@ public class GameServer extends Thread {
 			packet = new LoginPacket(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port
 					+ "]" + ((LoginPacket) packet).getUserName()
-					+ "has connected");
+					+ " has connected");
 			Point point = new Point(1, 1);
 			PlayerMulti pm = new PlayerMulti(
 					((LoginPacket) packet).getUserName(), point, new Room(-1,
@@ -92,6 +92,8 @@ public class GameServer extends Thread {
 				alreadyConnected = true;
 			} else {
 				sendData(packet.getData(), player.getIP(), player.getPort());
+				packet = new LoginPacket(player.getName());
+				sendData(packet.getData(),pm.getIP(),pm.getPort());
 			}
 			if (!alreadyConnected) {
 				this.connectedPlayers.add(pm);
