@@ -20,7 +20,7 @@ public class GameServer extends Thread{
 	private DatagramSocket socket;
 	private Board board;
 	private List<PlayerMulti> connectedPlayers = new ArrayList<PlayerMulti>();
-	
+
 	public GameServer(Board board){
 		this.board = board;
 		try {
@@ -29,7 +29,7 @@ public class GameServer extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void run(){
 		while(true){
 			byte[] data = new byte[1024];
@@ -40,17 +40,17 @@ public class GameServer extends Thread{
 				e.printStackTrace();
 			}
 			parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
-//			String msg = new String(packet.getData());
-//			System.out.println(msg);
-//			System.out.println("CLIENT [ " +packet.getAddress().getHostAddress() + ":" + packet.getPort() + "] >"
-//				+ msg);
-//			if(msg.trim().equalsIgnoreCase("ping")){
-//				sendData("pong".getBytes(),packet.getAddress(),packet.getPort());
-//			}
+			String msg = new String(packet.getData());
+			System.out.println(msg);
+			System.out.println("CLIENT [ " +packet.getAddress().getHostAddress() + ":" + packet.getPort() + "] >"
+				+ msg);
+			if(msg.trim().equalsIgnoreCase("ping")){
+				sendData("pong".getBytes(),packet.getAddress(),packet.getPort());
+			}
 		}
 	}
-	
-	
+
+
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
 		PacketTypes packetTypes = Packet.getPacket(msg.substring(0,2));
@@ -66,10 +66,10 @@ public class GameServer extends Thread{
 			PlayerMulti pm = new PlayerMulti( packet.getUserName(),point, 1,address,port);
 			break;
 		case DISCONNECT:
-			
+
 		}
-		
-		
+
+
 	}
 
 	public void sendData(byte[] data,InetAddress ipAddress, int port){
