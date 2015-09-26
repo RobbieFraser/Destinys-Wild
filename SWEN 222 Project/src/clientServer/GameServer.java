@@ -25,7 +25,7 @@ public class GameServer extends Thread {
 	public GameServer(Board board) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(9674);
+			this.socket = new DatagramSocket(9679);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class GameServer extends Thread {
 
 	public void sendData(byte[] data, InetAddress ipAddress, int port) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
-				ipAddress, 9674);
+				ipAddress, 9679);
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {
