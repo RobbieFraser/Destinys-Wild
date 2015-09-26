@@ -37,29 +37,21 @@ public class GameInterface {
 
 	public GameInterface(Player player) {
 		this.player = player;
-		//TODO: If statement here: if the player is loading from another game state, then
-		//their items will need to be drawn in, which means that the initialise method will
-		//need to be altered
 		initialise();
+		updateUI();
 	}
 
-	public void initialise() {
+	private void initialise() {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
 
-		//initialise window listener
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				escapeGame();
-			}
-		});
 		// set up border
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 		
 		// set up inventory panel
 		JPanel inventoryPanel = new JPanel(); //will be a custom drawn panel
+		//TODO: Add panel
 		inventoryPanel.setBorder(blackline);
 		inventoryPanel.setBounds(20, 570, 820, 140);
 		inventoryPanel.setLayout(null);
@@ -106,10 +98,43 @@ public class GameInterface {
 		scoreDisplay.setBorder(blackline);
 		scoreDisplay.setBounds(20, 535, 135, 30);
 		frame.getContentPane().add(scoreDisplay);
-	
+
+		//initialise window listener
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				escapeGame();
+			}
+		});
+		
 		frame.getContentPane().setLayout(null);
 	}
-
+	
+	public void updateUI() {
+		// draw the inventory
+		JPanel inventoryPanel = (JPanel) frame.getContentPane().getComponent(0);
+		
+		// first lets draw the food
+		int numFood = 4; //should extract from player
+		for (int i = 0; i < numFood; ++i) {
+			JLabel foodLabel = (JLabel) inventoryPanel.getComponent(i);
+			//update the label to contain food image
+			//in reality, the image name will be decided by another method that
+			//takes the inventory as a parameter, along with i
+			ImageIcon foodImage = new ImageIcon(loadImage("shark.png"));
+			foodLabel.setIcon(foodImage);
+		}
+		
+		int numTools = 2;
+		for (int i = 0; i < numTools; ++i) {
+			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i+5);
+			ImageIcon toolImage = new ImageIcon(loadImage("pickaxe.png"));
+			toolLabel.setIcon(toolImage);
+		}
+		
+		
+	}
+	
 	private void escapeGame() {
 		int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
 		if (result == JOptionPane.OK_OPTION) {
