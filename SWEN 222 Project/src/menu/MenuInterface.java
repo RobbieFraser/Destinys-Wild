@@ -33,7 +33,7 @@ public class MenuInterface {
 
 	public void initialise() {
 		frame = new JFrame();
-		frame.setBounds(100, 30, 1000, 600);
+		frame.setBounds(100, 30, 1100, 750);
 
 		ImagePanel imagePanel = new ImagePanel("forest.png");
 		frame.setContentPane(imagePanel);

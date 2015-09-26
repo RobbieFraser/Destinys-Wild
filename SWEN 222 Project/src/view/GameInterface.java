@@ -2,6 +2,8 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,15 +58,15 @@ public class GameInterface {
 		JPanel inventoryPanel = new JPanel(); //will be a custom drawn panel
 		inventoryPanel.setBorder(blackline);
 		inventoryPanel.setBounds(20, 570, 820, 140);
+		inventoryPanel.setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.RELATIVE;
 		
-		//ImageIcon inventoryIcon = new ImageIcon(loadImage("shark.png"));
-		//JLabel inventoryLabel = new JLabel(inventoryIcon);
-		//inventoryPanel.add(inventoryLabel);
 		
 		for (int i = 0; i < 4; ++i) {
-			JLabel inventoryBox = new JLabel();
-			inventoryBox.setBorder(blackline);
-			inventoryBox.setBounds(i*100, 600, 50, 50);
+			ImageIcon inventoryIcon = new ImageIcon(loadImage("shark.png"));
+			JLabel inventoryBox = new JLabel(inventoryIcon);
+			inventoryPanel.add(inventoryBox);
 		}
 		
 		frame.getContentPane().add(inventoryPanel);
