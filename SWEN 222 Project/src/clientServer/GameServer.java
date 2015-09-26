@@ -16,75 +16,85 @@ import java.util.ArrayList;
 import clientServer.packets.*;
 import clientServer.packets.Packet.PacketTypes;
 
-public class GameServer extends Thread{
+public class GameServer extends Thread {
 	private DatagramSocket socket;
 	private Board board;
 	private List<PlayerMulti> connectedPlayers = new ArrayList<PlayerMulti>();
 
-	public GameServer(Board board){
+	public GameServer(Board board) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(1331);
+			this.socket = new DatagramSocket(9999);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void run(){
-		while(true){
+	public void run() {
+		while (true) {
 			byte[] data = new byte[1024];
-			DatagramPacket packet = new DatagramPacket(data,data.length);
+			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
 				this.socket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
-			String msg = new String(packet.getData());
-			System.out.println(msg);
-			System.out.println("CLIENT [ " +packet.getAddress().getHostAddress() + ":" + packet.getPort() + "] >"
-				+ msg);
-			if(msg.trim().equalsIgnoreCase("ping")){
-				sendData("pong".getBytes(),packet.getAddress(),packet.getPort());
-			}
+//			String msg = new String(packet.getData());
+//			System.out.println(msg);
+//			System.out.println("CLIENT [ "
+//					+ packet.getAddress().getHostAddress() + ":"
+//					+ packet.getPort() + "] >" + msg);
+//			if (msg.trim().equalsIgnoreCase("ping")) {
+//				sendData("pong".getBytes(), packet.getAddress(),
+//						packet.getPort());
+//			}
 		}
 	}
 
-
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
-		PacketTypes packetTypes = Packet.getPacket(msg.substring(0,2));
-		switch(packetTypes){
+		PacketTypes packetTypes = Packet.getPacket(msg.substring(0, 2));
+		switch (packetTypes) {
 		default:
 		case INVALID:
 			break;
 		case LOGIN:
 			LoginPacket packet = new LoginPacket(data);
-			System.out.println("["+ address.getHostAddress() + ":" + port +
-					"]" + packet.getUserName() + "has connected");
-			Point point = new Point(1,1);
-			PlayerMulti pm = new PlayerMulti( packet.getUserName(),point, 1,address,port);
+			System.out.println("[" + address.getHostAddress() + ":" + port
+					+ "]" + packet.getUserName() + "has connected");
+			Point point = new Point(1, 1);
+			PlayerMulti pm = null;
+			if (address.getHostAddress().equalsIgnoreCase("127.0.0.1")) {
+				pm = new PlayerMulti(packet.getUserName(), point, 1, address,
+						port);
+			} else {
+				pm = new PlayerMulti(packet.getUserName(), point, 1, address,
+						port);
+			}
+			if (pm != null) {
+				this.connectedPlayers.add(pm);
+			}
 			break;
 		case DISCONNECT:
-
+			break;
 		}
-
 
 	}
 
-	public void sendData(byte[] data,InetAddress ipAddress, int port){
-		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1331);
-		try{
+	public void sendData(byte[] data, InetAddress ipAddress, int port) {
+		DatagramPacket packet = new DatagramPacket(data, data.length,
+				ipAddress, 1331);
+		try {
 			this.socket.send(packet);
-		}
-		catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void sendDataToAllClients(byte[] data) {
-		for(PlayerMulti pm : connectedPlayers){
-			sendData(data, pm.getIP(),pm.getPort());
+		for (PlayerMulti pm : connectedPlayers) {
+			sendData(data, pm.getIP(), pm.getPort());
 		}
 	}
 }

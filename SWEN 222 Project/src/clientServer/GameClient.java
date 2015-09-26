@@ -15,7 +15,7 @@ public class GameClient extends Thread{
 	private DatagramSocket socket;
 	//testing change
 	private Board board;
-	
+
 	public GameClient(Board board,String ipAddress){
 		this.board = board;
 		try {
@@ -27,7 +27,7 @@ public class GameClient extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void run(){
 		while(true){
 			byte[] data = new byte[1024];
@@ -42,9 +42,9 @@ public class GameClient extends Thread{
 			System.out.println("SERVER > " + msg);
 		}
 	}
-	
+
 	public void sendData(byte[] data){
-		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,1331);
+		DatagramPacket packet = new DatagramPacket(data,data.length,ipAddress,9999);
 		try{
 			this.socket.send(packet);
 		}
@@ -52,5 +52,5 @@ public class GameClient extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 }

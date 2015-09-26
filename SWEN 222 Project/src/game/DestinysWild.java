@@ -2,10 +2,12 @@ package game;
 
 import java.awt.Canvas;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
+import clientServer.packets.LoginPacket;
 import Renderer.TestFrame;
 
 public class DestinysWild extends Canvas implements Runnable{
@@ -19,7 +21,7 @@ public class DestinysWild extends Canvas implements Runnable{
 	public DestinysWild() {
 		//read board in from file
 //		board = XMLParser.initialiseBoard("data/state.xml");
-//		
+//
 //		board.printBoard();
 //		System.out.println();
 //		board.getBoard()[2][2].printRoom();
@@ -35,10 +37,12 @@ public class DestinysWild extends Canvas implements Runnable{
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
+
 	public void initialise() {
 		if (client != null) {
-			client.sendData("ping".getBytes());
+			//client.sendData("ping".getBytes());
+			LoginPacket loginPacket = new LoginPacket("Dr McSwag");
+			loginPacket.writeData(client);
 		}
 	}
 
