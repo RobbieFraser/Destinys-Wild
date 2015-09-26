@@ -65,10 +65,10 @@ public class XMLParser {
 
 		}
 		catch (FileNotFoundException e){
-			if (filename.equals("data/state.xml")){
-				System.out.println("No current save state found. Loading original board");
-				return initialiseBoard("data/board.xml");
-			}
+//			if (filename.equals("data/state.xml")){
+//				System.out.println("No current save state found. Loading original board");
+//				return initialiseBoard("data/board.xml");
+//			}
 			System.out.println(filename);
 			System.out.println("Wrong filepath");
 		}
@@ -200,8 +200,13 @@ public class XMLParser {
 	/**
 	 * Loads save states for the current game
 	 */
-	public static void loadState(){
-		initialiseBoard("data/state.xml");
+	public static void loadState(File playerFile){
+		initialiseBoard("data/savestate.xml");
+		loadPlayer(playerFile);
+	}
+
+	public static void loadPlayer(File playerFile){
+
 	}
 
 

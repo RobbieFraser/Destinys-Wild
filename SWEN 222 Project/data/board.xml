@@ -50,7 +50,7 @@
       <Item>
     	<Itemtype>health</Itemtype>
     	<Type>apple</Type>
-    	<Id>01</Id> <!-- 0 = room id, 1 = item id -->
+    	<Id>10</Id> <!-- 1 = item id, 0 = room id -->
     	<Posx>1</Posx>
     	<Posy>3</Posy>
     	<Health>10</Health>

@@ -28,7 +28,7 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public void testPlayerSave(){
 		List<Integer> inv = new ArrayList<>();
-		inv.add(01);
+		inv.add(10); // item 1, room 0
 
 		List<Integer> roomsV = new ArrayList<>();
 		roomsV.add(0);
@@ -38,7 +38,7 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public void testBoardInitialisation(){
-		board = XMLParser.initialiseBoard("data/state.xml");
+		board = XMLParser.initialiseBoard("data/board.xml");
 
 		board.printBoard();
 		System.out.println();
