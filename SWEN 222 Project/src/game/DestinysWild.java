@@ -68,11 +68,11 @@ public class DestinysWild extends Canvas implements Runnable{
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
 		PlayerMulti currentPlayer = new PlayerMulti("Robbie", new Point(50, 50),room,	 null,-1);
 		LoginPacket packet = new LoginPacket(currentPlayer.getName());
-		if (client != null) {
+		//if (client != null) {
 			//client.sendData("ping".getBytes());
 			if(server!=null){
 				server.addConnection(currentPlayer, packet);
-			}
+		//	}
 			packet.writeData(client);
 		}
 	}
@@ -117,7 +117,7 @@ public class DestinysWild extends Canvas implements Runnable{
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("Ticks: " + ticks);
+			//	System.out.println("Ticks: " + ticks);
 				ticks = 0;
 			}
 		}

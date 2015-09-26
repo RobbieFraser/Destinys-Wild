@@ -46,10 +46,10 @@ public class GameClient extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
-			String msg = new String(packet.getData());
-			System.out.println(msg);
-			System.out.println("SERVER > " + msg);
+			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
+			//String msg = new String(packet.getData());
+			//System.out.println(msg);
+		//	System.out.println("SERVER > " + msg);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class GameClient extends Thread {
 
 	public void sendData(byte[] data) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
-				ipAddress, 9679);
+				ipAddress, 9772);
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {
