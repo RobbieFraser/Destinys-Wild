@@ -207,7 +207,29 @@ public class XMLParser {
 
 	public static void loadPlayer(File playerFile){
 		try{
-
+			SAXBuilder builder = new SAXBuilder();
+			Document document = (Document) builder.build(playerFile);
+			Element playerTag = document.getRootElement();
+			
+			String name = playerTag.getChildText("Name");
+			
+			Player player = new Player();
+			
+			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
+			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
+			
+			int health = Integer.valueOf(playerTag.getChildText("Health"));
+			int currentRoom = Integer.valueOf(playerTag.getChildText("Currentroom"));
+			int score = Integer.valueOf(playerTag.getChildText("Score"));
+			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
+			
+			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
+			
+			for(Element invItem : inventory){
+				int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
+				for
+			}
+			
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());
@@ -242,16 +264,16 @@ public class XMLParser {
 
 			Element visitedRooms = new Element("Visitedrooms");
 
-			for(Integer roomId : player.getVisitedRooms()){
-				visitedRooms.addContent(new Element("Roomid").setText(String.valueOf(roomId)));
+			for(Room roomId : player.getVisitedRooms()){
+				visitedRooms.addContent(new Element("Roomid").setText(String.valueOf(roomId.getId())));
 			}
 
 			playerTag.addContent(visitedRooms);
 
 			Element inventory = new Element("Inventory");
 
-			for(Integer itemId : player.getInventory()){
-				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId)));
+			for(Item itemId : player.getInventory()){
+				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId.getId())));
 			}
 
 			playerTag.addContent(inventory);

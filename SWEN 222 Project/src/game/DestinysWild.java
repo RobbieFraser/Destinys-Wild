@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
+import game.items.Health;
+import game.items.Item;
 
 public class DestinysWild extends Canvas implements Runnable{
 	private Board board;
@@ -27,13 +29,14 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public void testPlayerSave(){
-		List<Integer> inv = new ArrayList<>();
-		inv.add(10); // item 1, room 0
+		List<Item> inv = new ArrayList<>();
+		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
 
-		List<Integer> roomsV = new ArrayList<>();
-		roomsV.add(0);
+		List<Room> roomsV = new ArrayList<>();
+		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
+		roomsV.add(room);
 
-		currentPlayer = new Player("Robbie", new Point(50, 50), 99, 0, roomsV, inv, 9999);
+		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
 		XMLParser.saveBoard();
 	}
 

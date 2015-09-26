@@ -1,18 +1,21 @@
 package game;
 
-import java.awt.Canvas;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import clientServer.GameClient;
-import clientServer.GameServer;
+import game.items.Item;
 
 public class Board {
 
 	private Room[][] board = new Room[5][5];
+	private List<Item> offBoard = new ArrayList<>();
 
 	public Board() {
 
+	}
+	
+	public void addOffBoardItem(){
+		
 	}
 
 	/**
@@ -37,7 +40,7 @@ public class Board {
 				if (board[i][j] == null) {
 					System.out.print("null | ");
 				} else {
-					System.out.print(board[i][j].getID() + " | ");
+					System.out.print(board[i][j].getId() + " | ");
 				}
 			}
 			System.out.println();

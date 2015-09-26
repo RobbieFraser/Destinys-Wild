@@ -2,6 +2,7 @@ package clientServer;
 
 import game.Board;
 import game.PlayerMulti;
+import game.Room;
 
 import java.util.*;
 import java.awt.Point;
@@ -64,7 +65,7 @@ public class GameServer extends Thread{
 			System.out.println("["+ address.getHostAddress() + ":" + port +
 					"]" + packet.getUserName() + "has connected");
 			Point point = new Point(1,1);
-			PlayerMulti pm = new PlayerMulti( packet.getUserName(),point, 1,address,port);
+			PlayerMulti pm = new PlayerMulti( packet.getUserName(),point, new Room(-1, -1, -1, -1, 11, new Point(4, 4)),address,port);
 			this.addConnection(pm,packet);
 			break;
 		case DISCONNECT:

@@ -10,9 +10,9 @@ public class Player {
 	private String name;
 	private Point coords;
 	private int health = 100;
-	private int currentRoom; //id of room
-	private List<Integer> visitedRooms = new ArrayList<>();
-	private List<Integer> inventory = new ArrayList<>();
+	private Room currentRoom; //id of room
+	private List<Room> visitedRooms = new ArrayList<>();
+	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
 	private int speed = 5;
 
@@ -26,7 +26,7 @@ public class Player {
 	 * @param coords coords of player
 	 * @param currentRoom starting room for the player
 	 */
-	public Player(String name, Point coords, int currentRoom){
+	public Player(String name, Point coords, Room currentRoom){
 		this.name = name;
 		this.coords = coords;
 		this.currentRoom = currentRoom;
@@ -44,7 +44,7 @@ public class Player {
 	 * @param score current score of the player
 	 */
 	public Player(String name, Point coords, int health,
-			int currentRoom, List<Integer> visitedRooms, List<Integer> inventory, int score){
+			Room currentRoom, List<Room> visitedRooms, List<Item> inventory, int score){
 		this.name = name;
 		this.coords = coords;
 		this.health = health;
@@ -57,8 +57,8 @@ public class Player {
 	/**
 	 * adds any room (by id) to the visited Room list
 	 */
-	public void addRoom(int id){
-		visitedRooms.add(id);
+	public void addRoom(Room room){
+		visitedRooms.add(room);
 	}
 
 	/**
@@ -92,19 +92,19 @@ public class Player {
 		this.health = health;
 	}
 
-	public int getCurrentRoom() {
+	public Room getCurrentRoom() {
 		return currentRoom;
 	}
 
-	public void setCurrentRoom(int currentRoom) {
+	public void setCurrentRoom(Room currentRoom) {
 		this.currentRoom = currentRoom;
 	}
 
-	public List<Integer> getVisitedRooms() {
+	public List<Room> getVisitedRooms() {
 		return visitedRooms;
 	}
 
-	public List<Integer> getInventory() {
+	public List<Item> getInventory() {
 		return inventory;
 	}
 

@@ -12,7 +12,7 @@ public class Room {
 	private int east;
 	private int south;
 	private int west;
-	private int ID;
+	private int Id;
 	private Point boardPos;
 	private Tile[][] tiles = new Tile[10][10];
 	private Obstacle[][] obstacles = new Obstacle[10][10];
@@ -24,12 +24,12 @@ public class Room {
 	 * id, and up to four connecting rooms.
 	 */
 	public Room(int north, int east, int south,
-			int west, int ID, Point boardPos) {
+			int west, int Id, Point boardPos) {
 		this.north = north;
 		this.east = east;
 		this.south = south;
 		this.west = west;
-		this.ID = ID;
+		this.Id = Id;
 		this.boardPos = boardPos;
 	}
 
@@ -172,15 +172,15 @@ public class Room {
 	/**
 	 * @return the iD
 	 */
-	public int getID() {
-		return ID;
+	public int getId() {
+		return Id;
 	}
 
 	/**
 	 * @param iD the iD to set
 	 */
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(int id) {
+		Id = id;
 	}
 
 
