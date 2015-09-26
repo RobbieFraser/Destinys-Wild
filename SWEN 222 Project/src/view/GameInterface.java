@@ -58,16 +58,36 @@ public class GameInterface {
 		JPanel inventoryPanel = new JPanel(); //will be a custom drawn panel
 		inventoryPanel.setBorder(blackline);
 		inventoryPanel.setBounds(20, 570, 820, 140);
-		inventoryPanel.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.fill = GridBagConstraints.RELATIVE;
+		inventoryPanel.setLayout(null);
 		
-		
-		for (int i = 0; i < 4; ++i) {
-			ImageIcon inventoryIcon = new ImageIcon(loadImage("shark.png"));
-			JLabel inventoryBox = new JLabel(inventoryIcon);
+		//setting up food panel
+		//setting up food slots - these will be filled in when the player has picked up food
+		//4 slots
+		for (int i = 0; i < 5; ++i) {
+			JLabel inventoryBox = new JLabel();
+			inventoryBox.setBorder(blackline);
+			inventoryBox.setBounds(20 + i * 90, 30, 80, 80);
 			inventoryPanel.add(inventoryBox);
 		}
+		
+		//set up tool belt
+		//max 6 tools
+		for (int i = 0; i < 2; ++i) {
+			//2 rows of tools, each row contains 3 slots
+			for (int j = 0; j < 3; ++j) {
+				JLabel toolBox = new JLabel();
+				toolBox.setBorder(blackline);
+				toolBox.setBounds(480 + j * 65, 10 + i * 65, 55, 55);
+				inventoryPanel.add(toolBox);
+			}
+		}
+		
+		// set up key slot
+		// player can only hold 1 key at a time
+		JLabel inventoryBox = new JLabel();
+		inventoryBox.setBorder(blackline);
+		inventoryBox.setBounds(690, 20, 100, 100);
+		inventoryPanel.add(inventoryBox);
 		
 		frame.getContentPane().add(inventoryPanel);
 		

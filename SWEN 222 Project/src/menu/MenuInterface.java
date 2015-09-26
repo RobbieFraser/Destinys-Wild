@@ -70,7 +70,7 @@ public class MenuInterface {
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(new Color(0,0,0,0));
 		menuPanel.setOpaque(false);
-		menuPanel.setBounds(430, 250, 200, 400);
+		menuPanel.setBounds(430, 240, 200, 400);
 
 		//New Game button
 		ImageIcon newGameImage = new ImageIcon(loadImage("playgamebutton.png"));
@@ -137,7 +137,7 @@ public class MenuInterface {
 	}
 
 	private void newGameButtonPressed() {
-		String name = JOptionPane.showInputDialog("Enter your name!");
+		String name = JOptionPane.showInputDialog("Enter your name adventurer!");
 		System.out.println("User's name was: "+name);
 		//TODO: Begin Game
 	}
@@ -148,7 +148,9 @@ public class MenuInterface {
 		chooser.setCurrentDirectory(new File("data/savegames"));
 		int result = chooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
+			//get the saved game from the save games file
 			File saveGame = chooser.getSelectedFile();
+			//send file through to the parser
 			XMLParser.loadState(saveGame);
 		}
 	}
