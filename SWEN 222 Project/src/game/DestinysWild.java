@@ -7,13 +7,14 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Renderer.TestFrame;
 import clientServer.GameClient;
 import clientServer.GameServer;
 import game.items.Health;
 import game.items.Item;
 
 public class DestinysWild extends Canvas implements Runnable{
-	private Board board;
+	private static Board board;
 	private static Player currentPlayer;
 	private GameClient client;
 	private GameServer server;
@@ -21,10 +22,10 @@ public class DestinysWild extends Canvas implements Runnable{
 	public int tickCount = 0;
 
 	public DestinysWild() {
-		//TestFrame test = new TestFrame(board);
-		testPlayerSave();
+		//testPlayerSave();
 		//start();
-		//testBoardInitialisation();
+		testBoardInitialisation();
+		//TestFrame test = new TestFrame(board);
 
 	}
 
@@ -50,7 +51,7 @@ public class DestinysWild extends Canvas implements Runnable{
 		board.getBoard()[1][2].printRoom();
 	}
 
-	public Board getBoard() {
+	public static Board getBoard() {
 		return board;
 	}
 

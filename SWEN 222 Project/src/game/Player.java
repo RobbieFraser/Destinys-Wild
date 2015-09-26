@@ -67,6 +67,14 @@ public class Player {
 	public void addCurrentRoom(){
 		visitedRooms.add(currentRoom);
 	}
+	
+	public void addInventoryItem(Item item){
+		inventory.add(item);
+	}
+	
+	public void removeInventoryItem(int index){
+		inventory.remove(index);
+	}
 
 	public String getName() {
 		return name;

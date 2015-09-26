@@ -14,8 +14,16 @@ public class Board {
 
 	}
 	
-	public void addOffBoardItem(){
-		
+	public void addOffBoardItem(Item item){
+		offBoard.add(item);
+	}
+	
+	public List<Item> getOffBoardItems(){
+		return offBoard;
+	}
+	
+	public Room getRoomFromId(int id){
+		return null;
 	}
 
 	/**

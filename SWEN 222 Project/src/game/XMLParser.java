@@ -227,6 +227,22 @@ public class XMLParser {
 			
 			for(Element invItem : inventory){
 				int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
+				Item tempItem = DestinysWild.getBoard().getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
+				player.addInventoryItem(tempItem);
+			}
+			
+			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
+			
+			for(Element room : visitedRooms){
+				int roomId = Integer.valueOf(room.getChildText("Roomid"));
+				
+				
+				
+				for(int i=0; i<DestinysWild.getBoard().getBoard().length; i++){
+					for(int j=0; j<DestinysWild.getBoard().getBoard()[0].length; j++){
+
+					}
+				}
 
 			}
 			
