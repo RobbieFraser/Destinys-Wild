@@ -9,6 +9,7 @@ public class Board {
 
 	private Room[][] board = new Room[5][5];
 	private List<Item> offBoard = new ArrayList<>();
+	private List<Player> players = new ArrayList<Player>();
 
 	public Board() {
 
@@ -61,6 +62,10 @@ public class Board {
 			}
 			System.out.println();
 		}
+	}
+
+	public List<Player> getPlayers() {
+		return players;
 	}
 
 	

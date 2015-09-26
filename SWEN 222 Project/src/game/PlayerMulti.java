@@ -26,4 +26,13 @@ public class PlayerMulti extends Player {
 		return port;
 	}
 
+	public void setPort(int newPort) {
+		port = newPort;
+	}
+
+	public void setIP(InetAddress ip) {
+		ipAddress = ip;
+		
+	}
+
 }
