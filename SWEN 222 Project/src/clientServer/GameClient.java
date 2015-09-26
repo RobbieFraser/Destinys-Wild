@@ -26,11 +26,13 @@ public class GameClient extends Thread {
 	public GameClient(Board board, String ipAddress) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(9679);
+			this.socket = new DatagramSocket(9681);
 			this.ipAddress = InetAddress.getByName(ipAddress);
 		} catch (SocketException e) {
+			System.out.println("Socket exception.");
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
+			System.out.println("Unknown host exception.");
 			e.printStackTrace();
 		}
 	}

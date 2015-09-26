@@ -25,7 +25,7 @@ public class GameServer extends Thread {
 	public GameServer(Board board) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(9679);
+			this.socket = new DatagramSocket(9682);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
