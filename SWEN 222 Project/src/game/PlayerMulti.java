@@ -8,7 +8,7 @@ public class PlayerMulti extends Player {
 	public InetAddress ipAddress;
 	public int port;
 	
-	public PlayerMulti(String name, Point coords, int currentRoom, InetAddress ipAddress, int port){
+	public PlayerMulti(String name, Point coords, Room currentRoom, InetAddress ipAddress, int port){
 		super(name,coords,currentRoom);	
 		this.ipAddress = ipAddress;
 		this.port = port;

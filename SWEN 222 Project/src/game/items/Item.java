@@ -7,4 +7,5 @@ public interface Item {
 	public int getScore();
 	public Point getCoords();
 	public int getHealth();
+	public int getId();
 }
