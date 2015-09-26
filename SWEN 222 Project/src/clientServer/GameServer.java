@@ -53,23 +53,30 @@ public class GameServer extends Thread{
 
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
+		Packet packet = null;
 		PacketTypes packetTypes = Packet.getPacket(msg.substring(0,2));
 		switch(packetTypes){
 		default:
 		case INVALID:
 			break;
 		case LOGIN:
-			LoginPacket packet = new LoginPacket(data);
+			packet = new LoginPacket(data);
 			System.out.println("["+ address.getHostAddress() + ":" + port +
 					"]" + packet.getUserName() + "has connected");
 			Point point = new Point(1,1);
 			PlayerMulti pm = new PlayerMulti( packet.getUserName(),point, 1,address,port);
+			this.addConnection(pm,packet);
 			break;
 		case DISCONNECT:
 
 		}
 
 
+	}
+
+	private void addConnection(PlayerMulti pm, LoginPacket packet) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void sendData(byte[] data,InetAddress ipAddress, int port){
