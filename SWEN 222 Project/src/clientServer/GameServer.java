@@ -25,7 +25,7 @@ public class GameServer extends Thread {
 	public GameServer(Board board) {
 		this.board = board;
 		try {
-			this.socket = new DatagramSocket(9682);
+			this.socket = new DatagramSocket(9772);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -42,15 +42,15 @@ public class GameServer extends Thread {
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
-			String msg = new String(packet.getData());
-			System.out.println(msg);
-			System.out.println("CLIENT [ "
-					+ packet.getAddress().getHostAddress() + ":"
-					+ packet.getPort() + "] >" + msg);
-			if (msg.trim().equalsIgnoreCase("ping")) {
-				sendData("pong".getBytes(), packet.getAddress(),
-						packet.getPort());
-			}
+//			String msg = new String(packet.getData());
+//			System.out.println(msg);
+//			System.out.println("CLIENT [ "
+//					+ packet.getAddress().getHostAddress() + ":"
+//					+ packet.getPort() + "] >" + msg);
+//			if (msg.trim().equalsIgnoreCase("ping")) {
+//				sendData("pong".getBytes(), packet.getAddress(),
+//						packet.getPort());
+//			}
 		}
 	}
 
@@ -66,7 +66,7 @@ public class GameServer extends Thread {
 			packet = new LoginPacket(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port
 					+ "]" + ((LoginPacket) packet).getUserName()
-					+ "has connected");
+					+ " has connected");
 			Point point = new Point(1, 1);
 			PlayerMulti pm = new PlayerMulti(
 					((LoginPacket) packet).getUserName(), point, new Room(-1,
@@ -92,6 +92,8 @@ public class GameServer extends Thread {
 				alreadyConnected = true;
 			} else {
 				sendData(packet.getData(), player.getIP(), player.getPort());
+				packet = new LoginPacket(player.getName());
+				sendData(packet.getData(),pm.getIP(),pm.getPort());
 			}
 			if (!alreadyConnected) {
 				this.connectedPlayers.add(pm);
@@ -103,7 +105,7 @@ public class GameServer extends Thread {
 
 	public void sendData(byte[] data, InetAddress ipAddress, int port) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
-				ipAddress, 9679);
+				ipAddress, 9772);
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {

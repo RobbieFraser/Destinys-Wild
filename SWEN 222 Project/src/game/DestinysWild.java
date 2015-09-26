@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import Renderer.TestFrame;
 import clientServer.GameClient;
 import clientServer.GameServer;
+import clientServer.packets.LoginPacket;
 import game.items.Health;
 import game.items.Item;
 
@@ -20,6 +21,7 @@ public class DestinysWild extends Canvas implements Runnable{
 	private GameServer server;
 	private boolean running = false;
 	public int tickCount = 0;
+	private Thread thread;
 
 	public DestinysWild() {
 		//testPlayerSave();
@@ -64,23 +66,32 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public void initialise() {
+		board = XMLParser.initialiseBoard("data/board.xml");
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
-		currentPlayer = new PlayerMulti("Robbie", new Point(50, 50),room,	 null,-1);
+		PlayerMulti currentPlayer = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"), new Point(50, 50),room,	 null,-1);
+		System.out.println(currentPlayer.getName());
+		board.getPlayers().add(currentPlayer);
+		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		if (client != null) {
-			client.sendData("ping".getBytes());
+			//client.sendData("ping".getBytes());
+			if(server!=null){
+				server.addConnection(currentPlayer, packet);
+			}
+			packet.writeData(client);
 		}
 	}
 
 	public synchronized void start() {
 		running = true;
+		thread = new Thread(this, "Destiny's Wild");
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
 			server = new GameServer(board);
 			server.start();
 		}
+		thread.start();
 		client = new GameClient(board, "localhost");
 		client.start();
-		new Thread(this).start();
 	}
 
 	public synchronized void stop() {
@@ -111,7 +122,7 @@ public class DestinysWild extends Canvas implements Runnable{
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("Ticks: " + ticks);
+			//	System.out.println("Ticks: " + ticks);
 				ticks = 0;
 			}
 		}
