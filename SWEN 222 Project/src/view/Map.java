@@ -221,11 +221,10 @@ public class Map extends JComponent {
 			for (int j = 0; j < 10; ++j) {
 				try {
 					//sending the actual Thread of execution to sleep X milliseconds
-					playerCoord = new Point(i,i);
+					playerCoord = new Point(i,j);
 					frame.revalidate();
 					frame.repaint();
 					Thread.sleep(100);
-					System.out.println(i);
 				} catch (InterruptedException ie) {}
 			}
 		}
