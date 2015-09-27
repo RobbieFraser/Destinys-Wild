@@ -151,7 +151,7 @@ public class MenuInterface {
 			//get the saved game from the save games file
 			File saveGame = chooser.getSelectedFile();
 			//send file through to the parser
-			XMLParser.loadState(saveGame);
+			XMLParser.loadGame(saveGame);
 		}
 	}
 

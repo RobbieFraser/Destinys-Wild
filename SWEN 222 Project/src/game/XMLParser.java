@@ -223,7 +223,7 @@ public class XMLParser {
 	/**
 	 * Loads save states for the current game
 	 */
-	public static void loadState(File playerFile){
+	public static void loadGame(File playerFile){
 		System.out.println("Loading board from savestate.xml");
 		initialiseBoard("data/savestate.xml");
 		System.out.println("Board Loaded");
@@ -285,7 +285,7 @@ public class XMLParser {
 
 
 	/**
-	 * Saves the current game board to an XML file
+	 * Saves the current game board and player to XML files
 	 */
 	public static void saveGame(){
 		String SAVE_FILE = "savestate.xml"; //This is the file that will be used and overwritten each time the board is saved
@@ -301,13 +301,13 @@ public class XMLParser {
 		
 		
 		try{
-			Element boardTag = new Element("Rooms"); //Root element name
+			Element boardTag = new Element("Board"); //Root element name
 			Document doc = new Document(boardTag);
 			
-			Element roomTags = new Element("Room");//<Rooms><Room>
-			Element obsTags = new Element("Obstacles");//<Rooms><Room><Obstacles>
-			Element npcTags = new Element("Npcs");//<Rooms><Room><Obstacles></Obstacles><Npcs>
-			Element itemTags = new Element("Items");
+			Element roomTags = new Element("Room");//<Board><Room>
+			Element obsTags = new Element("Obstacles");//<Board><Room><Obstacles>
+			Element npcTags = new Element("Npcs");//<Board><Room><Npcs>
+			Element itemTags = new Element("Items");//<Board><Room><Items>
 			
 			Room[][] roomArray = board.getBoard();
 			
@@ -321,19 +321,31 @@ public class XMLParser {
 					roomTags.addContent(new Element("East").setText(String.valueOf(current.getEast())));
 					roomTags.addContent(new Element("South").setText(String.valueOf(current.getSouth())));
 					roomTags.addContent(new Element("West").setText(String.valueOf(current.getWest())));
-					saveObstacles(current, obsTags);
-					saveNpcs(current, npcTags);
-					saveItems(current, itemTags);
+					roomTags.addContent(saveObstacles(current, obsTags));
+					roomTags.addContent(saveNpcs(current, npcTags));
+					roomTags.addContent(saveItems(current, itemTags));
+					
+					boardTag.addContent(roomTags);
 				}
 			}
-			//TODO complete this method
+			
+			Element offItems = new Element("Offitems");
+			for(Item item : board.getOffBoardItems()){
+				offItems.addContent(new Element("Itemid").setText(String.valueOf(item.getId())));
+			}
+			boardTag.addContent(offItems);
+			
+			XMLOutputter xmlOutput = new XMLOutputter();
+			xmlOutput.setFormat(Format.getPrettyFormat());
+			xmlOutput.output(doc, new FileWriter("data/savegames/savestate.xml"));
+			
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage() + " <--- ERROR");
 		}
 	}
 	
-	public static void saveObstacles(Room current, Element obsTag){
+	public static Element saveObstacles(Room current, Element obsTag){
 		Element obstacle = new Element("Obstacle");
 		
 		for(int i=0; i<current.getObstacles().length; i++){
@@ -347,15 +359,49 @@ public class XMLParser {
 				}
 			}
 		}
-		//TODO complete this method
+		obsTag.addContent(obstacle);
+		return obsTag;
 	}
 	
-	public static void saveNpcs(Room current, Element obsTag){
-	//TODO complete this method
+	public static Element saveNpcs(Room current, Element npcTag){
+		Element npc = new Element("Npc");
+		
+		for(int i=0; i<current.getNpcs().length; i++){
+			for(int j=0; j<current.getNpcs()[0].length; j++){
+				NPC currNpc = current.getNpcs()[i][j];
+				if(currNpc != null){
+					npc.addContent(new Element("Npctype").setText(currNpc.toString()));
+					npc.addContent(new Element("Type").setText(currNpc.getType()));
+					npc.addContent(new Element("Posx").setText(String.valueOf(currNpc.getCoords().x)));
+					npc.addContent(new Element("Posy").setText(String.valueOf(currNpc.getCoords().y)));
+					npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));
+					npc.addContent(new Element("Speed").setText(String.valueOf(currNpc.getSpeed())));
+				}
+			}
+		}
+		npcTag.addContent(npc);
+		return npcTag;
 	}
 	
-	public static void saveItems(Room current, Element obsTag){
-	//TODO complete this method
+	public static Element saveItems(Room current, Element itemTag){
+		Element item = new Element("Item");
+		
+		for(int i=0; i<current.getItems().length; i++){
+			for(int j=0; j<current.getItems()[0].length; j++){
+				Item currItem = current.getItems()[i][j];
+				if(currItem != null){
+					item.addContent(new Element("Itemtype").setText(currItem.toString()));
+					item.addContent(new Element("Type").setText(currItem.getType()));
+					item.addContent(new Element("Id").setText(String.valueOf(currItem.getId())));
+					item.addContent(new Element("Posx").setText(String.valueOf(currItem.getCoords().x)));
+					item.addContent(new Element("Posy").setText(String.valueOf(currItem.getCoords().y)));
+					item.addContent(new Element("Health").setText(String.valueOf(currItem.getHealth())));
+					item.addContent(new Element("Speed").setText(String.valueOf(currItem.getScore())));
+				}
+			}
+		}
+		itemTag.addContent(item);
+		return itemTag;
 	}
 
 	public static void savePlayer(){
