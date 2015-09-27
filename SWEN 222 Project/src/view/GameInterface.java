@@ -1,4 +1,5 @@
 package view;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -79,9 +80,11 @@ public class GameInterface {
 		frame.getContentPane().add(inventoryPanel);
 		
 		// set up panel which will contain minimap
-		JPanel mapPanel = new JPanel();
+		JPanel mapPanel = new JPanel(new BorderLayout());
 		mapPanel.setBorder(blackline);
 		mapPanel.setBounds(830, 460, 250, 250);
+		Map map = new Map(player, null);
+		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
 		
 		// add score display template
@@ -139,6 +142,9 @@ public class GameInterface {
 			ImageIcon keyImage = new ImageIcon(loadImage("key.png"));
 			keyLabel.setIcon(keyImage);
 		}
+		
+		frame.revalidate();
+		frame.repaint();
 	}
 	
 	/**
@@ -152,7 +158,6 @@ public class GameInterface {
 	 * @return name of image to use
 	 */
 	private String getName(int index) {
-		
 		return null;
 	}
 	

@@ -10,6 +10,9 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -33,6 +36,7 @@ public class Map extends JComponent {
 	private Player player;
 	private Image mapImage;
 	private Board board;
+	private static Point playerCoord;
 	private static final Image STONE_BLOCK = GameInterface.loadImage("stoneblocktiny.png"); 
 
 	public Map(Player player, Board board) {
@@ -68,7 +72,7 @@ public class Map extends JComponent {
 				rooms.add(room);
 			}
 		}
-		
+
 		//draw each room individually
 		for (Room room: rooms) {
 			Point point = room.getBoardPos();
@@ -118,10 +122,8 @@ public class Map extends JComponent {
 						g.setColor(new Color(0,100,0));
 						g.drawRect(i, j, 1, 1);
 					}
-
 				}
 			}
-			System.out.println();
 
 			//draw in walls or doors in x direction
 			for (int i = xCoord; i <= xCoord + 50; i += 50) {
@@ -151,12 +153,12 @@ public class Map extends JComponent {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+
 		//put up a black background so that rooms that aren't drawn
 		//are shown to be unexplored
 		//List<Room> rooms = player.getVisitedRooms();
 		List<Room> visitedRooms = new ArrayList<Room>();
-	
+
 		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(2,2)));
 		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(2,3)));
 		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(1,2)));
@@ -177,44 +179,55 @@ public class Map extends JComponent {
 				if (!visitedRoom) {
 					//haven't visted this room
 					//so user shouldn't be able to see it
-					g.setColor(Color.BLACK);
+					g.setColor(Color.DARK_GRAY);
 					g.fillRect(i*50, j*50, 50, 50);
 				}
 			}
 		}
-		
+
 		//now draw location of player
 		//Room currentRoom = player.getCurrentRoom();
 		Room currentRoom = visitedRooms.get(2);
 		Point roomCoord = currentRoom.getBoardPos();
 		//Point coord = player.getCoords();
-		Point playerCoord = new Point(5,8);
-		
+		//playerCoord = new Point(5,8);
+
 		g.setColor(Color.MAGENTA);
 		g.fillRect(roomCoord.x * 50 + playerCoord.x * 5,
 				roomCoord.y * 50 + playerCoord.y * 5, 5, 5);
-			 
+
 	}
 
-/**
- * Launch the application.
- */
-public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable() {
-		public void run() {
-			try {
-				JFrame frame = new JFrame();
-				frame.setPreferredSize(new Dimension(300,300));
-				Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
-				Map map = new Map(player, null);
-				frame.add(map);
-
-				frame.pack();
-				frame.setVisible(true);	
-			} catch (Exception e) {
-				e.printStackTrace();
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame.setPreferredSize(new Dimension(300,300));
+					Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
+					Map map = new Map(player, null);
+					frame.add(map);
+					frame.pack();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 10; ++j) {
+				try {
+					//sending the actual Thread of execution to sleep X milliseconds
+					playerCoord = new Point(i,i);
+					frame.revalidate();
+					frame.repaint();
+					Thread.sleep(100);
+					System.out.println(i);
+				} catch (InterruptedException ie) {}
 			}
 		}
-	});
-}
+	}
 }
