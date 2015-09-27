@@ -1,5 +1,5 @@
 <?xml version='1.0' ?>
-<Rooms>
+<Board>
   <Room> <!-- HOME room -->
     <Id>0</Id>
     <Posx>2</Posx>
@@ -31,18 +31,18 @@
     <Npcs>
       <Npc>
 		<Npctype>enemystill</Npctype>
+		<Type>spike</Type>
 		<Posx>7</Posx>
 		<Posy>7</Posy>
 		<Damage>10</Damage>
-		<Type>spike</Type>
 		<Speed>0</Speed>
       </Npc>
       <Npc>
 		<Npctype>enemywalker</Npctype>
+		<Type>spider</Type>
       	<Posx>0</Posx>
       	<Posy>9</Posy>
       	<Damage>15</Damage>
-      	<Type>spider</Type>
       	<Speed>5</Speed>
       </Npc>
     </Npcs>
@@ -86,4 +86,4 @@
       </Item>
     </Items>
   </Room>
-</Rooms>
+</Board>

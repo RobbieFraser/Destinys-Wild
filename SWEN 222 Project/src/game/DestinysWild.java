@@ -2,12 +2,12 @@ package game;
 
 import java.awt.Canvas;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import Renderer.TestFrame;
 import clientServer.GameClient;
 import clientServer.GameServer;
 import clientServer.packets.LoginPacket;
@@ -25,12 +25,25 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public DestinysWild() {
 		//testPlayerSave();
-		start();
-		//testBoardInitialisation();
+		//start();
+		testBoardInitialisation();
+		testPlayerLoad();
+		testSaveGame();
 		//TestFrame test = new TestFrame(board);
 
 	}
 
+	public void testSaveGame(){
+		XMLParser.saveGame();
+	}
+	
+	public void testPlayerLoad(){
+		XMLParser.loadGame(new File("Robbie.xml"));
+		
+		System.out.println("Name: " + currentPlayer.getName());
+		System.out.println("Score: " + currentPlayer.getScore());
+	}
+	
 	public void testPlayerSave(){
 		List<Item> inv = new ArrayList<>();
 		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
