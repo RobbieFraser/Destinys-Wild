@@ -45,7 +45,7 @@ public class GameClient extends Thread {
 			System.out.println("Packet created");
 			try {
 				System.out.println("Attempting to receive packet");
-				socket.receive(packet);
+				this.socket.receive(packet);
 				System.out.println("Packet received");
 			} catch (IOException e) {
 				System.out.println("Something went wrong");
