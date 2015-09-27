@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import game.Board;
 import game.Player;
 import game.Room;
 import game.obstacles.Block;
@@ -28,41 +31,44 @@ import game.obstacles.Obstacle;
  */
 public class Map extends JComponent {
 	private Player player;
+	private Image mapImage;
+	private Board board;
 	private static final Image STONE_BLOCK = GameInterface.loadImage("stoneblocktiny.png"); 
 
-	public Map(Player player) {
+	public Map(Player player, Board board) {
 		this.player = player;
+		initialiseMapImage();
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
+	/**
+	 * This method should be called to initialise the
+	 * base image for what the map of the board will look
+	 * like. This image can be stored so that when
+	 * paintComponent is called, this image can simply be
+	 * painted over. This should reduce the amount of work
+	 * that is done in updating the map each time the
+	 * player moves.
+	 */
+	private void initialiseMapImage() {
+		//create image that will be the background
+		mapImage = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = ((BufferedImage) mapImage).createGraphics();
 
 		//will be:
-		//List<Room> rooms = player.getVisitedRooms();
+		//List<Room> rooms = board.getRooms();
 		List<Room> rooms = new ArrayList<Room>();
 		/*
 		 * Basic room generator being used for testing
 		 */
-		for (int i = 1; i < 4; ++i) {
-			for (int j = 1; j < 4; ++j) {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 5; ++j) {
 				Room room = new Room(0, 0, 0, 0, -100, new Point(i,j));
-				room.addObstacle(new Block(), 2, 4);
+				room.addObstacle(new Breakable("breakable", null), 2, 4);
 				room.addObstacle(new Breakable("breakable", null), 5, 1);
 				rooms.add(room);
 			}
 		}
-
-		//put up a black background so that rooms that aren't drawn
-		//are shown to be unexplored
-		for (int i = 0; i < 250; ++i) {
-			for (int j = 0; j < 250; ++j) {
-				g.setColor(Color.BLACK);
-				g.drawRect(i, j, 1, 1);
-			}
-		}
-
-		super.paintComponent(g);
-
+		
 		//draw each room individually
 		for (Room room: rooms) {
 			Point point = room.getBoardPos();
@@ -142,26 +148,73 @@ public class Map extends JComponent {
 		}
 	}
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					frame.setPreferredSize(new Dimension(300,300));
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		//put up a black background so that rooms that aren't drawn
+		//are shown to be unexplored
+		//List<Room> rooms = player.getVisitedRooms();
+		List<Room> visitedRooms = new ArrayList<Room>();
+	
+		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(2,2)));
+		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(2,3)));
+		visitedRooms.add(new Room(0, 0, 0, 0, -100, new Point(1,2)));
 
-					Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
-					Map map = new Map(player);
-					frame.add(map);
+		g.drawImage(mapImage, 0, 0, null, null);
 
-					frame.pack();
-					frame.setVisible(true);	
-				} catch (Exception e) {
-					e.printStackTrace();
+		//draw black onto each room that has not been visited yet
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 5; ++j) {
+				boolean visitedRoom = false;
+				//check if this room has been visited before
+				for (Room room: visitedRooms) {
+					if (room.getBoardPos().equals(new Point(i,j))) {
+						//been here before
+						visitedRoom = true;
+					}
+				}
+				if (!visitedRoom) {
+					//haven't visted this room
+					//so user shouldn't be able to see it
+					g.setColor(Color.BLACK);
+					g.fillRect(i*50, j*50, 50, 50);
 				}
 			}
-		});
+		}
+		
+		//now draw location of player
+		//Room currentRoom = player.getCurrentRoom();
+		Room currentRoom = visitedRooms.get(2);
+		Point roomCoord = currentRoom.getBoardPos();
+		//Point coord = player.getCoords();
+		Point playerCoord = new Point(5,8);
+		
+		g.setColor(Color.MAGENTA);
+		g.fillRect(roomCoord.x * 50 + playerCoord.x * 5,
+				roomCoord.y * 50 + playerCoord.y * 5, 5, 5);
+			 
 	}
+
+/**
+ * Launch the application.
+ */
+public static void main(String[] args) {
+	EventQueue.invokeLater(new Runnable() {
+		public void run() {
+			try {
+				JFrame frame = new JFrame();
+				frame.setPreferredSize(new Dimension(300,300));
+				Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
+				Map map = new Map(player, null);
+				frame.add(map);
+
+				frame.pack();
+				frame.setVisible(true);	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	});
+}
 }
