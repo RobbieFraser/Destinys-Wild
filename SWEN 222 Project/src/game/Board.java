@@ -26,7 +26,7 @@ public class Board {
 	public Room getRoomFromId(int id){
 		for(int i=0; i<board.length; i++){
 			for(int j=0; j<board[0].length; j++){
-				if(board[i][j] != null && id == board[i][j].getId()){
+				if(id == board[i][j].getId()){
 					return board[i][j];
 				}
 			}

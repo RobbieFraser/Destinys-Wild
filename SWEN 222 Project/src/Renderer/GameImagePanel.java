@@ -23,6 +23,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private Room curRoom; //The current Room Object
 	
 	private BufferedImage defaultCube; //The default image
+	private BufferedImage waterSprite; //Testing
+	private BufferedImage water; //Testing
 	
 	private int gX = 10; //Ground x
 	private int gY = 300; //Ground y
@@ -52,6 +54,24 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
 		setDefault();
 		addMouseListener(this);
+		//waterTest();
+	}
+	
+	public void waterTest(){
+		while(true){
+			for(int i = 0; i < 4; i++){
+				for(int j = 0; j < 4; j++){
+					waterSprite = water.getSubimage(j*70, i*34, 70, 34);
+					this.repaint();
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 	
 	/*
@@ -64,6 +84,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public void setDefault(){
 		try {
 			defaultCube = ImageIO.read(new File("data/images/wireframecube.png"));
+			water = ImageIO.read(new File("data/images/waterSpriteSheet.png"));
+			waterSprite = water.getSubimage(0, 0, 70, 34);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +107,10 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 //        drawCharacter(g, "personIdleSouth", 2, 5);
 //        tile.Draw(g);
         drawObstacles(g);
+//        g.drawImage(waterSprite, 384, 428, null);
+//        g.drawImage(waterSprite, 384+obW, 428+obH, null);
+//        g.drawImage(waterSprite, 384, 428+(obH*2), null);
+//        g.drawImage(waterSprite, 384-obW, 428+obH, null);
     }
 	
 	public void drawGround(Graphics g){

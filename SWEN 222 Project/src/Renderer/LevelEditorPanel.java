@@ -49,6 +49,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", new Color(194, 194, 194), new Color(25, 123, 48))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", new Color(255, 215, 0), new Color(205, 173, 0))));
+		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Water", new Color(105, 232, 255), new Color(25, 152, 255))));
 	}
 	
 	protected void paintComponent(Graphics g){

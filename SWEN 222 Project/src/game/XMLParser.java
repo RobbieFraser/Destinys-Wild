@@ -225,7 +225,7 @@ public class XMLParser {
 	 */
 	public static void loadGame(File playerFile){
 		System.out.println("Loading board from savestate.xml");
-		initialiseBoard("data/board.xml"); //this is temporary 
+		initialiseBoard("data/savestate.xml");
 		System.out.println("Board Loaded");
 		System.out.println("Loading player file from " + playerFile.getName());
 		loadPlayer(playerFile);
@@ -238,11 +238,9 @@ public class XMLParser {
 			Document document = (Document) builder.build(playerFile);
 			Element playerTag = document.getRootElement();
 			
-			Board board = DestinysWild.getBoard();
-			
 			Player player = new Player();
 			
-			String name = playerTag.getChildText("Name"); //Main Player parameters---------------
+			String name = playerTag.getChildText("Name"); //Player parameters--------------------
 			
 			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
 			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
@@ -250,26 +248,24 @@ public class XMLParser {
 			int health = Integer.valueOf(playerTag.getChildText("Health"));
 			int score = Integer.valueOf(playerTag.getChildText("Score"));
 			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
-						
-			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
 			
-			Room currentRoom = board.getRoomFromId(currentRoomId);//-----------
+			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
+			Room currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoomId);//-----------
+			
 			
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
 			
-			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
-				for(Element invItem : inventory){
-					int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
-					Item tempItem = board.getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
-					player.addInventoryItem(tempItem);
-				}
+			for(Element invItem : inventory){
+				int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
+				Item tempItem = DestinysWild.getBoard().getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
+				player.addInventoryItem(tempItem);
 			}
-
+			
 			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
 			
 			for(Element room : visitedRooms){
-				int roomId = Integer.valueOf(room.getText());
-				player.addRoom(board.getRoomFromId(roomId));
+				int roomId = Integer.valueOf(room.getChildText("Roomid"));
+				player.addRoom(DestinysWild.getBoard().getRoomFromId(roomId));
 
 			}
 			
@@ -279,8 +275,6 @@ public class XMLParser {
 			player.setCurrentRoom(currentRoom);
 			player.setScore(score);
 			player.setSpeed(speed);
-			
-			DestinysWild.setPlayer(player); //Sets the game's current player to this
 			
 		}
 		catch(Exception e){
@@ -294,7 +288,7 @@ public class XMLParser {
 	 * Saves the current game board and player to XML files
 	 */
 	public static void saveGame(){
-		String SAVE_FILE = "savestate.xml"; //This is the filename (NOT FILE PATH) that will be used and overwritten each time the board is saved
+		String SAVE_FILE = "savestate.xml"; //This is the file that will be used and overwritten each time the board is saved
 		System.out.println("Saving player");
 		savePlayer(); //save the player info separately
 		System.out.println("Player saved");
@@ -343,7 +337,7 @@ public class XMLParser {
 			
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getPrettyFormat());
-			xmlOutput.output(doc, new FileWriter("data/savegames/" + filename));
+			xmlOutput.output(doc, new FileWriter("data/savegames/savestate.xml"));
 			
 		}
 		catch(Exception e){
@@ -421,7 +415,7 @@ public class XMLParser {
 			playerTag.addContent(new Element("Posx").setText(String.valueOf(player.getCoords().x)));
 			playerTag.addContent(new Element("Posy").setText(String.valueOf(player.getCoords().y)));
 			playerTag.addContent(new Element("Health").setText(String.valueOf(player.getHealth())));
-			playerTag.addContent(new Element("Currentroom").setText(String.valueOf(player.getCurrentRoom().getId())));
+			playerTag.addContent(new Element("Currentroom").setText(String.valueOf(player.getCurrentRoom())));
 			playerTag.addContent(new Element("Score").setText(String.valueOf(player.getScore())));
 			playerTag.addContent(new Element("Speed").setText(String.valueOf(player.getSpeed())));
 
@@ -434,8 +428,6 @@ public class XMLParser {
 			playerTag.addContent(visitedRooms);
 
 			Element inventory = new Element("Inventory");
-			
-			System.out.println("inv size: " + player.getInventory().size()); //TODO this is reporting 0 instead of 1
 
 			for(Item itemId : player.getInventory()){
 				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId.getId())));

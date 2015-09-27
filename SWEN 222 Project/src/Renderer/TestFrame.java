@@ -17,14 +17,22 @@ public class TestFrame extends JFrame {
 	private boolean up = true;
 	
 	private GameImagePanel gamePanel;
-	//private LevelEditorPanel gamePanel = new LevelEditorPanel();
+	private LevelEditorPanel editPanel = new LevelEditorPanel();
+	private boolean editor = false;
 	
 	public TestFrame(Board board){
 		super("Test Renderer");
 		this.board = board;
 		gamePanel = new GameImagePanel(board);
 		setUp();
-		loop();
+		//gamePanel.waterTest();
+		//loop();
+	}
+	
+	public TestFrame(boolean editor){
+		super("Level Editor");
+		this.editor = editor;
+		setUp();
 	}
 	
 	private void loop(){
@@ -94,7 +102,12 @@ public class TestFrame extends JFrame {
 		setSize(700, 700); //set size to 700 by 700
 		setFocusable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate when window is closed
-		addGamePanel();
+		if(editor){
+			addEditPanel();
+		}
+		else{
+			addGamePanel();
+		}
 		setVisible(true);
 	}
 	
@@ -102,7 +115,12 @@ public class TestFrame extends JFrame {
 		red = 123;
 		green = 123;
 		blue = 255;
-		gamePanel.setBackground(new Color(red, green, blue));
+		gamePanel.setBackground(new Color(120, 201, 255));
 		getContentPane().add(gamePanel);
+	}
+	
+	public void addEditPanel(){
+		editPanel.setBackground(new Color(120, 201, 255));
+		getContentPane().add(editPanel);
 	}
 }
