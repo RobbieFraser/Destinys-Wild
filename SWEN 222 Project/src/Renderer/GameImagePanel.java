@@ -43,6 +43,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private int wnX = -24; //Wall North x
 	private int wnY = 54; //Wall North y
 	
+	private int viewDir = 0;
+	
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 	
 	public GameImagePanel(Board board){
@@ -73,7 +75,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
         super.paintComponent(g);
 //        drawNorthWall(g, "treesNorth1");
         drawGround(g);
-//        drawCompass(g);
+        drawCompass(g);
 //        drawObject(g, "stoneCube", 6, 5);
 //        drawObject(g, "stoneCube", 5, 5);
 //        drawCharacter(g, "personIdleWest", 6, 6);
