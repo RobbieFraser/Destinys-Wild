@@ -10,7 +10,5 @@
   <Visitedrooms>
     <Roomid>0</Roomid>
   </Visitedrooms>
-  <Inventory>
-    <Itemid>1</Itemid>
-  </Inventory>
+  <Inventory />
 </Player>

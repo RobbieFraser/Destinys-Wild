@@ -38,10 +38,10 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 	
 	public void testPlayerLoad(){
-		XMLParser.loadGame(new File("Robbie.xml"));
-		
-		System.out.println("Name: " + currentPlayer.getName());
-		System.out.println("Score: " + currentPlayer.getScore());
+		XMLParser.loadGame(new File("data/savegames/Robbie.xml"));
+		System.out.println("Parser loadGame good");
+		System.out.println("Name: " + getPlayer().getName());
+		System.out.println("Score: " + getPlayer().getScore());
 	}
 	
 	public void testPlayerSave(){
@@ -72,6 +72,10 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public static Player getPlayer(){
 		return currentPlayer;
+	}
+	
+	public static void setPlayer(Player player){
+		currentPlayer = player;
 	}
 
 	public void setBoard(Board board) {
