@@ -105,7 +105,7 @@ public class GameServer extends Thread {
 
 	public void sendData(byte[] data, InetAddress ipAddress, int port) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
-				ipAddress, 9772);
+				ipAddress, port);
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {

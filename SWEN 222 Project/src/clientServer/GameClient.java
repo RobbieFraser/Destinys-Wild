@@ -25,10 +25,10 @@ public class GameClient extends Thread {
 
 	public GameClient(Board board, String ipAddress) {
 		this.board = board;
-		System.out.println("Client initialisng");
 		try {
 			this.socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName(ipAddress);
+			System.out.println("Client initialisng");
 		} catch (SocketException e) {
 			System.out.println("Socket exception.");
 			e.printStackTrace();
@@ -41,15 +41,17 @@ public class GameClient extends Thread {
 	public void run() {
 		while (true) {
 			byte[] data = new byte[1024];
-			System.out.println("About to parse packet");
 			DatagramPacket packet = new DatagramPacket(data, data.length);
+			System.out.println("Packet created");
 			try {
-				System.out.println("About to parse packet");
-				this.socket.receive(packet);
+				System.out.println("Attempting to receive packet");
+				socket.receive(packet);
+				System.out.println("Packet received");
 			} catch (IOException e) {
+				System.out.println("Something went wrong");
 				e.printStackTrace();
 			}
-			System.out.println("About to parse packet");
+			System.out.println("Getting ready to parse packet");
 			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
 			//String msg = new String(packet.getData());
 			//System.out.println(msg);
@@ -59,14 +61,14 @@ public class GameClient extends Thread {
 
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
-		Packet packet = null;
 		PacketTypes packetTypes = Packet.getPacket(msg.substring(0, 2));
+		Packet packet = null;
 		switch (packetTypes) {
 		default:
 		case INVALID:
 			break;
 		case LOGIN:
-			System.out.println("Working");
+			System.out.println("Login Packet found");
 			packet = new LoginPacket(data);
 			handleLogin((LoginPacket)packet,address,port);
 			break;
