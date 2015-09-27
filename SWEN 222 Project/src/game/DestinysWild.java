@@ -25,10 +25,10 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public DestinysWild() {
 		//testPlayerSave();
-		//start();
-		testBoardInitialisation();
-		testPlayerLoad();
-		testSaveGame();
+		start();
+		//testBoardInitialisation();
+		//testPlayerLoad();
+		//testSaveGame();
 		//TestFrame test = new TestFrame(board);
 
 	}
