@@ -14,37 +14,48 @@ import javax.swing.JPanel;
 
 public class LevelEditorPanel extends JPanel implements MouseListener, MouseMotionListener{
 	
+	//Where to start drawing the board
 	private int drawX = 50;
 	private int drawY = 50;
 	
+	//The size of a tile
 	private int size = 50;
 	
+	//Set the hover x and y to -1 to indicate that it is neither on the board nor the select list
 	private int hoverX = -1;
 	private int hoverY = -1;
-	private Color hoverColor = new Color(255, 255, 255, 128);
+	private Color hoverColor = new Color(255, 255, 255, 128); //The last int is the transparency value
 	
+	//The x and y values for the select list
 	private int selectX = 650;
 	private int selectY = -1;
 	
+	//The default tile and colours
 	private String type = "stone";
 	private Color color = new Color(194, 194, 194);
 	private Color color2 = new Color(143, 143, 143);
 	
+	//The tiles on the current room
 	private EditorTile[][] tiles = new EditorTile[10][10];
 	
+	//The list of tiles to select from
 	private List<EditorTileSelect> selects = new ArrayList<EditorTileSelect>();
 	
-	private boolean onBoard = false;
-	private boolean onSelect = false;
+	private boolean onBoard = false; //Mouse is on the board
+	private boolean onSelect = false; //Mouse if on the Select list
 	
+	//Booleans for each wall to say if there is a door there or not
 	private boolean north = false;
 	private boolean south = false;
 	private boolean east = true;
 	private boolean west = true;
 	
 	public LevelEditorPanel(){
+		//Make the editor listen for mouse inputs
 		addMouseListener(this);
+		//Make the editor listen for mouse motion inputs
 		addMouseMotionListener(this);
+		//Add all the different tile types to the select list
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "stone", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", new Color(194, 194, 194), new Color(25, 123, 48))));
@@ -61,6 +72,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		drawHover(g);
 	}
 	
+	/*
+	 * Draws the doors to the panel, if the corresponding booleans are true
+	 */
 	public void drawDoors(Graphics g){
 		if(west){
 			g.setColor(new Color(194, 194, 194));
@@ -96,6 +110,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Draw all the tiles in the select list
+	 */
 	public void drawSelects(Graphics g){
 		int y = 0;
 		int x = 649;
@@ -105,6 +122,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Draw all the default grass tiles, a 10*10 grid
+	 */
 	public void drawGround(Graphics g){
 		int x = 0;
 		int y = 0;
@@ -121,6 +141,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Draw all the tiles that have been placed
+	 */
 	public void drawTiles(Graphics g){
 		int x = 0;
 		int y = 0;
@@ -136,6 +159,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Highlight the tile that the mouse is hovering over on the board or the select list
+	 */
 	public void drawHover(Graphics g){
 		if(onBoard){
 			g.setColor(hoverColor);
@@ -147,6 +173,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * An algorithm to figure out which tile the mouse is hovering over
+	 */
 	public void checkTile(int x, int y){
 		int oldX = hoverX;
 		int oldY = hoverY;
@@ -173,6 +202,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Check which tile the mouse is hovering over on the select list
+	 */
 	public void checkSelect(int x, int y){
 		if(x > 650){
 			int oldY = selectY;
@@ -188,11 +220,17 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Add a tile to the tiles array, with the location of the mouse
+	 */
 	public void createTile(){
 		tiles[hoverX][hoverY] = new EditorTile(hoverX, hoverY, type, color, color2);
 		this.repaint();
 	}
 	
+	/*
+	 * Change the current tile to the tile clicked on the select list
+	 */
 	public void selectTile(){
 		type = selects.get(selectY).getType();
 		color = selects.get(selectY).getColor();

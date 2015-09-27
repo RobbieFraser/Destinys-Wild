@@ -20,6 +20,10 @@ public class TestFrame extends JFrame {
 	private LevelEditorPanel editPanel = new LevelEditorPanel();
 	private boolean editor = false;
 	
+	
+	/*
+	 * This version of the TestFrame constructor inits the Game Panel
+	 */
 	public TestFrame(Board board){
 		super("Test Renderer");
 		this.board = board;
@@ -29,12 +33,18 @@ public class TestFrame extends JFrame {
 		//loop();
 	}
 	
+	/*
+	 * This version of the TestFrame constructor inits the Level editor
+	 */
 	public TestFrame(boolean editor){
 		super("Level Editor");
 		this.editor = editor;
 		setUp();
 	}
 	
+	/*
+	 * Just for fun, a crazy Hotline Miami style background for the game panel
+	 */
 	private void loop(){
 		while(true){
 			while(up){
