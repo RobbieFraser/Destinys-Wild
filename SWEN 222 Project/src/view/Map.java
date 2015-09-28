@@ -38,6 +38,7 @@ public class Map extends JComponent {
 		this.player = player;
 		this.board = board;
 		initialiseMapImage();
+		//TODO: Add Compass
 	}
 
 	/**
