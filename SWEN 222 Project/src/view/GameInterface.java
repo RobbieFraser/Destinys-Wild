@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -24,9 +26,10 @@ import game.Board;
 import game.Player;
 import game.Room;
 import game.XMLParser;
+import game.items.Item;
 import menu.ImagePanel;
 
-public class GameInterface {
+public class GameInterface implements MouseListener {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
 	private static final int MAX_FOOD = 5;
@@ -35,32 +38,36 @@ public class GameInterface {
 
 	public GameInterface(Player player) {
 		this.player = player;
-		initialise();
+		initialiseInterface();
 		updateUI();
+		
+		//TODO: Add mouse listener
+		//TODO: Add selected item option
+		//TODO: Only draw an image if its just been added
 	}
 
-	private void initialise() {
+	private void initialiseInterface() {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
-
+		frame.addMouseListener(this);
+		
 		// set up border
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 
 		// set up inventory panel
 		ImagePanel inventoryPanel = new ImagePanel("inventory.png");
 		inventoryPanel.setOpaque(false);
-		//inventoryPanel.setBorder(blackline);
 		inventoryPanel.setBounds(20, 570, 790, 140);
 		inventoryPanel.setLayout(null);
 
 		// setting up food panel
 		// setting up food slots - these will be filled in when the player has picked up food
-		// 4 slots
+		// 5 slots
 		for (int i = 0; i < MAX_FOOD; ++i) {
 			JLabel inventoryBox = new JLabel(new ImageIcon(loadImage("itemBox.png")));
-			//inventoryBox.setBorder(blackline);
 			inventoryBox.setBounds(20 + i * 88, 30, 78, 78);
+			inventoryBox.setToolTipText("Food slot "+(i+1)+" - press "+(i+1)+" to select.");
 			inventoryPanel.add(inventoryBox);
 		}
 
@@ -71,6 +78,13 @@ public class GameInterface {
 			for (int j = 0; j < 3; ++j) {
 				JLabel toolBox = new JLabel(new ImageIcon(loadImage("toolBox.png")));
 				toolBox.setBounds(465 + j * 65, 10 + i * 65, 56, 56);
+				if ((i*3+j+6) == 10) {
+					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press 0 to select.");
+				} else if ((i*3+j+6) == 11){
+					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press - to select.");
+				} else {
+					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press "+(i*3+j+6)+" to select.");
+				}
 				inventoryPanel.add(toolBox);
 			}
 		}
@@ -78,9 +92,13 @@ public class GameInterface {
 		// set up key slot
 		// player can only hold 1 key at a time
 		JLabel keyBox = new JLabel(new ImageIcon(loadImage("keyBox.png")));
+		keyBox.setToolTipText("Key Slot - press = to select.");
 		keyBox.setBounds(670, 20, 100, 100);
 		inventoryPanel.add(keyBox);
+		
 		frame.getContentPane().add(inventoryPanel);
+		//intialise the selected item to the first food slot as a default
+		updateSelectedSlot(0);
 
 		// set up panel which will contain minimap
 		JPanel mapPanel = new JPanel(new BorderLayout());
@@ -92,6 +110,7 @@ public class GameInterface {
 		Map map = new Map(player, board);
 		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
+		
 
 		// add score display template
 		JPanel scoreDisplay = new JPanel();
@@ -122,7 +141,7 @@ public class GameInterface {
 
 		frame.getContentPane().setLayout(null);
 	}
-
+	
 	public void updateUI() {
 
 		// at this point, we have access to the players inventory,
@@ -137,7 +156,7 @@ public class GameInterface {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
 		// first lets draw the food
-		int numFood = 5; //should extract from player
+		int numFood = 3; //should extract from player
 		for (int i = 0; i < numFood; ++i) {
 			//extract the foodLabel from the inventoryPanel
 			JLabel foodLabel = (JLabel) inventoryPanel.getComponent(i);
@@ -145,7 +164,7 @@ public class GameInterface {
 			drawBackgroundImage(foodLabel, "itemBox", i, "appleIcon");
 		}
 
-		int numTools = 6; //should extract from player
+		int numTools = 2; //should extract from player
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
@@ -174,6 +193,20 @@ public class GameInterface {
 		Graphics g = itemImage.getGraphics();
 		//draw the image
 		g.drawImage(backgroundImage, 0, 0, null, null);
+		//update the panel description
+		if (type.equals("toolBox")) {
+			if ((MAX_FOOD +i+1) == 10) {
+				inventoryLabel.setToolTipText(imageName+" - press 0 to select.");
+			} else if ((MAX_FOOD +i+1) == 11) {
+				inventoryLabel.setToolTipText(imageName+" - press - to select.");
+			} else {
+				inventoryLabel.setToolTipText(imageName+" - press "+(MAX_FOOD +i+1)+" to select.");
+			}
+		} else if (type.equals("keyBox")) {
+			inventoryLabel.setToolTipText(imageName+" - press = to select.");
+		} else {
+			inventoryLabel.setToolTipText(imageName+" - press "+(i+1)+" to select.");
+		}
 	}
 
 	/**
@@ -198,11 +231,51 @@ public class GameInterface {
 		}
 	}
 	
+	/**
+	 * This method should draw a blue border around the
+	 * slot at the given in the inventory panel. 
+	 */
+	private void updateSelectedSlot(int index) {
+		if (index < 0 || index > 11) {
+			throw new Error("Invalid index");
+		}
+		
+		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
+		
+		//first, we need to remove the blue border from the previous selected item
+		for (int i = 0; i < 12; ++i) {
+			//number of slots is small, so we can just iterate through them all
+			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
+			tempLabel.setBorder(BorderFactory.createEmptyBorder());
+		}
+		
+		//now we draw the selected border on the correct choice
+		JLabel selectedLabel = (JLabel) inventoryPanel.getComponent(index);
+		Border selectedBorder = BorderFactory.createLineBorder(Color.BLUE, 4);
+		selectedLabel.setBorder(selectedBorder);	
+		
+		//redraw interface
+		frame.revalidate();
+		frame.repaint();
+	}
+	
 	private void handleKeyPress(KeyEvent arg0) {
 		int x, y;
 		int keyCode = arg0.getKeyCode();
 		Point currentCoord = player.getCoords();
 		//System.out.println("Current coordinates: "+currentCoord.toString());
+		//handle number presses
+		if (48 <= keyCode && keyCode <= 57) {
+			//user has pressed a number key
+			if (keyCode == 48) {
+				//0 is a special case, this corresponds to 10
+				updateSelectedSlot(9);
+			} else {
+				//1-9
+				updateSelectedSlot(keyCode-49);
+			}
+		}
+		
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			x = currentCoord.x;
@@ -223,6 +296,13 @@ public class GameInterface {
 			x = currentCoord.x + 1; //moved right one
 			y = currentCoord.y; 
 			player.setCoords(new Point(x,y));
+			break;
+		case KeyEvent.VK_MINUS:
+			updateSelectedSlot(10);
+			break;
+		case KeyEvent.VK_EQUALS:
+			updateSelectedSlot(11);
+		default:
 			break;
 		}
 		//update the interface (in particular, the mini map)
@@ -262,6 +342,33 @@ public class GameInterface {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println(arg0.getX() + " "+arg0.getY());
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() instanceof JPanel) {
+			System.out.println("Coming in");
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {	
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
 	}
 }
 

@@ -32,7 +32,6 @@ public class Map extends JComponent {
 	private Player player;
 	private Image mapImage;
 	private Board board;
-	private static final Image STONE_BLOCK = GameInterface.loadImage("stoneblocktiny.png"); 
 	private static final int BOARD_LENGTH = 5;
 
 	public Map(Player player, Board board) {
@@ -87,13 +86,26 @@ public class Map extends JComponent {
 					Obstacle obstacle = room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5];
 					//draw each obstacle differently
 					//TODO: Add images
-					if (obstacle instanceof Block) {
-						//draw the stone block image
-						graphics.drawImage(STONE_BLOCK, i, j, null, null);
-					} else {
-						//draw default obtacle image
-						graphics.setColor(Color.BLACK);
+					switch (obstacle.getType()) {
+					case "brokenblock":
+						graphics.setColor(new Color(143, 143, 143));
 						graphics.fillRect(i, j, 1, 1);
+						break;
+					case "brokenstone1":
+						graphics.setColor(new Color(143, 143, 143));
+						graphics.fillRect(i, j, 1, 1);
+						break;
+					case "stoneblock":
+						graphics.setColor(new Color(143, 143, 143));
+						graphics.fillRect(i, j, 1, 1);
+						break;
+					case "cobblestone":
+						graphics.setColor(new Color(143, 143, 143));
+						graphics.fillRect(i, j, 1, 1);
+						break;
+					default:
+						System.out.println("Water?");
+						System.out.println("Error");
 					}
 				} else {
 					//print out normal unoccupied square (forest floor)	
