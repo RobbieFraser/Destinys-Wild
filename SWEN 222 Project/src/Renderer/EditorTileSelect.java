@@ -14,8 +14,16 @@ public class EditorTileSelect {
 		tile.draw(g, x, y, size);
 	}
 	
+	public void drawDot(Graphics g, int x, int y, int size){
+		tile.drawDot(g, x, y, size);
+	}
+	
 	public String getType() {
 		return tile.getType();
+	}
+	
+	public String getFull(){
+		return tile.getFull();
 	}
 
 	public Color getColor() {

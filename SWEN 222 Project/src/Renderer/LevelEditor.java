@@ -1,12 +1,13 @@
 package Renderer;
 
 import game.Board;
+import game.XMLParser;
 
 public class LevelEditor {
 	Board board;
 	
 	public LevelEditor(){
-		board = new Board();
+		board = XMLParser.initialiseBoard("data/board.xml");
 		TestFrame test = new TestFrame(true, board);
 	}
 	

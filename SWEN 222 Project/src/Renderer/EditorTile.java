@@ -8,14 +8,16 @@ public class EditorTile {
 	private int y;
 	
 	private String type;
+	private String full;
 	
 	private Color color;
 	private Color color2;
 	
-	public EditorTile(int x, int y, String type, Color color, Color color2){
+	public EditorTile(int x, int y, String type, String full, Color color, Color color2){
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		this.full = full;
 		this.color = color;
 		this.color2 = color2;
 	}
@@ -26,6 +28,11 @@ public class EditorTile {
 		g.setColor(color2);
 		g.drawRect(dx, dy, size, size);
 		g.drawString(type, dx+3, dy+13);
+	}
+	
+	public void drawDot(Graphics g, int dx, int dy, int size){
+		g.setColor(color2);
+		g.fillRect(dx, dy, size, size);
 	}
 
 	public int getX() {
@@ -38,6 +45,10 @@ public class EditorTile {
 
 	public String getType() {
 		return type;
+	}
+	
+	public String getFull() {
+		return full;
 	}
 
 	public Color getColor() {
