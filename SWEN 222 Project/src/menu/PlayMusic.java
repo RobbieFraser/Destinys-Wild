@@ -6,7 +6,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class PlayMusic {
-	private final String MEDIA_PATH = "data/music/";
+	private static final String MEDIA_PATH = "data/music/";
 	private FileInputStream musicInputStream;
 	private Player playMP3;
 

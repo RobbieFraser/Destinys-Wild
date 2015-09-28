@@ -21,33 +21,30 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-
 import Renderer.GameImagePanel;
 import game.Board;
 import game.Player;
 import game.Room;
 import game.XMLParser;
-import game.items.Item;
 import menu.ImagePanel;
 
 public class GameInterface implements MouseListener {
-	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
+	private JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
 	private GameImagePanel gamePanel;
 
-	public GameInterface(Player player, Board board, GameImagePanel gamePanel) {
+	public GameInterface(Player player, GameImagePanel gamePanel) {
 		this.player = player;
-		this.board = board;
+		this.board = gamePanel.getBoard();
 		this.gamePanel = gamePanel;
 		initialiseInterface();
 		updateUI();
 		
 		//TODO: Add mouse listener
-		//TODO: Add selected item option
 		//TODO: Only draw an image if its just been added
 	}
 
@@ -343,7 +340,7 @@ public class GameInterface implements MouseListener {
 					Board board = XMLParser.initialiseBoard("data/board.xml");
 					Player player = new Player("Sam", new Point(4,6), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
 					GameImagePanel gamePanel = new GameImagePanel(board);
-					GameInterface game = new GameInterface(player, board, gamePanel);
+					GameInterface game = new GameInterface(player, gamePanel);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
