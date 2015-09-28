@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import Renderer.GameImagePanel;
 import game.Board;
 import game.Player;
 import game.Room;
@@ -35,9 +36,13 @@ public class GameInterface implements MouseListener {
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
 	private Player player; //player whose game state will be drawn
+	private Board board;
+	private GameImagePanel gamePanel;
 
-	public GameInterface(Player player) {
+	public GameInterface(Player player, Board board, GameImagePanel gamePanel) {
 		this.player = player;
+		this.board = board;
+		this.gamePanel = gamePanel;
 		initialiseInterface();
 		updateUI();
 		
@@ -51,6 +56,8 @@ public class GameInterface implements MouseListener {
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
 		frame.addMouseListener(this);
+		//set the background to be the game panel
+		frame.setContentPane(gamePanel);
 		
 		// set up border
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
@@ -105,7 +112,6 @@ public class GameInterface implements MouseListener {
 		mapPanel.setBorder(blackline);
 		mapPanel.setBounds(830, 460, 250, 250);
 		//extract the board we will use
-		Board board = XMLParser.initialiseBoard("data/board.xml");
 		//create the map that will be drawn
 		Map map = new Map(player, board);
 		mapPanel.add(map, BorderLayout.CENTER);
@@ -334,8 +340,10 @@ public class GameInterface implements MouseListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Board board = XMLParser.initialiseBoard("data/board.xml");
 					Player player = new Player("Sam", new Point(4,6), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
-					GameInterface game = new GameInterface(player);
+					GameImagePanel gamePanel = new GameImagePanel(board);
+					GameInterface game = new GameInterface(player, board, gamePanel);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
