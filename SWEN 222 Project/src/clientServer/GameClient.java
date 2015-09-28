@@ -88,6 +88,7 @@ public class GameClient extends Thread {
 						-1, -1, -1, 11, new Point(4, 4)), address, port);
 		//System.out.println("Handling login of: "+ pm.getName());
 		//board.getPlayers().add(pm);
+		//System.out.println("Current players on board are: " + board.getPlayers());
 		board.addPlayers(pm);
 	}
 
