@@ -30,8 +30,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	
-	private int gX = 10; //Ground x
-	private int gY = 300; //Ground y
+	private int gX = 200; //Ground x
+	private int gY = 180; //Ground y
 	
 	private int obX = 0; //Object x
 	private int obY = 104; //Object y
@@ -43,7 +43,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private int charW = 34; //Player width 
 	private int charH = 16; //Player Height
 	
-	private int cX = 500; //Compass x
+	private int cX = 950; //Compass x
 	private int cY = 50; //Compass y
 	
 	private int wnX = -24; //Wall North x
@@ -51,10 +51,19 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	
 	private int viewDir = 0;
 	
+	private int red;
+	private int green;
+	private int blue;
+	
+	private boolean up = true;
+	
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 	
 	public GameImagePanel(Board board){
-		this.setBackground(new Color(120, 201, 255));
+		red = 120;
+		green = 201;
+		blue = 255;
+		this.setBackground(new Color(red, green, blue));
 		this.board = board;
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
 		setDefault();
