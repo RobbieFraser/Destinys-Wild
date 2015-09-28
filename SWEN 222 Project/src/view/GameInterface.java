@@ -27,6 +27,7 @@ import game.Player;
 import game.Room;
 import game.XMLParser;
 import menu.ImagePanel;
+import menu.MenuInterface;
 
 public class GameInterface implements MouseListener {
 	private static final String IMAGE_PATH = "data/images/";
@@ -43,9 +44,13 @@ public class GameInterface implements MouseListener {
 		this.gamePanel = gamePanel;
 		initialiseInterface();
 		updateUI();
-		
+
 		//TODO: Add mouse listener
 		//TODO: Only draw an image if its just been added
+		//TODO: Add support Spacebar / Interact Item
+		//TODO: Add support for P / Pause
+		//TODO: Add support for L / R Arrows keys - Change perspective
+		//TODO: Add support for ESC - Escape to menu
 	}
 
 	private void initialiseInterface() {
@@ -55,7 +60,7 @@ public class GameInterface implements MouseListener {
 		frame.addMouseListener(this);
 		//set the background to be the game panel
 		frame.setContentPane(gamePanel);
-		
+
 		// set up border
 		Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 
@@ -69,7 +74,7 @@ public class GameInterface implements MouseListener {
 		// setting up food slots - these will be filled in when the player has picked up food
 		// 5 slots
 		for (int i = 0; i < MAX_FOOD; ++i) {
-			JLabel inventoryBox = new JLabel(new ImageIcon(loadImage("itemBox.png")));
+			JLabel inventoryBox = new JLabel(new ImageIcon(MenuInterface.loadImage("itemBox.png")));
 			inventoryBox.setBounds(20 + i * 88, 30, 78, 78);
 			inventoryBox.setToolTipText("Food slot "+(i+1)+" - press "+(i+1)+" to select.");
 			inventoryPanel.add(inventoryBox);
@@ -80,7 +85,7 @@ public class GameInterface implements MouseListener {
 		for (int i = 0; i < 2; ++i) {
 			//2 rows of tools, each row contains 3 slots
 			for (int j = 0; j < 3; ++j) {
-				JLabel toolBox = new JLabel(new ImageIcon(loadImage("toolBox.png")));
+				JLabel toolBox = new JLabel(new ImageIcon(MenuInterface.loadImage("toolBox.png")));
 				toolBox.setBounds(465 + j * 65, 10 + i * 65, 56, 56);
 				if ((i*3+j+6) == 10) {
 					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press 0 to select.");
@@ -95,11 +100,11 @@ public class GameInterface implements MouseListener {
 
 		// set up key slot
 		// player can only hold 1 key at a time
-		JLabel keyBox = new JLabel(new ImageIcon(loadImage("keyBox.png")));
+		JLabel keyBox = new JLabel(new ImageIcon(MenuInterface.loadImage("keyBox.png")));
 		keyBox.setToolTipText("Key Slot - press = to select.");
 		keyBox.setBounds(670, 20, 100, 100);
 		inventoryPanel.add(keyBox);
-		
+
 		frame.getContentPane().add(inventoryPanel);
 		//intialise the selected item to the first food slot as a default
 		updateSelectedSlot(0);
@@ -113,7 +118,7 @@ public class GameInterface implements MouseListener {
 		Map map = new Map(player, board);
 		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
-		
+
 
 		// add score display template
 		JPanel scoreDisplay = new JPanel();
@@ -144,7 +149,7 @@ public class GameInterface implements MouseListener {
 
 		frame.getContentPane().setLayout(null);
 	}
-	
+
 	public void updateUI() {
 
 		// at this point, we have access to the players inventory,
@@ -181,16 +186,16 @@ public class GameInterface implements MouseListener {
 			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS, "key");
 		}
-		
+
 		//suggest that minimap should be updated
 		frame.revalidate();
 		frame.repaint();
 	}
-	
+
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int i, String imageName) {
-		inventoryLabel.setIcon(new ImageIcon(loadImage(imageName+".png")));
+		inventoryLabel.setIcon(new ImageIcon(MenuInterface.loadImage(imageName+".png")));
 		//now we will draw the border over the top of the image of the tool
-		Image backgroundImage = loadImage(type+".png");
+		Image backgroundImage = MenuInterface.loadImage(type+".png");
 		ImageIcon imageIcon  = (ImageIcon) inventoryLabel.getIcon();
 		Image itemImage = imageIcon.getImage();
 		Graphics g = itemImage.getGraphics();
@@ -233,7 +238,7 @@ public class GameInterface implements MouseListener {
 			System.exit(0);
 		}
 	}
-	
+
 	/**
 	 * This method should draw a blue border around the
 	 * slot at the given in the inventory panel. 
@@ -242,26 +247,26 @@ public class GameInterface implements MouseListener {
 		if (index < 0 || index > 11) {
 			throw new Error("Invalid index");
 		}
-		
+
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
-		
+
 		//first, we need to remove the blue border from the previous selected item
 		for (int i = 0; i < 12; ++i) {
 			//number of slots is small, so we can just iterate through them all
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			tempLabel.setBorder(BorderFactory.createEmptyBorder());
 		}
-		
+
 		//now we draw the selected border on the correct choice
 		JLabel selectedLabel = (JLabel) inventoryPanel.getComponent(index);
 		Border selectedBorder = BorderFactory.createLineBorder(Color.BLUE, 4);
 		selectedLabel.setBorder(selectedBorder);	
-		
+
 		//redraw interface
 		frame.revalidate();
 		frame.repaint();
 	}
-	
+
 	private void handleKeyPress(KeyEvent arg0) {
 		int x, y;
 		int keyCode = arg0.getKeyCode();
@@ -278,7 +283,7 @@ public class GameInterface implements MouseListener {
 				updateSelectedSlot(keyCode-49);
 			}
 		}
-		
+
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			x = currentCoord.x;
@@ -310,24 +315,6 @@ public class GameInterface implements MouseListener {
 		}
 		//update the interface (in particular, the mini map)
 		updateUI();
-	}
-
-	/**
-	 * This method should load an image in from a filename.
-	 * @param filename
-	 * @return
-	 */
-	public static Image loadImage(String filename) {
-		// using the URL means the image loads when stored
-		// in a jar or expanded into individual files.
-		try {
-			Image img = ImageIO.read(new File(IMAGE_PATH + filename));
-			return img;
-		} catch (IOException e) {
-			// we've encountered an error loading the image. There's not much we
-			// can actually do at this point, except to abort the game.
-			throw new RuntimeException("Unable to load image: " + filename);
-		}
 	}
 
 	/**
@@ -363,17 +350,17 @@ public class GameInterface implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {	
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 	}
 }
 
