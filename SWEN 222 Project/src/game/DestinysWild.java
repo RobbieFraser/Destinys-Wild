@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import clientServer.GameClient;
 import clientServer.GameServer;
+import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import game.items.Health;
 import game.items.Item;
@@ -26,11 +27,19 @@ public class DestinysWild extends Canvas implements Runnable{
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
 		//testPlayerSave();
-		//start();
+		start();
 		//testBoardInitialisation();
 		//testLoadGame();
 		//testSaveGame();
 
+	}
+	
+	public void testDisconnect(){
+		if (JOptionPane.showConfirmDialog(this,
+				"Do you want to disconnect?") == 0) {
+			DisconnectPacket disconnect = new DisconnectPacket(this.currentPlayer.getName());
+			disconnect.writeData(this.getClient());
+		}
 	}
 
 	public void testSaveGame(){
@@ -100,7 +109,7 @@ public class DestinysWild extends Canvas implements Runnable{
 		PlayerMulti currentPlayer = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"), 
 				new Point(50, 50), room, null, -1);
 		//System.out.println(currentPlayer.getName());
-		board.addPlayers(currentPlayer);
+		board.addPlayer(currentPlayer);
 		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		if (client != null) {
 			//client.sendData("ping".getBytes());
@@ -165,7 +174,7 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
-		game.testLoadGame();
-		game.testSaveGame();
+		//game.testLoadGame();
+		//game.testSaveGame();
 	}
 }

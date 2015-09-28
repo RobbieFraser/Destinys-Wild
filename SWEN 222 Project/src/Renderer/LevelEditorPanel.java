@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 
 import game.Board;
 import game.Room;
+import game.items.Item;
+import game.npcs.NPC;
 import game.obstacles.Block;
 import game.obstacles.Obstacle;
 
@@ -36,6 +38,10 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private int selectX = 650;
 	private int selectY = -1;
 	
+	//The x and y values for selecting a room on the map
+	private int hoverMapX = -1;
+	private int hoverMapY = -1;
+	
 	//The default tile and colours
 	private String type = "stone";
 	private String full = "stoneblock";
@@ -49,7 +55,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private List<EditorTileSelect> selects = new ArrayList<EditorTileSelect>();
 	
 	private boolean onBoard = false; //Mouse is on the board
-	private boolean onSelect = false; //Mouse if on the Select list
+	private boolean onSelect = false; //Mouse is on the Select list
+	private boolean onMap = false; //Mouse is on the map
 	
 	//Booleans for each wall to say if there is a door there or not
 	private boolean north = true;
@@ -57,10 +64,12 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private boolean east = true;
 	private boolean west = true;
 	
+	//Information about the current Room, including the X and Y values
 	private Room curRoom;
 	private int roomX = 2;
 	private int roomY = 2;
 	
+	//The main Board object that everything is run off of
 	private Board board;
 	
 	public LevelEditorPanel(Board board){
@@ -74,12 +83,16 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		addSelects();
 	}
 	
+	/*
+	 * Add all selectable tiles to the select list
+	 */
 	public void addSelects(){
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "stone", "stoneblock", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", "brokenstone1", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", "mossyStone1", new Color(194, 194, 194), new Color(25, 123, 48))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", "coin", new Color(255, 215, 0), new Color(205, 173, 0))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Water", "water", new Color(105, 232, 255), new Color(25, 152, 255))));
+		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Apple", "apple", new Color(255, 59, 59), new Color(156, 38, 38))));
 	}
 	
 	protected void paintComponent(Graphics g){
@@ -89,13 +102,18 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		drawGround(g);
 		drawDoors(g);
 		//drawTiles(g);
-		drawObstacles(g);
-		drawHover(g);
+		drawBoard(g);
 		drawMap(g);
+		drawHover(g);
 	}
 	
-	public void drawObstacles(Graphics g){
+	/*
+	 * Draw all Obstacles, Items, and NPCs on the board, using the stored Board Object
+	 */
+	public void drawBoard(Graphics g){
 		Obstacle[][] obs = curRoom.getObstacles();
+		Item[][] items = curRoom.getItems();
+		NPC[][] npcs = curRoom.getNpcs();
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
@@ -105,10 +123,27 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 						}
 					}
 				}
+				if(items[row][col] != null){
+					for(EditorTileSelect t : selects){
+						if(t.getFull().equals(items[row][col].getType())){
+							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
+						}
+					}
+				}
+				if(npcs[row][col] != null){
+					for(EditorTileSelect t : selects){
+						if(t.getFull().equals(npcs[row][col].getType())){
+							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
+						}
+					}
+				}
 			}
 		}
 	}
 	
+	/*
+	 * Draws the tree tiles around the board, purely cosmetic
+	 */
 	public void drawTrees(Graphics g){
 		int x = 0;
 		int y = 0;
@@ -125,13 +160,16 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
+	/*
+	 * Draws the map on the side of the screen to display changes made to the Board
+	 */
 	public void drawMap(Graphics g){
 		int x = 0;
 		int y = 0;
 		for(int i = 0; i < 5; i++){
 			for(int j = 0; j < 5; j++){
 				Room r = board.getBoard()[i][j];
-				if(roomX == i && roomY == j){
+				if(roomY == i && roomX == j){
 					g.setColor(new Color(145, 255, 149));
 				}
 				else{
@@ -140,11 +178,27 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				g.fillRect(x+800, y+400, size, size);
 				if(r != null){
 					Obstacle[][] obs = r.getObstacles();
+					Item[][] items = r.getItems();
+					NPC[][] npcs = r.getNpcs();
 					for(int row = 0; row < 10; row++){
 						for(int col = 0; col < 10; col++){
 							if(obs[row][col] != null){
 								for(EditorTileSelect t : selects){
 									if(t.getFull().equals(obs[row][col].getType())){
+										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
+									}
+								}
+							}
+							if(items[row][col] != null){
+								for(EditorTileSelect t : selects){
+									if(t.getFull().equals(items[row][col].getType())){
+										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
+									}
+								}
+							}
+							if(npcs[row][col] != null){
+								for(EditorTileSelect t : selects){
+									if(t.getFull().equals(npcs[row][col].getType())){
 										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 									}
 								}
@@ -262,6 +316,10 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			g.setColor(hoverColor);
 			g.fillRect(selectX, (selectY*size)+1, size-1, size-1);
 		}
+		else if(onMap){
+			g.setColor(hoverColor);
+			g.fillRect((hoverMapX*size)+800+1, (hoverMapY*size)+400+1, size-1, size-1);
+		}
 	}
 	
 	/*
@@ -297,7 +355,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Check which tile the mouse is hovering over on the select list
 	 */
 	public void checkSelect(int x, int y){
-		if(x > 650){
+		if(x > 650 && x < 750){
 			int oldY = selectY;
 			selectY = y/size;
 			onSelect = true;
@@ -307,6 +365,23 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 		else{
 			onSelect = false;
+			this.repaint();
+		}
+	}
+	
+	public void checkMap(int x, int y){
+		if(x > 800 && x < 1050 && y > 400 && y < 650){
+			int oldX = hoverMapX;
+			int oldY = hoverMapY;
+			onMap = true;
+			hoverMapX = (x - 800)/size;
+			hoverMapY = (y - 400)/size;
+			if(oldX != hoverMapX || oldY != hoverMapY){
+				this.repaint();
+			}
+		}
+		else{
+			onMap = false;
 			this.repaint();
 		}
 	}
@@ -332,6 +407,15 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		color2 = selects.get(selectY).getColor2();
 	}
 	
+	public void selectRoom(){
+		if(board.getBoard()[hoverMapY][hoverMapX] == null){
+			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, 99, new Point(hoverMapX, hoverMapY));
+		}
+		curRoom = board.getBoard()[hoverMapY][hoverMapX];
+		roomX = (int)curRoom.getBoardPos().getX();
+		roomY = (int)curRoom.getBoardPos().getY();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(onBoard){
@@ -339,6 +423,10 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 		if(onSelect){
 			selectTile();
+		}
+		if(onMap){
+			selectRoom();
+			this.repaint();
 		}
 	}
 
@@ -378,6 +466,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	public void mouseMoved(MouseEvent e) {
 		checkTile(e.getX(), e.getY());
 		checkSelect(e.getX(), e.getY());
+		checkMap(e.getX(), e.getY());
 	}
 
 }

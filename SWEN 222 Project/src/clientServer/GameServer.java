@@ -83,7 +83,7 @@ public class GameServer extends Thread {
 		case DISCONNECT:
 			packet = new DisconnectPacket(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port
-					+ "]" + ((LoginPacket) packet).getUserName()
+					+ "]" + ((DisconnectPacket) packet).getUserName()
 					+ " has disconnected");
 			this.removeConnection((DisconnectPacket) packet);
 			break;
@@ -93,7 +93,8 @@ public class GameServer extends Thread {
 
 	public void removeConnection(DisconnectPacket packet) {
 		PlayerMulti player = getPlayer(packet.getUserName());
-		
+		this.connectedPlayers.remove(getPlayerIndex(packet.getUserName()));
+		packet.writeData(this);
 		
 	}
 	
@@ -104,6 +105,17 @@ public class GameServer extends Thread {
 			}
 		}
 		return null;
+	}
+	
+	public int getPlayerIndex(String name){
+		int index = 0;
+		for(PlayerMulti pm : this.connectedPlayers){
+			if(pm.getName().equals(name)){
+				break;
+			}
+			index++;
+		}
+		return index;
 	}
 	
 	
