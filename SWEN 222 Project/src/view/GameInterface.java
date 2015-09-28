@@ -11,10 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -22,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-
 import clientServer.packets.DisconnectPacket;
 import Renderer.GameImagePanel;
 import game.Board;
@@ -34,7 +29,6 @@ import menu.ImagePanel;
 import menu.MenuInterface;
 
 public class GameInterface implements MouseListener {
-	private static final String IMAGE_PATH = "data/images/";
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
 	private JFrame frame;
@@ -43,7 +37,7 @@ public class GameInterface implements MouseListener {
 	private DestinysWild game;
 	private GameImagePanel gamePanel;
 
-	public GameInterface(Player player, GameImagePanel gamePanel,DestinysWild game) {
+	public GameInterface(Player player, GameImagePanel gamePanel, DestinysWild game) {
 		this.player = player;
 		this.board = gamePanel.getBoard();
 		this.game = game;
@@ -53,7 +47,7 @@ public class GameInterface implements MouseListener {
 
 		//TODO: Add mouse listener
 		//TODO: Only draw an image if its just been added
-		//TODO: Add support Spacebar / Interact Item
+		//TODO: Add support for Spacebar / Interact Item
 		//TODO: Add support for P / Pause
 		//TODO: Add support for L / R Arrows keys - Change perspective
 		//TODO: Add support for ESC - Escape to menu
@@ -125,7 +119,6 @@ public class GameInterface implements MouseListener {
 		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
 
-
 		// add score display template
 		JPanel scoreDisplay = new JPanel();
 		scoreDisplay.setBorder(blackline);
@@ -135,8 +128,7 @@ public class GameInterface implements MouseListener {
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				
+			public void windowClosing(WindowEvent e) {	
 				escapeGame();
 			}
 		});
@@ -210,9 +202,9 @@ public class GameInterface implements MouseListener {
 		g.drawImage(backgroundImage, 0, 0, null, null);
 		//update the panel description
 		if (type.equals("toolBox")) {
-			if ((MAX_FOOD +i+1) == 10) {
+			if ((MAX_FOOD +i) == 9) {
 				inventoryLabel.setToolTipText(imageName+" - press 0 to select.");
-			} else if ((MAX_FOOD +i+1) == 11) {
+			} else if ((MAX_FOOD +i) == 10) {
 				inventoryLabel.setToolTipText(imageName+" - press - to select.");
 			} else {
 				inventoryLabel.setToolTipText(imageName+" - press "+(MAX_FOOD +i+1)+" to select.");
@@ -297,29 +289,31 @@ public class GameInterface implements MouseListener {
 		case KeyEvent.VK_W:
 			x = currentCoord.x;
 			y = currentCoord.y - 1; //moved up one
-			player.setCoords(new Point(x,y));
+			player.setCoords(new Point(y,x));
 			break;
 		case KeyEvent.VK_A:
 			x = currentCoord.x - 1; //moved left one
 			y = currentCoord.y;
-			player.setCoords(new Point(x,y));
+			player.setCoords(new Point(y,x));
 			break;
 		case KeyEvent.VK_S:
 			x = currentCoord.x; 
 			y = currentCoord.y + 1; //moved down one
-			player.setCoords(new Point(x,y));
+			player.setCoords(new Point(y,x));
 			break;
 		case KeyEvent.VK_D:
 			x = currentCoord.x + 1; //moved right one
 			y = currentCoord.y; 
-			player.setCoords(new Point(x,y));
+			player.setCoords(new Point(y,x));
 			break;
 		case KeyEvent.VK_MINUS:
 			updateSelectedSlot(10);
 			break;
 		case KeyEvent.VK_EQUALS:
 			updateSelectedSlot(11);
-		default:
+			break;
+		case KeyEvent.VK_SPACE:
+			JOptionPane.showMessageDialog(frame, "Space bar pressed.");
 			break;
 		}
 		//update the interface (in particular, the mini map)
@@ -334,10 +328,10 @@ public class GameInterface implements MouseListener {
 			public void run() {
 				try {
 					Board board = XMLParser.initialiseBoard("data/board.xml");
-					Player player = new Player("Sam", new Point(4,6), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
+					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
 					GameImagePanel gamePanel = new GameImagePanel(board);
 					DestinysWild destinysWild = new DestinysWild(board);
-					GameInterface game = new GameInterface(player, gamePanel,destinysWild);
+					GameInterface game = new GameInterface(player, gamePanel, destinysWild);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

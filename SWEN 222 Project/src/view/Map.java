@@ -90,19 +90,19 @@ public class Map extends JComponent {
 					switch (obstacle.getType()) {
 					case "brokenblock":
 						graphics.setColor(new Color(143, 143, 143));
-						graphics.fillRect(i, j, 1, 1);
+						graphics.fillRect(j, i, 1, 1);
 						break;
 					case "brokenstone1":
 						graphics.setColor(new Color(143, 143, 143));
-						graphics.fillRect(i, j, 1, 1);
+						graphics.fillRect(j, i, 1, 1);
 						break;
 					case "stoneblock":
 						graphics.setColor(new Color(143, 143, 143));
-						graphics.fillRect(i, j, 1, 1);
+						graphics.fillRect(j, i, 1, 1);
 						break;
 					case "cobblestone":
 						graphics.setColor(new Color(143, 143, 143));
-						graphics.fillRect(i, j, 1, 1);
+						graphics.fillRect(j, i, 1, 1);
 						break;
 					default:
 						System.out.println("Water?");
@@ -111,7 +111,7 @@ public class Map extends JComponent {
 				} else {
 					//print out normal unoccupied square (forest floor)	
 					graphics.setColor(new Color(172,211,115));
-					graphics.fillRect(i, j, 1, 1);
+					graphics.fillRect(j, i, 1, 1);
 				}
 			}
 		}
@@ -134,23 +134,23 @@ public class Map extends JComponent {
 				else {
 					//safe to draw the wall
 					graphics.setColor(new Color(0,100,0));
-					graphics.fillRect(i, j, 1, 1);
+					graphics.fillRect(j, i, 1, 1);
 				}
 			}
 		}
 
 		//draw in walls or doors in x direction
-		for (int i = xCoord; i <= xCoord + 50; i += 50) {
-			for (int j = yCoord; j <= yCoord + 50; ++j) {
+		for (int j = xCoord; j <= xCoord + 50; j += 50) {
+			for (int i = yCoord; i <= yCoord + 50; ++i) {
 				//check for east door
-				if (room.getEast() != -1 && j >= (20 + yCoord) && j < (30 + yCoord)
-						&& i == xCoord) {
+				if (room.getEast() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord) {
 					//if we are here, then a east door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				//check for west door
-				else if (room.getWest() != -1 && j >= (20 + yCoord) && j < (30 + yCoord)
-						&& i == xCoord + 50) {
+				else if (room.getWest() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord + 50) {
 					//if we are here, then a west door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
@@ -191,7 +191,7 @@ public class Map extends JComponent {
 					//haven't visited this room
 					//so user shouldn't be able to see it
 					g.setColor(Color.DARK_GRAY);
-					g.fillRect(i*50, j*50, 50, 50);
+					g.fillRect(j*50, i*50, 50, 50);
 				}
 			}
 		}
@@ -203,7 +203,6 @@ public class Map extends JComponent {
 		Point coord = player.getCoords();
 
 		g.setColor(Color.MAGENTA);
-		g.fillRect(roomCoord.x * 50 + coord.x * 5,
-				roomCoord.y * 50 + coord.y * 5, 5, 5);
+		g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 	}
 }
