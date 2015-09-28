@@ -17,7 +17,7 @@ public class TestFrame extends JFrame {
 	private boolean up = true;
 	
 	private GameImagePanel gamePanel;
-	private LevelEditorPanel editPanel = new LevelEditorPanel();
+	private LevelEditorPanel editPanel;
 	private boolean editor = false;
 	
 	
@@ -36,9 +36,11 @@ public class TestFrame extends JFrame {
 	/*
 	 * This version of the TestFrame constructor inits the Level editor
 	 */
-	public TestFrame(boolean editor){
+	public TestFrame(boolean editor, Board board){
 		super("Level Editor");
+		this.board = board;
 		this.editor = editor;
+		editPanel = new LevelEditorPanel(board);
 		setUp();
 	}
 	
@@ -109,7 +111,7 @@ public class TestFrame extends JFrame {
 	public void setUp(){
 		setResizable(false); //Makes the window not to be able to change size
 		pack();
-		setSize(700, 700); //set size to 700 by 700
+		setSize(1100, 750); //set size to 700 by 700
 		setFocusable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate when window is closed
 		if(editor){

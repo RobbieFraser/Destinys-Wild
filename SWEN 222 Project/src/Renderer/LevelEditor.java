@@ -1,9 +1,13 @@
 package Renderer;
 
+import game.Board;
+
 public class LevelEditor {
+	Board board;
 	
 	public LevelEditor(){
-		TestFrame test = new TestFrame(true);
+		board = new Board();
+		TestFrame test = new TestFrame(true, board);
 	}
 	
 	public static void main(String[] args){
