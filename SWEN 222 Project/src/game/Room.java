@@ -23,8 +23,7 @@ public class Room {
 	 * Constructor for Room. Each room has a position on the board, a unique
 	 * id, and up to four connecting rooms.
 	 */
-	public Room(int north, int east, int south,
-			int west, int Id, Point boardPos) {
+	public Room(int north, int east, int south, int west, int Id, Point boardPos) {
 		this.north = north;
 		this.east = east;
 		this.south = south;
