@@ -330,7 +330,7 @@ public class GameInterface implements MouseListener {
 					Board board = XMLParser.initialiseBoard("data/board.xml");
 					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
 					GameImagePanel gamePanel = new GameImagePanel(board);
-					DestinysWild destinysWild = new DestinysWild(board);
+					DestinysWild destinysWild = new DestinysWild();
 					GameInterface game = new GameInterface(player, gamePanel, destinysWild);
 					game.frame.setVisible(true);
 				} catch (Exception e) {

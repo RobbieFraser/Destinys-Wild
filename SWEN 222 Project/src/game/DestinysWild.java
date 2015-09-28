@@ -3,7 +3,6 @@ package game;
 import java.awt.Canvas;
 import java.awt.Point;
 import java.io.File;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import game.items.Health;
 import game.items.Item;
 
 public class DestinysWild extends Canvas implements Runnable{
-	private static Board board;
+	private static Board board = XMLParser.initialiseBoard("data/board.xml");
 	private static Player currentPlayer;
 	private GameClient client;
 	private GameServer server;
@@ -24,15 +23,13 @@ public class DestinysWild extends Canvas implements Runnable{
 	public int tickCount = 0;
 	private Thread thread;
 
-	public DestinysWild(Board board) {
-		//this.board = XMLParser.initialiseBoard("data/board.xml");
-		this.board = board;
+	public DestinysWild() {
+		//this.board
 		//testPlayerSave();
-		start();
+		//start();
 		//testBoardInitialisation();
-		//testGameLoad();
-		//testSaveGame();
-		//TestFrame test = new TestFrame(board);
+		testGameLoad();
+		testSaveGame();
 
 	}
 
@@ -56,12 +53,10 @@ public class DestinysWild extends Canvas implements Runnable{
 		roomsV.add(room);
 
 		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
-		XMLParser.saveGame();
+		XMLParser.savePlayer();
 	}
 
 	public void testBoardInitialisation(){
-		board = XMLParser.initialiseBoard("data/board.xml");
-
 		board.printBoard();
 		System.out.println();
 		board.getBoard()[2][2].printRoom();
@@ -162,6 +157,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public static void main(String[] args){
-		DestinysWild game = new DestinysWild(board);
+		DestinysWild game = new DestinysWild();
 	}
 }
