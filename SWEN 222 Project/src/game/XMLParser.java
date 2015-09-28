@@ -230,6 +230,7 @@ public class XMLParser {
 		DestinysWild.setBoard(initialiseBoard("data/savestate.xml"));
 		DestinysWild.getBoard().printBoard();
 		System.out.println("Board Loaded");
+		DestinysWild.getBoard().addOffBoardItem(new Health("apple", new Point(0,0), 10, 10));
 		System.out.println("Loading player file from " + playerFile.getName());
 		loadPlayer(playerFile);
 		System.out.println("Player Loaded");
@@ -247,8 +248,6 @@ public class XMLParser {
 			
 			String name = playerTag.getChildText("Name"); //Main Player parameters--------------------
 			
-			System.out.println("1st");
-			
 			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
 			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
 			
@@ -256,23 +255,20 @@ public class XMLParser {
 			int score = Integer.valueOf(playerTag.getChildText("Score"));
 			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
 			
-			System.out.println("2nd");
 			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
-			System.out.println("Room Id: "+currentRoomId);
 			Room currentRoom = board.getRoomFromId(currentRoomId);//-----------
 			
-			System.out.println("3rd");
+			System.out.println("OffItems size: " + board.getOffBoardItems().size());
 			
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
+			
 			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
 				for(Element invItem : inventory){
-					int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
-					Item tempItem = board.getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
+					int itemId = Integer.valueOf(invItem.getText());
+					Item tempItem = board.getOffItemFromId(itemId); //Depends on initialised board from savestate.xml
 					player.addInventoryItem(tempItem);
 				}
 			}
-			
-			System.out.println("4th");
 			
 			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
 			
@@ -281,8 +277,6 @@ public class XMLParser {
 				player.addRoom(board.getRoomFromId(roomId));
 
 			}
-			
-			System.out.println("5th");
 			
 			player.setName(name);
 			player.setCoords(new Point(playerx, playery));
@@ -325,11 +319,13 @@ public class XMLParser {
 			Element npcTags = new Element("Npcs");//<Board><Room><Npcs>
 			Element itemTags = new Element("Items");//<Board><Room><Items>
 			
-			Room[][] roomArray = board.getBoard();
-			
 			for(int i=0; i<board.getBoard().length; i++){
 				for(int j=0; j<board.getBoard()[0].length; j++){
-					Room current = roomArray[i][j];
+					Room current = board.getRoomFromCoords(i, j);
+					if(current == null){
+						System.out.println("Null room at " + i + ", " + j);
+						continue;
+					}
 					roomTags.addContent(new Element("Id").setText(String.valueOf(current.getId())));
 					roomTags.addContent(new Element("Row").setText(String.valueOf(current.getBoardPos().x)));
 					roomTags.addContent(new Element("Col").setText(String.valueOf(current.getBoardPos().y)));
@@ -444,8 +440,6 @@ public class XMLParser {
 			playerTag.addContent(visitedRooms);
 
 			Element inventory = new Element("Inventory");
-			
-			System.out.println("inv size: " + player.getInventory().size()); //TODO this is reporting 0 instead of 1
 
 			for(Item itemId : player.getInventory()){
 				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId.getId())));

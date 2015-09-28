@@ -15,7 +15,7 @@ import game.items.Health;
 import game.items.Item;
 
 public class DestinysWild extends Canvas implements Runnable{
-	private static Board board = XMLParser.initialiseBoard("data/board.xml");
+	private static Board board;
 	private static Player currentPlayer;
 	private GameClient client;
 	private GameServer server;
@@ -24,35 +24,42 @@ public class DestinysWild extends Canvas implements Runnable{
 	private Thread thread;
 
 	public DestinysWild() {
-		//this.board
+		board = XMLParser.initialiseBoard("data/board.xml");
 		//testPlayerSave();
 		//start();
 		//testBoardInitialisation();
-		testGameLoad();
-		testSaveGame();
+		//testLoadGame();
+		//testSaveGame();
 
 	}
 
 	public void testSaveGame(){
+		//initialiseTestPlayer();
 		XMLParser.saveGame();
 	}
 	
-	public void testGameLoad(){
+	public void initialiseTestPlayer(){
+		List<Item> inv = new ArrayList<>();
+		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
+		System.out.println("Inv size: " + inv.size());
+
+		List<Room> roomsV = new ArrayList<>();
+		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
+		roomsV.add(room);
+
+		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
+	}
+	
+	public void testLoadGame(){
 		XMLParser.loadGame(new File("data/savegames/Robbie.xml"));
 		System.out.println("Parser loadGame good");
 		System.out.println("Name: " + getPlayer().getName());
 		System.out.println("Score: " + getPlayer().getScore());
+		System.out.println("Inventory size: " + getPlayer().getInventory().size());
 	}
 	
 	public void testPlayerSave(){
-		List<Item> inv = new ArrayList<>();
-		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
-
-		List<Room> roomsV = new ArrayList<>();
-		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
-		roomsV.add(room);
-
-		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
+		//initialiseTestPlayer();
 		XMLParser.savePlayer();
 	}
 
@@ -158,5 +165,7 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
+		game.testLoadGame();
+		game.testSaveGame();
 	}
 }
