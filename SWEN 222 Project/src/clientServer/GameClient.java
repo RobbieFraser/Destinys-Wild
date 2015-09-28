@@ -81,7 +81,7 @@ public class GameClient extends Thread {
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
 		System.out.println("[" + address.getHostAddress() + ":" + port
 				+ "]" + ((LoginPacket) packet).getUserName()
-				+ "has entered the Wild");
+				+ " has entered the Wild");
 		Point point = new Point(1, 1);
 		PlayerMulti pm = new PlayerMulti(
 				((LoginPacket) packet).getUserName(), point, new Room(-1,
