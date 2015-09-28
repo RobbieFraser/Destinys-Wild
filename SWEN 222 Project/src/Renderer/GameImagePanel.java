@@ -1,5 +1,6 @@
 package Renderer;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -53,6 +54,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 	
 	public GameImagePanel(Board board){
+		this.setBackground(new Color(120, 201, 255));
 		this.board = board;
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
 		setDefault();
@@ -225,6 +227,10 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			// can actually do at this point, except to abort the game.
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
+	}
+	
+	public Board getBoard(){
+		return board;
 	}
 
 	@Override
