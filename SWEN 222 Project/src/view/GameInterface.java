@@ -80,14 +80,15 @@ public class GameInterface {
 		JLabel keyBox = new JLabel(new ImageIcon(loadImage("keyBox.png")));
 		keyBox.setBounds(670, 20, 100, 100);
 		inventoryPanel.add(keyBox);
-
 		frame.getContentPane().add(inventoryPanel);
 
 		// set up panel which will contain minimap
 		JPanel mapPanel = new JPanel(new BorderLayout());
 		mapPanel.setBorder(blackline);
 		mapPanel.setBounds(830, 460, 250, 250);
+		//extract the board we will use
 		Board board = XMLParser.initialiseBoard("data/board.xml");
+		//create the map that will be drawn
 		Map map = new Map(player, board);
 		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
@@ -223,11 +224,8 @@ public class GameInterface {
 			y = currentCoord.y; 
 			player.setCoords(new Point(x,y));
 			break;
-		default:
-			System.out.println("Invalid key press.");
-			break;
 		}
-		//System.out.println("Updated coordinates: "+player.getCoords().toString());
+		//update the interface (in particular, the mini map)
 		updateUI();
 	}
 
@@ -256,7 +254,7 @@ public class GameInterface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Player player = new Player("Sam", new Point(0,0), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
+					Player player = new Player("Sam", new Point(4,6), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
 					GameInterface game = new GameInterface(player);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
