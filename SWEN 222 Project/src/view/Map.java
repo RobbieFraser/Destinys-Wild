@@ -86,7 +86,6 @@ public class Map extends JComponent {
 				if (room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5] != null) {
 					Obstacle obstacle = room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5];
 					//draw each obstacle differently
-					//TODO: Add images
 					switch (obstacle.getType()) {
 					case "brokenblock":
 						graphics.setColor(new Color(143, 143, 143));
