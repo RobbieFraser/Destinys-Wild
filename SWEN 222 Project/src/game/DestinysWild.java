@@ -84,16 +84,15 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public void initialise() {
-		board = XMLParser.initialiseBoard("data/board.xml");
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
 		PlayerMulti currentPlayer = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"), 
-				new Point(50, 50),room,null,-1);
+				new Point(50, 50), room, null, -1);
 		//System.out.println(currentPlayer.getName());
-		board.getPlayers().add(currentPlayer);
+		board.addPlayers(currentPlayer);
 		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		if (client != null) {
 			//client.sendData("ping".getBytes());
-			if(server!=null){
+			if (server != null){
 				server.addConnection(currentPlayer, packet);
 				System.out.println("Server trying to add connection");
 			}
@@ -104,6 +103,7 @@ public class DestinysWild extends Canvas implements Runnable{
 	public synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Destiny's Wild");
+		board = XMLParser.initialiseBoard("data/board.xml");
 		client = new GameClient(board);
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
