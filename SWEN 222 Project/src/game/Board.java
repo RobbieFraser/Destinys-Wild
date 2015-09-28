@@ -8,7 +8,7 @@ import game.items.Item;
 public class Board {
 
 	private Room[][] board = new Room[5][5];
-	private List<Item> offBoard = new ArrayList<>();
+	private List<Item> offBoardItems = new ArrayList<>();
 	private List<Player> players = new ArrayList<Player>();
 
 	public Board() {
@@ -16,11 +16,33 @@ public class Board {
 	}
 	
 	public void addOffBoardItem(Item item){
-		offBoard.add(item);
+		offBoardItems.add(item);
 	}
 	
 	public List<Item> getOffBoardItems(){
-		return offBoard;
+		return offBoardItems;
+	}
+	
+	public Item getOffItemFromId(int id){
+		for(Item item : offBoardItems){
+			if(item.getId() == id){
+				return item;
+			}
+		}
+		System.out.println("No such Item in offBoardItem list");
+		return null;
+	}
+	
+	public Room getRoomFromCoords(int row, int col){
+		for(int i=0; i<board.length; i++){
+			for(int j=0; j<board[0].length; j++){
+				if(board[i][j] != null && (board[i][j].getBoardPos().x == row && board[i][j].getBoardPos().y == col)){
+					return board[i][j];
+				}
+			}
+		}
+		System.out.println("Could not find room with coords: " + row + ", " + col + " on the board :(");
+		return null;
 	}
 	
 	public Room getRoomFromId(int id){
