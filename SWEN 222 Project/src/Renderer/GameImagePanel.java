@@ -1,6 +1,7 @@
 package Renderer;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,6 +22,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private Board board; //The main Board object given from the main Game class
 	private Point curRoomCoords = new Point(2,2); //Temporary?
 	private Room curRoom; //The current Room Object
+	
+	private static final String IMAGE_PATH = "data/images/"; //The path to all the images
 	
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
@@ -203,6 +206,24 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		} catch (IOException e) {
 			//e.printStackTrace();
 			g.drawImage(defaultCube, newX, newY, null);
+		}
+	}
+	
+	/**
+	 * This method should load an image in from a filename.
+	 * @param filename
+	 * @return
+	 */
+	public static BufferedImage loadImage(String filename) {
+		// using the URL means the image loads when stored
+		// in a jar or expanded into individual files.
+		try {
+			BufferedImage img = ImageIO.read(new File(IMAGE_PATH + filename));
+			return img;
+		} catch (IOException e) {
+			// we've encountered an error loading the image. There's not much we
+			// can actually do at this point, except to abort the game.
+			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
 

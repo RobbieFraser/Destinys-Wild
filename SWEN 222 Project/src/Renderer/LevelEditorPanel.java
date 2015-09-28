@@ -12,6 +12,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import game.Board;
+import game.Room;
+
 public class LevelEditorPanel extends JPanel implements MouseListener, MouseMotionListener{
 	
 	//Where to start drawing the board
@@ -45,17 +48,25 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private boolean onSelect = false; //Mouse if on the Select list
 	
 	//Booleans for each wall to say if there is a door there or not
-	private boolean north = false;
-	private boolean south = false;
+	private boolean north = true;
+	private boolean south = true;
 	private boolean east = true;
 	private boolean west = true;
 	
-	public LevelEditorPanel(){
+	private Room curRoom;
+	private int roomX = 2;
+	private int roomY = 2;
+	
+	public LevelEditorPanel(Board board){
 		//Make the editor listen for mouse inputs
 		addMouseListener(this);
 		//Make the editor listen for mouse motion inputs
 		addMouseMotionListener(this);
 		//Add all the different tile types to the select list
+		addSelects();
+	}
+	
+	public void addSelects(){
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "stone", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", new Color(194, 194, 194), new Color(143, 143, 143))));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", new Color(194, 194, 194), new Color(25, 123, 48))));
@@ -65,11 +76,52 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
+		drawTrees(g);
 		drawSelects(g);
 		drawGround(g);
 		drawDoors(g);
 		drawTiles(g);
 		drawHover(g);
+		drawMap(g);
+	}
+	
+	public void drawTrees(Graphics g){
+		int x = 0;
+		int y = 0;
+		for(int i = 0; i < 12; i++){
+			for(int j = 0; j < 12; j++){
+				g.setColor(new Color(1, 156, 67));
+				g.fillRect(x, y, size, size);
+				g.setColor(new Color(0, 88, 38));
+				g.drawRect(x, y, size, size);
+				x += size;
+			}
+			x = 0;
+			y += size;
+		}
+	}
+	
+	public void drawMap(Graphics g){
+		int x = 0;
+		int y = 0;
+		for(int i = 0; i < 5; i++){
+			for(int j = 0; j < 5; j++){
+				if(roomX == i && roomY == j){
+					g.setColor(new Color(145, 255, 149));
+				}
+				else{
+					g.setColor(new Color(125, 235, 129));
+				}
+				g.fillRect(x+800, y+400, size, size);
+				g.setColor(new Color(91, 188, 95));
+				g.drawRect(x+800, y+400, size, size);
+				x += size;
+			}
+			x = 0;
+			y += size;
+		}
+		g.setColor(Color.gray);
+		g.drawRect(800, 400, 250, 250);
 	}
 	
 	/*
