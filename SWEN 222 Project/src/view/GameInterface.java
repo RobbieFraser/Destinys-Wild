@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -25,6 +27,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.XMLParser;
+import game.items.Item;
 import menu.ImagePanel;
 import menu.MenuInterface;
 
@@ -53,6 +56,12 @@ public class GameInterface implements MouseListener {
 		//TODO: Add support for ESC - Escape to menu
 	}
 
+	/**
+	 * This method should initialise the game interface.
+	 * It should load the gamePanel to be the background
+	 * image, and then set up the inventory panel and
+	 * the minimap.
+	 */
 	private void initialiseInterface() {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
@@ -80,18 +89,21 @@ public class GameInterface implements MouseListener {
 			inventoryPanel.add(inventoryBox);
 		}
 
-		// set up tool belt
+		// set up tool panel
 		// max 6 tools
 		for (int i = 0; i < 2; ++i) {
 			//2 rows of tools, each row contains 3 slots
 			for (int j = 0; j < 3; ++j) {
 				JLabel toolBox = new JLabel(new ImageIcon(MenuInterface.loadImage("toolBox.png")));
 				toolBox.setBounds(465 + j * 65, 10 + i * 65, 56, 56);
-				if ((i*3+j+6) == 10) {
+				if ((i * 3 + j) == 4) {
+					//10th item
 					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press 0 to select.");
-				} else if ((i*3+j+6) == 11){
+				} else if ((i * 3 + j) == 5) {
+					//11th item
 					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press - to select.");
 				} else {
+					//0 - 9th item
 					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press "+(i*3+j+6)+" to select.");
 				}
 				inventoryPanel.add(toolBox);
@@ -106,7 +118,7 @@ public class GameInterface implements MouseListener {
 		inventoryPanel.add(keyBox);
 
 		frame.getContentPane().add(inventoryPanel);
-		//intialise the selected item to the first food slot as a default
+		//intialise the selected item to be the first food slot as a default
 		updateSelectedSlot(0);
 
 		// set up panel which will contain minimap
@@ -137,6 +149,7 @@ public class GameInterface implements MouseListener {
 		frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
+				//all key events will be handled elsewhere
 				handleKeyPress(arg0);
 			}
 			@Override
@@ -149,16 +162,13 @@ public class GameInterface implements MouseListener {
 		frame.getContentPane().setLayout(null);
 	}
 
+	/**
+	 * This method should be called whenever the game
+	 * state changes. It should update the user interface,
+	 * drawing in all of the player's items onto the
+	 * inventory panel. It should then redraw the interface.
+	 */
 	public void updateUI() {
-
-		// at this point, we have access to the players inventory,
-		// which will be a list of item types or ids
-		// we can use these to read in the corresponding image
-		// we should:
-		// read in from the list all food, and make a numFood
-		// read in from the list all tools, and make numTools
-		// read in from the list whether there is a key an make an isKey
-
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
@@ -168,57 +178,78 @@ public class GameInterface implements MouseListener {
 			//extract the foodLabel from the inventoryPanel
 			JLabel foodLabel = (JLabel) inventoryPanel.getComponent(i);
 			//set the labels image to be the food
-			drawBackgroundImage(foodLabel, "itemBox", i, "appleIcon");
+			drawBackgroundImage(foodLabel, "itemBox", i);
 		}
 
+		//now we can draw in weapons
 		int numTools = 2; //should extract from player
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
 			//set the labels image to be a tool
-			drawBackgroundImage(toolLabel, "toolBox", i, "pickaxeIcon");
+			drawBackgroundImage(toolLabel, "toolBox", i + MAX_FOOD);
 		}
 
-		boolean hasKey = true; // should extract from inventory
+		boolean hasKey = true; // should extract from player
 		if (hasKey) {
 			//need to draw players key
 			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
-			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS, "key");
+			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
 		}
 
-		//suggest that minimap should be updated
+		//the interface should be updated
 		frame.revalidate();
+		//the repaint method suggests to the board to repaint the frame
+		//this may update the minimap if changes have been made to it
 		frame.repaint();
 	}
 
-	private void drawBackgroundImage(JLabel inventoryLabel, String type, int i, String imageName) {
-		inventoryLabel.setIcon(new ImageIcon(MenuInterface.loadImage(imageName+".png")));
+	/**
+	 * This method should be called when the image on
+	 * an inventory slot should be redrawn with an
+	 * item's image.
+	 * @param inventoryLabel label that new image
+	 * 		is being drawn onto
+	 * @param type of inventory item
+	 * @param index of slot within the inventoryLabel
+	 * 		to draw on
+	 */
+	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
+		//firstly, we set the background image to be the image in question
+		String imageName = getName(index);
+		Image itemImage = MenuInterface.loadImage(imageName+".png");
+		inventoryLabel.setIcon(new ImageIcon(itemImage));
+		
 		//now we will draw the border over the top of the image of the tool
-		Image backgroundImage = MenuInterface.loadImage(type+".png");
-		ImageIcon imageIcon  = (ImageIcon) inventoryLabel.getIcon();
-		Image itemImage = imageIcon.getImage();
+		Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
+		//get graphics from image to draw with
 		Graphics g = itemImage.getGraphics();
-		//draw the image
-		g.drawImage(backgroundImage, 0, 0, null, null);
-		//update the panel description
+		g.drawImage(slotBackgroundImage, 0, 0, null, null);
+		
+		//update the panel description (hover over text)
 		if (type.equals("toolBox")) {
-			if ((MAX_FOOD +i) == 9) {
+			if ((MAX_FOOD +index) == 9) {
+				//10th slot
 				inventoryLabel.setToolTipText(imageName+" - press 0 to select.");
-			} else if ((MAX_FOOD +i) == 10) {
+			} else if ((MAX_FOOD +index) == 10) {
+				//11th slot
 				inventoryLabel.setToolTipText(imageName+" - press - to select.");
 			} else {
-				inventoryLabel.setToolTipText(imageName+" - press "+(MAX_FOOD +i+1)+" to select.");
+				//6th - 9th slot
+				inventoryLabel.setToolTipText(imageName+" - press "+(MAX_FOOD +index+1)+" to select.");
 			}
 		} else if (type.equals("keyBox")) {
+			//12th slot
 			inventoryLabel.setToolTipText(imageName+" - press = to select.");
 		} else {
-			inventoryLabel.setToolTipText(imageName+" - press "+(i+1)+" to select.");
+			//1st - 5th slot 
+			inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
 		}
 	}
 
 	/**
 	 * This method should take as a parameter a number
-	 * between 0 and player.inventory.size().
+	 * between 0 and 12.
 	 * It should analyse the value of the item at this
 	 * position of the inventory, and return a unique
 	 * string which will be used to extract the image
@@ -227,13 +258,52 @@ public class GameInterface implements MouseListener {
 	 * @return name of image to use
 	 */
 	private String getName(int index) {
-		return null;
+		//first, sanity check
+		if (index < 0 || index > 12) {
+			throw new Error("Invalid index exception");
+		}
+		
+		/*
+		 * Somehow need a way to break down players inventory
+		 * into foodInventory, toolInventory and keyInventory
+		List<Item> playerInventory = player.getInventory();
+		if (index < 5) {
+			//has to be a food
+			//Item food = foodInventory[index]
+			//Now extract some id number from the item
+		} else if (index < 11) {
+			//has to be a tool
+			//Item tool = toolInventory[index - MAX_FOOD]
+			//Now extract some id number from the item
+		} else {
+			//has to be a key
+			//Item key = keyInventory[0]
+		}
+		//Now extract some id number from the item
+		//and use that to return an imagename
+		 * 
+		 */
+		
+		if (index < 5) {
+			return "appleIcon";
+		} else if (index < 11) {
+			return "pickaxeIcon";
+		} else {
+			return "key";
+		}
 	}
 
+	/**
+	 * This method should be called when the user has
+	 * indicated they want to exit the game. It should
+	 * prompt the user if they want to exit the game,
+	 * and if they do, then the game should be exited.
+	 */
 	private void escapeGame() {
 		int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
 		if (result == JOptionPane.OK_OPTION) {
 			//User really wants to exit
+			//Send a disconnection packet to the client
 			DisconnectPacket disconnect = new DisconnectPacket(this.player.getName());
 			disconnect.writeData(this.game.getClient());
 			System.exit(0);
@@ -242,7 +312,7 @@ public class GameInterface implements MouseListener {
 
 	/**
 	 * This method should draw a blue border around the
-	 * slot at the given in the inventory panel. 
+	 * an inventory slot at the given index the inventory panel. 
 	 */
 	private void updateSelectedSlot(int index) {
 		if (index < 0 || index > 11) {
@@ -287,24 +357,24 @@ public class GameInterface implements MouseListener {
 
 		switch (keyCode) {
 		case KeyEvent.VK_W:
-			x = currentCoord.x;
-			y = currentCoord.y - 1; //moved up one
-			player.setCoords(new Point(y,x));
+			x = currentCoord.x - 1; //moved up one
+			y = currentCoord.y; 
+			player.setCoords(new Point(x,y));
 			break;
 		case KeyEvent.VK_A:
-			x = currentCoord.x - 1; //moved left one
-			y = currentCoord.y;
-			player.setCoords(new Point(y,x));
+			x = currentCoord.x; 
+			y = currentCoord.y - 1;//moved left one
+			player.setCoords(new Point(x,y));
 			break;
 		case KeyEvent.VK_S:
-			x = currentCoord.x; 
-			y = currentCoord.y + 1; //moved down one
-			player.setCoords(new Point(y,x));
+			x = currentCoord.x + 1;  //moved down one
+			y = currentCoord.y;
+			player.setCoords(new Point(x,y));
 			break;
 		case KeyEvent.VK_D:
-			x = currentCoord.x + 1; //moved right one
-			y = currentCoord.y; 
-			player.setCoords(new Point(y,x));
+			x = currentCoord.x;
+			y = currentCoord.y + 1; //moved right one
+			player.setCoords(new Point(x,y));
 			break;
 		case KeyEvent.VK_MINUS:
 			updateSelectedSlot(10);
@@ -327,12 +397,14 @@ public class GameInterface implements MouseListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Board board = XMLParser.initialiseBoard("data/board.xml");
+					DestinysWild game = new DestinysWild();
+					Board board = game.getBoard();
 					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
+					player.addRoom(board.getBoard()[1][2]);
+					player.addRoom(board.getBoard()[2][2]);
 					GameImagePanel gamePanel = new GameImagePanel(board);
-					DestinysWild destinysWild = new DestinysWild();
-					GameInterface game = new GameInterface(player, gamePanel, destinysWild);
-					game.frame.setVisible(true);
+					GameInterface gameInterface = new GameInterface(player, gamePanel, game);
+					gameInterface.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -347,9 +419,7 @@ public class GameInterface implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() instanceof JPanel) {
-			System.out.println("Coming in");
-		}
+
 	}
 
 	@Override
