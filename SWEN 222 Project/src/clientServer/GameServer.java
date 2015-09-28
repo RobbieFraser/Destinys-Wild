@@ -36,7 +36,9 @@ public class GameServer extends Thread {
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
+				System.out.println("Server receiving packet");
 				this.socket.receive(packet);
+				System.out.println("Server has received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -71,7 +73,12 @@ public class GameServer extends Thread {
 			PlayerMulti pm = new PlayerMulti(
 					((LoginPacket) packet).getUserName(), point, new Room(-1,
 							-1, -1, -1, 11, new Point(4, 4)), address, port);
+			System.out.println(pm.getName());
+			System.out.println(pm.getIP());
+			System.out.println(pm.getPort());
+			System.out.println("Player creation is fine.");
 			this.addConnection(pm, (LoginPacket) packet);
+			//System.out.println("player added in theory");
 			break;
 		case DISCONNECT:
 			break;
@@ -79,26 +86,33 @@ public class GameServer extends Thread {
 
 	}
 
-	public void addConnection(PlayerMulti pm, LoginPacket packet) {
+	public void addConnection(PlayerMulti player, LoginPacket packet) {
 		boolean alreadyConnected = false;
-		for (PlayerMulti player : this.connectedPlayers) {
+		System.out.println("Packet username is: " + packet.getUserName());
+		System.out.println("Packet type is: " + packet.packetID);
+		for (PlayerMulti pm : this.connectedPlayers) {
 			if (pm.getName().equalsIgnoreCase(player.getName())) {
-				if (player.getIP() == null) {
-					player.setIP(pm.getIP());
+				if (pm.ipAddress == null) {
+					pm.setIP(player.getIP());
+					System.out.println(pm.getIP());
 				}
-				if (player.getPort() == -1) {
-					player.setPort(pm.getPort());
+				if (pm.port == -1) {
+					pm.setPort(player.getPort());
+					System.out.println(pm.getPort());
 				}
 				alreadyConnected = true;
+				System.out.println("Set connected to true");
 			} else {
-				sendData(packet.getData(), player.getIP(), player.getPort());
-				packet = new LoginPacket(player.getName());
-				sendData(packet.getData(),pm.getIP(),pm.getPort());
+				sendData(packet.getData(), pm.getIP(), pm.getPort());
+				packet = new LoginPacket(pm.getName());
+				sendData(packet.getData(),player.getIP(),player.getPort());
+				System.out.println("New player entered");
 			}
-			if (!alreadyConnected) {
-				this.connectedPlayers.add(pm);
-			}
-
+			
+		}if (alreadyConnected==false) {
+			System.out.println("player added");
+			this.connectedPlayers.add(player);
+			System.out.println("player added");
 		}
 
 	}

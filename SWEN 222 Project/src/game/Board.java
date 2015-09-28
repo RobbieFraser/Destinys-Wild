@@ -68,6 +68,9 @@ public class Board {
 		return players;
 	}
 
+	public void addPlayers(Player player){
+		players.add(player);
+	}
 	
 
 }
