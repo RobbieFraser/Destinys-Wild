@@ -41,9 +41,9 @@ public class XMLParser {
 			List<Element> roomTags = rootNode.getChildren("Room");
 
 			for (Element room : roomTags) { //Initialise Rooms
-				int roomX = Integer.valueOf(room.getChildText("Posx")); //room parameters
-				int roomY = Integer.valueOf(room.getChildText("Posy"));
-				Point point = new Point(roomX, roomY);
+				int roomRow = Integer.valueOf(room.getChildText("Row")); //room parameters
+				int roomCol = Integer.valueOf(room.getChildText("Col"));
+				Point point = new Point(roomRow, roomCol);
 
 				int id = Integer.valueOf(room.getChildText("Id"));
 
@@ -59,19 +59,21 @@ public class XMLParser {
 				initialiseOnBoardItems(room, currentRoom);
 
 				System.out.println("Loading room with ID: " + id);
-				board.addRoom(currentRoom, roomX, roomY);
+				board.addRoom(currentRoom, roomRow, roomCol);
 			}
 			initialiseOffBoardItems(rootNode);
 
 
 		}
 		catch (FileNotFoundException e){
-//			if (filename.equals("data/state.xml")){
-//				System.out.println("No current save state found. Loading original board");
-//				return initialiseBoard("data/board.xml");
-//			}
-			System.out.println(filename);
-			System.out.println("Wrong filepath");
+			if (filename.equals("data/savestate.xml")){
+				System.out.println("No current save state found. Loading original board");
+				return initialiseBoard("data/board.xml");
+			}
+			else{
+				System.out.println(filename);
+				System.out.println("Wrong filepath");
+			}
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage() + " <-- ERROR");
@@ -92,12 +94,12 @@ public class XMLParser {
 			String type = obstacle.getChildText("Type"); //Obstacle parameters-----------
 			String obsType = obstacle.getChildText("Obstype");
 
-			int obsx = Integer.valueOf(obstacle.getChildText("Posx"));
-			int obsy = Integer.valueOf(obstacle.getChildText("Posy")); //----------------
+			int obsRow = Integer.valueOf(obstacle.getChildText("Row"));
+			int obsCol = Integer.valueOf(obstacle.getChildText("Col")); //----------------
 
 			Obstacle temp = null;
 
-			Point coords = new Point(obsx, obsy);
+			Point coords = new Point(obsRow, obsCol);
 
 			switch (obsType){
 			case "breakable":
@@ -110,7 +112,7 @@ public class XMLParser {
 				System.out.println("Misidentifed Obstacle");
 				break;
 			}
-			currentRoom.addObstacle(temp, obsx, obsy); //adds each obstacle to the current room
+			currentRoom.addObstacle(temp, obsRow, obsCol); //adds each obstacle to the current room
 		}
 	}
 
@@ -126,14 +128,14 @@ public class XMLParser {
 
 			String type = npc.getChildText("Type"); // NPC parameters-------
 
-			int npcx = Integer.valueOf(npc.getChildText("Posx"));
-			int npcy = Integer.valueOf(npc.getChildText("Posy"));
+			int npcRow = Integer.valueOf(npc.getChildText("Row"));
+			int npcCol = Integer.valueOf(npc.getChildText("Col"));
 
 			int damage = Integer.valueOf(npc.getChildText("Damage"));
 			int speed = Integer.valueOf(npc.getChildText("Speed")); //------
 
 			NPC temp = null;
-			Point coords = new Point(npcx, npcy);
+			Point coords = new Point(npcRow, npcCol);
 
 			switch (npcType){
 			case "enemywalker":
@@ -151,7 +153,7 @@ public class XMLParser {
 			default:
 				System.out.println("Misidentifed NPC");
 			}
-			currentRoom.addNpcs(temp, npcx, npcy); //adds all npc's to the current room
+			currentRoom.addNpcs(temp, npcRow, npcCol); //adds all npc's to the current room
 		}
 	}
 
@@ -185,8 +187,8 @@ public class XMLParser {
 
 			String type = item.getChildText("Type"); // Item parameters-------
 
-			int itemx = Integer.valueOf(item.getChildText("Posx"));
-			int itemy = Integer.valueOf(item.getChildText("Posy"));
+			int itemRow = Integer.valueOf(item.getChildText("Row"));
+			int itemCol = Integer.valueOf(item.getChildText("Col"));
 
 			int itemid = Integer.valueOf(item.getChildText("Id"));
 
@@ -195,7 +197,7 @@ public class XMLParser {
 
 			Item temp = null;
 
-			Point coords = new Point(itemx, itemy);
+			Point coords = new Point(itemRow, itemCol);
 
 			switch (itemType){
 			case "health":
@@ -212,7 +214,7 @@ public class XMLParser {
 			}
 			
 			if(currentRoom != null){
-				currentRoom.addItems(temp, itemx, itemy); //adds all items to the current room
+				currentRoom.addItems(temp, itemRow, itemCol); //adds all items to the current room
 			}
 			else{
 				DestinysWild.getBoard().getOffBoardItems().add(temp); //adds items to off board list
@@ -225,7 +227,8 @@ public class XMLParser {
 	 */
 	public static void loadGame(File playerFile){
 		System.out.println("Loading board from savestate.xml");
-		initialiseBoard("data/savestate.xml");
+		DestinysWild.setBoard(initialiseBoard("data/savestate.xml"));
+		DestinysWild.getBoard().printBoard();
 		System.out.println("Board Loaded");
 		System.out.println("Loading player file from " + playerFile.getName());
 		loadPlayer(playerFile);
@@ -238,9 +241,13 @@ public class XMLParser {
 			Document document = (Document) builder.build(playerFile);
 			Element playerTag = document.getRootElement();
 			
+			Board board = DestinysWild.getBoard();
+			
 			Player player = new Player();
 			
-			String name = playerTag.getChildText("Name"); //Player parameters--------------------
+			String name = playerTag.getChildText("Name"); //Main Player parameters--------------------
+			
+			System.out.println("1st");
 			
 			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
 			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
@@ -249,25 +256,33 @@ public class XMLParser {
 			int score = Integer.valueOf(playerTag.getChildText("Score"));
 			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
 			
+			System.out.println("2nd");
 			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
-			Room currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoomId);//-----------
+			System.out.println("Room Id: "+currentRoomId);
+			Room currentRoom = board.getRoomFromId(currentRoomId);//-----------
 			
+			System.out.println("3rd");
 			
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
-			
-			for(Element invItem : inventory){
-				int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
-				Item tempItem = DestinysWild.getBoard().getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
-				player.addInventoryItem(tempItem);
+			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
+				for(Element invItem : inventory){
+					int itemId = Integer.valueOf(invItem.getChildText("Itemid"));
+					Item tempItem = board.getOffBoardItems().get(itemId); //Depends on initialised board from savestate.xml
+					player.addInventoryItem(tempItem);
+				}
 			}
+			
+			System.out.println("4th");
 			
 			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
 			
 			for(Element room : visitedRooms){
-				int roomId = Integer.valueOf(room.getChildText("Roomid"));
-				player.addRoom(DestinysWild.getBoard().getRoomFromId(roomId));
+				int roomId = Integer.valueOf(room.getText());
+				player.addRoom(board.getRoomFromId(roomId));
 
 			}
+			
+			System.out.println("5th");
 			
 			player.setName(name);
 			player.setCoords(new Point(playerx, playery));
@@ -276,6 +291,7 @@ public class XMLParser {
 			player.setScore(score);
 			player.setSpeed(speed);
 			
+			DestinysWild.setPlayer(player);
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage() + " <----- ERROR");
@@ -288,7 +304,7 @@ public class XMLParser {
 	 * Saves the current game board and player to XML files
 	 */
 	public static void saveGame(){
-		String SAVE_FILE = "savestate.xml"; //This is the file that will be used and overwritten each time the board is saved
+		String SAVE_FILE = "savestate.xml"; //This is the filename (NOT FILE PATH) that will be used and overwritten each time the board is saved
 		System.out.println("Saving player");
 		savePlayer(); //save the player info separately
 		System.out.println("Player saved");
@@ -315,8 +331,8 @@ public class XMLParser {
 				for(int j=0; j<board.getBoard()[0].length; j++){
 					Room current = roomArray[i][j];
 					roomTags.addContent(new Element("Id").setText(String.valueOf(current.getId())));
-					roomTags.addContent(new Element("Posx").setText(String.valueOf(current.getBoardPos().x)));
-					roomTags.addContent(new Element("Posy").setText(String.valueOf(current.getBoardPos().y)));
+					roomTags.addContent(new Element("Row").setText(String.valueOf(current.getBoardPos().x)));
+					roomTags.addContent(new Element("Col").setText(String.valueOf(current.getBoardPos().y)));
 					roomTags.addContent(new Element("North").setText(String.valueOf(current.getNorth())));
 					roomTags.addContent(new Element("East").setText(String.valueOf(current.getEast())));
 					roomTags.addContent(new Element("South").setText(String.valueOf(current.getSouth())));
@@ -337,7 +353,7 @@ public class XMLParser {
 			
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getPrettyFormat());
-			xmlOutput.output(doc, new FileWriter("data/savegames/savestate.xml"));
+			xmlOutput.output(doc, new FileWriter("data/savegames/" + filename));
 			
 		}
 		catch(Exception e){
@@ -354,8 +370,8 @@ public class XMLParser {
 				if(currObs != null){
 					obstacle.addContent(new Element("Obstype").setText(currObs.toString()));
 					obstacle.addContent(new Element("Type").setText(currObs.getType()));
-					obstacle.addContent(new Element("Posx").setText(String.valueOf(currObs.getCoords().x)));
-					obstacle.addContent(new Element("Posy").setText(String.valueOf(currObs.getCoords().y)));
+					obstacle.addContent(new Element("Row").setText(String.valueOf(currObs.getCoords().x)));
+					obstacle.addContent(new Element("Col").setText(String.valueOf(currObs.getCoords().y)));
 				}
 			}
 		}
@@ -372,8 +388,8 @@ public class XMLParser {
 				if(currNpc != null){
 					npc.addContent(new Element("Npctype").setText(currNpc.toString()));
 					npc.addContent(new Element("Type").setText(currNpc.getType()));
-					npc.addContent(new Element("Posx").setText(String.valueOf(currNpc.getCoords().x)));
-					npc.addContent(new Element("Posy").setText(String.valueOf(currNpc.getCoords().y)));
+					npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getCoords().x)));
+					npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getCoords().y)));
 					npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));
 					npc.addContent(new Element("Speed").setText(String.valueOf(currNpc.getSpeed())));
 				}
@@ -393,8 +409,8 @@ public class XMLParser {
 					item.addContent(new Element("Itemtype").setText(currItem.toString()));
 					item.addContent(new Element("Type").setText(currItem.getType()));
 					item.addContent(new Element("Id").setText(String.valueOf(currItem.getId())));
-					item.addContent(new Element("Posx").setText(String.valueOf(currItem.getCoords().x)));
-					item.addContent(new Element("Posy").setText(String.valueOf(currItem.getCoords().y)));
+					item.addContent(new Element("Row").setText(String.valueOf(currItem.getCoords().x)));
+					item.addContent(new Element("Col").setText(String.valueOf(currItem.getCoords().y)));
 					item.addContent(new Element("Health").setText(String.valueOf(currItem.getHealth())));
 					item.addContent(new Element("Speed").setText(String.valueOf(currItem.getScore())));
 				}
@@ -415,7 +431,7 @@ public class XMLParser {
 			playerTag.addContent(new Element("Posx").setText(String.valueOf(player.getCoords().x)));
 			playerTag.addContent(new Element("Posy").setText(String.valueOf(player.getCoords().y)));
 			playerTag.addContent(new Element("Health").setText(String.valueOf(player.getHealth())));
-			playerTag.addContent(new Element("Currentroom").setText(String.valueOf(player.getCurrentRoom())));
+			playerTag.addContent(new Element("Currentroom").setText(String.valueOf(player.getCurrentRoom().getId())));
 			playerTag.addContent(new Element("Score").setText(String.valueOf(player.getScore())));
 			playerTag.addContent(new Element("Speed").setText(String.valueOf(player.getSpeed())));
 
@@ -428,6 +444,8 @@ public class XMLParser {
 			playerTag.addContent(visitedRooms);
 
 			Element inventory = new Element("Inventory");
+			
+			System.out.println("inv size: " + player.getInventory().size()); //TODO this is reporting 0 instead of 1
 
 			for(Item itemId : player.getInventory()){
 				inventory.addContent(new Element("Itemid").setText(String.valueOf(itemId.getId())));

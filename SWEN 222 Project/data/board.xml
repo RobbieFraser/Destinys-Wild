@@ -2,8 +2,8 @@
 <Board>
   <Room> <!-- HOME room -->
     <Id>0</Id>
-    <Posx>2</Posx>
-    <Posy>2</Posy>
+    <Row>2</Row>
+    <Col>2</Col>
     <North>1</North>
     <East>-1</East>
     <South>-1</South>
@@ -12,36 +12,36 @@
       <Obstacle>
         <Obstype>block</Obstype>
 		<Type>stoneblock</Type>
-		<Posx>3</Posx>
-		<Posy>3</Posy>
+		<Row>3</Row>
+		<Col>3</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
       	<Type>brokenstone1</Type>
-      	<Posx>2</Posx>
-      	<Posy>7</Posy>
+      	<Row>2</Row>
+      	<Col>7</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
       	<Type>cobblestone</Type>
-      	<Posx>3</Posx>
-      	<Posy>7</Posy>
+      	<Row>3</Row>
+      	<Col>7</Col>
       </Obstacle>
     </Obstacles>
     <Npcs>
       <Npc>
 		<Npctype>enemystill</Npctype>
 		<Type>spike</Type>
-		<Posx>7</Posx>
-		<Posy>7</Posy>
+		<Row>7</Row>
+		<Col>7</Col>
 		<Damage>10</Damage>
 		<Speed>0</Speed>
       </Npc>
       <Npc>
 		<Npctype>enemywalker</Npctype>
 		<Type>spider</Type>
-      	<Posx>0</Posx>
-      	<Posy>9</Posy>
+      	<Row>0</Row>
+      	<Col>9</Col>
       	<Damage>15</Damage>
       	<Speed>5</Speed>
       </Npc>
@@ -51,8 +51,8 @@
     	<Itemtype>health</Itemtype>
     	<Type>apple</Type>
     	<Id>10</Id> <!-- 1 = item id, 0 = room id -->
-    	<Posx>1</Posx>
-    	<Posy>3</Posy>
+    	<Row>1</Row> <!-- Row: going down the y axis, vertical -->
+    	<Col>3</Col> <!-- Col: going across the x axis, horizontal -->
     	<Health>10</Health>
     	<Score>0</Score>
       </Item>
@@ -60,8 +60,8 @@
   </Room>
   <Room>
   	<Id>1</Id>
-    <Posx>1</Posx>
-    <Posy>2</Posy>
+    <Row>1</Row>
+    <Col>2</Col>
     <North>-1</North>
     <East>-1</East>
     <South>0</South>
@@ -70,8 +70,8 @@
     	<Obstacle>
     	    <Obstype>block</Obstype>
     		<Type>brokenblock</Type>
-      		<Posx>5</Posx>
-      		<Posy>7</Posy>
+      		<Row>5</Row>
+      		<Col>7</Col>
     	</Obstacle>
     </Obstacles>
     <Items>
@@ -79,8 +79,8 @@
     	<Itemtype>health</Itemtype>
     	<Type>apple</Type>
     	<Id>11</Id> <!-- 1 = item id, 0 = room id -->
-    	<Posx>1</Posx>
-    	<Posy>3</Posy>
+    	<Row>1</Row>
+    	<Col>3</Col>
     	<Health>10</Health>
     	<Score>0</Score>
       </Item>
