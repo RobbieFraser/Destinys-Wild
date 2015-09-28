@@ -81,10 +81,32 @@ public class GameServer extends Thread {
 			//System.out.println("player added in theory");
 			break;
 		case DISCONNECT:
+			packet = new DisconnectPacket(data);
+			System.out.println("[" + address.getHostAddress() + ":" + port
+					+ "]" + ((LoginPacket) packet).getUserName()
+					+ " has disconnected");
+			this.removeConnection((DisconnectPacket) packet);
 			break;
 		}
 
 	}
+
+	public void removeConnection(DisconnectPacket packet) {
+		PlayerMulti player = getPlayer(packet.getUserName());
+		
+		
+	}
+	
+	public PlayerMulti getPlayer(String name){
+		for(PlayerMulti pm : this.connectedPlayers){
+			if(pm.getName().equals(name)){
+				return pm;
+			}
+		}
+		return null;
+	}
+	
+	
 
 	public void addConnection(PlayerMulti player, LoginPacket packet) {
 		boolean alreadyConnected = false;

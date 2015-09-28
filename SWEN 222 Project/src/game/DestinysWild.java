@@ -24,7 +24,8 @@ public class DestinysWild extends Canvas implements Runnable{
 	public int tickCount = 0;
 	private Thread thread;
 
-	public DestinysWild() {
+	public DestinysWild(Board board) {
+		board = XMLParser.initialiseBoard("data/board.xml");
 		//testPlayerSave();
 		start();
 		//testBoardInitialisation();
@@ -82,6 +83,14 @@ public class DestinysWild extends Canvas implements Runnable{
 	public static void setPlayer(Player player){
 		currentPlayer = player;
 	}
+	
+	public GameClient getClient(){
+		return this.client;
+	}
+	
+	public GameServer getServer(){
+		return this.server;
+	}
 
 	public void initialise() {
 		Room room = new Room(-1, -1, -1, -1, 9, new Point(3,3));
@@ -103,7 +112,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	public synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Destiny's Wild");
-		board = XMLParser.initialiseBoard("data/board.xml");
 		client = new GameClient(board);
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
@@ -153,6 +161,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public static void main(String[] args){
-		DestinysWild game = new DestinysWild();
+		DestinysWild game = new DestinysWild(board);
 	}
 }

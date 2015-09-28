@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,8 +22,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+
+import clientServer.packets.DisconnectPacket;
 import Renderer.GameImagePanel;
 import game.Board;
+import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.XMLParser;
@@ -36,11 +40,13 @@ public class GameInterface implements MouseListener {
 	private JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
+	private DestinysWild game;
 	private GameImagePanel gamePanel;
 
-	public GameInterface(Player player, GameImagePanel gamePanel) {
+	public GameInterface(Player player, GameImagePanel gamePanel,DestinysWild game) {
 		this.player = player;
 		this.board = gamePanel.getBoard();
+		this.game = game;
 		this.gamePanel = gamePanel;
 		initialiseInterface();
 		updateUI();
@@ -130,6 +136,7 @@ public class GameInterface implements MouseListener {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				
 				escapeGame();
 			}
 		});
@@ -235,6 +242,8 @@ public class GameInterface implements MouseListener {
 		int result = JOptionPane.showConfirmDialog(frame, "Exit the application?");
 		if (result == JOptionPane.OK_OPTION) {
 			//User really wants to exit
+			DisconnectPacket disconnect = new DisconnectPacket(this.player.getName());
+			disconnect.writeData(this.game.getClient());
 			System.exit(0);
 		}
 	}
@@ -327,7 +336,8 @@ public class GameInterface implements MouseListener {
 					Board board = XMLParser.initialiseBoard("data/board.xml");
 					Player player = new Player("Sam", new Point(4,6), new Room(-1, -1, -1, -1, 13, new Point(1,3)));
 					GameImagePanel gamePanel = new GameImagePanel(board);
-					GameInterface game = new GameInterface(player, gamePanel);
+					DestinysWild destinysWild = new DestinysWild(board);
+					GameInterface game = new GameInterface(player, gamePanel,destinysWild);
 					game.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
