@@ -94,5 +94,19 @@ public class Board {
 		players.add(player);
 	}
 	
+	public Player getPlayer(String userName){
+		for(Player player : this.players){
+			if(player.getName().equalsIgnoreCase(userName)){
+				return player;
+			}
+		}
+		System.out.println("No player with that name found");
+		return null;
+	}
+	
+	public void removePlayers(Player player){
+		players.remove(player);
+	}
+	
 
 }

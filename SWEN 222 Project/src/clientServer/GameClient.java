@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
@@ -74,6 +75,10 @@ public class GameClient extends Thread {
 			handleLogin((LoginPacket)packet,address,port);
 			break;
 		case DISCONNECT:
+			packet = new DisconnectPacket(data);
+			 System.out.println("[" + address.getHostAddress() + ":" + port + "] "
+	                    + ((DisconnectPacket) packet).getUserName() + " has left the Wild...");
+			 board.removePlayers(board.getPlayer(((DisconnectPacket)packet).getUserName()));
 			break;
 		case MOVE:
 			packet = new MovePacket(data);

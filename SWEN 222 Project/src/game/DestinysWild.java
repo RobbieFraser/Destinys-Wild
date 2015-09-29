@@ -25,8 +25,8 @@ public class DestinysWild extends Canvas implements Runnable{
 	private Thread thread;
 
 	public DestinysWild() {
-		//board = XMLParser.initialiseBoard("data/board.xml");
-		//start();
+		board = XMLParser.initialiseBoard("data/board.xml");
+		start();
 
 	}
 	
