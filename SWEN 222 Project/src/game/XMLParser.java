@@ -27,9 +27,12 @@ import org.jdom2.output.XMLOutputter;
 
 public class XMLParser {
 
-	private static String LOCAL_SAVESTATE = "data/savegames/savestate.xml";
+	private static String LOCAL_SAVESTATE = "data/savegames/savestate.xml"; //The file path at which the changed game board will be saved
+
 	/**
-	 * Initialises the board from the XML file
+	 * Initialises the board from an XML file
+	 * @param filename the file from which the board will be loaded
+	 * @return the initialised board object. Stored in DestinysWild.java
 	 */
 	public static Board initialiseBoard(String filename){
 
@@ -70,7 +73,7 @@ public class XMLParser {
 		catch (FileNotFoundException e){
 			if (filename.equals(LOCAL_SAVESTATE)){
 				System.out.println("No current save state found. Loading original board");
-				return initialiseBoard("data/board.xml");
+				return initialiseBoard("data/board.xml"); //When the savestate.xml folder doesn't yet exist
 			}
 			else{
 				System.out.println(filename);
@@ -313,13 +316,13 @@ public class XMLParser {
 			Document doc = new Document(boardTag);
 			
 			for(int i=0; i<board.getBoard().length; i++){
-				
-				Element roomTags = new Element("Room");//<Board><Room>
-				Element obsTags = new Element("Obstacles");//<Board><Room><Obstacles>
-				Element npcTags = new Element("Npcs");//<Board><Room><Npcs>
-				Element itemTags = new Element("Items");//<Board><Room><Items>
-				
 				for(int j=0; j<board.getBoard()[0].length; j++){
+					
+					Element roomTags = new Element("Room");//<Board><Room>
+					Element obsTags = new Element("Obstacles");//<Board><Room><Obstacles>
+					Element npcTags = new Element("Npcs");//<Board><Room><Npcs>
+					Element itemTags = new Element("Items");//<Board><Room><Items>
+					
 					Room current = board.getRoomFromCoords(i, j);
 					if(current == null){
 						continue;
@@ -334,14 +337,15 @@ public class XMLParser {
 					obsTags.addContent(saveObstacles(current));
 					npcTags.addContent(saveNpcs(current));
 					itemTags.addContent(saveItems(current));
+					
+					if(roomTags.getChildren().isEmpty()){
+						continue;
+					}
+					roomTags.addContent(obsTags);
+					roomTags.addContent(npcTags);
+					roomTags.addContent(itemTags);
+					boardTag.addContent(roomTags);
 				}
-				if(roomTags.getChildren().isEmpty()){
-					continue;
-				}
-				roomTags.addContent(obsTags);
-				roomTags.addContent(npcTags);
-				roomTags.addContent(itemTags);
-				boardTag.addContent(roomTags);
 			}
 			
 			Element offItems = new Element("Offitems");
