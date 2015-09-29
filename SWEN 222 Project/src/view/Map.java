@@ -1,16 +1,24 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+
 import game.Board;
 import game.Player;
 import game.Room;
+import game.obstacles.Block;
+import game.obstacles.Breakable;
 import game.obstacles.Obstacle;
 
 /**
@@ -25,7 +33,7 @@ public class Map extends JComponent {
 	private Image mapImage;
 	private Board board;
 	private static final int BOARD_LENGTH = 5;
-	
+
 	public Map(Player player, Board board) {
 		this.player = player;
 		this.board = board;
@@ -60,7 +68,7 @@ public class Map extends JComponent {
 			}
 		}
 	}
-
+	
 	/**
 	 * This method should draw to the map image a single room.
 	 * @param graphics
@@ -78,6 +86,7 @@ public class Map extends JComponent {
 				if (room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5] != null) {
 					Obstacle obstacle = room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5];
 					//draw each obstacle differently
+					//TODO: Add images
 					switch (obstacle.getType()) {
 					case "brokenblock":
 						graphics.setColor(new Color(143, 143, 143));
@@ -108,46 +117,42 @@ public class Map extends JComponent {
 		}
 
 		//draw in walls or doors in y direction
-		for (int i = yCoord; i <= yCoord + 50; ++i) {
-			for (int j = xCoord; j <= xCoord + 50; j += 50) {
+		for (int i = xCoord; i <= xCoord + 50; ++i) {
+			for (int j = yCoord; j <= yCoord + 50; j += 50) {
 				//check for north door
-				if (room.getNorth() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
-						&& j == xCoord) {
+				if (room.getNorth() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+						&& j == yCoord) {
 					//if we are here, then a north door is present, so nothing will be
 					//drawn to show the gap in the wall
-					//System.out.println("North door");
 				}
-				//check for west door
-				else if (room.getSouth() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
-						&& j == xCoord + 50) {
+				//check for south door
+				else if (room.getSouth() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+						&& j == yCoord + 50) {
 					//if we are here, then a south door is present, so nothing will be
 					//drawn to show the gap in the wall
-					//System.out.println("South door");
 				}
 				else {
 					//safe to draw the wall
 					graphics.setColor(new Color(0,100,0));
-					graphics.fillRect(i, j, 1, 1);
+					graphics.fillRect(j, i, 1, 1);
 				}
 			}
 		}
 
 		//draw in walls or doors in x direction
-		for (int i = yCoord; i <= yCoord + 50; i += 50) {
-			for (int j = xCoord; j <= xCoord + 50; ++j) {
+		for (int j = xCoord; j <= xCoord + 50; j += 50) {
+			for (int i = yCoord; i <= yCoord + 50; ++i) {
 				//check for east door
-				if (room.getEast() != -1 && j >= (20 + xCoord) && j < (30 + xCoord)
-						&& i == yCoord) {
+				if (room.getEast() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord) {
 					//if we are here, then a east door is present, so nothing will be
 					//drawn to show the gap in the wall
-					//System.out.println("East door");
 				}
 				//check for west door
-				else if (room.getWest() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
-						&& j == yCoord + 50) {
+				else if (room.getWest() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord + 50) {
 					//if we are here, then a west door is present, so nothing will be
 					//drawn to show the gap in the wall
-					//System.out.println("West door");
 				}
 				else {
 					//safe to draw the wall
@@ -161,31 +166,32 @@ public class Map extends JComponent {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		List<Room> visitedRooms = player.getVisitedRooms();
-
-		g.drawImage(mapImage, 0, 0, null, null);
 
 		//put up a black background so that rooms that aren't drawn
 		//are shown to be unexplored
-		boolean drawOnlyIfDiscovered = true; //for testing
-		if (drawOnlyIfDiscovered) {
-			//draw black onto each room that has not been visited yet
-			for (int i = 0; i < BOARD_LENGTH; ++i) {
-				for (int j = 0; j < BOARD_LENGTH; ++j) {
-					//check if this room has been visited before
-					boolean visitedRoom = false;
-					for (Room room: visitedRooms) {
-						if (room.getBoardPos().equals(new Point(i,j))) {
-							//been here before
-							visitedRoom = true;
-						}
+		//List<Room> rooms = player.getVisitedRooms();
+		List<Room> visitedRooms = new ArrayList<Room>();
+		visitedRooms.add(board.getBoard()[1][2]);
+		visitedRooms.add(board.getBoard()[2][2]);
+		
+		g.drawImage(mapImage, 0, 0, null, null);
+
+		//draw black onto each room that has not been visited yet
+		for (int i = 0; i < BOARD_LENGTH; ++i) {
+			for (int j = 0; j < BOARD_LENGTH; ++j) {
+				//check if this room has been visited before
+				boolean visitedRoom = false;
+				for (Room room: visitedRooms) {
+					if (room.getBoardPos().equals(new Point(i,j))) {
+						//been here before
+						visitedRoom = true;
 					}
-					if (!visitedRoom) {
-						//haven't visited this room
-						//so user shouldn't be able to see it
-						g.setColor(Color.DARK_GRAY);
-						g.fillRect(j*50, i*50, 50, 50);
-					}
+				}
+				if (!visitedRoom) {
+					//haven't visited this room
+					//so user shouldn't be able to see it
+					g.setColor(Color.DARK_GRAY);
+					g.fillRect(j*50, i*50, 50, 50);
 				}
 			}
 		}

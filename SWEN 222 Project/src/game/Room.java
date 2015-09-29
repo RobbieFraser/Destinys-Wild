@@ -61,11 +61,11 @@ public class Room {
 		obstacles[x][y] = obs;
 	}
 
-	public void addNpcs(NPC npc, int x, int y){
+	public void addNpc(NPC npc, int x, int y){
 		npcs[x][y] = npc;
 	}
 
-	public void addItems(Item item, int x, int y){
+	public void addItem(Item item, int x, int y){
 		items[x][y] = item;
 	}
 

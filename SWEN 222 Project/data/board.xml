@@ -74,6 +74,7 @@
       		<Col>7</Col>
     	</Obstacle>
     </Obstacles>
+    <Npcs />
     <Items>
       <Item>
     	<Itemtype>health</Itemtype>

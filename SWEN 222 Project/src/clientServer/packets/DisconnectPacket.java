@@ -28,7 +28,7 @@ private String userName;
 
 	@Override
 	public byte[] getData() {
-		return ("01" + this.userName).getBytes();
+		return ("00" + this.userName).getBytes();
 	}
 
 	public String getUserName() {

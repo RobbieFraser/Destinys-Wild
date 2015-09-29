@@ -5,10 +5,8 @@ import java.awt.Graphics;
 
 public class EditorTileSelect {
 	private EditorTile tile;
-	private String objectType;
 	
-	public EditorTileSelect(EditorTile tile, String objectType){
-		this.objectType = objectType;
+	public EditorTileSelect(EditorTile tile){
 		this.tile = tile;
 	}
 	
@@ -18,10 +16,6 @@ public class EditorTileSelect {
 	
 	public void drawDot(Graphics g, int x, int y, int size){
 		tile.drawDot(g, x, y, size);
-	}
-	
-	public String getObjectType(){
-		return objectType;
 	}
 	
 	public String getType() {

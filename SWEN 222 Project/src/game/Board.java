@@ -90,20 +90,9 @@ public class Board {
 		return players;
 	}
 
-	public void addPlayer(Player player){
+	public void addPlayers(Player player){
 		players.add(player);
 	}
 	
-	public void removePlayer(Player player){
-		players.remove(player);
-	}
-	
-	public void removePlayer(String name){
-		for(Player player : this.players){
-			if(player.getName().equalsIgnoreCase(name)){
-				players.remove(player);
-			}
-		}
-	}
 
 }
