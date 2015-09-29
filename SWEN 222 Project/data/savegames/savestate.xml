@@ -25,7 +25,7 @@
         <Row>1</Row>
         <Col>3</Col>
         <Health>10</Health>
-        <Speed>0</Speed>
+        <Score>0</Score>
       </Item>
     </Items>
   </Room>
@@ -83,7 +83,7 @@
         <Row>1</Row>
         <Col>3</Col>
         <Health>10</Health>
-        <Speed>0</Speed>
+        <Score>0</Score>
       </Item>
     </Items>
   </Room>

@@ -27,6 +27,7 @@ import org.jdom2.output.XMLOutputter;
 
 public class XMLParser {
 
+	private static String LOCAL_SAVESTATE = "data/savegames/savestate.xml";
 	/**
 	 * Initialises the board from the XML file
 	 */
@@ -67,7 +68,7 @@ public class XMLParser {
 
 		}
 		catch (FileNotFoundException e){
-			if (filename.equals("data/savegams/savestate.xml")){
+			if (filename.equals(LOCAL_SAVESTATE)){
 				System.out.println("No current save state found. Loading original board");
 				return initialiseBoard("data/board.xml");
 			}
@@ -227,8 +228,8 @@ public class XMLParser {
 	 * Loads save states for the current game
 	 */
 	public static void loadGame(File playerFile){
-		System.out.println("Loading board from savestate.xml");
-		DestinysWild.setBoard(initialiseBoard("data/savegams/savestate.xml"));
+		System.out.println("Loading board from " + LOCAL_SAVESTATE);
+		DestinysWild.setBoard(initialiseBoard(LOCAL_SAVESTATE));
 		DestinysWild.getBoard().printBoard();
 		System.out.println("Board Loaded");
 		DestinysWild.getBoard().addOffBoardItem(new Health("apple", new Point(0,0), 10, 10));
@@ -297,18 +298,16 @@ public class XMLParser {
 	 * Saves the current game board and player to XML files
 	 */
 	public static void saveGame(){
-		String SAVE_FILE = "savestate.xml"; //This is the filename (NOT FILE PATH) that will be used and overwritten each time the board is saved
+		String SAVE_FILE = "savegames/savestate.xml"; //This is the FILE PATH (Not Including 'data/') that will be used and overwritten each time the board is saved
 		System.out.println("Saving player");
 		savePlayer(); //save the player info separately
 		System.out.println("Player saved");
 		System.out.println("Saving board state to " + SAVE_FILE);
-		saveBoard(SAVE_FILE);
+		Board board = DestinysWild.getBoard();
+		saveBoard(SAVE_FILE, board);
 	}
 	
-	public static void saveBoard(String filename){
-		Board board = DestinysWild.getBoard();
-		
-		
+	public static void saveBoard(String filename, Board board){
 		try{
 			Element boardTag = new Element("Board"); //Root element name
 			Document doc = new Document(boardTag);
@@ -353,7 +352,7 @@ public class XMLParser {
 			
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getPrettyFormat());
-			xmlOutput.output(doc, new FileWriter("data/savegames/" + filename));
+			xmlOutput.output(doc, new FileWriter("data/" + filename));
 			
 		}
 		catch(Exception e){
@@ -416,7 +415,7 @@ public class XMLParser {
 					item.addContent(new Element("Row").setText(String.valueOf(currItem.getCoords().x)));
 					item.addContent(new Element("Col").setText(String.valueOf(currItem.getCoords().y)));
 					item.addContent(new Element("Health").setText(String.valueOf(currItem.getHealth())));
-					item.addContent(new Element("Speed").setText(String.valueOf(currItem.getScore())));
+					item.addContent(new Element("Score").setText(String.valueOf(currItem.getScore())));
 					itemList.add(item);
 				}
 			}
