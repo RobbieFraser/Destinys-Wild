@@ -80,6 +80,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	//The main Board object that everything is run off of
 	private Board board;
 	
+	private int id = 2;
+	
 	//The TilePicker object to help with drawing the board and getting colours
 	private TilePicker tp = new TilePicker();
 	
@@ -438,7 +440,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	
 	public void selectRoom(){
 		if(board.getBoard()[hoverMapY][hoverMapX] == null){
-			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, 99, new Point(hoverMapX, hoverMapY));
+			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, id, new Point(hoverMapX, hoverMapY));
+			
+			id++;
 		}
 		curRoom = board.getBoard()[hoverMapY][hoverMapX];
 		roomX = (int)curRoom.getBoardPos().getX();
@@ -448,6 +452,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(onBoard){
+			if(hoverX == 0 && hoverY == 0){
+				XMLParser.saveBoard("test.xml", board);
+			}
 			createTile();
 		}
 		if(onSelect){
