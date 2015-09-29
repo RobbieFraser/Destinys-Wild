@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import clientServer.packets.LoginPacket;
+import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
 import clientServer.packets.Packet.PacketTypes;
 
@@ -74,8 +75,15 @@ public class GameClient extends Thread {
 			break;
 		case DISCONNECT:
 			break;
+		case MOVE:
+			packet = new MovePacket(data);
+			handlePacket((MovePacket) packet);
 		}
 
+	}
+
+	public void handlePacket(MovePacket packet) {
+		
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
