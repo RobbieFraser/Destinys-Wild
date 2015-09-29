@@ -8,16 +8,23 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import game.Board;
 import game.Room;
+import game.XMLParser;
+import game.items.Health;
 import game.items.Item;
+import game.items.Key;
+import game.items.Score;
+import game.npcs.EnemyStill;
+import game.npcs.EnemyWalker;
+import game.npcs.FriendlyStill;
 import game.npcs.NPC;
 import game.obstacles.Block;
+import game.obstacles.Breakable;
 import game.obstacles.Obstacle;
 
 public class LevelEditorPanel extends JPanel implements MouseListener, MouseMotionListener{
@@ -47,12 +54,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private String full = "stoneblock";
 	private Color color = new Color(194, 194, 194);
 	private Color color2 = new Color(143, 143, 143);
+	private String objectType = "Block"; //What kind of object the currently selected tile is
 	
 	//The tiles on the current room
 	private EditorTile[][] tiles = new EditorTile[10][10];
 	
 	//The list of tiles to select from
-	private List<EditorTileSelect> selects = new ArrayList<EditorTileSelect>();
+	private List<EditorTileSelect> selects;
 	
 	private boolean onBoard = false; //Mouse is on the board
 	private boolean onSelect = false; //Mouse is on the Select list
@@ -72,7 +80,11 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	//The main Board object that everything is run off of
 	private Board board;
 	
+	//The TilePicker object to help with drawing the board and getting colours
+	private TilePicker tp = new TilePicker();
+	
 	public LevelEditorPanel(Board board){
+		selects = tp.getSelects();
 		this.board = board;
 		//Make the editor listen for mouse inputs
 		addMouseListener(this);
@@ -80,19 +92,6 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		addMouseMotionListener(this);
 		//Add all the different tile types to the select list
 		curRoom = board.getBoard()[roomX][roomY];
-		addSelects();
-	}
-	
-	/*
-	 * Add all selectable tiles to the select list
-	 */
-	public void addSelects(){
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "stone", "stoneblock", new Color(194, 194, 194), new Color(143, 143, 143))));
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", "brokenstone1", new Color(194, 194, 194), new Color(143, 143, 143))));
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", "mossyStone1", new Color(194, 194, 194), new Color(25, 123, 48))));
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", "coin", new Color(255, 215, 0), new Color(205, 173, 0))));
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Water", "water", new Color(105, 232, 255), new Color(25, 152, 255))));
-		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Apple", "apple", new Color(255, 59, 59), new Color(156, 38, 38))));
 	}
 	
 	protected void paintComponent(Graphics g){
@@ -117,25 +116,28 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
-					for(EditorTileSelect t : selects){
-						if(t.getFull().equals(obs[row][col].getType())){
-							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-						}
-					}
+//					for(EditorTileSelect t : selects){
+//						if(t.getFull().equals(obs[row][col].getType())){
+//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
+//						}
+//					}
+					tp.getTile(obs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 				if(items[row][col] != null){
-					for(EditorTileSelect t : selects){
-						if(t.getFull().equals(items[row][col].getType())){
-							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-						}
-					}
+//					for(EditorTileSelect t : selects){
+//						if(t.getFull().equals(items[row][col].getType())){
+//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
+//						}
+//					}
+					tp.getTile(items[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 				if(npcs[row][col] != null){
-					for(EditorTileSelect t : selects){
-						if(t.getFull().equals(npcs[row][col].getType())){
-							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-						}
-					}
+//					for(EditorTileSelect t : selects){
+//						if(t.getFull().equals(npcs[row][col].getType())){
+//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
+//						}
+//					}
+					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 			}
 		}
@@ -390,7 +392,33 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Add a tile to the tiles array, with the location of the mouse
 	 */
 	public void createTile(){
-		curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
+		switch(objectType){
+			case "Block":
+				curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
+				break;
+			case "Breakable":
+				curRoom.getObstacles()[hoverY][hoverX] = new Breakable(full, new Point(hoverY, hoverX));
+				break;
+			case "Health":
+				curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), 10, 99);
+				break;
+			case "Score":
+				curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), 10, 99);
+				break;
+			case "Key":
+				curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
+				break;
+			case "EnemyStill":
+				curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
+				break;
+			case "EnemyWalker":
+				curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
+				break;
+			case "FriendlyStill":
+				curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
+				break;
+		}
+		//curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
 		//tiles[hoverX][hoverY] = new EditorTile(hoverX, hoverY, type, full, color, color2);
 		curRoom.printRoom();
 		board.printBoard();
@@ -405,6 +433,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		full = selects.get(selectY).getFull();
 		color = selects.get(selectY).getColor();
 		color2 = selects.get(selectY).getColor2();
+		objectType = selects.get(selectY).getObjectType();
 	}
 	
 	public void selectRoom(){
