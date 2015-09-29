@@ -5,8 +5,8 @@ import clientServer.GameServer;
 
 public class MovePacket extends Packet {
 private String userName;
-private double x;
-private double y;
+private int x;
+private int y;
 	
 	public MovePacket(byte[] data) {
 		super(02);
@@ -16,7 +16,7 @@ private double y;
 		this.y = Integer.parseInt(dataArray[2]);
 	}
 
-	public MovePacket(String userName, double x, double y) {
+	public MovePacket(String userName, int x, int y) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
