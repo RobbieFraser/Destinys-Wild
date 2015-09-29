@@ -33,8 +33,8 @@ import menu.MenuInterface;
 public class GameInterface implements MouseListener {
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
-	private static final int CYCLE_LEFT = -1;
-	private static final int CYCLE_RIGHT = 0;
+	private static final int CYCLE_LEFT = -2;
+	private static final int CYCLE_RIGHT = -1;
 	private JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
@@ -145,20 +145,12 @@ public class GameInterface implements MouseListener {
 		//add key listener
 		frame.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent arg0) {
-				// TODO Auto-generated method stub
 				handleKeyPress(arg0);
-
 			}
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
+			public void keyReleased(KeyEvent arg0) {}
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
+			public void keyTyped(KeyEvent arg0) {}
 		});
 
 		frame.getContentPane().setLayout(null);
@@ -318,7 +310,7 @@ public class GameInterface implements MouseListener {
 	 * an inventory slot at the given index the inventory panel. 
 	 */
 	private void updateSelectedSlot(int index) {
-		if (index < -1 || index > 11) {
+		if (index < -2 || index > 11) {
 			throw new Error("Invalid index");
 		}
 
@@ -372,6 +364,7 @@ public class GameInterface implements MouseListener {
 	 * This method should return the item in the inventory
 	 * that is currently "selected". If an empty slot is
 	 * currently selected, null is returned.
+	 * @return Name of currently selected item
 	 */
 	public String getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
