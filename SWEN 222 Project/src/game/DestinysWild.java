@@ -25,12 +25,8 @@ public class DestinysWild extends Canvas implements Runnable{
 	private Thread thread;
 
 	public DestinysWild() {
-		board = XMLParser.initialiseBoard("data/board.xml");
-		//testPlayerSave();
-		start();
-		//testBoardInitialisation();
-		//testLoadGame();
-		//testSaveGame();
+		//board = XMLParser.initialiseBoard("data/board.xml");
+		//start();
 
 	}
 	
@@ -43,7 +39,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 
 	public void testSaveGame(){
-		//initialiseTestPlayer();
 		XMLParser.saveGame();
 	}
 	
@@ -68,7 +63,6 @@ public class DestinysWild extends Canvas implements Runnable{
 	}
 	
 	public void testPlayerSave(){
-		//initialiseTestPlayer();
 		XMLParser.savePlayer();
 	}
 
@@ -174,7 +168,7 @@ public class DestinysWild extends Canvas implements Runnable{
 
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
-		//game.testLoadGame();
-		//game.testSaveGame();
+		game.testLoadGame();
+		game.testSaveGame();
 	}
 }

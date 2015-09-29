@@ -79,7 +79,7 @@
       <Item>
     	<Itemtype>health</Itemtype>
     	<Type>apple</Type>
-    	<Id>11</Id> <!-- 1 = item id, 0 = room id -->
+    	<Id>11</Id> <!-- 1 = item id, 1 = room id -->
     	<Row>1</Row>
     	<Col>3</Col>
     	<Health>10</Health>
