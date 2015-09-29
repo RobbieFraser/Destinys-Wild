@@ -308,7 +308,7 @@ public class GameInterface implements MouseListener {
 			//User really wants to exit
 			//Send a disconnection packet to the client
 			DisconnectPacket disconnect = new DisconnectPacket(this.player.getName());
-			disconnect.writeData(this.game.getClient());
+		//	disconnect.writeData(this.game.getClient());
 			System.exit(0);
 		}
 	}
@@ -427,28 +427,24 @@ public class GameInterface implements MouseListener {
 			player.setCoords(new Point(currentCoord.x - 1,currentCoord.y));
 			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().getX(),
 						player.getCoords().getY());
-			upPacket.writeData(game.getClient());
 			break;
 		case KeyEvent.VK_A:			
 			//left one square
 			player.setCoords(new Point(currentCoord.x ,currentCoord.y - 1));
 			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().getX(),
 					player.getCoords().getY());
-			leftPacket.writeData(game.getClient());
 			break;
 		case KeyEvent.VK_S:
 			//moved down one
 			player.setCoords(new Point(currentCoord.x + 1,currentCoord.y));
 			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().getX(),
 					player.getCoords().getY());
-			downPacket.writeData(game.getClient());
 			break;
 		case KeyEvent.VK_D:
 			//moved right one
 			player.setCoords(new Point(currentCoord.x,currentCoord.y + 1));
 			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().getX(),
-					player.getCoords().getY());
-			rightPacket.writeData(game.getClient());
+					player.getCoords().getY());;
 			break;
 		case KeyEvent.VK_MINUS:
 			//user wants to select the 11th slot
