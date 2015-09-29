@@ -4,7 +4,7 @@ import clientServer.GameClient;
 import clientServer.GameServer;
 
 public class InteractionPacket extends Packet {
-	private String userName;
+private String userName;
 	
 	public InteractionPacket(byte[] data) {
 		super(03);
