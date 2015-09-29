@@ -2,7 +2,6 @@ package Renderer;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,11 +15,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import game.Board;
+import game.Player;
 import game.Room;
 
 public class GameImagePanel extends JPanel implements MouseListener, KeyListener {
 	
 	private Board board; //The main Board object given from the main Game class
+	private Player player;
 	private Point curRoomCoords = new Point(2,2); //Temporary?
 	private Room curRoom; //The current Room Object
 	
@@ -65,6 +66,19 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		blue = 255;
 		this.setBackground(new Color(red, green, blue));
 		this.board = board;
+		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
+		setDefault();
+		addMouseListener(this);
+		//waterTest();
+	}
+	
+	public GameImagePanel(Board board, Player player){
+		red = 120;
+		green = 201;
+		blue = 255;
+		this.setBackground(new Color(red, green, blue));
+		this.board = board;
+		this.player = player;
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
 		setDefault();
 		addMouseListener(this);
@@ -149,6 +163,11 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			for(int j = 9; j >= 0; j--){
 				if(curRoom.getObstacles()[i][j] != null){
 					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+				}
+				if(player != null){
+					if(player.getCoords().equals(new Point(i, j))){
+						
+					}
 				}
 			}
 		}
