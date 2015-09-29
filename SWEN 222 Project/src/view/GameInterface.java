@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
 import clientServer.packets.DisconnectPacket;
 import Renderer.GameImagePanel;
 import game.Board;
@@ -34,6 +36,8 @@ import menu.MenuInterface;
 public class GameInterface implements MouseListener {
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
+	private static final int CYCLE_LEFT = -1;
+	private static final int CYCLE_RIGHT = 0;
 	private JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
@@ -49,11 +53,9 @@ public class GameInterface implements MouseListener {
 		updateUI();
 
 		//TODO: Add mouse listener
-		//TODO: Only draw an image if its just been added
-		//TODO: Add support for Spacebar / Interact Item
+		//TODO: Improve support for Space bar press
 		//TODO: Add support for P / Pause
 		//TODO: Add support for L / R Arrows keys - Change perspective
-		//TODO: Add support for ESC - Escape to menu
 	}
 
 	/**
@@ -228,15 +230,15 @@ public class GameInterface implements MouseListener {
 		
 		//update the panel description (hover over text)
 		if (type.equals("toolBox")) {
-			if ((MAX_FOOD +index) == 9) {
+			if (index == 9) {
 				//10th slot
 				inventoryLabel.setToolTipText(imageName+" - press 0 to select.");
-			} else if ((MAX_FOOD +index) == 10) {
+			} else if (index == 10) {
 				//11th slot
 				inventoryLabel.setToolTipText(imageName+" - press - to select.");
 			} else {
 				//6th - 9th slot
-				inventoryLabel.setToolTipText(imageName+" - press "+(MAX_FOOD +index+1)+" to select.");
+				inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
 			}
 		} else if (type.equals("keyBox")) {
 			//12th slot
@@ -315,39 +317,101 @@ public class GameInterface implements MouseListener {
 	 * an inventory slot at the given index the inventory panel. 
 	 */
 	private void updateSelectedSlot(int index) {
-		if (index < 0 || index > 11) {
+		if (index < -1 || index > 11) {
 			throw new Error("Invalid index");
 		}
 
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
+		int indexOfCurrentSelectedItem = 0;
 		//first, we need to remove the blue border from the previous selected item
 		for (int i = 0; i < 12; ++i) {
 			//number of slots is small, so we can just iterate through them all
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
+			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
+				//found currently selected item
+				indexOfCurrentSelectedItem = i;
+			}
 			tempLabel.setBorder(BorderFactory.createEmptyBorder());
+		}
+		//selected border set up
+		Border selectedBorder = BorderFactory.createLineBorder(Color.BLUE, 4);
+		JLabel selectedLabel = null;
+		
+		if (index == CYCLE_LEFT) {
+			//check for special case, have to loop around
+			if (indexOfCurrentSelectedItem == 0) {
+				selectedLabel = (JLabel) inventoryPanel.getComponent(11);
+			} else {
+				//go to previous slot
+				selectedLabel = (JLabel) inventoryPanel.getComponent(indexOfCurrentSelectedItem - 1);
+			}
+		} else if (index == CYCLE_RIGHT) {
+			//check for special case, have to loop around
+			if (indexOfCurrentSelectedItem == 11) {
+				selectedLabel = (JLabel) inventoryPanel.getComponent(0);
+			} else {
+				//go to previous slot
+				selectedLabel = (JLabel) inventoryPanel.getComponent(indexOfCurrentSelectedItem + 1);
+			}
+		} else {
+			//not cycling through
+			selectedLabel = (JLabel) inventoryPanel.getComponent(index);
 		}
 
 		//now we draw the selected border on the correct choice
-		JLabel selectedLabel = (JLabel) inventoryPanel.getComponent(index);
-		Border selectedBorder = BorderFactory.createLineBorder(Color.BLUE, 4);
-		selectedLabel.setBorder(selectedBorder);	
-
+		selectedLabel.setBorder(selectedBorder);
+		
 		//redraw interface
 		frame.revalidate();
 		frame.repaint();
 	}
 
+	/**
+	 * This method should return the item in the inventory
+	 * that is currently "selected". If an empty slot is
+	 * currently selected, null is returned.
+	 */
+	public String getSelectedItem() {
+		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
+
+		for (int i = 0; i < 12; ++i) {
+			//number of slots is small, so we can just iterate through them all
+			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
+			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
+				//this label must contain the selected item
+				String text = tempLabel.getToolTipText();
+				if (text.contains("slot")) {
+					//empty slot
+					return null;
+				} else if (text.contains("Icon")) {
+					//split on the word Icon
+					String[] words = text.split("Icon");
+					return words[0];
+				} else {
+					//return first word
+					return text.split(" ")[0];
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * This method should be called when the user has pressed
+	 * a key. If the key they have pressed is relevant to the
+	 * game, then this method should carry out that keys action.
+	 * Otherwise, the function is exited.
+	 * @param arg0 - Keyevent of the keypress
+	 */
 	private void handleKeyPress(KeyEvent arg0) {
-		int x, y;
 		int keyCode = arg0.getKeyCode();
 		Point currentCoord = player.getCoords();
-		//System.out.println("Current coordinates: "+currentCoord.toString());
 		//handle number presses
 		if (48 <= keyCode && keyCode <= 57) {
 			//user has pressed a number key
 			if (keyCode == 48) {
-				//0 is a special case, this corresponds to 10
+				//0 is a special case, this corresponds to 10th slot
 				updateSelectedSlot(9);
 			} else {
 				//1-9
@@ -357,33 +421,53 @@ public class GameInterface implements MouseListener {
 
 		switch (keyCode) {
 		case KeyEvent.VK_W:
-			x = currentCoord.x - 1; //moved up one
-			y = currentCoord.y; 
-			player.setCoords(new Point(x,y));
+			//up one square
+			player.setCoords(new Point(currentCoord.x - 1,currentCoord.y));
 			break;
 		case KeyEvent.VK_A:
-			x = currentCoord.x; 
-			y = currentCoord.y - 1;//moved left one
-			player.setCoords(new Point(x,y));
+			//left one square
+			player.setCoords(new Point(currentCoord.x ,currentCoord.y - 1));
 			break;
 		case KeyEvent.VK_S:
-			x = currentCoord.x + 1;  //moved down one
-			y = currentCoord.y;
-			player.setCoords(new Point(x,y));
+			//moved down one
+			player.setCoords(new Point(currentCoord.x + 1,currentCoord.y));
 			break;
 		case KeyEvent.VK_D:
-			x = currentCoord.x;
-			y = currentCoord.y + 1; //moved right one
-			player.setCoords(new Point(x,y));
+			//moved right one
+			player.setCoords(new Point(currentCoord.x,currentCoord.y + 1));
 			break;
 		case KeyEvent.VK_MINUS:
+			//user wants to select the 11th slot
 			updateSelectedSlot(10);
 			break;
+			//user wants to select the 12th slot
 		case KeyEvent.VK_EQUALS:
 			updateSelectedSlot(11);
 			break;
 		case KeyEvent.VK_SPACE:
-			JOptionPane.showMessageDialog(frame, "Space bar pressed.");
+			String selectedItemName = getSelectedItem();
+			if (selectedItemName != null) {
+				JOptionPane.showMessageDialog(frame, "User wants to interact with their "
+						+ ""+ selectedItemName+".");
+			} else {
+				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
+			}
+			break;
+		case KeyEvent.VK_ESCAPE:
+			//check if the user wants to escape the game
+			escapeGame();
+			break;
+		case KeyEvent.VK_P:
+			//user wants to pause the game.
+			//JOptionPane.showMessageDialog(frame, "The game has been paused.");
+			JOptionPane.showInputDialog(frame, "The Game has been Paused.", "PAUSED", 1,
+					null, new Object[]{"Continue", "Exit and Save"}, "Continue");
+			break;
+		case KeyEvent.VK_Z:
+			updateSelectedSlot(CYCLE_LEFT);
+			break;
+		case KeyEvent.VK_X:
+			updateSelectedSlot(CYCLE_RIGHT);
 			break;
 		}
 		//update the interface (in particular, the mini map)
