@@ -62,6 +62,7 @@ public class XMLParser {
 				initialiseObstacles(room, currentRoom);
 				initialiseNPCS(room, currentRoom);
 				initialiseOnBoardItems(room, currentRoom);
+				currentRoom.initialiseTiles();
 
 				System.out.println("Loading room with ID: " + id);
 				board.addRoom(currentRoom, roomRow, roomCol);
@@ -287,6 +288,7 @@ public class XMLParser {
 			player.setCurrentRoom(currentRoom);
 			player.setScore(score);
 			player.setSpeed(speed);
+			player.setCurrentTile(player.calcTile());
 			
 			DestinysWild.setPlayer(player);
 		}

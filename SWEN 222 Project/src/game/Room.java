@@ -15,9 +15,9 @@ public class Room {
 	private int Id;
 	private Point boardPos;
 	private Tile[][] tiles = new Tile[10][10];
-	private Obstacle[][] obstacles = new Obstacle[10][10];
-	private NPC[][] npcs = new NPC[obstacles.length][obstacles[0].length];
-	private Item[][] items = new Item[obstacles.length][obstacles[0].length];
+	private Obstacle[][] obstacles = new Obstacle[tiles.length][tiles[0].length];
+	private NPC[][] npcs = new NPC[tiles.length][tiles[0].length];
+	private Item[][] items = new Item[tiles.length][tiles[0].length];
 
 	/**
 	 * Constructor for Room. Each room has a position on the board, a unique
@@ -33,9 +33,13 @@ public class Room {
 	}
 
 	public Room(){
-
+		
 	}
 
+	/**
+	 * Prints to the console a basic text based representation
+	 * of this room
+	 */
 	public void printRoom(){
 		for (int i = 0; i < obstacles.length; i++) {
 			System.out.print("| ");
@@ -57,6 +61,53 @@ public class Room {
 		}
 	}
 
+	
+	/**
+	 * Initialises the Tile[][] array with Tile objects
+	 */
+	public void initialiseTiles(){
+		for(int row=0; row<tiles.length; row++){
+			for(int col=0; col<tiles[0].length; col++){
+				NPC tempNpc = npcs[row][col];
+				Item tempItem = items[row][col];
+				Obstacle tempObs = obstacles[row][col];
+				boolean occupied = false;
+				if(tempNpc != null || tempItem != null || tempObs != null){
+					occupied = true;
+				}
+				tiles[row][col] = new Tile(new Point(), new Point(row, col), this, occupied); //TODO get window coords
+			}
+		}
+		
+	}
+	
+	/**
+	 * Gets the occupant of a tile, or null if there isn't one
+	 * @param tile The tile that the occupant is on 
+	 * @return An OBJECT type which will either be NPC, Item, Obstacle or null
+	 */
+	public Object getTileOccupant(Tile tile){
+		for(int row=0; row<tiles.length; row++){
+			for(int col=0; col<tiles[0].length; col++){
+				if(obstacles[row][col] != null){
+					return obstacles[row][col];
+				}
+				else if(npcs[row][col] != null){
+					return npcs[row][col];
+				}
+				else if(items[row][col] != null){
+					return items[row][col];
+				}
+			}
+		}
+		//shouldn't happen
+		return null;
+	}
+	
+	public Point getTileRoomCoords(Tile tile){
+		return new Point();
+	}
+	
 	public void addObstacle(Obstacle obs, int x, int y){
 		obstacles[x][y] = obs;
 	}
@@ -93,7 +144,7 @@ public class Room {
 		this.boardPos.setLocation(boardPos);
 	}
 
-	public Tile[][] getTile() {
+	public Tile[][] getTiles() {
 		return tiles;
 	}
 

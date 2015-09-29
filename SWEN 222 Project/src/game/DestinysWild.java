@@ -1,28 +1,19 @@
 package game;
 
-import java.awt.Canvas;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import clientServer.GameClient;
-import clientServer.GameServer;
-import clientServer.packets.DisconnectPacket;
-import clientServer.packets.LoginPacket;
 import game.items.Health;
 import game.items.Item;
 
-public class DestinysWild extends Canvas implements Runnable{
+public class DestinysWild{
 	private static Board board;
 	private static Player currentPlayer;
-	private Thread thread;
 
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
-
 	}
 
 	public void testSaveGame(){
@@ -81,11 +72,5 @@ public class DestinysWild extends Canvas implements Runnable{
 		DestinysWild game = new DestinysWild();
 		game.testLoadGame();
 		game.testSaveGame();
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
 	}
 }
