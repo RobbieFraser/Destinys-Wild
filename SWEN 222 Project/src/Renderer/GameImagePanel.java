@@ -129,6 +129,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	
 	@Override
     protected void paintComponent(Graphics g) {
+		curRoom = player.getCurrentRoom();
+		curRoomCoords = curRoom.getBoardPos();
         super.paintComponent(g);
 //        drawNorthWall(g, "treesNorth1");
         drawGround(g);
