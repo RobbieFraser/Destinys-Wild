@@ -21,7 +21,7 @@ import game.Room;
 public class GameImagePanel extends JPanel implements MouseListener, KeyListener {
 	
 	private Board board; //The main Board object given from the main Game class
-	private Player player;
+	private Player player; //The player that the user controls
 	private Point curRoomCoords = new Point(2,2); //Temporary?
 	private Room curRoom; //The current Room Object
 	
@@ -72,8 +72,10 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		this.setBackground(new Color(red, green, blue));
 		this.board = board;
 		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
+		player = new Player("Matt", new Point(546, 287), curRoom);
 		setDefault();
 		addMouseListener(this);
+		addKeyListener(this);
 		//waterTest();
 	}
 	
@@ -170,11 +172,24 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
 				}
 				if(player != null){
-					if(player.getCoords().equals(new Point(i, j))){
-						
+					if(player.calcTile().getRoomCoords().equals(new Point(i, j))){
+						System.out.println(i + " | " + j);
+						drawPlayer(g);
 					}
 				}
 			}
+		}
+	}
+	
+	public void drawPlayer(Graphics g){
+		int newX = (int)player.getCoords().getX() - 12;
+		int newY = (int)player.getCoords().getY() - 80;
+		BufferedImage character;
+		try {
+			character = ImageIO.read(new File("data/images/personIdleSouth.png"));
+			g.drawImage(character, newX, newY, null);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -272,6 +287,23 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			// can actually do at this point, except to abort the game.
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
+	}
+	
+	public void moveRight(){
+		player.setCoords((int)player.getCoords().getX()+player.getSpeed(), (int)player.getCoords().getY());
+		this.repaint();
+	}
+	public void moveLeft(){
+		player.setCoords((int)player.getCoords().getX()-player.getSpeed(), (int)player.getCoords().getY());
+		this.repaint();
+	}
+	public void moveUp(){
+		player.setCoords((int)player.getCoords().getX(), (int)player.getCoords().getY()-player.getSpeed());
+		this.repaint();
+	}
+	public void moveDown(){
+		player.setCoords((int)player.getCoords().getX(), (int)player.getCoords().getY()+player.getSpeed());
+		this.repaint();
 	}
 	
 	public Board getBoard(){
