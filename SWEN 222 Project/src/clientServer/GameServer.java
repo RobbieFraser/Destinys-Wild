@@ -73,10 +73,6 @@ public class GameServer extends Thread {
 			PlayerMulti pm = new PlayerMulti(
 					((LoginPacket) packet).getUserName(), point, new Room(-1,
 							-1, -1, -1, 11, new Point(4, 4)), address, port);
-			System.out.println(pm.getName());
-			System.out.println(pm.getIP());
-			System.out.println(pm.getPort());
-			System.out.println("Player creation is fine.");
 			this.addConnection(pm, (LoginPacket) packet);
 			//System.out.println("player added in theory");
 			break;
