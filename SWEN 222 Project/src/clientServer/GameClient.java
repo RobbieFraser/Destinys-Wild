@@ -46,6 +46,8 @@ public class GameClient extends Thread {
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			System.out.println("Packet created");
 			try {
+				System.out.println("Client attempting to send packet");
+				this.sendData(packet.getData());
 				System.out.println("Client attempting to receive packet");
 				this.socket.receive(packet);
 				System.out.println("Client received packet");
@@ -88,7 +90,7 @@ public class GameClient extends Thread {
 	}
 
 	public void handlePacket(MovePacket packet) {
-		
+
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
