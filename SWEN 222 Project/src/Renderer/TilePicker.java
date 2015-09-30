@@ -24,6 +24,7 @@ public class TilePicker {
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", "coin", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Water", "water", new Color(105, 232, 255), new Color(25, 152, 255)), "Block"));
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Apple", "apple", new Color(255, 59, 59), new Color(156, 38, 38)), "Health"));
+		selects.add(new EditorTileSelect(new EditorTile(99, 99, "Spike", "spike", new Color(167, 167, 167), new Color(210, 210, 210)), "EnemyStill"));
 	}
 	
 	/*

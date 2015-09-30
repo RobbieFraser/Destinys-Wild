@@ -118,27 +118,12 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
-//					for(EditorTileSelect t : selects){
-//						if(t.getFull().equals(obs[row][col].getType())){
-//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-//						}
-//					}
 					tp.getTile(obs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 				if(items[row][col] != null){
-//					for(EditorTileSelect t : selects){
-//						if(t.getFull().equals(items[row][col].getType())){
-//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-//						}
-//					}
 					tp.getTile(items[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 				if(npcs[row][col] != null){
-//					for(EditorTileSelect t : selects){
-//						if(t.getFull().equals(npcs[row][col].getType())){
-//							t.draw(g, (col*size)+drawX, (row*size)+drawY, size);
-//						}
-//					}
 					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
 			}
@@ -187,25 +172,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					for(int row = 0; row < 10; row++){
 						for(int col = 0; col < 10; col++){
 							if(obs[row][col] != null){
-								for(EditorTileSelect t : selects){
-									if(t.getFull().equals(obs[row][col].getType())){
-										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-									}
-								}
+								tp.getTile(obs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
 							if(items[row][col] != null){
-								for(EditorTileSelect t : selects){
-									if(t.getFull().equals(items[row][col].getType())){
-										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-									}
-								}
+								tp.getTile(items[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
 							if(npcs[row][col] != null){
-								for(EditorTileSelect t : selects){
-									if(t.getFull().equals(npcs[row][col].getType())){
-										t.drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-									}
-								}
+								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
 						}
 					}
@@ -440,21 +413,21 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	
 	public void selectRoom(){
 		if(board.getBoard()[hoverMapY][hoverMapX] == null){
-			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, id, new Point(hoverMapX, hoverMapY));
-			
+			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, id, new Point(hoverMapY, hoverMapX));
 			id++;
 		}
 		curRoom = board.getBoard()[hoverMapY][hoverMapX];
-		roomX = (int)curRoom.getBoardPos().getX();
-		roomY = (int)curRoom.getBoardPos().getY();
+		roomX = (int)curRoom.getBoardPos().getY();
+		roomY = (int)curRoom.getBoardPos().getX();
+	}
+	
+	public void saveBoard(){
+		XMLParser.saveBoard("test.xml", board);
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(onBoard){
-			if(hoverX == 0 && hoverY == 0){
-				XMLParser.saveBoard("test.xml", board);
-			}
 			createTile();
 		}
 		if(onSelect){

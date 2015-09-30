@@ -1,8 +1,14 @@
 package Renderer;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JToolBar;
 
 import game.Board;
 
@@ -115,6 +121,19 @@ public class TestFrame extends JFrame {
 		setFocusable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate when window is closed
 		if(editor){
+			JToolBar toolbar = new JToolBar();
+		    toolbar.setRollover(true);
+		    JButton button = new JButton("Save");
+		    //Add action listener to button
+	        button.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	            	editPanel.saveBoard();
+	            }
+	        }); 
+		    toolbar.add(button);
+		    Container contentPane = this.getContentPane();
+		    contentPane.add(toolbar, BorderLayout.NORTH);
 			addEditPanel();
 		}
 		else{

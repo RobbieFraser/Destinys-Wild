@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Board>
   <Room>
-    <Id>3</Id>
-    <Row>1</Row>
+    <Id>4</Id>
+    <Row>0</Row>
     <Col>0</Col>
     <North>-1</North>
     <East>-1</East>
@@ -15,17 +15,8 @@
         <Itemtype>health</Itemtype>
         <Type>apple</Type>
         <Id>99</Id>
-        <Row>5</Row>
-        <Col>5</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>6</Row>
-        <Col>5</Col>
+        <Row>3</Row>
+        <Col>7</Col>
         <Health>10</Health>
         <Score>0</Score>
       </Item>
@@ -37,6 +28,95 @@
         <Col>7</Col>
         <Health>10</Health>
         <Score>0</Score>
+      </Item>
+    </Items>
+  </Room>
+  <Room>
+    <Id>3</Id>
+    <Row>0</Row>
+    <Col>4</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>4</Row>
+        <Col>7</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>6</Row>
+        <Col>4</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>6</Row>
+        <Col>7</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+    </Items>
+  </Room>
+  <Room>
+    <Id>6</Id>
+    <Row>1</Row>
+    <Col>1</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>1</Row>
+        <Col>7</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>5</Row>
+        <Col>3</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>6</Row>
+        <Col>4</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>7</Row>
+        <Col>6</Col>
+        <Health>0</Health>
+        <Score>10</Score>
       </Item>
     </Items>
   </Room>
@@ -70,6 +150,61 @@
     </Items>
   </Room>
   <Room>
+    <Id>4</Id>
+    <Row>1</Row>
+    <Col>3</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items />
+  </Room>
+  <Room>
+    <Id>2</Id>
+    <Row>1</Row>
+    <Col>4</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items />
+  </Room>
+  <Room>
+    <Id>7</Id>
+    <Row>2</Row>
+    <Col>0</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>mossyStone1</Type>
+        <Row>4</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>mossyStone1</Type>
+        <Row>6</Row>
+        <Col>6</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>mossyStone1</Type>
+        <Row>7</Row>
+        <Col>4</Col>
+      </Obstacle>
+    </Obstacles>
+    <Npcs />
+    <Items />
+  </Room>
+  <Room>
     <Id>0</Id>
     <Row>2</Row>
     <Col>2</Col>
@@ -98,6 +233,14 @@
       </Obstacle>
     </Obstacles>
     <Npcs>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Row>0</Row>
+        <Col>6</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>spider</Type>
@@ -130,7 +273,88 @@
   <Room>
     <Id>2</Id>
     <Row>3</Row>
+    <Col>1</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Row>6</Row>
+        <Col>6</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+    </Npcs>
+    <Items />
+  </Room>
+  <Room>
+    <Id>5</Id>
+    <Row>3</Row>
     <Col>2</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>4</Row>
+        <Col>6</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>5</Row>
+        <Col>5</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+    </Items>
+  </Room>
+  <Room>
+    <Id>2</Id>
+    <Row>3</Row>
+    <Col>3</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Row>2</Row>
+        <Col>8</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Row>5</Row>
+        <Col>3</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+    </Npcs>
+    <Items />
+  </Room>
+  <Room>
+    <Id>3</Id>
+    <Row>4</Row>
+    <Col>0</Col>
     <North>-1</North>
     <East>-1</East>
     <South>-1</South>
@@ -138,25 +362,41 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>brokenstone1</Type>
-        <Row>3</Row>
-        <Col>6</Col>
+        <Type>stoneblock</Type>
+        <Row>1</Row>
+        <Col>1</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>brokenstone1</Type>
-        <Row>6</Row>
-        <Col>3</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>brokenstone1</Type>
-        <Row>8</Row>
-        <Col>7</Col>
+        <Type>stoneblock</Type>
+        <Row>2</Row>
+        <Col>5</Col>
       </Obstacle>
     </Obstacles>
     <Npcs />
     <Items />
+  </Room>
+  <Room>
+    <Id>2</Id>
+    <Row>4</Row>
+    <Col>4</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>9</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+    </Items>
   </Room>
   <Offitems />
 </Board>
