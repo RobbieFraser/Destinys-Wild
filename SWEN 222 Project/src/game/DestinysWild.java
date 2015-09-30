@@ -33,7 +33,7 @@ public class DestinysWild{
 		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
 		roomsV.add(room);
 
-		currentPlayer = new Player("Robbieg", new Point(500, 500), 99, room, roomsV, inv, 9999);
+		currentPlayer = new Player("Robbieg", new Point(500, 300), 99, room, roomsV, inv, 9999);
 	}
 
 	public void testLoadGame(){

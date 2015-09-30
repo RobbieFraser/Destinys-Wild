@@ -89,7 +89,7 @@ public class Player {
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
-					changeRoom();
+					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
 					setCoords(getCoords().x, getCoords().y + speed/2);
@@ -99,7 +99,7 @@ public class Player {
 			case "east":
 				setCoords(getCoords().x + speed, getCoords().y);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
-					changeRoom();
+					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
 					setCoords(getCoords().x - speed, getCoords().y);
@@ -109,7 +109,7 @@ public class Player {
 			case "south":
 				setCoords(getCoords().x, getCoords().y + speed/2);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
-					changeRoom();
+					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
 					setCoords(getCoords().x, getCoords().y - speed/2);
@@ -119,7 +119,7 @@ public class Player {
 			case "west":
 				setCoords(getCoords().x - speed, getCoords().y);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
-					changeRoom();
+					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
 					setCoords(getCoords().x + speed, getCoords().y);
@@ -145,25 +145,36 @@ public class Player {
 	
 	/**
 	 * Updates everything required upon changing room
+	 * @param previousTile the player's previous Tile 
 	 */
-	public void changeRoom(){
+	public void changeRoom(Tile previousTile){
 		currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 		if(!visitedRooms.contains(currentRoom)){
 			addCurrentRoom();
 		}
 		
-		if(coords.x == 0){
-			setCoords(9, coords.y);
+		int prevX = previousTile.getRoomCoords().x;
+		int prevY = previousTile.getRoomCoords().y;
+		
+		Point newPoint;
+		
+		if(prevX == 0){
+			newPoint = currentRoom.getTileFromRoomCoords(new Point(9, previousTile.getRoomCoords().y)).getRealCoords();
+			setCoords(newPoint.x, newPoint.y);
 		}
-		else if(coords.x == 9){
-			setCoords(0, coords.y);
+		else if(prevX == 9){
+			newPoint = currentRoom.getTileFromRoomCoords(new Point(0, previousTile.getRoomCoords().y)).getRealCoords();
+			setCoords(newPoint.x, newPoint.y);
 		}
-		else if(coords.y == 0){
-			setCoords(coords.x, 9);
+		else if(prevY == 0){
+			newPoint = currentRoom.getTileFromRoomCoords(new Point(previousTile.getRoomCoords().x, 9)).getRealCoords();
+			setCoords(newPoint.x, newPoint.y);
 		}
-		else if(coords.y == 9){
-			setCoords(coords.x, 0);
+		else if(prevY == 9){
+			newPoint = currentRoom.getTileFromRoomCoords(new Point(previousTile.getRoomCoords().x, 0)).getRealCoords();
+			setCoords(newPoint.x, newPoint.y);
 		}
+		
 		currentTile = calcTile();
 	}
 
@@ -180,7 +191,7 @@ public class Player {
 				}
 			}
 		}
-		System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
+		//System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
 		return null;
 	}
 

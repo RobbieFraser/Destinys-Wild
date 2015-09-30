@@ -107,8 +107,15 @@ public class Room {
 		return null;
 	}
 
-	public Point getTileRoomCoords(Tile tile){
-		return new Point();
+	public Tile getTileFromRoomCoords(Point tileCoords){
+		for(int row=0; row<tiles.length; row++){
+			for(int col=0; col<tiles[0].length; col++){
+				if(tiles[row][col].getRoomCoords().equals(tileCoords)){
+					return tiles[row][col];
+				}
+			}
+		}
+		return null;
 	}
 
 	public void addObstacle(Obstacle obs, int x, int y){
