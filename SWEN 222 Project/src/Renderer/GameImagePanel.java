@@ -31,13 +31,18 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	
-	private int gX = 200; //Ground x
-	private int gY = 180; //Ground y
+	private static int gX = 200; //Ground x
+	private static int gY = 180; //Ground y
 	
 	private int obX = 0; //Object x
 	private int obY = 104; //Object y
 	private int obW = 34; //Object width
 	private int obH = 16; //Object Height
+	
+	private static int tileX = 0; //Object x
+	private static int tileY = 142; //Object y
+	private static int tileW = 34; //Object width
+	private static int tileH = 16; //Object Height
 	
 	private int charX = 24; //Player x
 	private int charY = 82; //Player y
@@ -237,6 +242,18 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			//e.printStackTrace();
 			g.drawImage(defaultCube, newX, newY, null);
 		}
+	}
+	
+	public static Point calcRealCoords(Point p){
+		int newX = 0;
+		int newY = 0;
+		
+		newX = newX + gX + tileX + (tileW*(int)p.getX());
+		newY = newY - (tileH*(int)p.getX());
+		
+		newX = newX + (tileW*(int)p.getY());
+		newY = newY + gY + tileY + (tileH*(int)p.getY());
+		return new Point(newX, newY);
 	}
 	
 	/**

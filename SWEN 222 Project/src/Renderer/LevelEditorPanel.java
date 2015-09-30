@@ -130,7 +130,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
-	/*
+	/**
 	 * Draws the tree tiles around the board, purely cosmetic
 	 */
 	public void drawTrees(Graphics g){
@@ -149,7 +149,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
-	/*
+	/**
 	 * Draws the map on the side of the screen to display changes made to the Board
 	 */
 	public void drawMap(Graphics g){
@@ -194,7 +194,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		g.drawRect(800, 400, 250, 250);
 	}
 	
-	/*
+	/**
 	 * Draws the doors to the panel, if the corresponding booleans are true
 	 */
 	public void drawDoors(Graphics g){
@@ -232,7 +232,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
-	/*
+	/**
 	 * Draw all the tiles in the select list
 	 */
 	public void drawSelects(Graphics g){
@@ -244,7 +244,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 	}
 	
-	/*
+	/**
 	 * Draw all the default grass tiles, a 10*10 grid
 	 */
 	public void drawGround(Graphics g){

@@ -352,6 +352,37 @@
     <Items />
   </Room>
   <Room>
+    <Id>2</Id>
+    <Row>3</Row>
+    <Col>4</Col>
+    <North>-1</North>
+    <East>-1</East>
+    <South>-1</South>
+    <West>-1</West>
+    <Obstacles />
+    <Npcs />
+    <Items>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>3</Row>
+        <Col>5</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>4</Row>
+        <Col>4</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+    </Items>
+  </Room>
+  <Room>
     <Id>3</Id>
     <Row>4</Row>
     <Col>0</Col>
