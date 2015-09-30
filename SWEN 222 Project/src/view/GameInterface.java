@@ -417,24 +417,28 @@ public class GameInterface implements MouseListener {
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			//up one square
+			gamePanel.moveUp();
 			player.setCoords(currentCoord.x - 1,currentCoord.y);
 			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:			
 			//left one square
+			gamePanel.moveLeft();
 			player.setCoords(currentCoord.x ,currentCoord.y - 1);
 			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
 			//moved down one
+			gamePanel.moveDown();
 			player.setCoords(currentCoord.x + 1,currentCoord.y);
 			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
 			//moved right one
+			gamePanel.moveRight();
 			player.setCoords(currentCoord.x,currentCoord.y + 1);
 			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);;
