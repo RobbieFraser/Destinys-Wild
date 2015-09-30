@@ -4,24 +4,20 @@ import java.awt.Point;
 import java.net.InetAddress;
 
 public class PlayerMulti extends Player {
-	
-	public InetAddress ipAddress;
-	public int port;
-	
+
+	private InetAddress ipAddress;
+	private int port;
+
 	public PlayerMulti(String name, Point coords, Room currentRoom, InetAddress ipAddress, int port){
-		super(name,coords,currentRoom);	
+		super(name,coords,currentRoom);
 		this.ipAddress = ipAddress;
 		this.port = port;
 	}
-	
-	public void tick(){
-		
-	}
-	
+
 	public InetAddress getIP(){
 		return ipAddress;
 	}
-	
+
 	public int getPort(){
 		return port;
 	}
@@ -32,7 +28,7 @@ public class PlayerMulti extends Player {
 
 	public void setIP(InetAddress ip) {
 		ipAddress = ip;
-		
+
 	}
 
 }

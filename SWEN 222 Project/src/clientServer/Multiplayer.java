@@ -1,11 +1,13 @@
 package clientServer;
 
 import java.awt.Canvas;
+import java.awt.Point;
 
 import game.Board;
 import game.DestinysWild;
 import game.Player;
 import game.PlayerMulti;
+import game.Room;
 
 import javax.swing.JOptionPane;
 
@@ -18,6 +20,7 @@ public class Multiplayer extends Canvas implements Runnable {
 	private Board board;
 	public int tickCount = 0;
 	private DestinysWild game;
+	private Thread thread;
 
 	public Multiplayer(DestinysWild game, Board board) {
 		this.game = game;
@@ -25,7 +28,9 @@ public class Multiplayer extends Canvas implements Runnable {
 	}
 
 	public void initialise() {
-		PlayerMulti player = (PlayerMulti) game.getPlayer();
+		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
+		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
+					 new Point(500,500), room, null, -1);
 		LoginPacket packet = new LoginPacket(player.getName());
 		if (client != null) {
 			// client.sendData("ping".getBytes());
@@ -37,8 +42,9 @@ public class Multiplayer extends Canvas implements Runnable {
 		}
 	}
 
-	public synchronized void start() {
+	public synchronized void start(){
 		running = true;
+		thread = new Thread(this, "Multiplayer");
 		client = new GameClient(board);
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
@@ -46,6 +52,7 @@ public class Multiplayer extends Canvas implements Runnable {
 			server.start();
 		}
 		client.start();
+		thread.start();
 	}
 
 	public synchronized void stop() {
@@ -54,6 +61,7 @@ public class Multiplayer extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		//System.out.println("Running");
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000D / 60D;
 		int ticks = 0;

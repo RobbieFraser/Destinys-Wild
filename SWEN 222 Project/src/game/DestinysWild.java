@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import clientServer.Multiplayer;
 import game.items.Health;
 import game.items.Item;
 
@@ -14,6 +15,9 @@ public class DestinysWild{
 
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
+		initialiseTestPlayer();
+		Multiplayer multiplayer  = new Multiplayer(this,board);
+		multiplayer.start();
 	}
 
 	public void testSaveGame(){
@@ -29,7 +33,7 @@ public class DestinysWild{
 		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
 		roomsV.add(room);
 
-		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
+		currentPlayer = new Player("Robbieg", new Point(500, 500), 99, room, roomsV, inv, 9999);
 	}
 
 	public void testLoadGame(){
@@ -72,7 +76,7 @@ public class DestinysWild{
 
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
-		game.testLoadGame();
-		game.testSaveGame();
+		//game.testLoadGame();
+		//game.testSaveGame();
 	}
 }

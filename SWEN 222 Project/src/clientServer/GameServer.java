@@ -91,12 +91,12 @@ public class GameServer extends Thread {
 			packet = new MovePacket(data);
 			System.out.println(((MovePacket)packet).getUserName() +" has moved to " +((MovePacket)packet).getX()
 					+ "," + ((MovePacket)packet).getY());
-			this.handleMove((MovePacket)packet);		
+			this.handleMove((MovePacket)packet);
 		}
-			
+
 
 	}
-	
+
 	public void handleMove(MovePacket packet){
 		if(packet.getUserName()!=null){
 			int index = getPlayerIndex(packet.getUserName());
@@ -110,8 +110,8 @@ public class GameServer extends Thread {
 	public void removeConnection(DisconnectPacket packet) {
 		PlayerMulti player = getPlayer(packet.getUserName());
 		packet.writeData(this);
-		
-		
+
+
 	}
 	public int getPlayerIndex(String username){
 		int index = 0;
@@ -123,7 +123,7 @@ public class GameServer extends Thread {
 		}
 		return index;
 	}
-	
+
 	public PlayerMulti getPlayer(String name){
 		for(PlayerMulti pm : this.connectedPlayers){
 			if(pm.getName().equals(name)){
@@ -132,8 +132,8 @@ public class GameServer extends Thread {
 		}
 		return null;
 	}
-	
-	
+
+
 
 	public void addConnection(PlayerMulti player, LoginPacket packet) {
 		boolean alreadyConnected = false;
@@ -141,11 +141,11 @@ public class GameServer extends Thread {
 		System.out.println("Packet type is: " + packet.packetID);
 		for (PlayerMulti pm : this.connectedPlayers) {
 			if (pm.getName().equalsIgnoreCase(player.getName())) {
-				if (pm.ipAddress == null) {
+				if (pm.getIP() == null) {
 					pm.setIP(player.getIP());
 					System.out.println(pm.getIP());
 				}
-				if (pm.port == -1) {
+				if (pm.getPort() == -1) {
 					pm.setPort(player.getPort());
 					System.out.println(pm.getPort());
 				}
@@ -157,7 +157,7 @@ public class GameServer extends Thread {
 				sendData(packet.getData(),player.getIP(),player.getPort());
 				System.out.println("New player entered");
 			}
-			
+
 		}if (alreadyConnected==false) {
 			System.out.println("player added");
 			this.connectedPlayers.add(player);
