@@ -283,7 +283,7 @@ public class XMLParser {
 			}
 
 			player.setName(name);
-			player.setCoords(new Point(playerx, playery));
+			player.setCoords(playerx, playery);
 			player.setHealth(health);
 			player.setCurrentRoom(currentRoom);
 			player.setScore(score);

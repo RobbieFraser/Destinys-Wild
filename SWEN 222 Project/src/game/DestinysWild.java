@@ -24,7 +24,7 @@ public class DestinysWild{
 		XMLParser.saveGame();
 	}
 
-	public void initialiseTestPlayer(){
+	public static void initialiseTestPlayer(){
 		List<Item> inv = new ArrayList<>();
 		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
 		System.out.println("Inv size: " + inv.size());

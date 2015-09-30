@@ -42,6 +42,22 @@ public class Tile {
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
+	
+	public String isDoorMat(){
+		if(room.getNorth() != -1 && (roomCoords.equals(new Point(0,4)) || roomCoords.equals(new Point(0,5)))){
+			return "north";
+		}
+		else if(room.getEast() != -1 && roomCoords.equals(new Point(4,9)) || roomCoords.equals(new Point(5,9))){
+			return "east";
+		}
+		else if(room.getSouth() != -1 && roomCoords.equals(new Point(9,4)) || roomCoords.equals(new Point(9,5))){
+			return "south";
+		}
+		else if(room.getWest() != -1 && roomCoords.equals(new Point(4,0)) || roomCoords.equals(new Point(5,0))){
+			return "west";
+		}
+		return "not a door mat";
+	}
 
 	/**
 	 * This method should check whether a given point is

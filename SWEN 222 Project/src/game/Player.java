@@ -16,9 +16,10 @@ public class Player {
 	private List<Room> visitedRooms = new ArrayList<>();
 	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
-	private int speed = 5;
+	private int speed = 4;
 	private String orientation = "north";
 	private Tile currentTile;
+	private boolean isMoving;
 
 
 
@@ -79,6 +80,91 @@ public class Player {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean tryMove(String direction){
+		orientation = direction;
+		Tile prevTile = currentTile;
+		switch(direction){
+			case "north":
+				setCoords(getCoords().x, getCoords().y - speed/2);
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+					changeRoom();
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x, getCoords().y + speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			case "east":
+				setCoords(getCoords().x + speed, getCoords().y);
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+					changeRoom();
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x - speed, getCoords().y);
+					currentTile = prevTile;
+				}
+				break;
+			case "south":
+				setCoords(getCoords().x, getCoords().y + speed/2);
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+					changeRoom();
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x, getCoords().y - speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			case "west":
+				setCoords(getCoords().x - speed, getCoords().y);
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+					changeRoom();
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x + speed, getCoords().y);
+					currentTile = prevTile;
+				}
+				break;
+				
+		}
+		return true;
+	}
+	
+	/**
+	 * whether the currentTile is in the room
+	 * @return boolean whether the current tile is in the currentRoom
+	 */
+	public boolean currTileIsInRoom(){
+		currentTile = calcTile();
+		if(currentTile == null){
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Updates everything required upon changing room
+	 */
+	public void changeRoom(){
+		currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+		if(!visitedRooms.contains(currentRoom)){
+			addCurrentRoom();
+		}
+		
+		if(coords.x == 0){
+			setCoords(9, coords.y);
+		}
+		else if(coords.x == 9){
+			setCoords(0, coords.y);
+		}
+		else if(coords.y == 0){
+			setCoords(coords.x, 9);
+		}
+		else if(coords.y == 9){
+			setCoords(coords.x, 0);
+		}
+		currentTile = calcTile();
 	}
 
 	/**
@@ -184,8 +270,13 @@ public class Player {
 		return coords;
 	}
 
-	public void setCoords(Point coords) {
-		this.coords = coords;
+	public void setCoords(int x, int y) {
+		if(coords == null){
+			coords = new Point(x, y);
+		}
+		else{
+			coords.setLocation(x, y);
+		}
 	}
 
 	public int getHealth() {
@@ -222,6 +313,10 @@ public class Player {
 
 	public void setCurrentTile(Tile currentTile){
 		this.currentTile = currentTile;
+	}
+	
+	public Tile getCurrentTile(){
+		return currentTile;
 	}
 
 	public int getSpeed() {

@@ -97,8 +97,9 @@ public class GameServer extends Thread {
 		if(packet.getUserName()!=null){
 			int index = getPlayerIndex(packet.getUserName());
 			PlayerMulti player = this.connectedPlayers.get(index);
-			Point coord = new Point((int)packet.getX(),(int)packet.getY());
-			player.setCoords(coord);
+			int playerX = (int)packet.getX();
+			int playerY = (int)packet.getY();
+			player.setCoords(playerX, playerY);
 			packet.writeData(this);
 		}
 	}
