@@ -173,9 +173,14 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 				if(curRoom.getObstacles()[i][j] != null){
 					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
 				}
+				if(curRoom.getItems()[i][j] != null){
+					drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
+				}
+				if(curRoom.getNpcs()[i][j] != null){
+					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
+				}
 				if(player != null){
 					if(player.calcTile().getRoomCoords().equals(new Point(i, j))){
-						System.out.println(i + " | " + j);
 						drawPlayer(g);
 					}
 				}
