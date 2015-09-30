@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Player>
   <Name>Robbie</Name>
-  <Posx>50</Posx>
-  <Posy>50</Posy>
+  <Posx>730</Posx>
+  <Posy>308</Posy>
   <Health>99</Health>
   <Currentroom>0</Currentroom>
   <Score>9999</Score>

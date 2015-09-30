@@ -2,27 +2,43 @@ package game;
 
 import java.awt.Point;
 
+import Renderer.GameImagePanel;
+
 public class Tile {
 	private Point realCoords; //centre of the tile relative to the game window
-	private Point roomCoords;
+	private Point roomCoords; //coords relative to the Room
 	private Room room; //room that this tile belongs to
 	private boolean occupied = false; //states whether the tile is occupied or not. eg can be walked on
 
 	private double height = 34; //height of the tile in px
 	private double width = 70; //width of the tile in px
 
-
-	public Tile(Point realCoords, Point roomCoords, Room room, boolean occupied) {
-		this.realCoords = realCoords;
+	/**
+	 * Tile constructor
+	 * @param realCoords coords relative to the game window
+	 * @param roomCoords coords relative to the Room
+	 * @param room Room that this Tile belongs to
+	 * @param occupied Whether this tile is occupied or not
+	 */
+	public Tile(Point roomCoords, Room room, boolean occupied) {
 		this.roomCoords = roomCoords;
 		this.room = room;
 		this.occupied = occupied;
+		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 	}
-	
+
+	/**
+	 * checks whether this tile is occupied by an Item, NPC, or Obstacle
+	 * @return boolean occupied
+	 */
 	public boolean isOccupied(){
 		return occupied;
 	}
-	
+
+	/**
+	 * sets the occupied boolean
+	 * @param occupied
+	 */
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
@@ -89,6 +105,6 @@ public class Tile {
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-	
-	
+
+
 }

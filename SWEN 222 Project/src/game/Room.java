@@ -7,6 +7,9 @@ import game.npcs.NPC;
 import game.obstacles.Obstacle;
 
 public class Room {
+
+	private int ROOM_SIZE = 10; //the length of a room, size x size
+
 	 //ID's of the surrounding rooms
 	private int north;
 	private int east;
@@ -14,10 +17,10 @@ public class Room {
 	private int west;
 	private int Id;
 	private Point boardPos;
-	private Tile[][] tiles = new Tile[10][10];
-	private Obstacle[][] obstacles = new Obstacle[tiles.length][tiles[0].length];
-	private NPC[][] npcs = new NPC[tiles.length][tiles[0].length];
-	private Item[][] items = new Item[tiles.length][tiles[0].length];
+	private Tile[][] tiles = new Tile[ROOM_SIZE][ROOM_SIZE];
+	private Obstacle[][] obstacles = new Obstacle[ROOM_SIZE][ROOM_SIZE];
+	private NPC[][] npcs = new NPC[ROOM_SIZE][ROOM_SIZE];
+	private Item[][] items = new Item[ROOM_SIZE][ROOM_SIZE];
 
 	/**
 	 * Constructor for Room. Each room has a position on the board, a unique
@@ -33,7 +36,7 @@ public class Room {
 	}
 
 	public Room(){
-		
+
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class Room {
 		}
 	}
 
-	
+
 	/**
 	 * Initialises the Tile[][] array with Tile objects
 	 */
@@ -75,15 +78,15 @@ public class Room {
 				if(tempNpc != null || tempItem != null || tempObs != null){
 					occupied = true;
 				}
-				tiles[row][col] = new Tile(new Point(), new Point(row, col), this, occupied); //TODO get window coords
+				tiles[row][col] = new Tile(new Point(row, col), this, occupied);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Gets the occupant of a tile, or null if there isn't one
-	 * @param tile The tile that the occupant is on 
+	 * @param tile The tile that the occupant is on
 	 * @return An OBJECT type which will either be NPC, Item, Obstacle or null
 	 */
 	public Object getTileOccupant(Tile tile){
@@ -103,11 +106,11 @@ public class Room {
 		//shouldn't happen
 		return null;
 	}
-	
+
 	public Point getTileRoomCoords(Tile tile){
 		return new Point();
 	}
-	
+
 	public void addObstacle(Obstacle obs, int x, int y){
 		obstacles[x][y] = obs;
 	}

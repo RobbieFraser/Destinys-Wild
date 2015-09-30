@@ -128,7 +128,7 @@ public class XMLParser {
 		}
 		//Room contains Non playing characters
 		List<Element> npcs = room.getChild("Npcs").getChildren("Npc");
-		
+
 		for (Element npc : npcs){ // Initialising NPC's
 			String npcType = npc.getChildText("Npctype");
 
@@ -167,26 +167,26 @@ public class XMLParser {
 		if (room.getChild("Items") == null) {
 			return;
 		}
-		
+
 		List<Element> items = room.getChildren("Items").get(0).getChildren("Item");
-		
+
 		initialiseItems(items, currentRoom);
 
 	}
-	
+
 	public static void initialiseOffBoardItems(Element rootNode){
 		if(rootNode.getChild("Offboarditems") == null){
 			System.out.println("No offboard items found");
 			return;
 		}
-		
+
 		List<Element> items = rootNode.getChildren("Items").get(0).getChildren("Item");
-		
+
 		initialiseItems(items, null);
-		
-		
+
+
 	}
-	
+
 	public static void initialiseItems(List<Element> itemList, Room currentRoom){
 		for (Element item : itemList){ // Initialising Items
 			String itemType = item.getChildText("Itemtype");
@@ -218,7 +218,7 @@ public class XMLParser {
 			default:
 				System.out.println("Misidentifed Item");
 			}
-			
+
 			if(currentRoom != null){
 				currentRoom.addItem(temp, itemRow, itemCol); //adds all items to the current room
 			}
@@ -247,25 +247,25 @@ public class XMLParser {
 			SAXBuilder builder = new SAXBuilder();
 			Document document = (Document) builder.build(playerFile);
 			Element playerTag = document.getRootElement();
-			
+
 			Board board = DestinysWild.getBoard();
-			
+
 			Player player = new Player();
-			
+
 			String name = playerTag.getChildText("Name"); //Main Player parameters--------------------
-			
+
 			int playerx = Integer.valueOf(playerTag.getChildText("Posx"));
 			int playery = Integer.valueOf(playerTag.getChildText("Posy"));
-			
+
 			int health = Integer.valueOf(playerTag.getChildText("Health"));
 			int score = Integer.valueOf(playerTag.getChildText("Score"));
 			int speed = Integer.valueOf(playerTag.getChildText("Speed"));
-			
+
 			int currentRoomId = Integer.valueOf(playerTag.getChildText("Currentroom"));
 			Room currentRoom = board.getRoomFromId(currentRoomId);//-----------
-			
+
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
-			
+
 			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
 				for(Element invItem : inventory){
 					int itemId = Integer.valueOf(invItem.getText());
@@ -273,15 +273,15 @@ public class XMLParser {
 					player.addInventoryItem(tempItem);
 				}
 			}
-			
+
 			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
-			
+
 			for(Element room : visitedRooms){
 				int roomId = Integer.valueOf(room.getText());
 				player.addRoom(board.getRoomFromId(roomId));
 
 			}
-			
+
 			player.setName(name);
 			player.setCoords(new Point(playerx, playery));
 			player.setHealth(health);
@@ -289,7 +289,7 @@ public class XMLParser {
 			player.setScore(score);
 			player.setSpeed(speed);
 			player.setCurrentTile(player.calcTile());
-			
+
 			DestinysWild.setPlayer(player);
 		}
 		catch(Exception e){
@@ -311,20 +311,20 @@ public class XMLParser {
 		Board board = DestinysWild.getBoard();
 		saveBoard(SAVE_FILE, board);
 	}
-	
+
 	public static void saveBoard(String filename, Board board){
 		try{
 			Element boardTag = new Element("Board"); //Root element name
 			Document doc = new Document(boardTag);
-			
+
 			for(int i=0; i<board.getBoard().length; i++){
 				for(int j=0; j<board.getBoard()[0].length; j++){
-					
+
 					Element roomTags = new Element("Room");//<Board><Room>
 					Element obsTags = new Element("Obstacles");//<Board><Room><Obstacles>
 					Element npcTags = new Element("Npcs");//<Board><Room><Npcs>
 					Element itemTags = new Element("Items");//<Board><Room><Items>
-					
+
 					Room current = board.getRoomFromCoords(i, j);
 					if(current == null){
 						continue;
@@ -339,7 +339,7 @@ public class XMLParser {
 					obsTags.addContent(saveObstacles(current));
 					npcTags.addContent(saveNpcs(current));
 					itemTags.addContent(saveItems(current));
-					
+
 					if(roomTags.getChildren().isEmpty()){
 						continue;
 					}
@@ -349,23 +349,23 @@ public class XMLParser {
 					boardTag.addContent(roomTags);
 				}
 			}
-			
+
 			Element offItems = new Element("Offitems");
 			for(Item item : board.getOffBoardItems()){
 				offItems.addContent(new Element("Itemid").setText(String.valueOf(item.getId())));
 			}
 			boardTag.addContent(offItems);
-			
+
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getPrettyFormat());
 			xmlOutput.output(doc, new FileWriter("data/" + filename));
-			
+
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage() + " <--- ERROR");
 		}
 	}
-	
+
 	public static List<Element> saveObstacles(Room current){
 		List<Element> obstacleList = new ArrayList<>();
 		for(int i=0; i<current.getObstacles().length; i++){
@@ -383,11 +383,11 @@ public class XMLParser {
 		}
 		return obstacleList;
 	}
-	
+
 	public static List<Element> saveNpcs(Room current){
-		
+
 		List<Element> npcList = new ArrayList<>();
-		
+
 		for(int i=0; i<current.getNpcs().length; i++){
 			for(int j=0; j<current.getNpcs()[0].length; j++){
 				NPC currNpc = current.getNpcs()[i][j];
@@ -405,11 +405,11 @@ public class XMLParser {
 		}
 		return npcList;
 	}
-	
+
 	public static List<Element> saveItems(Room current){
 
 		List<Element> itemList = new ArrayList<>();
-		
+
 		for(int i=0; i<current.getItems().length; i++){
 			for(int j=0; j<current.getItems()[0].length; j++){
 				Item currItem = current.getItems()[i][j];

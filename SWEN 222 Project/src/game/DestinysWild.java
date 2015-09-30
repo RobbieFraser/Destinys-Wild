@@ -19,7 +19,7 @@ public class DestinysWild{
 	public void testSaveGame(){
 		XMLParser.saveGame();
 	}
-	
+
 	public void initialiseTestPlayer(){
 		List<Item> inv = new ArrayList<>();
 		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
@@ -31,15 +31,17 @@ public class DestinysWild{
 
 		currentPlayer = new Player("Robbie", new Point(50, 50), 99, room, roomsV, inv, 9999);
 	}
-	
+
 	public void testLoadGame(){
 		XMLParser.loadGame(new File("data/savegames/Robbie.xml"));
 		System.out.println("Parser loadGame good");
 		System.out.println("Name: " + getPlayer().getName());
 		System.out.println("Score: " + getPlayer().getScore());
+		System.out.println("Tile's real coords: " + getPlayer().calcTile().getRealCoords().getX() + ", " + getPlayer().calcTile().getRealCoords().getY());
+		System.out.println("Tile's room coords: " + getPlayer().calcTile().getRoomCoords().getX() + ", " + getPlayer().calcTile().getRoomCoords().getY());
 		System.out.println("Inventory size: " + getPlayer().getInventory().size());
 	}
-	
+
 	public void testPlayerSave(){
 		XMLParser.savePlayer();
 	}
@@ -63,7 +65,7 @@ public class DestinysWild{
 	public static void setBoard(Board b) {
 		board = b;
 	}
-	
+
 	public static void setPlayer(Player player){
 		currentPlayer = player;
 	}

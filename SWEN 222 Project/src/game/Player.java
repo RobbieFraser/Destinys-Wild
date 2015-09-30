@@ -12,11 +12,12 @@ public class Player {
 	private String name;
 	private Point coords; //Coords relative to the game window
 	private int health = 100;
-	private Room currentRoom; 
+	private Room currentRoom;
 	private List<Room> visitedRooms = new ArrayList<>();
 	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
 	private int speed = 5;
+	private String orientation = "north";
 	private Tile currentTile;
 
 	public Player(){
@@ -72,14 +73,16 @@ public class Player {
 		if(occupant instanceof Item){
 			if(addInventoryItem((Item)occupant)){
 				currentRoom.removeItems((Item)occupant);
-				addInventoryItem((Item)occupant);
 			}
 			return true;
 		}
 		return false;
-		//TODO double check this
 	}
-	
+
+	/**
+	 * Calculates which Tile the player is standing on
+	 * @return Tile object that the player is standing on
+	 */
 	public Tile calcTile(){
 		for(int row=0; row<currentRoom.getTiles().length; row++){
 			for(int col=0; col<currentRoom.getTiles()[0].length; col++){
@@ -92,7 +95,7 @@ public class Player {
 		System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
 		return null;
 	}
-	
+
 	/**
 	 * adds any room object to the visited Room list
 	 * @param room room to add
@@ -107,22 +110,22 @@ public class Player {
 	public void addCurrentRoom(){
 		visitedRooms.add(currentRoom);
 	}
-	
+
 	/**
-	 * adds an item object to the player's inventory
+	 * adds an item object to the player's inventory if there is room for one more of that Item type
 	 * @param item item to add
+	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
 		if((item instanceof Health && canAddHealthItem()) || (item instanceof Key && canAddKeyItem())){
-			inventory.add(item);
-			return true;
+			return inventory.add(item);
 		}
 		else{
-			System.out.println("Too many of that item type in inventory!");
+			System.out.println("Too many " + item.toString() + " items in inventory!");
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Checks whether a health item can be added to the inventory (Max of 5 health items)
 	 * @return true/false for above
@@ -136,7 +139,7 @@ public class Player {
 		}
 		return count < 5;
 	}
-	
+
 	/**
 	 * Checks whether a Key item can be added to the inventory (Max of 1 Key item)
 	 * @return true/false for above
@@ -150,7 +153,7 @@ public class Player {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * removes an item at 'index' from the player's inventory
 	 * @param index index of item to be removed
@@ -214,7 +217,7 @@ public class Player {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public void setCurrentTile(Tile currentTile){
 		this.currentTile = currentTile;
 	}
