@@ -248,12 +248,12 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		int newX = 0;
 		int newY = 0;
 		
-		newX = newX + gX + tileX + (tileW*(int)p.getX());
-		newY = newY - (tileH*(int)p.getX());
+		newX = newX + gX + tileX + (tileW*(int)p.getY());
+		newY = newY - (tileH*(int)p.getY());
 		
-		newX = newX + (tileW*(int)p.getY());
-		newY = newY + gY + tileY + (tileH*(int)p.getY());
-		return new Point(newY, newX);
+		newX = newX + (tileW*(int)p.getX());
+		newY = newY + gY + tileY + (tileH*(int)p.getX());
+		return new Point(newX, newY);
 	}
 	
 	/**
