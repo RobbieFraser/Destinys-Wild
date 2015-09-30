@@ -76,6 +76,7 @@ public class Player {
 		if(occupant instanceof Item){
 			if(addInventoryItem((Item)occupant)){
 				currentRoom.removeItems((Item)occupant);
+				currentTile.setOccupied(false);
 			}
 			return true;
 		}
@@ -88,7 +89,7 @@ public class Player {
 		switch(direction){
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -98,7 +99,7 @@ public class Player {
 				break;
 			case "east":
 				setCoords(getCoords().x + speed, getCoords().y);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -108,7 +109,7 @@ public class Player {
 				break;
 			case "south":
 				setCoords(getCoords().x, getCoords().y + speed/2);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -118,7 +119,7 @@ public class Player {
 				break;
 			case "west":
 				setCoords(getCoords().x - speed, getCoords().y);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals(direction)){
+				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){

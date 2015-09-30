@@ -69,7 +69,7 @@
     <Obstacles>
     	<Obstacle>
     	    <Obstype>block</Obstype>
-    		<Type>brokenblock</Type>
+    		<Type>brokenstone1</Type>
       		<Row>5</Row>
       		<Col>7</Col>
     	</Obstacle>
