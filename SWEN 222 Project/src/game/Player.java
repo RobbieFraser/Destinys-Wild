@@ -197,7 +197,7 @@ public class Player {
 				}
 			}
 		}
-		//System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
+		System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
 		return null;
 	}
 

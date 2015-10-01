@@ -86,7 +86,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		this.setBackground(new Color(red, green, blue));
 		this.board = board;
 		this.player = player;
-		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
+		curRoom = player.getCurrentRoom();
 		setDefault();
 		addMouseListener(this);
 		//waterTest();

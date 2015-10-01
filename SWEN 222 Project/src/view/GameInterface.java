@@ -7,10 +7,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,9 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import Renderer.GameImagePanel;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
-import Renderer.GameImagePanel;
 import game.Board;
 import game.DestinysWild;
 import game.Player;
@@ -35,19 +34,24 @@ public class GameInterface{
 	private static final int MAX_TOOLS = 6;
 	private static final int CYCLE_LEFT = -2;
 	private static final int CYCLE_RIGHT = -1;
-	private JFrame frame;
+	public JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
 	private DestinysWild game;
 	private GameImagePanel gamePanel;
+	private CountDownLatch latch;
 
-	public GameInterface(Player player, GameImagePanel gamePanel, DestinysWild game) {
+	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
+		this.latch = latch;
+		System.out.println("yo");
 		this.player = player;
-		this.board = gamePanel.getBoard();
+		this.board = board;
 		this.game = game;
-		this.gamePanel = gamePanel;
+		gamePanel = new GameImagePanel(board, player);
 		initialiseInterface();
 		updateUI();
+		frame.setVisible(true);
+		latch.countDown();
 		//TODO: Add mouse listener
 		//TODO: Add support for P / Pause
 		//TODO: Add support for L / R Arrows keys - Change perspective
@@ -60,6 +64,7 @@ public class GameInterface{
 	 * the minimap.
 	 */
 	private void initialiseInterface() {
+		System.out.println("yo");
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
@@ -167,7 +172,7 @@ public class GameInterface{
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 		
-		System.out.println("User interface being updated.");
+		//System.out.println("User interface being updated.");
 		
 		// first lets draw the food
 		int numFood = player.numHealthItems(); //should extract from player
@@ -419,29 +424,29 @@ public class GameInterface{
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			//up one square
-			gamePanel.moveUp();
-			player.setCoords(currentCoord.x - 1,currentCoord.y);
+			//player.setCoords(currentCoord.x, currentCoord.y - 1);
+			player.tryMove("north");
 			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:			
 			//left one square
-			gamePanel.moveLeft();
-			player.setCoords(currentCoord.x ,currentCoord.y - 1);
+			//player.setCoords(currentCoord.x - 1,currentCoord.y);
+			player.tryMove("west");
 			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
 			//moved down one
-			gamePanel.moveDown();
-			player.setCoords(currentCoord.x + 1,currentCoord.y);
+			//player.setCoords(currentCoord.x, currentCoord.y + 1);
+			player.tryMove("south");
 			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
 			//moved right one
-			gamePanel.moveRight();
-			player.setCoords(currentCoord.x,currentCoord.y + 1);
+			//player.setCoords(currentCoord.x + 1,currentCoord.y);
+			player.tryMove("east");
 			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 					player.getCoords().y);;
 			break;
@@ -480,28 +485,28 @@ public class GameInterface{
 			break;
 		}
 		//update the interface (in particular, the mini map)
-		updateUI();
+		//updateUI();
 	}
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DestinysWild game = new DestinysWild();
-					Board board = game.getBoard();
-					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
-					player.addRoom(board.getBoard()[1][2]);
-					player.addRoom(board.getBoard()[2][2]);
-					GameImagePanel gamePanel = new GameImagePanel(board);
-					GameInterface gameInterface = new GameInterface(player, gamePanel, game);
-					gameInterface.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					CountDownLatch temp = new CountDownLatch(1);
+//					DestinysWild game = new DestinysWild();
+//					Board board = game.getBoard();
+//					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
+//					player.addRoom(board.getBoard()[1][2]);
+//					player.addRoom(board.getBoard()[2][2]);
+//					GameInterface gameInterface = new GameInterface(player, game, board, temp);
+//					gameInterface.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 }
