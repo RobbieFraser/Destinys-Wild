@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import view.GameInterface;
 import clientServer.Multiplayer;
+import clientServer.packets.DisconnectPacket;
 
 public class DestinysWild{
 	private static Board board;
@@ -21,13 +22,14 @@ public class DestinysWild{
 	private boolean running = true;
 	private DestinysWild game = this;
 	private CountDownLatch latch;
+	private Multiplayer multiplayer = null;
 	private boolean paused = false;
 
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
 		//initialiseTestPlayer();
 		XMLParser.loadPlayer(new File("data/savegames/Robbie.xml"));
-		Multiplayer multiplayer  = new Multiplayer(this,board);
+		multiplayer  = new Multiplayer(this,board);
 		multiplayer.start();
 		latch = new CountDownLatch(1);
 		setUpUI();
@@ -40,6 +42,11 @@ public class DestinysWild{
 		        ui = new GameInterface(currentPlayer, game, board, latch);
 		    }
 		});
+	}
+
+	public void disconnect(){
+		DisconnectPacket disconnect = new DisconnectPacket(currentPlayer.getName());
+		disconnect.writeData(multiplayer.getClient());
 	}
 
 	public void gameLoop(){

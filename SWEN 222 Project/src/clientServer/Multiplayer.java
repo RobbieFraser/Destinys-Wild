@@ -50,14 +50,27 @@ public class Multiplayer extends Canvas implements Runnable {
 			server = new GameServer(board);
 			server.start();
 		}
+		if(server==null){
 		String ipAddress =	JOptionPane.showInputDialog(null,"Enter the server's IP Address");
 		client = new GameClient(board,ipAddress);
+			}
+		else{
+			client = new GameClient(board,null);
+		}
 		client.start();
 		thread.start();
 	}
 
 	public synchronized void stop() {
 		running = false;
+	}
+
+	public GameClient getClient(){
+		return client;
+	}
+
+	public GameServer getServer(){
+		return server;
 	}
 
 	@Override
