@@ -143,7 +143,7 @@ public class GameInterface{
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {	
+			public void windowClosing(WindowEvent e) {
 				escapeGame();
 			}
 		});
@@ -160,8 +160,8 @@ public class GameInterface{
 			@Override
 			public void keyTyped(KeyEvent arg0) {}
 		});
-		
-		
+
+
 		int delay = 10; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -183,9 +183,9 @@ public class GameInterface{
 	public void updateUI() {
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
-		
+
 		//System.out.println("User interface being updated.");
-		
+
 		// first lets draw the food
 		int numFood = player.numHealthItems(); //should extract from player
 		for (int i = 0; i < numFood; ++i) {
@@ -256,7 +256,7 @@ public class GameInterface{
 			//12th slot
 			inventoryLabel.setToolTipText(imageName+" - press = to select.");
 		} else {
-			//1st - 5th slot 
+			//1st - 5th slot
 			inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
 		}
 	}
@@ -295,7 +295,7 @@ public class GameInterface{
  		}
  		//Now extract some id number from the item
  		//and use that to return an imagename
-		 * 
+		 *
 		 */
 
 		if (index < 5) {
@@ -326,7 +326,7 @@ public class GameInterface{
 
 	/**
 	 * This method should draw a blue border around the
-	 * an inventory slot at the given index the inventory panel. 
+	 * an inventory slot at the given index the inventory panel.
 	 */
 	private void updateSelectedSlot(int index) {
 		if (index < -2 || index > 11) {
@@ -409,9 +409,10 @@ public class GameInterface{
 		}
 		return null;
 	}
-	
+
 	private void handleKeyRelease(KeyEvent e){
 		int keyCode = e.getKeyCode();
+		System.out.println(e.getKeyChar());
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			player.setMoving(false);
@@ -438,7 +439,7 @@ public class GameInterface{
 	private void handleKeyPress(KeyEvent arg0) {
 		int keyCode = arg0.getKeyCode();
 		Point currentCoord = player.getCoords();
-
+		System.out.println(arg0.getKeyChar());
 		//handle number presses
 		if (48 <= keyCode && keyCode <= 57) {
 			//user has pressed a number key
@@ -461,7 +462,7 @@ public class GameInterface{
 //			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 //						player.getCoords().y);
 			break;
-		case KeyEvent.VK_A:			
+		case KeyEvent.VK_A:
 			//left one square
 			//player.setCoords(currentCoord.x - 1,currentCoord.y);
 			//player.tryMove("west");
@@ -512,6 +513,7 @@ public class GameInterface{
 		case KeyEvent.VK_P:
 			//user wants to pause the game.
 			//JOptionPane.showMessageDialog(frame, "The game has been paused.");
+			game.setPaused(true);
 			JOptionPane.showInputDialog(frame, "The Game has been Paused.", "PAUSED", 1,
 					null, new Object[]{"Continue", "Exit and Save"}, "Continue");
 			break;
