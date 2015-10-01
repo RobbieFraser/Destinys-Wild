@@ -66,7 +66,6 @@ public class MenuInterface {
 		JPanel menuPanel = new JPanel();
 		//Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
 		//menuPanel.setBorder(blackline);
-		//menuPanel.setOpaque(false);
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(new Color(0,0,0,0));
 		menuPanel.setOpaque(false);
@@ -92,7 +91,7 @@ public class MenuInterface {
 			}
 		});
 		btnLoadGame.setBounds(25, 150, 150, 80);
-	//	btnLoadGame.setBorder(blackline);
+	    //btnLoadGame.setBorder(blackline);
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
 
@@ -110,7 +109,7 @@ public class MenuInterface {
 
 		//play song
 		final PlayMusic music = new PlayMusic();
-		music.playSound("SayMyName48.mp3");
+		//music.playSound("SayMyName48.mp3");
 		isPlaying = true;
 
 		//Toggle Music Button
@@ -121,7 +120,7 @@ public class MenuInterface {
 					music.stopPlaying();
 					isPlaying = false;
 				}
-				else{
+				else {
 					//final PlayMusic music = new PlayMusic();
 					music.playSound("SayMyName48.mp3");
 					isPlaying = true;
@@ -152,6 +151,7 @@ public class MenuInterface {
 			File saveGame = chooser.getSelectedFile();
 			//send file through to the parser
 			XMLParser.loadGame(saveGame);
+			
 		}
 	}
 
@@ -162,19 +162,6 @@ public class MenuInterface {
 			System.exit(0);
 		}
 	}
-
-	/**
-	 * Outline for saving game state:
-	 * There should be a "New Game" button, and
-	 * a "Load Game" button.
-	 * New Game - User should be prompted to enter
-	 * their player name. A file should be made in
-	 * the savedgames folder under their name.
-	 * Load Game - File selecting interface should pop
-	 * up, which the user should navigate through and
-	 * retrieve their save file.
-	 *
-	 */
 
 	/**
 	 * This method should load an image in from a filename.

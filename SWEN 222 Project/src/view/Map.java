@@ -68,7 +68,7 @@ public class Map extends JComponent {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method should draw to the map image a single room.
 	 * @param graphics
@@ -117,47 +117,47 @@ public class Map extends JComponent {
 		}
 
 		//draw in walls or doors in y direction
-		for (int i = xCoord; i <= xCoord + 50; ++i) {
-			for (int j = yCoord; j <= yCoord + 50; j += 50) {
+		for (int j = xCoord; j <= xCoord + 50; j += 50) {
+			for (int i = yCoord; i <= yCoord + 50; ++i) {
 				//check for north door
-				if (room.getNorth() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
-						&& j == yCoord) {
+				if (room.getNorth() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord) {
 					//if we are here, then a north door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				//check for south door
-				else if (room.getSouth() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
-						&& j == yCoord + 50) {
+				else if (room.getSouth() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
+						&& j == xCoord + 50) {
 					//if we are here, then a south door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				else {
 					//safe to draw the wall
 					graphics.setColor(new Color(0,100,0));
-					graphics.fillRect(j, i, 1, 1);
+					graphics.fillRect(i, j, 1, 1);
 				}
 			}
 		}
 
 		//draw in walls or doors in x direction
-		for (int j = xCoord; j <= xCoord + 50; j += 50) {
-			for (int i = yCoord; i <= yCoord + 50; ++i) {
+		for (int i = xCoord; i <= xCoord + 50; ++i) {
+			for (int j = yCoord; j <= yCoord + 50; j += 50) {
 				//check for east door
-				if (room.getEast() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
-						&& j == xCoord) {
+				if (room.getEast() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+						&& j == yCoord) {
 					//if we are here, then a east door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				//check for west door
-				else if (room.getWest() != -1 && i >= (20 + yCoord) && i < (30 + yCoord)
-						&& j == xCoord + 50) {
+				else if (room.getWest() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+						&& j == yCoord + 50) {
 					//if we are here, then a west door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				else {
 					//safe to draw the wall
 					graphics.setColor(new Color(0,100,0));
-					graphics.fillRect(i, j, 1, 1);
+					graphics.fillRect(j, i, 1, 1);
 				}
 			}
 		}
@@ -173,28 +173,32 @@ public class Map extends JComponent {
 		List<Room> visitedRooms = new ArrayList<Room>();
 		visitedRooms.add(board.getBoard()[1][2]);
 		visitedRooms.add(board.getBoard()[2][2]);
-		
+
 		g.drawImage(mapImage, 0, 0, null, null);
 
-		//draw black onto each room that has not been visited yet
-		for (int i = 0; i < BOARD_LENGTH; ++i) {
-			for (int j = 0; j < BOARD_LENGTH; ++j) {
-				//check if this room has been visited before
-				boolean visitedRoom = false;
-				for (Room room: visitedRooms) {
-					if (room.getBoardPos().equals(new Point(i,j))) {
-						//been here before
-						visitedRoom = true;
+		boolean drawBlack = true; //just used for testing
+		if (drawBlack) {
+			//draw black onto each room that has not been visited yet
+			for (int i = 0; i < BOARD_LENGTH; ++i) {
+				for (int j = 0; j < BOARD_LENGTH; ++j) {
+					//check if this room has been visited before
+					boolean visitedRoom = false;
+					for (Room room: visitedRooms) {
+						if (room.getBoardPos().equals(new Point(i,j))) {
+							//been here before
+							visitedRoom = true;
+						}
 					}
-				}
-				if (!visitedRoom) {
-					//haven't visited this room
-					//so user shouldn't be able to see it
-					g.setColor(Color.DARK_GRAY);
-					g.fillRect(j*50, i*50, 50, 50);
+					if (!visitedRoom) {
+						//haven't visited this room
+						//so user shouldn't be able to see it
+						g.setColor(Color.DARK_GRAY);
+						g.fillRect(j*50, i*50, 50, 50);
+					}
 				}
 			}
 		}
+
 
 		//now draw location of player
 		Room currentRoom = player.getCurrentRoom();
