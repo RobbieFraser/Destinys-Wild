@@ -30,7 +30,7 @@ import game.Player;
 import menu.ImagePanel;
 import menu.MenuInterface;
 
-public class GameInterface implements MouseListener {
+public class GameInterface{
 	private static final int MAX_FOOD = 5;
 	private static final int MAX_TOOLS = 6;
 	private static final int CYCLE_LEFT = -2;
@@ -63,7 +63,7 @@ public class GameInterface implements MouseListener {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
-		frame.addMouseListener(this);
+		//frame.addMouseListener(this);
 		//set the background to be the game panel
 		frame.setContentPane(gamePanel);
 
@@ -166,9 +166,11 @@ public class GameInterface implements MouseListener {
 	public void updateUI() {
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
-
+		
+		System.out.println("User interface being updated.");
+		
 		// first lets draw the food
-		int numFood = 3; //should extract from player
+		int numFood = player.numHealthItems(); //should extract from player
 		for (int i = 0; i < numFood; ++i) {
 			//extract the foodLabel from the inventoryPanel
 			JLabel foodLabel = (JLabel) inventoryPanel.getComponent(i);
@@ -177,7 +179,7 @@ public class GameInterface implements MouseListener {
 		}
 
 		//now we can draw in weapons
-		int numTools = 2; //should extract from player
+		int numTools = player.numToolItems(); //should extract from player
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
@@ -185,8 +187,8 @@ public class GameInterface implements MouseListener {
 			drawBackgroundImage(toolLabel, "toolBox", i + MAX_FOOD);
 		}
 
-		boolean hasKey = true; // should extract from player
-		if (hasKey) {
+		boolean hasNoKey = player.canAddKeyItem(); // should extract from player
+		if (!hasNoKey) {
 			//need to draw players key
 			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
@@ -501,34 +503,5 @@ public class GameInterface implements MouseListener {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 }
