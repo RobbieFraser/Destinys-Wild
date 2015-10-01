@@ -16,9 +16,6 @@ public class DestinysWild{
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
 		initialiseTestPlayer();
-		board.printBoard();
-		board.getBoard()[2][2].printRoom();
-		board.getBoard()[1][2].printRoom();
 		Multiplayer multiplayer  = new Multiplayer(this,board);
 		multiplayer.start();
 	}
