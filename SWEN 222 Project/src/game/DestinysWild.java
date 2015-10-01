@@ -47,33 +47,37 @@ public class DestinysWild{
 			e.printStackTrace();
 		}
 		long lastTime = System.nanoTime();
-		double nsPerTick = 1000000000D / 60D;
-		int ticks = 0;
-		double diff = 0;
-		long lastTimer = System.currentTimeMillis();
-		while (running) {
+		double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+		int frames = 0;
+		while(running){
 			long now = System.nanoTime();
-			diff += ((now - lastTime) / nsPerTick);
-			lastTime = now;
-			while (diff >= 1) {
-				ticks++;
-				update();
-				diff--;
-			}
-			try {
-				Thread.sleep(2);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (System.currentTimeMillis() - lastTimer >= 1000) {
-				lastTimer += 1000;
-				System.out.println("Ticks: " + ticks);
-				ticks = 0;
-			}
+		    delta += (now - lastTime) / ns;
+		    lastTime = now;
+		    while(delta >= 1) {
+			    updateGame();
+			    delta--;
+		    }
+		    if(running){
+		    	//updateUI();
+		    }
+		    frames++;
+		    if(System.currentTimeMillis() - timer > 1000) {
+			    timer += 1000;
+			    System.out.println("FPS: " + frames);
+			    frames = 0;
+		    }
 		}
+		//stop();
 	}
 	
-	public void update(){
+	public void updateGame(){
+		currentPlayer.updatePlayer();
+	}
+	
+	public void updateUI(){
 		ui.updateUI();
 	}
 

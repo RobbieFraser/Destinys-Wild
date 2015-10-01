@@ -197,10 +197,11 @@ public class Map extends JComponent {
 		}
 
 		//now draw location of player
-		//Room currentRoom = player.getCurrentRoom();
-		Room currentRoom = visitedRooms.get(0);
+		Room currentRoom = player.getCurrentRoom();
+		//Room currentRoom = visitedRooms.get(0);
 		Point roomCoord = currentRoom.getBoardPos();
-		Point coord = player.getCoords();
+		//Point coord = player.getCoords();
+		Point coord = player.getCurrentTile().getRoomCoords();
 
 		g.setColor(Color.MAGENTA);
 		g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);

@@ -1,10 +1,11 @@
 package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -17,12 +18,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Renderer.GameImagePanel;
 import clientServer.packets.DisconnectPacket;
-import clientServer.packets.MovePacket;
 import game.Board;
 import game.DestinysWild;
 import game.Player;
@@ -153,10 +154,21 @@ public class GameInterface{
 				handleKeyPress(arg0);
 			}
 			@Override
-			public void keyReleased(KeyEvent arg0) {}
+			public void keyReleased(KeyEvent arg0) {
+				handleKeyRelease(arg0);
+			}
 			@Override
 			public void keyTyped(KeyEvent arg0) {}
 		});
+		
+		
+		int delay = 10; //milliseconds
+		ActionListener taskPerformer = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				updateUI();
+			}
+		};
+		new Timer(delay, taskPerformer).start();
 
 		frame.getContentPane().setLayout(null);
 	}
@@ -397,6 +409,24 @@ public class GameInterface{
 		}
 		return null;
 	}
+	
+	private void handleKeyRelease(KeyEvent e){
+		int keyCode = e.getKeyCode();
+		switch (keyCode) {
+		case KeyEvent.VK_W:
+			player.setMoving(false);
+			break;
+		case KeyEvent.VK_A:
+			player.setMoving(false);
+			break;
+		case KeyEvent.VK_S:
+			player.setMoving(false);
+			break;
+		case KeyEvent.VK_D:
+			player.setMoving(false);
+			break;
+		}
+	}
 
 	/**
 	 * This method should be called when the user has pressed
@@ -425,30 +455,38 @@ public class GameInterface{
 		case KeyEvent.VK_W:
 			//up one square
 			//player.setCoords(currentCoord.x, currentCoord.y - 1);
-			player.tryMove("north");
-			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
-						player.getCoords().y);
+			//player.tryMove("north");
+			player.setMoving(true);
+			player.setOrientation("north");
+//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
+//						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:			
 			//left one square
 			//player.setCoords(currentCoord.x - 1,currentCoord.y);
-			player.tryMove("west");
-			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
-					player.getCoords().y);
+			//player.tryMove("west");
+			player.setMoving(true);
+			player.setOrientation("west");
+//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
+//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
 			//moved down one
 			//player.setCoords(currentCoord.x, currentCoord.y + 1);
-			player.tryMove("south");
-			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
-					player.getCoords().y);
+			//player.tryMove("south");
+			player.setMoving(true);
+			player.setOrientation("south");
+//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
+//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
 			//moved right one
 			//player.setCoords(currentCoord.x + 1,currentCoord.y);
-			player.tryMove("east");
-			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
-					player.getCoords().y);;
+			//player.tryMove("east");
+			player.setMoving(true);
+			player.setOrientation("east");
+//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
+//					player.getCoords().y);;
 			break;
 		case KeyEvent.VK_MINUS:
 			//user wants to select the 11th slot

@@ -296,27 +296,6 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		}
 	}
 	
-	public void moveRight(){
-		player.tryMove("east");
-		//player.setCoords((int)player.getCoords().getX()+player.getSpeed(), (int)player.getCoords().getY());
-		this.repaint();
-	}
-	public void moveLeft(){
-		player.tryMove("west");
-		//player.setCoords((int)player.getCoords().getX()-player.getSpeed(), (int)player.getCoords().getY());
-		this.repaint();
-	}
-	public void moveUp(){
-		player.tryMove("north");
-		//player.setCoords((int)player.getCoords().getX(), (int)player.getCoords().getY()-player.getSpeed());
-		this.repaint();
-	}
-	public void moveDown(){
-		player.tryMove("south");
-		//player.setCoords((int)player.getCoords().getX(), (int)player.getCoords().getY()+player.getSpeed());
-		this.repaint();
-	}
-	
 	public Board getBoard(){
 		return board;
 	}

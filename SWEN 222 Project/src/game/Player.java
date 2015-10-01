@@ -17,12 +17,10 @@ public class Player {
 	private List<Room> visitedRooms = new ArrayList<>();
 	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
-	private int speed = 4;
+	private int speed = 2;
 	private String orientation = "north";
 	private Tile currentTile;
 	private boolean isMoving;
-
-
 
 	public Player(){
 
@@ -62,6 +60,12 @@ public class Player {
 		this.inventory = inventory;
 		this.score = score;
 		this.currentTile = calcTile();
+	}
+	
+	public void updatePlayer(){
+		if(isMoving){
+			tryMove(orientation);
+		}
 	}
 
 	/**
@@ -364,5 +368,23 @@ public class Player {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+
+	public String getOrientation() {
+		return orientation;
+	}
+
+	public boolean isMoving() {
+		return isMoving;
+	}
+
+	public void setOrientation(String orientation) {
+		this.orientation = orientation;
+	}
+
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+	}
+	
+	
 
 }
