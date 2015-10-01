@@ -318,8 +318,7 @@ public class GameInterface{
 		if (result == JOptionPane.OK_OPTION) {
 			//User really wants to exit
 			//Send a disconnection packet to the client
-			DisconnectPacket disconnect = new DisconnectPacket(this.player.getName());
-		//	disconnect.writeData(this.game.getClient());
+			game.disconnect();
 			System.exit(0);
 		}
 	}
