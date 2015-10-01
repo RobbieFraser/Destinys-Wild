@@ -109,7 +109,7 @@ public class Map extends JComponent {
 						System.out.println("Error");
 					}
 				} else {
-					//print out normal unoccupied square (forest floor)	
+					//print out normal unoccupied square (forest floor)
 					graphics.setColor(new Color(172,211,115));
 					graphics.fillRect(j, i, 1, 1);
 				}
@@ -170,9 +170,7 @@ public class Map extends JComponent {
 		//put up a black background so that rooms that aren't drawn
 		//are shown to be unexplored
 		//List<Room> rooms = player.getVisitedRooms();
-		List<Room> visitedRooms = new ArrayList<Room>();
-		visitedRooms.add(board.getBoard()[1][2]);
-		visitedRooms.add(board.getBoard()[2][2]);
+		List<Room> visitedRooms = player.getVisitedRooms();
 
 		g.drawImage(mapImage, 0, 0, null, null);
 

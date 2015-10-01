@@ -21,6 +21,7 @@ public class DestinysWild{
 	private boolean running = true;
 	private DestinysWild game = this;
 	private CountDownLatch latch;
+	private boolean paused = false;
 
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
@@ -55,22 +56,24 @@ public class DestinysWild{
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 		while(running){
-			long now = System.nanoTime();
-		    delta += (now - lastTime) / ns;
-		    lastTime = now;
-		    while(delta >= 1) {
-			    updateGame();
-			    delta--;
-		    }
-		    if(running){
-		    	//updateUI();
-		    }
-		    frames++;
-		    if(System.currentTimeMillis() - timer > 1000) {
-			    timer += 1000;
-			    System.out.println("FPS: " + frames);
-			    frames = 0;
-		    }
+			while(!paused){
+				long now = System.nanoTime();
+			    delta += (now - lastTime) / ns;
+			    lastTime = now;
+			    while(delta >= 1) {
+				    updateGame();
+				    delta--;
+			    }
+			    if(running){
+			    	//updateUI();
+			    }
+			    frames++;
+			    if(System.currentTimeMillis() - timer > 1000) {
+				    timer += 1000;
+				    System.out.println("FPS: " + frames);
+				    frames = 0;
+			    }
+			}
 		}
 		//stop();
 	}
@@ -81,6 +84,10 @@ public class DestinysWild{
 
 	public void updateUI(){
 		ui.updateUI();
+	}
+
+	public void setPaused(boolean paused){
+		this.paused = paused;
 	}
 
 	public void testSaveGame(){
