@@ -82,7 +82,7 @@ public class GameServer extends Thread {
 		case DISCONNECT:
 			packet = new DisconnectPacket(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port
-					+ "]" + ((LoginPacket) packet).getUserName()
+					+ "]" + ((DisconnectPacket) packet).getUserName()
 					+ " has disconnected");
 			this.removeConnection((DisconnectPacket) packet);
 			break;
