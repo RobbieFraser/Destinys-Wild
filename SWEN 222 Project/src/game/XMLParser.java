@@ -27,7 +27,7 @@ import org.jdom2.output.XMLOutputter;
 
 public class XMLParser {
 
-	private static String LOCAL_SAVESTATE = "data/savegames/savestate.xml"; //The file path at which the changed game board will be saved
+	private static String LOCAL_SAVESTATE = "data/savestate.xml"; //The file path at which the changed game board will be saved
 
 	/**
 	 * Initialises the board from an XML file
