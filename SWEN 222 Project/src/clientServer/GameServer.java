@@ -26,7 +26,10 @@ public class GameServer extends Thread {
 		this.board = board;
 		try {
 			this.socket = new DatagramSocket(9772);
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
 		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 	}

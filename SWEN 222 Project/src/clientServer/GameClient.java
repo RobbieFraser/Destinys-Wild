@@ -25,7 +25,7 @@ public class GameClient extends Thread {
 	// testing change
 	private Board board;
 
-	public GameClient(Board board) {
+	public GameClient(Board board,String ipName) {
 		this.board = board;
 		try {
 			this.socket = new DatagramSocket();
