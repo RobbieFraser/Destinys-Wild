@@ -1,5 +1,8 @@
 package game;
 
+import game.items.Health;
+import game.items.Item;
+
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
@@ -8,9 +11,8 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.SwingUtilities;
 
-import game.items.Health;
-import game.items.Item;
 import view.GameInterface;
+import clientServer.Multiplayer;
 
 public class DestinysWild{
 	private static Board board;
@@ -24,13 +26,13 @@ public class DestinysWild{
 		board = XMLParser.initialiseBoard("data/board.xml");
 		//initialiseTestPlayer();
 		XMLParser.loadPlayer(new File("data/savegames/Robbie.xml"));
-		//Multiplayer multiplayer  = new Multiplayer(this,board);
-		//multiplayer.start();
+		Multiplayer multiplayer  = new Multiplayer(this,board);
+		multiplayer.start();
 		latch = new CountDownLatch(1);
 		setUpUI();
 		gameLoop();
 	}
-	
+
 	public void setUpUI(){
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
@@ -38,7 +40,7 @@ public class DestinysWild{
 		    }
 		});
 	}
-	
+
 	public void gameLoop(){
 		try {
 			latch.await();
@@ -72,11 +74,11 @@ public class DestinysWild{
 		}
 		//stop();
 	}
-	
+
 	public void updateGame(){
 		currentPlayer.updatePlayer();
 	}
-	
+
 	public void updateUI(){
 		ui.updateUI();
 	}
