@@ -29,7 +29,7 @@ public class GameClient extends Thread {
 		this.board = board;
 		try {
 			this.socket = new DatagramSocket();
-			this.ipAddress =  InetAddress.getLocalHost();
+			this.ipAddress =  InetAddress.getByName("130.195.6.201");
 			System.out.println("Client initialisng");
 		} catch (SocketException e) {
 			System.out.println("Socket exception.");
