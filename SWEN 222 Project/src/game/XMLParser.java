@@ -61,13 +61,13 @@ public class XMLParser {
 
 				initialiseObstacles(room, currentRoom);
 				initialiseNPCS(room, currentRoom);
-				initialiseOnBoardItems(room, currentRoom);
+				initialiseOnBoardItems(room, currentRoom, board);
 				currentRoom.initialiseTiles();
 
 				System.out.println("Loading room with ID: " + id);
 				board.addRoom(currentRoom, roomRow, roomCol);
 			}
-			initialiseOffBoardItems(rootNode);
+			initialiseOffBoardItems(rootNode, board);
 
 
 		}
@@ -163,31 +163,32 @@ public class XMLParser {
 		}
 	}
 
-	private static void initialiseOnBoardItems(Element room, Room currentRoom) {
+	private static void initialiseOnBoardItems(Element room, Room currentRoom, Board board) {
 		if (room.getChild("Items") == null) {
 			return;
 		}
 
 		List<Element> items = room.getChildren("Items").get(0).getChildren("Item");
 
-		initialiseItems(items, currentRoom);
+		initialiseItems(items, currentRoom, board);
 
 	}
 
-	public static void initialiseOffBoardItems(Element rootNode){
-		if(rootNode.getChild("Offboarditems") == null){
+	public static void initialiseOffBoardItems(Element rootNode, Board board){
+		if(rootNode.getChild("Offitems") == null){
 			System.out.println("No offboard items found");
 			return;
 		}
 
-		List<Element> items = rootNode.getChildren("Items").get(0).getChildren("Item");
+		List<Element> items = rootNode.getChildren("Offitems").get(0).getChildren("Item");
+		System.out.println("OffBoardItems size: "+items.size());
 
-		initialiseItems(items, null);
+		initialiseItems(items, null, board);
 
 
 	}
 
-	public static void initialiseItems(List<Element> itemList, Room currentRoom){
+	public static void initialiseItems(List<Element> itemList, Room currentRoom, Board board){
 		for (Element item : itemList){ // Initialising Items
 			String itemType = item.getChildText("Itemtype");
 
@@ -223,7 +224,7 @@ public class XMLParser {
 				currentRoom.addItem(temp, itemRow, itemCol); //adds all items to the current room
 			}
 			else{
-				DestinysWild.getBoard().getOffBoardItems().add(temp); //adds items to off board list
+				board.addOffBoardItem(temp); //adds items to off board list
 			}
 		}
 	}
@@ -236,7 +237,6 @@ public class XMLParser {
 		DestinysWild.setBoard(initialiseBoard(LOCAL_SAVESTATE));
 		DestinysWild.getBoard().printBoard();
 		System.out.println("Board Loaded");
-		DestinysWild.getBoard().addOffBoardItem(new Health("apple", new Point(0,0), 10, 10));
 		System.out.println("Loading player file from " + playerFile.getName());
 		loadPlayer(playerFile);
 		System.out.println("Player Loaded");
@@ -266,10 +266,15 @@ public class XMLParser {
 
 			List<Element> inventory = playerTag.getChild("Inventory").getChildren("Itemid");
 
+			System.out.println("Inventory is empty: "+inventory.isEmpty());
+
+			System.out.println(DestinysWild.getBoard().getOffBoardItems().size() + " <-- offBoardItems size");
+
 			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
 				for(Element invItem : inventory){
 					int itemId = Integer.valueOf(invItem.getText());
 					Item tempItem = board.getOffItemFromId(itemId); //Depends on initialised board from savestate.xml
+					System.out.println("Added to inventory: " + tempItem.toString());
 					player.addInventoryItem(tempItem);
 				}
 			}
@@ -303,7 +308,7 @@ public class XMLParser {
 	 * Saves the current game board and player to XML files
 	 */
 	public static void saveGame(){
-		String SAVE_FILE = "savegames/savestate.xml"; //This is the FILE PATH (Not Including 'data/') that will be used and overwritten each time the board is saved
+		String SAVE_FILE = "savestate.xml"; //This is the FILE PATH (Not Including 'data/') that will be used and overwritten each time the board is saved
 		System.out.println("Saving player");
 		savePlayer(); //save the player info separately
 		System.out.println("Player saved");
@@ -352,7 +357,18 @@ public class XMLParser {
 
 			Element offItems = new Element("Offitems");
 			for(Item item : board.getOffBoardItems()){
-				offItems.addContent(new Element("Itemid").setText(String.valueOf(item.getId())));
+				Element offItemTags = new Element("Item");
+				offItemTags.addContent(new Element("Itemtype").setText(String.valueOf(item.toString())));
+				offItemTags.addContent(new Element("Type").setText(String.valueOf(item.getType())));
+				offItemTags.addContent(new Element("Id").setText(String.valueOf(item.getId())));
+				offItemTags.addContent(new Element("Row").setText(String.valueOf(item.getCoords().x)));
+				offItemTags.addContent(new Element("Col").setText(String.valueOf(item.getCoords().y)));
+				offItemTags.addContent(new Element("Health").setText(String.valueOf(item.getHealth())));
+				offItemTags.addContent(new Element("Score").setText(String.valueOf(item.getScore())));
+
+				offItems.addContent(offItemTags);
+
+				System.out.println("Saving " + item.toString() + " to off board items");
 			}
 			boardTag.addContent(offItems);
 

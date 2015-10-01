@@ -11,7 +11,7 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>brokenblock</Type>
+        <Type>brokenstone1</Type>
         <Row>5</Row>
         <Col>7</Col>
       </Obstacle>
@@ -21,9 +21,18 @@
       <Item>
         <Itemtype>health</Itemtype>
         <Type>apple</Type>
-        <Id>11</Id>
+        <Id>41</Id>
         <Row>1</Row>
-        <Col>3</Col>
+        <Col>6</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>21</Id>
+        <Row>1</Row>
+        <Col>9</Col>
         <Health>10</Health>
         <Score>0</Score>
       </Item>
@@ -75,19 +84,44 @@
         <Speed>0</Speed>
       </Npc>
     </Npcs>
-    <Items>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>10</Id>
-        <Row>1</Row>
-        <Col>3</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-    </Items>
+    <Items />
   </Room>
   <Offitems>
-    <Itemid>10</Itemid>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>51</Id>
+      <Row>2</Row>
+      <Col>3</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>31</Id>
+      <Row>3</Row>
+      <Col>3</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>11</Id>
+      <Row>1</Row>
+      <Col>3</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>10</Id>
+      <Row>1</Row>
+      <Col>3</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
   </Offitems>
 </Board>

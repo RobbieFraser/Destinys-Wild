@@ -226,7 +226,7 @@ public class GameInterface{
 	 * 		is being drawn onto
 	 * @param type of inventory item
 	 * @param index of slot within the inventoryLabel
-	 * 		to draw on
+	 * 		to draw onlatch
 	 */
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
 		//firstly, we set the background image to be the image in question

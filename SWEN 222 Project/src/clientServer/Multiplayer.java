@@ -1,7 +1,10 @@
 package clientServer;
 
 import java.awt.Canvas;
+import java.awt.HeadlessException;
 import java.awt.Point;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import game.Board;
 import game.DestinysWild;
@@ -20,17 +23,20 @@ public class Multiplayer extends Canvas implements Runnable {
 	private Board board;
 	public int tickCount = 0;
 	private DestinysWild game;
+	private Player currentPlayer;
 	private Thread thread;
 
-	public Multiplayer(DestinysWild game, Board board) {
+	public Multiplayer(DestinysWild game, Board board, Player currentPlayer) {
 		this.game = game;
 		this.board = board;
+		this.currentPlayer = currentPlayer;
 	}
 
 	public void initialise() {
 		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
-		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
-					 new Point(500,300), room, null, -1);
+//		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
+//					 new Point(500,300), room, null, -1);
+		PlayerMulti player = new PlayerMulti(currentPlayer.getName(),currentPlayer.getCoords(),currentPlayer.getCurrentRoom(),null,-1);
 		LoginPacket packet = new LoginPacket(player.getName());
 		if (client != null) {
 			// client.sendData("ping".getBytes());
@@ -49,6 +55,15 @@ public class Multiplayer extends Canvas implements Runnable {
 				"Do you want to start the server?") == 0) {
 			server = new GameServer(board);
 			server.start();
+			try {
+				JOptionPane.showMessageDialog(null, "The server's IP address is: " + InetAddress.getLocalHost().getHostAddress());
+			} catch (HeadlessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if(server==null){
 		String ipAddress =	JOptionPane.showInputDialog(null,"Enter the server's IP Address");

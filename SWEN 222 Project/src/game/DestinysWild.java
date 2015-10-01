@@ -26,10 +26,11 @@ public class DestinysWild{
 	private boolean paused = false;
 
 	public DestinysWild() {
-		board = XMLParser.initialiseBoard("data/board.xml");
+		//board = XMLParser.initialiseBoard("data/board.xml");
 		//initialiseTestPlayer();
-		XMLParser.loadPlayer(new File("data/savegames/Robbie.xml"));
-		multiplayer  = new Multiplayer(this,board);
+		//XMLParser.loadPlayer(new File("data/savegames/Robbie.xml"));
+		testLoadGame();
+		multiplayer  = new Multiplayer(this,board,currentPlayer);
 		multiplayer.start();
 		latch = new CountDownLatch(1);
 		setUpUI();
@@ -47,6 +48,7 @@ public class DestinysWild{
 	public void disconnect(){
 		DisconnectPacket disconnect = new DisconnectPacket(currentPlayer.getName());
 		disconnect.writeData(multiplayer.getClient());
+		XMLParser.saveGame();
 	}
 
 	public void gameLoop(){

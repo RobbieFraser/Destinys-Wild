@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Player>
   <Name>Robbie</Name>
-  <Posx>730</Posx>
-  <Posy>308</Posy>
+  <Posx>575</Posx>
+  <Posy>368</Posy>
   <Health>99</Health>
-  <Currentroom>0</Currentroom>
+  <Currentroom>1</Currentroom>
   <Score>9999</Score>
   <Speed>5</Speed>
   <Visitedrooms>
     <Roomid>0</Roomid>
+    <Roomid>1</Roomid>
   </Visitedrooms>
   <Inventory>
+    <Itemid>51</Itemid>
+    <Itemid>31</Itemid>
+    <Itemid>11</Itemid>
     <Itemid>10</Itemid>
   </Inventory>
 </Player>
