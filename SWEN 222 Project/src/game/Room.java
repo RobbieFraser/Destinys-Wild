@@ -92,14 +92,16 @@ public class Room {
 	public Object getTileOccupant(Tile tile){
 		for(int row=0; row<tiles.length; row++){
 			for(int col=0; col<tiles[0].length; col++){
-				if(obstacles[row][col] != null){
-					return obstacles[row][col];
-				}
-				else if(npcs[row][col] != null){
-					return npcs[row][col];
-				}
-				else if(items[row][col] != null){
-					return items[row][col];
+				if(tile.getRoomCoords().equals(new Point(row, col))){
+					if(obstacles[row][col] != null){
+						return obstacles[row][col];
+					}
+					else if(npcs[row][col] != null){
+						return npcs[row][col];
+					}
+					else if(items[row][col] != null){
+						return items[row][col];
+					}
 				}
 			}
 		}

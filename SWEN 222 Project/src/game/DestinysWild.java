@@ -16,6 +16,9 @@ public class DestinysWild{
 	public DestinysWild() {
 		board = XMLParser.initialiseBoard("data/board.xml");
 		initialiseTestPlayer();
+		board.printBoard();
+		board.getBoard()[2][2].printRoom();
+		board.getBoard()[1][2].printRoom();
 		Multiplayer multiplayer  = new Multiplayer(this,board);
 		multiplayer.start();
 	}
@@ -27,6 +30,9 @@ public class DestinysWild{
 	public static void initialiseTestPlayer(){
 		List<Item> inv = new ArrayList<>();
 		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room 0
+		inv.add(new Health("apple", new Point(5, 5), 10, 555));
+		inv.add(new Health("apple", new Point(5, 5), 10, 555));
+		inv.add(new Health("apple", new Point(5, 5), 10, 555));
 		System.out.println("Inv size: " + inv.size());
 
 		List<Room> roomsV = new ArrayList<>();

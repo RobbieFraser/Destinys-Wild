@@ -7,6 +7,7 @@ import java.util.List;
 import game.items.Health;
 import game.items.Item;
 import game.items.Key;
+import game.items.Tool;
 
 public class Player {
 	private String name;
@@ -76,6 +77,7 @@ public class Player {
 		if(occupant instanceof Item){
 			if(addInventoryItem((Item)occupant)){
 				currentRoom.removeItems((Item)occupant);
+				DestinysWild.getBoard().addOffBoardItem((Item)occupant);
 				currentTile.setOccupied(false);
 			}
 			return true;
@@ -90,6 +92,7 @@ public class Player {
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -100,6 +103,7 @@ public class Player {
 			case "east":
 				setCoords(getCoords().x + speed, getCoords().y);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -110,6 +114,7 @@ public class Player {
 			case "south":
 				setCoords(getCoords().x, getCoords().y + speed/2);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -120,6 +125,7 @@ public class Player {
 			case "west":
 				setCoords(getCoords().x - speed, getCoords().y);
 				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
 					changeRoom(prevTile);
 				}
 				else if(!currTileIsInRoom() || !canChangeTile()){
@@ -149,7 +155,6 @@ public class Player {
 	 * @param previousTile the player's previous Tile 
 	 */
 	public void changeRoom(Tile previousTile){
-		currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 		if(!visitedRooms.contains(currentRoom)){
 			addCurrentRoom();
 		}
@@ -217,7 +222,7 @@ public class Player {
 	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
-		if((item instanceof Health && canAddHealthItem()) || (item instanceof Key && canAddKeyItem())){
+		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && canAddKeyItem()) || item instanceof Tool){
 			return inventory.add(item);
 		}
 		else{
@@ -227,31 +232,44 @@ public class Player {
 	}
 
 	/**
-	 * Checks whether a health item can be added to the inventory (Max of 5 health items)
-	 * @return true/false for above
-	 */
-	public boolean canAddHealthItem(){
-		int count = 0;
-		for(Item item : inventory){
-			if(item instanceof Health){
-				count++;
-			}
-		}
-		return count < 5;
-	}
-
-	/**
 	 * Checks whether a Key item can be added to the inventory (Max of 1 Key item)
-	 * @return true/false for above
+	 * @return boolean true/false for above
 	 */
 	public boolean canAddKeyItem(){
-		int count = 0;
 		for(Item item : inventory){
 			if(item instanceof Key){
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * counts the number of health items in the player's inventory
+	 * @return int number of health items
+	 */
+	public int numHealthItems(){
+		int count = 0;
+		for(Item item : inventory){
+			if(item instanceof Health){
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * counts the number of tools in the player's inventory
+	 * @return int number of tools 
+	 */
+	public int numToolItems(){
+		int count = 0;
+		for(Item item : inventory){
+			if(item instanceof Tool){
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -260,6 +278,14 @@ public class Player {
 	 */
 	public void removeInventoryItem(int index){
 		inventory.remove(index);
+	}
+	
+	/**
+	 * removes an item by Item object from player's inventory
+	 * @param item item to be removed
+	 */
+	public void removeInventoryItem(Item item){
+		inventory.remove(item);
 	}
 
 	/**

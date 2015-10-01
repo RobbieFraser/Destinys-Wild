@@ -47,13 +47,13 @@ public class Tile {
 		if(room.getNorth() != -1 && (roomCoords.equals(new Point(0,4)) || roomCoords.equals(new Point(0,5)))){
 			return "north";
 		}
-		else if(room.getEast() != -1 && roomCoords.equals(new Point(4,9)) || roomCoords.equals(new Point(5,9))){
+		else if(room.getEast() != -1 && (roomCoords.equals(new Point(4,9)) || roomCoords.equals(new Point(5,9)))){
 			return "east";
 		}
-		else if(room.getSouth() != -1 && roomCoords.equals(new Point(9,4)) || roomCoords.equals(new Point(9,5))){
+		else if(room.getSouth() != -1 && (roomCoords.equals(new Point(9,4)) || roomCoords.equals(new Point(9,5)))){
 			return "south";
 		}
-		else if(room.getWest() != -1 && roomCoords.equals(new Point(4,0)) || roomCoords.equals(new Point(5,0))){
+		else if(room.getWest() != -1 && (roomCoords.equals(new Point(4,0)) || roomCoords.equals(new Point(5,0)))){
 			return "west";
 		}
 		return "not a door mat";

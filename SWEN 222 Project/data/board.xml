@@ -85,6 +85,42 @@
     	<Health>10</Health>
     	<Score>0</Score>
       </Item>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>21</Id> <!-- 2 = item id, 1 = room id -->
+    	<Row>1</Row>
+    	<Col>9</Col>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>31</Id> <!-- 3 = item id, 1 = room id -->
+    	<Row>3</Row>
+    	<Col>3</Col>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>41</Id> <!-- 4 = item id, 1 = room id -->
+    	<Row>1</Row>
+    	<Col>6</Col>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
+      <Item>
+    	<Itemtype>health</Itemtype>
+    	<Type>apple</Type>
+    	<Id>51</Id> <!-- 5 = item id, 1 = room id -->
+    	<Row>2</Row>
+    	<Col>3</Col>
+    	<Health>10</Health>
+    	<Score>0</Score>
+      </Item>
     </Items>
   </Room>
 </Board>
