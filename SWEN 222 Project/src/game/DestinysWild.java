@@ -36,7 +36,7 @@ public class DestinysWild implements Runnable{
 		//board = XMLParser.initialiseBoard("data/board.xml");
 		//initialiseTestPlayer();
 	}
-	
+
 	public void setUpGame(){
 		multiplayer  = new Multiplayer(this,board,currentPlayer);
 		multiplayer.start();
@@ -46,16 +46,16 @@ public class DestinysWild implements Runnable{
 		mainMenu.remove();
 		Thread thread = new Thread(this);
 		thread.start();
-		
+
 	}
-	
+
 	public void newGame(String playerName, JFrame frame){
 		this.frame = frame;
 		setBoard(XMLParser.initialiseBoard("data/board.xml"));
 		setPlayer(new Player(playerName, new Point(500, 300), board.getRoomFromCoords(2, 2)));
 		setUpGame();
 	}
-	
+
 	public void loadGame(File currentPlayerFile, JFrame frame){
 		this.frame = frame;
 		XMLParser.loadGame(currentPlayerFile);

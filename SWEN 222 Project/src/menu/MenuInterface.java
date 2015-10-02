@@ -42,6 +42,8 @@ public class MenuInterface {
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 
+		frame.setTitle("Destiny's Wild");
+
 		ImagePanel imagePanel = new ImagePanel("titleScreen.png");
 		frame.setContentPane(imagePanel);
 		frame.setResizable(false);

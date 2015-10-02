@@ -36,6 +36,7 @@ public class GameServer extends Thread {
 
 	public void run() {
 		while (true) {
+			System.out.println("Test");
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
@@ -47,6 +48,7 @@ public class GameServer extends Thread {
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
+			System.out.println("Packet parsed");
 //			String msg = new String(packet.getData());
 //			System.out.println(msg);
 //			System.out.println("CLIENT [ "

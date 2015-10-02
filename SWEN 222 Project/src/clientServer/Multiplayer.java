@@ -113,7 +113,7 @@ public class Multiplayer extends Canvas implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				// System.out.println("Ticks: " + ticks);
+				//System.out.println("Ticks: " + ticks);
 				ticks = 0;
 			}
 		}
@@ -121,5 +121,6 @@ public class Multiplayer extends Canvas implements Runnable {
 
 	private void tick() {
 		tickCount++;
+		game.updateGame();
 	}
 }

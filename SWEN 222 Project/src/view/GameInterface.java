@@ -43,9 +43,9 @@ public class GameInterface{
 	private CountDownLatch latch;
 
 	public GameInterface(){
-		
+
 	}
-	
+
 	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
 		this.latch = latch;
 		//System.out.println("yo");
@@ -58,7 +58,7 @@ public class GameInterface{
 		frame.setVisible(true);
 		latch.countDown();
 	}
-	
+
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
 		//System.out.println("yo");
@@ -82,8 +82,8 @@ public class GameInterface{
 	 * the minimap.
 	 */
 	private void initialiseInterface() {
-		System.out.println("aaron");
 		frame = new JFrame();
+		frame.setTitle("Destiny's Wild");
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);
 		//frame.addMouseListener(this);
@@ -428,7 +428,6 @@ public class GameInterface{
 
 	private void handleKeyRelease(KeyEvent e){
 		int keyCode = e.getKeyCode();
-		System.out.println(e.getKeyChar());
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			player.setMoving(false);
