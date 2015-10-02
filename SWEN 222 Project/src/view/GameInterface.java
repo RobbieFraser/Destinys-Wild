@@ -42,9 +42,26 @@ public class GameInterface{
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
 
+	public GameInterface(){
+		
+	}
+	
+	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
+		this.latch = latch;
+		//System.out.println("yo");
+		this.player = player;
+		this.board = board;
+		this.game = game;
+		gamePanel = new GameImagePanel(board, player);
+		initialiseInterface();
+		updateUI();
+		frame.setVisible(true);
+		latch.countDown();
+	}
+	
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
-		System.out.println("yo");
+		//System.out.println("yo");
 		this.player = player;
 		this.board = board;
 		this.game = game;
@@ -65,7 +82,7 @@ public class GameInterface{
 	 * the minimap.
 	 */
 	private void initialiseInterface() {
-		System.out.println("yo");
+		System.out.println("aaron");
 		frame = new JFrame();
 		frame.setBounds(100, 30, 1100, 750);
 		frame.setResizable(false);

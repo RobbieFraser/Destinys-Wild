@@ -37,6 +37,7 @@ public class Player {
 		this.coords = coords;
 		this.currentRoom = currentRoom;
 		this.currentTile = calcTile();
+		addCurrentRoom();
 	}
 
 	/**

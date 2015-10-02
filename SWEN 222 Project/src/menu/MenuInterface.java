@@ -1,6 +1,5 @@
 package menu;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,28 +8,34 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.border.Border;
 
+import game.DestinysWild;
 import game.XMLParser;
 
 public class MenuInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
 	private boolean isPlaying;
+	private DestinysWild game;
 
-	public MenuInterface() {
+	public MenuInterface(DestinysWild game) {
+		this.game = game;
 		initialise();
+	}
+	
+	public void remove(){
+		frame.setVisible(false);
+		frame.dispose();
 	}
 
 	public void initialise() {
@@ -117,12 +122,12 @@ public class MenuInterface {
 		toggleMusicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (isPlaying) {
-					music.stopPlaying();
+					//music.stopPlaying();
 					isPlaying = false;
 				}
 				else {
 					//final PlayMusic music = new PlayMusic();
-					music.playSound("SayMyName48.mp3");
+					//music.playSound("SayMyName48.mp3");
 					isPlaying = true;
 				}
 			}
@@ -133,12 +138,13 @@ public class MenuInterface {
 		frame.getContentPane().requestFocus();
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(menuPanel);
+		frame.setVisible(true);
 	}
 
 	private void newGameButtonPressed() {
 		String name = JOptionPane.showInputDialog("Enter your name adventurer!");
-		System.out.println("User's name was: "+name);
-		//TODO: Begin Game
+		game.newGame(name, frame);
+		//System.out.println("User's name was: "+name);
 	}
 
 	private void loadGame() {
@@ -150,7 +156,7 @@ public class MenuInterface {
 			//get the saved game from the save games file
 			File saveGame = chooser.getSelectedFile();
 			//send file through to the parser
-			XMLParser.loadGame(saveGame);
+			game.loadGame(saveGame, frame);
 			
 		}
 	}
@@ -184,18 +190,18 @@ public class MenuInterface {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuInterface menu = new MenuInterface();
-					menu.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MenuInterface menu = new MenuInterface();
+//					menu.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	public class ButtonAction extends AbstractAction {
 		public ButtonAction(String text, String desc, Integer mnemonic) {

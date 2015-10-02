@@ -28,6 +28,7 @@ import org.jdom2.output.XMLOutputter;
 public class XMLParser {
 
 	private static String LOCAL_SAVESTATE = "data/savestate.xml"; //The file path at which the changed game board will be saved
+	private static String LOCAL_BOARD = "data/board.xml"; //The original board files
 
 	/**
 	 * Initialises the board from an XML file
@@ -35,7 +36,6 @@ public class XMLParser {
 	 * @return the initialised board object. Stored in DestinysWild.java
 	 */
 	public static Board initialiseBoard(String filename){
-
 		Board board = new Board();
 
 		try {
@@ -233,13 +233,14 @@ public class XMLParser {
 	 * Loads save states for the current game
 	 */
 	public static void loadGame(File playerFile){
-		System.out.println("Loading board from " + LOCAL_SAVESTATE);
-		DestinysWild.setBoard(initialiseBoard(LOCAL_SAVESTATE));
-		DestinysWild.getBoard().printBoard();
-		System.out.println("Board Loaded");
-		System.out.println("Loading player file from " + playerFile.getName());
-		loadPlayer(playerFile);
-		System.out.println("Player Loaded");
+		if(playerFile == null){
+			DestinysWild.setBoard(initialiseBoard(LOCAL_BOARD));
+			DestinysWild.setPlayer(new Player());
+		}
+		else{
+			DestinysWild.setBoard(initialiseBoard(LOCAL_SAVESTATE));
+			loadPlayer(playerFile);
+		}
 	}
 
 	public static void loadPlayer(File playerFile){

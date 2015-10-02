@@ -1,21 +1,22 @@
 package game;
 
-import game.items.Health;
-import game.items.Item;
-
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import view.GameInterface;
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
+import game.items.Health;
+import game.items.Item;
+import menu.MenuInterface;
+import view.GameInterface;
 
-public class DestinysWild{
+public class DestinysWild implements Runnable{
 	private static Board board;
 	private static Player currentPlayer;
 	private GameInterface ui;
@@ -24,25 +25,52 @@ public class DestinysWild{
 	private CountDownLatch latch;
 	private Multiplayer multiplayer = null;
 	private boolean paused = false;
+	private MenuInterface mainMenu;
+	private JFrame frame;
 
 	public DestinysWild() {
+    	mainMenu = new MenuInterface(this);
+		//mainMenu = new MenuInterface(this);
+		//newGame("guy");
+		//loadGame(new File("data/savegames/Robbie.xml"));
 		//board = XMLParser.initialiseBoard("data/board.xml");
 		//initialiseTestPlayer();
-		//XMLParser.loadPlayer(new File("data/savegames/Robbie.xml"));
-		testLoadGame();
+	}
+	
+	public void setUpGame(){
 		multiplayer  = new Multiplayer(this,board,currentPlayer);
 		multiplayer.start();
+		System.out.println("yo");
 		latch = new CountDownLatch(1);
 		setUpUI();
-		gameLoop();
+		mainMenu.remove();
+		Thread thread = new Thread(this);
+		thread.start();
+		
+	}
+	
+	public void newGame(String playerName, JFrame frame){
+		this.frame = frame;
+		setBoard(XMLParser.initialiseBoard("data/board.xml"));
+		setPlayer(new Player(playerName, new Point(500, 300), board.getRoomFromCoords(2, 2)));
+		setUpGame();
+	}
+	
+	public void loadGame(File currentPlayerFile, JFrame frame){
+		this.frame = frame;
+		XMLParser.loadGame(currentPlayerFile);
+		setUpGame();
 	}
 
 	public void setUpUI(){
+		System.out.println("yo");
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
+		    	System.out.println("yo");
 		        ui = new GameInterface(currentPlayer, game, board, latch);
 		    }
 		});
+		//ui.setInterface(currentPlayer, game, board, latch);
 	}
 
 	public void disconnect(){
@@ -161,5 +189,10 @@ public class DestinysWild{
 		DestinysWild game = new DestinysWild();
 		//game.testLoadGame();
 		//game.testSaveGame();
+	}
+
+	@Override
+	public void run() {
+		gameLoop();
 	}
 }
