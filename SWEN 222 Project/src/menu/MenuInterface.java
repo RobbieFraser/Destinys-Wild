@@ -109,7 +109,7 @@ public class MenuInterface {
 
 		//play song
 		final PlayMusic music = new PlayMusic();
-		//music.playSound("SayMyName48.mp3");
+		music.playSound("SayMyName48.mp3");
 		isPlaying = true;
 
 		//Toggle Music Button
