@@ -32,7 +32,7 @@ public class MenuInterface {
 		this.game = game;
 		initialise();
 	}
-	
+
 	public void remove(){
 		frame.setVisible(false);
 		frame.dispose();
@@ -114,7 +114,7 @@ public class MenuInterface {
 
 		//play song
 		final PlayMusic music = new PlayMusic();
-		music.playSound("SayMyName48.mp3");
+		music.playSound("DestinysWildOST.mp3");
 		isPlaying = true;
 
 		//Toggle Music Button
@@ -122,12 +122,12 @@ public class MenuInterface {
 		toggleMusicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (isPlaying) {
-					//music.stopPlaying();
+					music.stopPlaying();
 					isPlaying = false;
 				}
 				else {
-					//final PlayMusic music = new PlayMusic();
-					//music.playSound("SayMyName48.mp3");
+					final PlayMusic music = new PlayMusic();
+					music.playSound("DestinysWildOST.mp3");
 					isPlaying = true;
 				}
 			}
@@ -157,7 +157,7 @@ public class MenuInterface {
 			File saveGame = chooser.getSelectedFile();
 			//send file through to the parser
 			game.loadGame(saveGame, frame);
-			
+
 		}
 	}
 
