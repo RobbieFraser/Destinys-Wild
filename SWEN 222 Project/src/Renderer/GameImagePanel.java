@@ -207,6 +207,16 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		int newY = (int)player.getCoords().getY() - 80;
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
+		int len = (player.getName().length()*4);
+		g.drawString(player.getName(), (newX-len)+13, newY - 20);
+		drawHealth(g, newX, newY);
+	}
+	
+	public void drawHealth(Graphics g, int x, int y){
+		g.setColor(Color.black);
+		g.fillRect(x+13-25, y-10, 50, 5);
+		g.setColor(Color.green);
+		g.fillRect(x+13-25, y-10, player.getHealth()/2, 5);
 	}
 	
 	public void drawNorthWall(Graphics g, String file){
