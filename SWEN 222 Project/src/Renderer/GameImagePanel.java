@@ -31,7 +31,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
-	private BufferedImage playerIMG = loadImage("playerSpriteSheet.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
+	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
 	
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
@@ -205,12 +205,13 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	}
 	
 	public void drawPlayer(Graphics g){
-		int newX = (int)player.getCoords().getX() - 12;
+		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
 		int len = (player.getName().length()*4);
 		g.drawString(player.getName(), (newX-len)+13, newY - 20);
+		g.drawString(String.valueOf(player.getWalkState()), (newX-len)+13, newY - 30);
 		drawHealth(g, newX, newY);
 	}
 	
@@ -334,62 +335,62 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 //	}
 	
 	public void updatePlayerImage(){
-		BufferedImage sheet = loadImage("playerSpriteSheet.png");
+		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
 		BufferedImage playerImage = playerIMG;
 		if(player.isNorth()){
 			if(player.isEast() && player.isWest()){
-				playerImage = sheet.getSubimage(0, 0, 26, 82);
+				playerImage = sheet.getSubimage(0, 0, 50, 82);
 			}
 			else if(player.isWest()){
-				playerImage = sheet.getSubimage(26, 0, 26, 82);
+				playerImage = sheet.getSubimage(50, 0, 50, 82);
 			}
 			else if(player.isEast()){
-				playerImage = sheet.getSubimage(182, 0, 26, 82);
+				playerImage = sheet.getSubimage(350, 0, 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(0, 0, 26, 82);
+				playerImage = sheet.getSubimage(0, 0, 50, 82);
 			}
 		}
 		else if(player.isEast()){
 			if(player.isNorth() && player.isSouth()){
-				playerImage = sheet.getSubimage(156, 0, 26, 82);
+				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isNorth()){
-				playerImage = sheet.getSubimage(182, 0, 26, 82);
+				playerImage = sheet.getSubimage(350, 0, 50, 82);
 			}
 			else if(player.isSouth()){
-				playerImage = sheet.getSubimage(130, 0, 26, 82);
+				playerImage = sheet.getSubimage(250, 0, 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(156, 0, 26, 82);
+				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
 			}
 		}
 		else if(player.isSouth()){
 			if(player.isEast() && player.isWest()){
-				playerImage = sheet.getSubimage(104, 0, 26, 82);
+				playerImage = sheet.getSubimage(200, 0, 50, 82);
 			}
 			else if(player.isWest()){
-				playerImage = sheet.getSubimage(78, 0, 26, 82);
+				playerImage = sheet.getSubimage(150, 0, 50, 82);
 			}
 			else if(player.isEast()){
-				playerImage = sheet.getSubimage(182, 0, 26, 82);
+				playerImage = sheet.getSubimage(350, 0, 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(104, 0, 26, 82);
+				playerImage = sheet.getSubimage(200, 0, 50, 82);
 			}
 		}
 		else if(player.isWest()){
 			if(player.isNorth() && player.isSouth()){
-				playerImage = sheet.getSubimage(52, 0, 26, 82);
+				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isNorth()){
-				playerImage = sheet.getSubimage(26, 0, 26, 82);
+				playerImage = sheet.getSubimage(50, 0, 50, 82);
 			}
 			else if(player.isSouth()){
-				playerImage = sheet.getSubimage(78, 0, 26, 82);
+				playerImage = sheet.getSubimage(150, 0, 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(52, 0, 26, 82);
+				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
 			}
 		}
 		playerIMG = playerImage;

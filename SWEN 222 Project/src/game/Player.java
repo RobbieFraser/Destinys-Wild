@@ -26,6 +26,8 @@ public class Player {
 	private boolean south;
 	private boolean east;
 	private boolean west;
+	private int walkState = 0;
+	private int walkDelay = 0;
 
 	public Player(){
 
@@ -82,6 +84,17 @@ public class Player {
 		return false;
 	}
 	
+	public void updateWalkCycle(){
+		walkState++;
+		if(walkState == 8){
+			walkState = 0;
+		}
+	}
+	
+	public int getWalkState(){
+		return walkState;
+	}
+	
 	/**
 	 * finds any interactables in the surrounding squares of the player
 	 * @return List<Object> of interactables
@@ -127,17 +140,35 @@ public class Player {
 	}
 	
 	public void updatePlayer(){
+		int count = 0;
 		if(north){
 			tryMove("north");
+			count++;
 		}
 		if(south){
 			tryMove("south");
+			count++;
 		}
 		if(east){
 			tryMove("east");
+			count++;
 		}
 		if(west){
 			tryMove("west");
+			count++;
+		}
+		if(count > 0){
+			if(walkDelay == 0){
+				updateWalkCycle();
+				walkDelay = 5;
+			}
+			else{
+				walkDelay--;
+			}
+		}
+		else{
+			walkDelay = 5;
+			walkState = 0;
 		}
 	}
 
