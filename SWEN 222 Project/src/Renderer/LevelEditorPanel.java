@@ -80,12 +80,20 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	//The main Board object that everything is run off of
 	private Board board;
 	
-	private int id = 2;
+	private int id = 0;
 	
 	//The TilePicker object to help with drawing the board and getting colours
 	private TilePicker tp = new TilePicker();
 	
 	public LevelEditorPanel(Board board){
+		for(int i = 0; i < board.getBoard().length; i++){
+			for(int j = 0; j < board.getBoard()[0].length; j++){
+				if(board.getBoard()[i][j] != null){
+					id++;
+				}
+			}
+		}
+		System.out.println("ID count: " + id);
 		selects = tp.getSelects();
 		this.board = board;
 		//Make the editor listen for mouse inputs
@@ -412,8 +420,41 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	}
 	
 	public void selectRoom(){
+		//If the selected room doesn't exist
 		if(board.getBoard()[hoverMapY][hoverMapX] == null){
-			board.getBoard()[hoverMapY][hoverMapX] = new Room(-1, -1, -1, -1, id, new Point(hoverMapY, hoverMapX));
+			//set the id's of the rooms to all be -1 (non existent)
+			int northID = -1;
+			int eastID = -1;
+			int southID = -1;
+			int westID = -1;
+			//work out if any rooms exist through any of the doors and get the rooms ID's
+			for(int i = 0; i < board.getBoard().length; i++){
+				for(int j = 0; j < board.getBoard()[0].length; j++){
+					if(board.getBoard()[j][i] != null){
+						if(j == hoverMapY - 1 && i == hoverMapX){
+							northID = board.getBoard()[j][i].getId();
+							board.getBoard()[j][i].setSouth(id);
+							System.out.println("north, id was: " + board.getBoard()[j][i].getId());
+						}
+						if(j == hoverMapY + 1 && i == hoverMapX){
+							southID = board.getBoard()[j][i].getId();
+							board.getBoard()[j][i].setNorth(id);
+							System.out.println("south, id was: " + board.getBoard()[j][i].getId());
+						}
+						if(j == hoverMapY && i == hoverMapX + 1){
+							eastID = board.getBoard()[j][i].getId();
+							board.getBoard()[j][i].setWest(id);
+							System.out.println("east, id was: " + board.getBoard()[j][i].getId());
+						}
+						if(j == hoverMapY && i == hoverMapX - 1){
+							westID = board.getBoard()[j][i].getId();
+							board.getBoard()[j][i].setEast(id);
+							System.out.println("west, id was: " + board.getBoard()[j][i].getId());
+						}
+					}
+				}
+			}
+			board.getBoard()[hoverMapY][hoverMapX] = new Room(northID, eastID, southID, westID, id, new Point(hoverMapY, hoverMapX));
 			id++;
 		}
 		curRoom = board.getBoard()[hoverMapY][hoverMapX];
