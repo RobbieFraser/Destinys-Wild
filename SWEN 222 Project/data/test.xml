@@ -407,6 +407,14 @@
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
+      <Npc>
+      	<Npctype>friendlystill</Npctype>
+      	<Type>shopkeeper</Type>
+      	<Row>8</Row>
+      	<Col>5</Col>
+      	<Damage>0</Damage>
+      	<Speed>0</Speed>
+      </Npc>
     </Npcs>
     <Items>
       <Item>
