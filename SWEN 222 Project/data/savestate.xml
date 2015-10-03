@@ -385,7 +385,7 @@
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>cobbleston10455554555545555455554555545555455554555549</Type>
+        <Type>cobblestone1</Type>
         <Row>3</Row>
         <Col>7</Col>
       </Obstacle>
@@ -405,6 +405,14 @@
         <Row>7</Row>
         <Col>7</Col>
         <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>friendlystill</Npctype>
+        <Type>shopkeeper</Type>
+        <Row>8</Row>
+        <Col>5</Col>
+        <Damage>0</Damage>
         <Speed>0</Speed>
       </Npc>
     </Npcs>
@@ -435,6 +443,78 @@
         <Col>3</Col>
         <Health>10</Health>
         <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>7</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>8</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>8</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>1</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>2</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>8</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coin</Type>
+        <Id>99</Id>
+        <Row>9</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>10</Score>
       </Item>
     </Items>
   </Room>

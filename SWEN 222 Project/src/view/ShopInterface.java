@@ -73,6 +73,7 @@ public class ShopInterface {
 	
 		frame.revalidate();
 		frame.repaint();
+		frame.setVisible(true);
 	}
 	
 	/**
@@ -111,6 +112,5 @@ public class ShopInterface {
 	
 	public static void main(String[] args) {
 		ShopInterface shop = new ShopInterface();
-		shop.frame.setVisible(true);
 	}
 }

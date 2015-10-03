@@ -66,7 +66,6 @@ public class FriendlyStill implements NPC, Interactable{
 	@Override
 	public void interact() {
 		if(type.equals("shopkeeper")){
-			//ShopInterface shop = new ShopInterface();
 			new ShopInterface();
 		}
 		else{
