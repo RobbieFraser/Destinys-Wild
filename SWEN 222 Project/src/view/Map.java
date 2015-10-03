@@ -38,7 +38,6 @@ public class Map extends JComponent {
 		this.player = player;
 		this.board = board;
 		initialiseMapImage();
-		//TODO: Add Compass
 	}
 
 	/**
@@ -86,7 +85,6 @@ public class Map extends JComponent {
 				if (room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5] != null) {
 					Obstacle obstacle = room.getObstacles()[(i-xCoord)/5][(j-yCoord)/5];
 					//draw each obstacle differently
-					//TODO: Add images
 					switch (obstacle.getType()) {
 					case "brokenblock":
 						graphics.setColor(new Color(143, 143, 143));
@@ -104,9 +102,6 @@ public class Map extends JComponent {
 						graphics.setColor(new Color(143, 143, 143));
 						graphics.fillRect(j, i, 1, 1);
 						break;
-					default:
-						System.out.println("Water?");
-						System.out.println("Error");
 					}
 				} else {
 					//print out normal unoccupied square (forest floor)
@@ -142,16 +137,16 @@ public class Map extends JComponent {
 		//draw in walls or doors in x direction
 		for (int i = xCoord; i <= xCoord + 50; ++i) {
 			for (int j = yCoord; j <= yCoord + 50; j += 50) {
-				//check for east door
-				if (room.getEast() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+				//check for west door
+				if (room.getWest() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
 						&& j == yCoord) {
-					//if we are here, then a east door is present, so nothing will be
+					//if we are here, then a west door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
-				//check for west door
-				else if (room.getWest() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
+				//check for east door
+				else if (room.getEast() != -1 && i >= (20 + xCoord) && i < (30 + xCoord)
 						&& j == yCoord + 50) {
-					//if we are here, then a west door is present, so nothing will be
+					//if we are here, then a east door is present, so nothing will be
 					//drawn to show the gap in the wall
 				}
 				else {
@@ -190,6 +185,8 @@ public class Map extends JComponent {
 					if (!visitedRoom) {
 						//haven't visited this room
 						//so user shouldn't be able to see it
+						
+						
 						g.setColor(Color.DARK_GRAY);
 						g.fillRect(j*50, i*50, 50, 50);
 					}

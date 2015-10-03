@@ -49,8 +49,8 @@ public class GameInterface{
 		updateUI();
 		frame.setVisible(true);
 		latch.countDown();
-		//TODO: Add support for P / Pause
 		//TODO: Add support for L / R Arrows keys - Change perspective
+		//TODO: Improve Pause menu
 	}
 	
 	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
@@ -462,7 +462,7 @@ public class GameInterface{
 		case KeyEvent.VK_EQUALS:
 			updateSelectedSlot(11);
 			break;
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_SHIFT:
 			String selectedItemName = getSelectedItem();
 			if (selectedItemName != null) {
 				clearKeysPressed();
@@ -471,6 +471,9 @@ public class GameInterface{
 			} else {
 				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
 			}
+			break;
+		case KeyEvent.VK_SPACE:
+			player.tryInteract();
 			break;
 		case KeyEvent.VK_ESCAPE:
 			//check if the user wants to escape the game
