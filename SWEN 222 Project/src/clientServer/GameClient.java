@@ -83,6 +83,7 @@ public class GameClient extends Thread {
 		case MOVE:
 			packet = new MovePacket(data);
 			handlePacket((MovePacket) packet);
+			System.out.println("Player is moving online");
 		}
 
 	}

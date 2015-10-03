@@ -33,6 +33,10 @@ public class GameServer extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<PlayerMulti> getConnectedPlayers(){
+		return connectedPlayers;
+	}
 
 	public void run() {
 		while (true) {
@@ -94,16 +98,14 @@ public class GameServer extends Thread {
 					+ "," + ((MovePacket)packet).getY());
 			this.handleMove((MovePacket)packet);
 		}
-
-
 	}
 
 	public void handleMove(MovePacket packet){
 		if(packet.getUserName()!=null){
 			int index = getPlayerIndex(packet.getUserName());
 			PlayerMulti player = this.connectedPlayers.get(index);
-			int playerX = (int)packet.getX();
-			int playerY = (int)packet.getY();
+			int playerX = packet.getX();
+			int playerY = packet.getY();
 			player.setCoords(playerX, playerY);
 			packet.writeData(this);
 		}
@@ -163,6 +165,7 @@ public class GameServer extends Thread {
 		}if (alreadyConnected==false) {
 			System.out.println("player added");
 			this.connectedPlayers.add(player);
+			board.addPlayers(player);
 			System.out.println("player added");
 		}
 

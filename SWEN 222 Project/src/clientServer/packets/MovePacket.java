@@ -5,18 +5,18 @@ import clientServer.GameServer;
 
 public class MovePacket extends Packet {
 private String userName;
-private double x;
-private double y;
+private int x;
+private int y;
 	
 	public MovePacket(byte[] data) {
 		super(02);
 		String[] dataArray = readData(data).split(",");
 		this.userName = dataArray[0];
-		this.x = Double.parseDouble(dataArray[1]);
-		this.y = Double.parseDouble(dataArray[2]);
+		this.x = Integer.parseInt(dataArray[1]);
+		this.y = Integer.parseInt(dataArray[2]);
 	}
 
-	public MovePacket(String userName, double x, double y) {
+	public MovePacket(String userName, int x, int y) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
@@ -42,11 +42,11 @@ private double y;
 		return userName;
 	}
 	
-	public double getX(){
+	public int getX(){
 		return this.x;
 	}
 	
-	public double getY(){
+	public int getY(){
 		return this.y;
 	}
 }
