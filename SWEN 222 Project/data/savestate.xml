@@ -78,15 +78,6 @@
         <Itemtype>health</Itemtype>
         <Type>apple</Type>
         <Id>99</Id>
-        <Row>4</Row>
-        <Col>5</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
         <Row>6</Row>
         <Col>3</Col>
         <Health>10</Health>
@@ -124,6 +115,15 @@
     <Obstacles />
     <Npcs />
     <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>4</Row>
+        <Col>5</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
       <Item>
         <Itemtype>health</Itemtype>
         <Type>apple</Type>
@@ -341,7 +341,17 @@
       </Obstacle>
     </Obstacles>
     <Npcs />
-    <Items />
+    <Items>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>99</Id>
+        <Row>5</Row>
+        <Col>5</Col>
+        <Health>10</Health>
+        <Score>0</Score>
+      </Item>
+    </Items>
   </Room>
   <Room>
     <Id>0</Id>
@@ -430,15 +440,6 @@
         <Health>10</Health>
         <Score>0</Score>
       </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>6</Row>
-        <Col>7</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
     </Items>
   </Room>
   <Room>
@@ -458,24 +459,6 @@
         <Id>99</Id>
         <Row>1</Row>
         <Col>1</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>1</Row>
-        <Col>4</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>5</Row>
-        <Col>4</Col>
         <Health>10</Health>
         <Score>0</Score>
       </Item>
@@ -573,15 +556,6 @@
     <Obstacles />
     <Npcs />
     <Items>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>1</Row>
-        <Col>6</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
       <Item>
         <Itemtype>health</Itemtype>
         <Type>apple</Type>
@@ -766,8 +740,35 @@
       <Itemtype>health</Itemtype>
       <Type>apple</Type>
       <Id>99</Id>
+      <Row>1</Row>
+      <Col>6</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>99</Id>
+      <Row>6</Row>
+      <Col>7</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>99</Id>
       <Row>5</Row>
-      <Col>5</Col>
+      <Col>4</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>99</Id>
+      <Row>1</Row>
+      <Col>4</Col>
       <Health>10</Health>
       <Score>0</Score>
     </Item>
