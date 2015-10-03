@@ -134,14 +134,20 @@ public class Room {
 
 	public void removeObstacle(Obstacle obs){
 		obstacles[obs.getCoords().x][obs.getCoords().y] = null;
+		Tile tile = getTileFromRoomCoords(new Point(obs.getCoords().x, obs.getCoords().y));
+		tile.setOccupied(false);
 	}
 
 	public void removeNpcs(NPC npc){
 		npcs[npc.getCoords().x][npc.getCoords().y] = null;
+		Tile tile = getTileFromRoomCoords(new Point(npc.getCoords().x, npc.getCoords().y));
+		tile.setOccupied(false);
 	}
 
 	public void removeItems(Item item){
 		items[item.getCoords().x][item.getCoords().y] = null;
+		Tile tile = getTileFromRoomCoords(new Point(item.getCoords().x, item.getCoords().y));
+		tile.setOccupied(false);
 	}
 
 	public Item[][] getItems(){

@@ -7,6 +7,7 @@ import java.util.List;
 import game.items.Health;
 import game.items.Item;
 import game.items.Key;
+import game.items.Score;
 import game.items.Tool;
 
 public class Player {
@@ -67,6 +68,64 @@ public class Player {
 		this.currentTile = calcTile();
 	}
 	
+	/**
+	 * Tries to interact with anything within the surround 4 tiles (N E S or W)
+	 * @return boolean whether interaction is successful or not
+	 */
+	public boolean tryInteract(){
+		for(Object occupant : getInteractables()){
+			if(occupant != null){
+				((Interactable)occupant).interact();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * finds any interactables in the surrounding squares of the player
+	 * @return List<Object> of interactables
+	 */
+	public List<Object> getInteractables(){
+		int currTileRow = currentTile.getRoomCoords().x;
+		int currTileCol = currentTile.getRoomCoords().y;
+		
+		List<Object> occupants = new ArrayList<>();
+		
+		Tile north = currentRoom.getTileFromRoomCoords(new Point(currTileRow-1, currTileCol));
+		Tile east = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol+1));
+		Tile south = currentRoom.getTileFromRoomCoords(new Point(currTileRow+1, currTileCol));
+		Tile west = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol-1));
+		
+		Object occupant;
+		
+		if(north != null && north.isOccupied()){
+			occupant = currentRoom.getTileOccupant(north);
+			if(occupant instanceof Interactable){
+				occupants.add(occupant);
+			}
+		}
+		if(east != null && east.isOccupied()){
+			occupant = currentRoom.getTileOccupant(east);
+			if(occupant instanceof Interactable){
+				occupants.add(occupant);
+			}
+		}
+		if(south != null && south.isOccupied()){
+			occupant = currentRoom.getTileOccupant(south);
+			if(occupant instanceof Interactable){
+				occupants.add(occupant);
+			}
+		}
+		if(west != null && west.isOccupied()){
+			occupant = currentRoom.getTileOccupant(west);
+			if(occupant instanceof Interactable){
+				occupants.add(occupant);
+			}
+		}
+		return occupants;
+	}
+	
 	public void updatePlayer(){
 		if(north){
 			tryMove("north");
@@ -95,14 +154,25 @@ public class Player {
 		if(occupant instanceof Item){
 			if(addInventoryItem((Item)occupant)){
 				currentRoom.removeItems((Item)occupant);
-				DestinysWild.getBoard().addOffBoardItem((Item)occupant);
-				currentTile.setOccupied(false);
+				if(occupant instanceof Score){
+					setScore(getScore() + ((Item)occupant).getScore());
+				}
+				else{
+					DestinysWild.getBoard().addOffBoardItem((Item)occupant);
+				}
 			}
 			return true;
 		}
 		return false;
 	}
 	
+	
+	/**
+	 * Where the game logic player movement is done. The player will be moved onto a tile, 
+	 * then that tile is tested for an occupant. If occupied, the movement is reversed. 
+	 * @param direction the direction the player is trying to move
+	 * @return boolean whether the player move is succesfful or not
+	 */
 	public boolean tryMove(String direction){
 		orientation = direction;
 		Tile prevTile = currentTile;
@@ -151,66 +221,6 @@ public class Player {
 					currentTile = prevTile;
 				}
 				break;
-//			case "north west":
-//				setCoords(getCoords().x - speed, getCoords().y - speed/2);
-//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
-//					changeRoom(prevTile);
-//				}
-//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
-//					changeRoom(prevTile);
-//				}
-//				else if(!currTileIsInRoom() || !canChangeTile()){
-//					setCoords(getCoords().x + speed, getCoords().y + speed/2);
-//					currentTile = prevTile;
-//				}
-//				break;
-//			case "north east":
-//				setCoords(getCoords().x + speed, getCoords().y - speed/2);
-//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
-//					changeRoom(prevTile);
-//				}
-//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
-//					changeRoom(prevTile);
-//				}
-//				else if(!currTileIsInRoom() || !canChangeTile()){
-//					setCoords(getCoords().x - speed, getCoords().y + speed/2);
-//					currentTile = prevTile;
-//				}
-//				break;
-//			case "south west":
-//				setCoords(getCoords().x - speed, getCoords().y + speed/2);
-//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
-//					changeRoom(prevTile);
-//				}
-//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
-//					changeRoom(prevTile);
-//				}
-//				else if(!currTileIsInRoom() || !canChangeTile()){
-//					setCoords(getCoords().x + speed, getCoords().y - speed/2);
-//					currentTile = prevTile;
-//				}
-//				break;
-//			case "south east":
-//				setCoords(getCoords().x + speed, getCoords().y + speed/2);
-//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
-//					changeRoom(prevTile);
-//				}
-//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
-//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
-//					changeRoom(prevTile);
-//				}
-//				else if(!currTileIsInRoom() || !canChangeTile()){
-//					setCoords(getCoords().x - speed, getCoords().y - speed/2);
-//					currentTile = prevTile;
-//				}
-//				break;
 			default:
 				throw new Error("Invalid Direction");
 		}
@@ -305,6 +315,9 @@ public class Player {
 	public boolean addInventoryItem(Item item){
 		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && canAddKeyItem()) || item instanceof Tool){
 			return inventory.add(item);
+		}
+		else if(item instanceof Score){
+			return true;
 		}
 		else{
 			System.out.println("Too many " + item.toString() + " items in inventory!");

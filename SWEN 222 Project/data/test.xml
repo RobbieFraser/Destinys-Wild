@@ -385,7 +385,7 @@
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>cobblestone</Type>
+        <Type>cobblestone1</Type>
         <Row>3</Row>
         <Col>7</Col>
       </Obstacle>
