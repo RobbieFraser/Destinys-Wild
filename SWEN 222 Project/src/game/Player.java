@@ -268,19 +268,17 @@ public class Player {
 	 * @return Tile object that the player is standing on
 	 */
 	public Tile calcTile(){
-		for (int row = 0; row < currentRoom.getTiles().length; ++row){
-			for (int col = 0; col < currentRoom.getTiles()[0].length; ++col){
+		for (int row = 0; row < currentRoom.getTiles().length; ++row) {
+			for (int col = 0; col < currentRoom.getTiles()[0].length; ++col) {
 				Tile current = currentRoom.getTiles()[row][col];
 				if (current != null && current.isOn(coords)){
 					return current;
 				}
-				if (!current.isOn(coords)) {
-					System.out.println("Player isn't on current coordinates.");
-				}
 			}
 		}
-		System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
-		System.exit(0);
+		//System.out.println(coords.toString());
+		//System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
+		//System.exit(0);
 		return null;
 	}
 

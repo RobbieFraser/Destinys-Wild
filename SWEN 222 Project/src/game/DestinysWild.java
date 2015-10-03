@@ -24,7 +24,7 @@ public class DestinysWild implements Runnable{
 	private DestinysWild game = this;
 	private CountDownLatch latch;
 	private Multiplayer multiplayer = null;
-	private boolean paused = false;
+	private boolean paused;
 	private MenuInterface mainMenu;
 	private JFrame frame;
 	public int tickCount = 0;
@@ -41,7 +41,6 @@ public class DestinysWild implements Runnable{
 	public void setUpGame(){
 		multiplayer  = new Multiplayer(this,board,currentPlayer);
 		multiplayer.start();
-		System.out.println("yo");
 		latch = new CountDownLatch(1);
 		setUpUI();
 		mainMenu.remove();
@@ -64,10 +63,10 @@ public class DestinysWild implements Runnable{
 	}
 
 	public void setUpUI(){
-		System.out.println("yo");
+		System.out.println("Setting up UI");
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-		    	System.out.println("yo");
+		    	System.out.println("Setting up UI - in run method");
 		        ui = new GameInterface(currentPlayer, game, board, latch);
 		    }
 		});
@@ -190,14 +189,14 @@ public class DestinysWild implements Runnable{
 		currentPlayer = player;
 	}
 
+	@Override
+	public void run() {
+		gameLoop();
+	}
+	
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
 		//game.testLoadGame();
 		//game.testSaveGame();
-	}
-
-	@Override
-	public void run() {
-		gameLoop();
 	}
 }

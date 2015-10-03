@@ -169,19 +169,32 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	 * -Calls the drawObject() method to draw each obstacle 
 	 */
 	public void drawObstacles(Graphics g){
-		for(int i = 0; i < 10; i++){
-			for(int j = 9; j >= 0; j--){
-				if(curRoom.getObstacles()[i][j] != null){
+		for (int i = 0; i < 10; i++){
+			for (int j = 9; j >= 0; j--){
+				if (curRoom.getObstacles()[i][j] != null){
 					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
 				}
-				if(curRoom.getItems()[i][j] != null){
+				if (curRoom.getItems()[i][j] != null){
 					drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
 				}
-				if(curRoom.getNpcs()[i][j] != null){
+				if (curRoom.getNpcs()[i][j] != null){
 					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
 				}
-				if(player != null){
-					if(player.calcTile().getRoomCoords().equals(new Point(i, j))){
+				if (player != null){
+					if (player.calcTile() == null) {
+						//player is on the edge of the board
+						//this is the way error detection is set up
+						System.out.println("Tile");
+					}
+					else if (player.calcTile().getRoomCoords() == null) {
+						//player is on the edge of the board
+						//this is the way error detection is set up
+						System.out.println("Room coords");
+					}
+					else if (player.calcTile().getRoomCoords().equals(new Point(i, j))){
+						//System.out.println(player.calcTile());
+						//System.out.println(player.calcTile().getRoomCoords());
+						
 						drawPlayer(g);
 					}
 				}
