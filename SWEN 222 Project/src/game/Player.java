@@ -138,7 +138,68 @@ public class Player {
 					currentTile = prevTile;
 				}
 				break;
-				
+			case "north west":
+				setCoords(getCoords().x - speed, getCoords().y - speed/2);
+				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+					changeRoom(prevTile);
+				}
+				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
+					changeRoom(prevTile);
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x + speed, getCoords().y + speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			case "north east":
+				setCoords(getCoords().x + speed, getCoords().y - speed/2);
+				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+					changeRoom(prevTile);
+				}
+				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
+					changeRoom(prevTile);
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x - speed, getCoords().y + speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			case "south west":
+				setCoords(getCoords().x - speed, getCoords().y + speed/2);
+				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
+					changeRoom(prevTile);
+				}
+				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
+					changeRoom(prevTile);
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x + speed, getCoords().y - speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			case "south east":
+				setCoords(getCoords().x + speed, getCoords().y + speed/2);
+				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
+					changeRoom(prevTile);
+				}
+				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
+					changeRoom(prevTile);
+				}
+				else if(!currTileIsInRoom() || !canChangeTile()){
+					setCoords(getCoords().x - speed, getCoords().y - speed/2);
+					currentTile = prevTile;
+				}
+				break;
+			default:
+				throw new Error("Invalid Direction");
 		}
 		return true;
 	}
@@ -385,7 +446,6 @@ public class Player {
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
-	
 	
 
 }

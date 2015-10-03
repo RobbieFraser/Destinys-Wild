@@ -7,9 +7,9 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
@@ -23,7 +23,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Renderer.GameImagePanel;
-import clientServer.packets.DisconnectPacket;
 import game.Board;
 import game.DestinysWild;
 import game.Player;
@@ -42,26 +41,8 @@ public class GameInterface{
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
 
-	public GameInterface(){
-
-	}
-
-	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
-		this.latch = latch;
-		//System.out.println("yo");
-		this.player = player;
-		this.board = board;
-		this.game = game;
-		gamePanel = new GameImagePanel(board, player);
-		initialiseInterface();
-		updateUI();
-		frame.setVisible(true);
-		latch.countDown();
-	}
-
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
-		//System.out.println("yo");
 		this.player = player;
 		this.board = board;
 		this.game = game;
@@ -70,9 +51,20 @@ public class GameInterface{
 		updateUI();
 		frame.setVisible(true);
 		latch.countDown();
-		//TODO: Add mouse listener
 		//TODO: Add support for P / Pause
 		//TODO: Add support for L / R Arrows keys - Change perspective
+	}
+	
+	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
+		this.latch = latch;
+		this.player = player;
+		this.board = board;
+		this.game = game;
+		gamePanel = new GameImagePanel(board, player);
+		initialiseInterface();
+		updateUI();
+		frame.setVisible(true);
+		latch.countDown();
 	}
 
 	/**
@@ -166,18 +158,9 @@ public class GameInterface{
 		});
 
 		//add key listener
-		frame.addKeyListener(new KeyListener() {
-			public void keyPressed(KeyEvent arg0) {
-				handleKeyPress(arg0);
-			}
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				handleKeyRelease(arg0);
-			}
-			@Override
-			public void keyTyped(KeyEvent arg0) {}
-		});
-
+		//note that is a multi key listener, so multiple keys
+		//can be held down at once
+		frame.addKeyListener(new MultiKeyListener(this));
 
 		int delay = 10; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
@@ -189,7 +172,6 @@ public class GameInterface{
 
 		frame.getContentPane().setLayout(null);
 	}
-
 
 	/**
 	 * This method should be called whenever the game
@@ -294,27 +276,6 @@ public class GameInterface{
 			throw new Error("Invalid index exception");
 		}
 
-		/*
-		 * Somehow need a way to break down players inventory
-		 * into foodInventory, toolInventory and keyInventory
- 		List<Item> playerInventory = player.getInventory();
- 		if (index < 5) {
- 			//has to be a food
- 			//Item food = foodInventory[index]
- 			//Now extract some id number from the item
- 		} else if (index < 11) {
- 			//has to be a tool
- 			//Item tool = toolInventory[index - MAX_FOOD]
- 			//Now extract some id number from the item
- 		} else {
- 			//has to be a key
- 			//Item key = keyInventory[0]
- 		}
- 		//Now extract some id number from the item
- 		//and use that to return an imagename
-		 *
-		 */
-
 		if (index < 5) {
 			return "appleIcon";
 		} else if (index < 11) {
@@ -409,16 +370,17 @@ public class GameInterface{
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
-				String text = tempLabel.getToolTipText();
+				String text = tempLabel.getToolTipText().toLowerCase();
 				if (text.contains("slot")) {
 					//empty slot
 					return null;
-				} else if (text.contains("Icon")) {
+				} else if (text.contains("icon")) {
 					//split on the word Icon
-					String[] words = text.split("Icon");
+					String[] words = text.split("icon");
 					return words[0];
 				} else {
 					//return first word
+					System.out.println(text);
 					return text.split(" ")[0];
 				}
 			}
@@ -426,20 +388,61 @@ public class GameInterface{
 		return null;
 	}
 
-	private void handleKeyRelease(KeyEvent e){
+	/**
+	 * This method should be called when the KeyListener
+	 * detects that the user has released a key. If the
+	 * key was a direction key, then they should stop moving
+	 * in that direction.
+	 * @param e
+	 */
+	protected void handleKeyRelease(KeyEvent e){
 		int keyCode = e.getKeyCode();
+		String playerCurrentOrientation = player.getOrientation();
+	
 		switch (keyCode) {
 		case KeyEvent.VK_W:
-			player.setMoving(false);
+			if (playerCurrentOrientation.startsWith("north") && !playerCurrentOrientation.equals("north")) {
+				//user is going north east or north west
+				//now that they are no longer holding down the north key, they should go east or west
+				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
+			} else {
+				//the must have only been going north
+				//they stop moving
+				player.setMoving(false);
+			}
 			break;
 		case KeyEvent.VK_A:
-			player.setMoving(false);
+			if (playerCurrentOrientation.endsWith("east") && !playerCurrentOrientation.equals("east")) {
+				//user is going north east or south east
+				//now that they are no longer holding down the east key, they should go north or south
+				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
+			} else {
+				//the must have only been going east
+				//they stop moving
+				player.setMoving(false);
+			}
 			break;
 		case KeyEvent.VK_S:
-			player.setMoving(false);
+			if (playerCurrentOrientation.startsWith("south") && !playerCurrentOrientation.equals("south")) {
+				//user is going south east or south west
+				//now that they are no longer holding down the south key, they should go east or west
+				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
+			} else {
+				//the must have only been going south
+				//they stop moving
+				player.setMoving(false);
+			}
 			break;
 		case KeyEvent.VK_D:
-			player.setMoving(false);
+			if (playerCurrentOrientation.endsWith("west") && !playerCurrentOrientation.equals("west")) {
+				//user is going north west or south west
+				//now that they are no longer holding down the west key, they should go north or south
+				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
+			} else {
+				//the must have only been going west
+				//they stop moving
+				player.setMoving(false);
+			}
 			break;
 		}
 	}
@@ -451,10 +454,10 @@ public class GameInterface{
 	 * Otherwise, the function is exited.
 	 * @param arg0 - Keyevent of the keypress
 	 */
-	private void handleKeyPress(KeyEvent arg0) {
+	protected void handleKeyPress(KeyEvent arg0, Set<Character> chars) {
 		int keyCode = arg0.getKeyCode();
 		Point currentCoord = player.getCoords();
-		System.out.println(arg0.getKeyChar());
+		
 		//handle number presses
 		if (48 <= keyCode && keyCode <= 57) {
 			//user has pressed a number key
@@ -466,41 +469,81 @@ public class GameInterface{
 				updateSelectedSlot(keyCode-49);
 			}
 		}
-
+				
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			//up one square
-			//player.setCoords(currentCoord.x, currentCoord.y - 1);
-			//player.tryMove("north");
-			player.setMoving(true);
-			player.setOrientation("north");
+			if (chars.contains('s')) {
+				//if the user is pressed up and down, then they shouldn't move at all
+			} else if (chars.contains('a') && chars.contains('d')) {
+				//if the user if holding down left and right then they also shouldn't move
+			} else if (chars.contains('a')) {
+				player.setMoving(true);
+				player.setOrientation("north west");
+			} else if (chars.contains('d')) {
+				player.setMoving(true);
+				player.setOrientation("north east");
+			} else {
+				player.setMoving(true);
+				player.setOrientation("north");
+			}
 //			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 //						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:
 			//left one square
-			//player.setCoords(currentCoord.x - 1,currentCoord.y);
-			//player.tryMove("west");
-			player.setMoving(true);
-			player.setOrientation("west");
+			if (chars.contains('d')) {
+				//if the user is pressed left and right, then they shouldn't move at all
+			} else if (chars.contains('w') && chars.contains('s')) {
+				//if the user if holding down left and right then they also shouldn't move
+			} else if (chars.contains('w')) {
+				player.setMoving(true);
+				player.setOrientation("north west");
+			} else if (chars.contains('s')) {
+				player.setMoving(true);
+				player.setOrientation("south west");
+			} else {
+				player.setMoving(true);
+				player.setOrientation("west");
+			}
 //			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
 			//moved down one
-			//player.setCoords(currentCoord.x, currentCoord.y + 1);
-			//player.tryMove("south");
-			player.setMoving(true);
-			player.setOrientation("south");
+			if (chars.contains('w')) {
+				//if the user is pressed up and down, then they shouldn't move at all
+			} else if (chars.contains('a') && chars.contains('d')) {
+				//if the user if holding down left and right then they also shouldn't move
+			} else if (chars.contains('a')) {
+				player.setMoving(true);
+				player.setOrientation("south west");
+			} else if (chars.contains('d')) {
+				player.setMoving(true);
+				player.setOrientation("south east");
+			} else {
+				player.setMoving(true);
+				player.setOrientation("south");
+			}
 //			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
 			//moved right one
-			//player.setCoords(currentCoord.x + 1,currentCoord.y);
-			//player.tryMove("east");
-			player.setMoving(true);
-			player.setOrientation("east");
+			if (chars.contains('a')) {
+				//if the user is pressed left and right, then they shouldn't move at all
+			} else if (chars.contains('w') && chars.contains('s')) {
+				//if the user if holding down left and right then they also shouldn't move
+			} else if (chars.contains('w')) {
+				player.setMoving(true);
+				player.setOrientation("north east");
+			} else if (chars.contains('s')) {
+				player.setMoving(true);
+				player.setOrientation("south east");
+			} else {
+				player.setMoving(true);
+				player.setOrientation("east");
+			}
 //			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);;
 			break;
@@ -543,25 +586,4 @@ public class GameInterface{
 		//updateUI();
 	}
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					CountDownLatch temp = new CountDownLatch(1);
-//					DestinysWild game = new DestinysWild();
-//					Board board = game.getBoard();
-//					Player player = new Player("Sam", new Point(6,4), board.getBoard()[1][2]);
-//					player.addRoom(board.getBoard()[1][2]);
-//					player.addRoom(board.getBoard()[2][2]);
-//					GameInterface gameInterface = new GameInterface(player, game, board, temp);
-//					gameInterface.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 }
