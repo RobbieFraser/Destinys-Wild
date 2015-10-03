@@ -141,12 +141,6 @@ public class GameInterface{
 		mapPanel.add(map, BorderLayout.CENTER);
 		frame.getContentPane().add(mapPanel);
 
-		// add score display template
-		JPanel scoreDisplay = new JPanel();
-		scoreDisplay.setBorder(blackline);
-		scoreDisplay.setBounds(20, 535, 135, 30);
-		frame.getContentPane().add(scoreDisplay);
-
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {

@@ -1,6 +1,7 @@
 package Renderer;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -145,6 +146,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 //        drawCharacter(g, "personIdleSouth", 2, 5);
 //        tile.Draw(g);
         drawObstacles(g);
+        drawScore(g);
 //        g.drawImage(waterSprite, 384, 428, null);
 //        g.drawImage(waterSprite, 384+obW, 428+obH, null);
 //        g.drawImage(waterSprite, 384, 428+(obH*2), null);
@@ -217,6 +219,17 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		g.fillRect(x+13-25, y-10, 50, 5);
 		g.setColor(Color.green);
 		g.fillRect(x+13-25, y-10, player.getHealth()/2, 5);
+	}
+	
+	public void drawScore(Graphics g) {
+		//draw the white background
+		g.setColor(Color.white);
+		g.fillRect(20, 535, 120, 28);
+		
+		int score = player.getScore();
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		g.drawString("Score: "+score, 22, 557);
 	}
 	
 	public void drawNorthWall(Graphics g, String file){
