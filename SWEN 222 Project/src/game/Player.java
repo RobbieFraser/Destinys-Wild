@@ -21,6 +21,10 @@ public class Player {
 	private String orientation = "north";
 	private Tile currentTile;
 	private boolean isMoving;
+	private boolean north;
+	private boolean south;
+	private boolean east;
+	private boolean west;
 
 	public Player(){
 
@@ -64,8 +68,17 @@ public class Player {
 	}
 	
 	public void updatePlayer(){
-		if(isMoving){
-			tryMove(orientation);
+		if(north){
+			tryMove("north");
+		}
+		if(south){
+			tryMove("south");
+		}
+		if(east){
+			tryMove("east");
+		}
+		if(west){
+			tryMove("west");
 		}
 	}
 
@@ -138,66 +151,66 @@ public class Player {
 					currentTile = prevTile;
 				}
 				break;
-			case "north west":
-				setCoords(getCoords().x - speed, getCoords().y - speed/2);
-				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
-					changeRoom(prevTile);
-				}
-				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
-					changeRoom(prevTile);
-				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
-					setCoords(getCoords().x + speed, getCoords().y + speed/2);
-					currentTile = prevTile;
-				}
-				break;
-			case "north east":
-				setCoords(getCoords().x + speed, getCoords().y - speed/2);
-				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
-					changeRoom(prevTile);
-				}
-				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
-					changeRoom(prevTile);
-				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
-					setCoords(getCoords().x - speed, getCoords().y + speed/2);
-					currentTile = prevTile;
-				}
-				break;
-			case "south west":
-				setCoords(getCoords().x - speed, getCoords().y + speed/2);
-				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
-					changeRoom(prevTile);
-				}
-				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
-					changeRoom(prevTile);
-				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
-					setCoords(getCoords().x + speed, getCoords().y - speed/2);
-					currentTile = prevTile;
-				}
-				break;
-			case "south east":
-				setCoords(getCoords().x + speed, getCoords().y + speed/2);
-				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
-					changeRoom(prevTile);
-				}
-				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
-					changeRoom(prevTile);
-				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
-					setCoords(getCoords().x - speed, getCoords().y - speed/2);
-					currentTile = prevTile;
-				}
-				break;
+//			case "north west":
+//				setCoords(getCoords().x - speed, getCoords().y - speed/2);
+//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+//					changeRoom(prevTile);
+//				}
+//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
+//					changeRoom(prevTile);
+//				}
+//				else if(!currTileIsInRoom() || !canChangeTile()){
+//					setCoords(getCoords().x + speed, getCoords().y + speed/2);
+//					currentTile = prevTile;
+//				}
+//				break;
+//			case "north east":
+//				setCoords(getCoords().x + speed, getCoords().y - speed/2);
+//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+//					changeRoom(prevTile);
+//				}
+//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
+//					changeRoom(prevTile);
+//				}
+//				else if(!currTileIsInRoom() || !canChangeTile()){
+//					setCoords(getCoords().x - speed, getCoords().y + speed/2);
+//					currentTile = prevTile;
+//				}
+//				break;
+//			case "south west":
+//				setCoords(getCoords().x - speed, getCoords().y + speed/2);
+//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
+//					changeRoom(prevTile);
+//				}
+//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
+//					changeRoom(prevTile);
+//				}
+//				else if(!currTileIsInRoom() || !canChangeTile()){
+//					setCoords(getCoords().x + speed, getCoords().y - speed/2);
+//					currentTile = prevTile;
+//				}
+//				break;
+//			case "south east":
+//				setCoords(getCoords().x + speed, getCoords().y + speed/2);
+//				if (!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
+//					changeRoom(prevTile);
+//				}
+//				else if (!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+//					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
+//					changeRoom(prevTile);
+//				}
+//				else if(!currTileIsInRoom() || !canChangeTile()){
+//					setCoords(getCoords().x - speed, getCoords().y - speed/2);
+//					currentTile = prevTile;
+//				}
+//				break;
 			default:
 				throw new Error("Invalid Direction");
 		}
@@ -445,6 +458,38 @@ public class Player {
 
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
+	}
+	
+	public boolean isNorth() {
+		return north;
+	}
+
+	public boolean isSouth() {
+		return south;
+	}
+
+	public boolean isEast() {
+		return east;
+	}
+
+	public boolean isWest() {
+		return west;
+	}
+
+	public void setNorth(boolean north) {
+		this.north = north;
+	}
+
+	public void setSouth(boolean south) {
+		this.south = south;
+	}
+
+	public void setEast(boolean east) {
+		this.east = east;
+	}
+
+	public void setWest(boolean west) {
+		this.west = west;
 	}
 	
 

@@ -401,48 +401,52 @@ public class GameInterface{
 	
 		switch (keyCode) {
 		case KeyEvent.VK_W:
-			if (playerCurrentOrientation.startsWith("north") && !playerCurrentOrientation.equals("north")) {
-				//user is going north east or north west
-				//now that they are no longer holding down the north key, they should go east or west
-				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
-			} else {
-				//the must have only been going north
-				//they stop moving
-				player.setMoving(false);
-			}
+			player.setNorth(false);
+//			if (playerCurrentOrientation.startsWith("north") && !playerCurrentOrientation.equals("north")) {
+//				//user is going north east or north west
+//				//now that they are no longer holding down the north key, they should go east or west
+//				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
+//			} else {
+//				//the must have only been going north
+//				//they stop moving
+//				player.setMoving(false);
+//			}
 			break;
 		case KeyEvent.VK_A:
-			if (playerCurrentOrientation.endsWith("east") && !playerCurrentOrientation.equals("east")) {
-				//user is going north east or south east
-				//now that they are no longer holding down the east key, they should go north or south
-				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
-			} else {
-				//the must have only been going east
-				//they stop moving
-				player.setMoving(false);
-			}
+			player.setWest(false);
+//			if (playerCurrentOrientation.endsWith("east") && !playerCurrentOrientation.equals("east")) {
+//				//user is going north east or south east
+//				//now that they are no longer holding down the east key, they should go north or south
+//				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
+//			} else {
+//				//the must have only been going east
+//				//they stop moving
+//				player.setMoving(false);
+//			}
 			break;
 		case KeyEvent.VK_S:
-			if (playerCurrentOrientation.startsWith("south") && !playerCurrentOrientation.equals("south")) {
-				//user is going south east or south west
-				//now that they are no longer holding down the south key, they should go east or west
-				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
-			} else {
-				//the must have only been going south
-				//they stop moving
-				player.setMoving(false);
-			}
+			player.setSouth(false);
+//			if (playerCurrentOrientation.startsWith("south") && !playerCurrentOrientation.equals("south")) {
+//				//user is going south east or south west
+//				//now that they are no longer holding down the south key, they should go east or west
+//				player.setOrientation(playerCurrentOrientation.split(" ")[1]);
+//			} else {
+//				//the must have only been going south
+//				//they stop moving
+//				player.setMoving(false);
+//			}
 			break;
 		case KeyEvent.VK_D:
-			if (playerCurrentOrientation.endsWith("west") && !playerCurrentOrientation.equals("west")) {
-				//user is going north west or south west
-				//now that they are no longer holding down the west key, they should go north or south
-				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
-			} else {
-				//the must have only been going west
-				//they stop moving
-				player.setMoving(false);
-			}
+			player.setEast(false);
+//			if (playerCurrentOrientation.endsWith("west") && !playerCurrentOrientation.equals("west")) {
+//				//user is going north west or south west
+//				//now that they are no longer holding down the west key, they should go north or south
+//				player.setOrientation(playerCurrentOrientation.split(" ")[0]);
+//			} else {
+//				//the must have only been going west
+//				//they stop moving
+//				player.setMoving(false);
+//			}
 			break;
 		}
 	}
@@ -472,78 +476,82 @@ public class GameInterface{
 				
 		switch (keyCode) {
 		case KeyEvent.VK_W:
+			player.setNorth(true);
 			//up one square
-			if (chars.contains('s')) {
-				//if the user is pressed up and down, then they shouldn't move at all
-			} else if (chars.contains('a') && chars.contains('d')) {
-				//if the user if holding down left and right then they also shouldn't move
-			} else if (chars.contains('a')) {
-				player.setMoving(true);
-				player.setOrientation("north west");
-			} else if (chars.contains('d')) {
-				player.setMoving(true);
-				player.setOrientation("north east");
-			} else {
-				player.setMoving(true);
-				player.setOrientation("north");
-			}
+//			if (chars.contains('s')) {
+//				//if the user is pressed up and down, then they shouldn't move at all
+//			} else if (chars.contains('a') && chars.contains('d')) {
+//				//if the user if holding down left and right then they also shouldn't move
+//			} else if (chars.contains('a')) {
+//				player.setMoving(true);
+//				player.setOrientation("north west");
+//			} else if (chars.contains('d')) {
+//				player.setMoving(true);
+//				player.setOrientation("north east");
+//			} else {
+//				player.setMoving(true);
+//				player.setOrientation("north");
+//			}
 //			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 //						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:
+			player.setWest(true);
 			//left one square
-			if (chars.contains('d')) {
-				//if the user is pressed left and right, then they shouldn't move at all
-			} else if (chars.contains('w') && chars.contains('s')) {
-				//if the user if holding down left and right then they also shouldn't move
-			} else if (chars.contains('w')) {
-				player.setMoving(true);
-				player.setOrientation("north west");
-			} else if (chars.contains('s')) {
-				player.setMoving(true);
-				player.setOrientation("south west");
-			} else {
-				player.setMoving(true);
-				player.setOrientation("west");
-			}
+//			if (chars.contains('d')) {
+//				//if the user is pressed left and right, then they shouldn't move at all
+//			} else if (chars.contains('w') && chars.contains('s')) {
+//				//if the user if holding down left and right then they also shouldn't move
+//			} else if (chars.contains('w')) {
+//				player.setMoving(true);
+//				player.setOrientation("north west");
+//			} else if (chars.contains('s')) {
+//				player.setMoving(true);
+//				player.setOrientation("south west");
+//			} else {
+//				player.setMoving(true);
+//				player.setOrientation("west");
+//			}
 //			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
+			player.setSouth(true);
 			//moved down one
-			if (chars.contains('w')) {
-				//if the user is pressed up and down, then they shouldn't move at all
-			} else if (chars.contains('a') && chars.contains('d')) {
-				//if the user if holding down left and right then they also shouldn't move
-			} else if (chars.contains('a')) {
-				player.setMoving(true);
-				player.setOrientation("south west");
-			} else if (chars.contains('d')) {
-				player.setMoving(true);
-				player.setOrientation("south east");
-			} else {
-				player.setMoving(true);
-				player.setOrientation("south");
-			}
+//			if (chars.contains('w')) {
+//				//if the user is pressed up and down, then they shouldn't move at all
+//			} else if (chars.contains('a') && chars.contains('d')) {
+//				//if the user if holding down left and right then they also shouldn't move
+//			} else if (chars.contains('a')) {
+//				player.setMoving(true);
+//				player.setOrientation("south west");
+//			} else if (chars.contains('d')) {
+//				player.setMoving(true);
+//				player.setOrientation("south east");
+//			} else {
+//				player.setMoving(true);
+//				player.setOrientation("south");
+//			}
 //			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
+			player.setEast(true);
 			//moved right one
-			if (chars.contains('a')) {
-				//if the user is pressed left and right, then they shouldn't move at all
-			} else if (chars.contains('w') && chars.contains('s')) {
-				//if the user if holding down left and right then they also shouldn't move
-			} else if (chars.contains('w')) {
-				player.setMoving(true);
-				player.setOrientation("north east");
-			} else if (chars.contains('s')) {
-				player.setMoving(true);
-				player.setOrientation("south east");
-			} else {
-				player.setMoving(true);
-				player.setOrientation("east");
-			}
+//			if (chars.contains('a')) {
+//				//if the user is pressed left and right, then they shouldn't move at all
+//			} else if (chars.contains('w') && chars.contains('s')) {
+//				//if the user if holding down left and right then they also shouldn't move
+//			} else if (chars.contains('w')) {
+//				player.setMoving(true);
+//				player.setOrientation("north east");
+//			} else if (chars.contains('s')) {
+//				player.setMoving(true);
+//				player.setOrientation("south east");
+//			} else {
+//				player.setMoving(true);
+//				player.setOrientation("east");
+//			}
 //			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 //					player.getCoords().y);;
 			break;

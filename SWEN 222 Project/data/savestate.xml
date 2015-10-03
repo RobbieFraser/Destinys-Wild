@@ -111,17 +111,17 @@
         <Speed>0</Speed>
       </Npc>
     </Npcs>
-    <Items>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>10</Id>
-        <Row>1</Row>
-        <Col>3</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-    </Items>
+    <Items />
   </Room>
-  <Offitems />
+  <Offitems>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>10</Id>
+      <Row>1</Row>
+      <Col>3</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+  </Offitems>
 </Board>

@@ -30,6 +30,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
+	private BufferedImage playerIMG = loadImage("playerSpriteSheet.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
 	
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
@@ -191,13 +192,8 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	public void drawPlayer(Graphics g){
 		int newX = (int)player.getCoords().getX() - 12;
 		int newY = (int)player.getCoords().getY() - 80;
-		BufferedImage character;
-		try {
-			character = ImageIO.read(new File("data/images/personIdleSouth.png"));
-			g.drawImage(character, newX, newY, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		updatePlayerImage();
+		g.drawImage(playerIMG, newX, newY, null);
 	}
 	
 	public void drawNorthWall(Graphics g, String file){
@@ -294,6 +290,73 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 			// can actually do at this point, except to abort the game.
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
+	}
+	
+//	public void loadPlayerImages(){
+//		BufferedImage sheet = loadImage("playerSpriteSheet");
+//		BufferedImage playerImage = sheet.getSubimage(0, 0, 26, 82);
+//	}
+	
+	public void updatePlayerImage(){
+		BufferedImage sheet = loadImage("playerSpriteSheet.png");
+		BufferedImage playerImage = playerIMG;
+		if(player.isNorth()){
+			if(player.isEast() && player.isWest()){
+				playerImage = sheet.getSubimage(0, 0, 26, 82);
+			}
+			else if(player.isWest()){
+				playerImage = sheet.getSubimage(26, 0, 26, 82);
+			}
+			else if(player.isEast()){
+				playerImage = sheet.getSubimage(182, 0, 26, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(0, 0, 26, 82);
+			}
+		}
+		else if(player.isEast()){
+			if(player.isNorth() && player.isSouth()){
+				playerImage = sheet.getSubimage(156, 0, 26, 82);
+			}
+			else if(player.isNorth()){
+				playerImage = sheet.getSubimage(182, 0, 26, 82);
+			}
+			else if(player.isSouth()){
+				playerImage = sheet.getSubimage(130, 0, 26, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(156, 0, 26, 82);
+			}
+		}
+		else if(player.isSouth()){
+			if(player.isEast() && player.isWest()){
+				playerImage = sheet.getSubimage(104, 0, 26, 82);
+			}
+			else if(player.isWest()){
+				playerImage = sheet.getSubimage(78, 0, 26, 82);
+			}
+			else if(player.isEast()){
+				playerImage = sheet.getSubimage(182, 0, 26, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(104, 0, 26, 82);
+			}
+		}
+		else if(player.isWest()){
+			if(player.isNorth() && player.isSouth()){
+				playerImage = sheet.getSubimage(52, 0, 26, 82);
+			}
+			else if(player.isNorth()){
+				playerImage = sheet.getSubimage(26, 0, 26, 82);
+			}
+			else if(player.isSouth()){
+				playerImage = sheet.getSubimage(78, 0, 26, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(52, 0, 26, 82);
+			}
+		}
+		playerIMG = playerImage;
 	}
 	
 	public Board getBoard(){

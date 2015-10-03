@@ -50,7 +50,7 @@ public class Multiplayer extends Canvas implements Runnable {
 
 	public synchronized void start(){
 		running = true;
-		thread = new Thread(this, "Multiplayer");
+		//thread = new Thread(this, "Multiplayer");
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
 			server = new GameServer(board);
@@ -73,7 +73,7 @@ public class Multiplayer extends Canvas implements Runnable {
 			client = new GameClient(board,null);
 		}
 		client.start();
-		thread.start();
+		//thread.start();
 	}
 
 	public synchronized void stop() {
@@ -121,6 +121,6 @@ public class Multiplayer extends Canvas implements Runnable {
 
 	private void tick() {
 		tickCount++;
-		game.updateGame();
+		//game.updateGame();
 	}
 }
