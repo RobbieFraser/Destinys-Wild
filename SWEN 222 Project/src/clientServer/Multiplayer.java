@@ -73,6 +73,7 @@ public class Multiplayer extends Canvas implements Runnable {
 			client = new GameClient(board,null);
 		}
 		client.start();
+		initialise();
 		//thread.start();
 	}
 
