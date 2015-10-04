@@ -98,15 +98,14 @@ public class GameClient extends Thread {
 		System.out.println("[" + address.getHostAddress() + ":" + port
 				+ "]" + ((LoginPacket) packet).getUserName()
 				+ " has entered the Wild");
-		Point point = new Point(1, 1);
+		Point point = new Point(500, 300);
 		PlayerMulti pm = new PlayerMulti(
-				((LoginPacket) packet).getUserName(), point, new Room(-1,
-						-1, -1, -1, 11, new Point(4, 4)), address, port);
+				((LoginPacket) packet).getUserName(), point, board.getRoomFromId(0), address, port);
 		//System.out.println("Handling login of: "+ pm.getName());
 		//board.getPlayers().add(pm);
 		//System.out.println("Current players on board are: " + board.getPlayers());
 		if(!pm.getName().equals(multiplayer.getCurrentPlayer().getName())){
-		board.addPlayers(pm);
+			board.addPlayers(pm);
 		}	
 	}
 

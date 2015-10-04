@@ -80,10 +80,9 @@ public class GameServer extends Thread {
 			System.out.println("[" + address.getHostAddress() + ":" + port
 					+ "]" + ((LoginPacket) packet).getUserName()
 					+ " has connected");
-			Point point = new Point(1, 1);
+			Point point = new Point(500, 300);
 			PlayerMulti pm = new PlayerMulti(
-					((LoginPacket) packet).getUserName(), point, new Room(-1,
-							-1, -1, -1, 11, new Point(4, 4)), address, port);
+					((LoginPacket) packet).getUserName(), point, board.getRoomFromId(0), address, port);
 			this.addConnection(pm, (LoginPacket) packet);
 			// System.out.println("player added in theory");
 			break;
