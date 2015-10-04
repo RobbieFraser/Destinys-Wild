@@ -32,6 +32,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
+	private BufferedImage playerOtherIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 	
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
@@ -182,6 +183,24 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 				if (curRoom.getNpcs()[i][j] != null){
 					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
 				}
+//				for(Player p : board.getPlayers()){
+//					if (p.calcTile() == null) {
+//						//player is on the edge of the board
+//						//this is the way error detection is set up
+//						//System.out.println("Tile");
+//					}
+//					else if (p.calcTile().getRoomCoords() == null) {
+//						//player is on the edge of the board
+//						//this is the way error detection is set up
+//						//System.out.println("Room coords");
+//					}
+//					else if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
+//						//System.out.println(player.calcTile());
+//						//System.out.println(player.calcTile().getRoomCoords());
+//						
+//						drawOtherPlayer(g, p);
+//					}
+//				}
 				if (player != null){
 					if (player.calcTile() == null) {
 						//player is on the edge of the board
@@ -212,6 +231,17 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		int len = (player.getName().length()*4);
 		g.drawString(player.getName(), (newX-len)+13, newY - 20);
 		g.drawString(String.valueOf(player.getWalkState()), (newX-len)+13, newY - 30);
+		drawHealth(g, newX, newY);
+	}
+	
+	public void drawOtherPlayer(Graphics g, Player p){
+		int newX = (int)p.getCoords().getX() - 25;
+		int newY = (int)p.getCoords().getY() - 80;
+		//updatePlayerImage();
+		g.drawImage(playerOtherIMG, newX, newY, null);
+		int len = (p.getName().length()*4);
+		g.drawString(p.getName(), (newX-len)+13, newY - 20);
+		g.drawString(String.valueOf(p.getWalkState()), (newX-len)+13, newY - 30);
 		drawHealth(g, newX, newY);
 	}
 	
@@ -339,16 +369,16 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		BufferedImage playerImage = playerIMG;
 		if(player.isNorth()){
 			if(player.isEast() && player.isWest()){
-				playerImage = sheet.getSubimage(0, 0, 50, 82);
+				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isWest()){
-				playerImage = sheet.getSubimage(50, 0, 50, 82);
+				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isEast()){
-				playerImage = sheet.getSubimage(350, 0, 50, 82);
+				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(0, 0, 50, 82);
+				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
 			}
 		}
 		else if(player.isEast()){
@@ -356,10 +386,10 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isNorth()){
-				playerImage = sheet.getSubimage(350, 0, 50, 82);
+				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isSouth()){
-				playerImage = sheet.getSubimage(250, 0, 50, 82);
+				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
 			}
 			else{
 				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
@@ -367,16 +397,16 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		}
 		else if(player.isSouth()){
 			if(player.isEast() && player.isWest()){
-				playerImage = sheet.getSubimage(200, 0, 50, 82);
+				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isWest()){
-				playerImage = sheet.getSubimage(150, 0, 50, 82);
+				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isEast()){
-				playerImage = sheet.getSubimage(350, 0, 50, 82);
+				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
 			}
 			else{
-				playerImage = sheet.getSubimage(200, 0, 50, 82);
+				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
 			}
 		}
 		else if(player.isWest()){
@@ -384,10 +414,10 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isNorth()){
-				playerImage = sheet.getSubimage(50, 0, 50, 82);
+				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
 			}
 			else if(player.isSouth()){
-				playerImage = sheet.getSubimage(150, 0, 50, 82);
+				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
 			}
 			else{
 				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);

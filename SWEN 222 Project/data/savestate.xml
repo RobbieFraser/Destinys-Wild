@@ -350,17 +350,7 @@
       </Obstacle>
     </Obstacles>
     <Npcs />
-    <Items>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>5</Row>
-        <Col>5</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-    </Items>
+    <Items />
   </Room>
   <Room>
     <Id>0</Id>
@@ -878,5 +868,15 @@
     <Npcs />
     <Items />
   </Room>
-  <Offitems />
+  <Offitems>
+    <Item>
+      <Itemtype>health</Itemtype>
+      <Type>apple</Type>
+      <Id>99</Id>
+      <Row>5</Row>
+      <Col>5</Col>
+      <Health>10</Health>
+      <Score>0</Score>
+    </Item>
+  </Offitems>
 </Board>
