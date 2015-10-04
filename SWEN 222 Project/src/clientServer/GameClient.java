@@ -24,9 +24,11 @@ public class GameClient extends Thread {
 	private DatagramSocket socket;
 	// testing change
 	private Board board;
+	private Multiplayer multiplayer;
 
-	public GameClient(Board board,String ipName) {
+	public GameClient(Board board,String ipName, Multiplayer multiplayer) {
 		this.board = board;
+		this.multiplayer = multiplayer;
 		try {
 			this.socket = new DatagramSocket();
 			this.ipAddress =  InetAddress.getByName(ipName);
@@ -103,7 +105,9 @@ public class GameClient extends Thread {
 		//System.out.println("Handling login of: "+ pm.getName());
 		//board.getPlayers().add(pm);
 		//System.out.println("Current players on board are: " + board.getPlayers());
+		if(!pm.getName().equals(multiplayer.getCurrentPlayer().getName())){
 		board.addPlayers(pm);
+		}	
 	}
 
 	public void sendData(byte[] data) {

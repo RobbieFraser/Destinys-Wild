@@ -53,7 +53,7 @@ public class Multiplayer extends Canvas implements Runnable {
 		//thread = new Thread(this, "Multiplayer");
 		if (JOptionPane.showConfirmDialog(this,
 				"Do you want to start the server?") == 0) {
-			server = new GameServer(board);
+			server = new GameServer(board,this);
 			server.start();
 			try {
 				JOptionPane.showMessageDialog(null, "The server's IP address is: " + InetAddress.getLocalHost().getHostAddress());
@@ -67,10 +67,10 @@ public class Multiplayer extends Canvas implements Runnable {
 		}
 		if(server==null){
 		String ipAddress =	JOptionPane.showInputDialog(null,"Enter the server's IP Address");
-		client = new GameClient(board,ipAddress);
+		client = new GameClient(board,ipAddress,this);
 			}
 		else{
-			client = new GameClient(board,null);
+			client = new GameClient(board,null,this);
 		}
 		client.start();
 		initialise();
@@ -79,6 +79,10 @@ public class Multiplayer extends Canvas implements Runnable {
 
 	public synchronized void stop() {
 		running = false;
+	}
+	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
 	}
 
 	public GameClient getClient(){
