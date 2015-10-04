@@ -25,13 +25,17 @@ import game.DestinysWild;
 public class ShopInterface {
 	private JFrame frame;
 	private Player player;
-	private Tool weapons;
+	private Tool[] weapons;
 	
 	/**
 	 * Create a new instance of ShopInterface.
 	 */
 	public ShopInterface() {
 		this.player = DestinysWild.getPlayer();
+		Tool[] weapons = {new Tool("machete", 10), new Tool("torch", 20), 
+				new Tool("pickaxe",30), new Tool("jetfuel", 40),
+				new Tool("bucket", 50), new Tool("spade", 60)};
+		this.weapons = weapons;
 		initialiseInterface();
 	}
 	
@@ -54,16 +58,7 @@ public class ShopInterface {
 				buyItemButton.setBounds(73 + 88*j, 118+115*i, 78, 20);
 				buyItemButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						buyTool(e);
-						//Should launch up a pop up which says
-						//Are you sure you want to buy the "xyz"? It will cost ...
-						//User would then confirm
-						//This would then call a method which would check the users
-						//coins. If they have enough, then their coins are decremented
-						//by the appropriate amount, and the tool is added to their inventory
-						//If they cannot afford the tool, then another pop up will say 
-						//"Sorry, you can't afford that right now"
-						
+						buyTool(e);					
 					}
 				});
 				
@@ -80,10 +75,7 @@ public class ShopInterface {
 	 * This method should be called when the user has clicked
 	 * on the buy button underneath a tool.
 	 */
-	private void buyTool(ActionEvent e) {
-		//initialise the 
-		
-		
+	private void buyTool(ActionEvent e) {	
 		//first we get the index of the button that was pressed
 		int indexOfTool = 0;
 		for (int i = 0; i < 6; ++i) {
@@ -93,24 +85,25 @@ public class ShopInterface {
 			}
 		}
 		int cost = indexOfTool * 100;
-		int result = JOptionPane.showConfirmDialog(frame, "This will cost "+cost+" coins. Are you sure?");
-		if (result == JOptionPane.OK_OPTION) {
-			int score = player.getScore();
-			
-			if (score >= cost) {
-				//user can buy this tool
-				//tool should be added to user's inventory
-				Tool tool = new Tool("pickaxe", 50);
-				player.addInventoryItem(tool);
-				JOptionPane.showMessageDialog(frame, "The ... has been added to your inventory.");
-				player.setScore(score - cost);
-			} else {
-				JOptionPane.showMessageDialog(frame, "You don't have enough for that...");
+		Tool tool = weapons[indexOfTool];
+		if (player.getInventory().contains(tool)) {
+			JOptionPane.showMessageDialog(frame, "You've already bought the "+tool.getType()+".");
+		}
+		else {
+			int result = JOptionPane.showConfirmDialog(frame, "The "+tool.getType()+" will cost "+cost+" coins. Are you sure?");
+			if (result == JOptionPane.OK_OPTION) {
+				int score = player.getScore();
+				if (score >= cost) {
+					//user can buy this tool
+					//tool should be added to user's inventory
+					player.addInventoryItem(tool);
+					JOptionPane.showMessageDialog(frame, "The "+tool.getType()+" has been added to your inventory.");
+					player.setScore(score - cost);
+					//player can no longer buy this tool
+				} else {
+					JOptionPane.showMessageDialog(frame, "You don't have enough for the "+tool.getType()+".");
+				}
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		ShopInterface shop = new ShopInterface();
 	}
 }
