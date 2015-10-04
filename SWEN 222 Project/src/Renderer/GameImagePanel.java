@@ -183,39 +183,13 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 				if (curRoom.getNpcs()[i][j] != null){
 					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
 				}
-//				for(Player p : board.getPlayers()){
-//					if (p.calcTile() == null) {
-//						//player is on the edge of the board
-//						//this is the way error detection is set up
-//						//System.out.println("Tile");
-//					}
-//					else if (p.calcTile().getRoomCoords() == null) {
-//						//player is on the edge of the board
-//						//this is the way error detection is set up
-//						//System.out.println("Room coords");
-//					}
-//					else if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
-//						//System.out.println(player.calcTile());
-//						//System.out.println(player.calcTile().getRoomCoords());
-//						
-//						drawOtherPlayer(g, p);
-//					}
-//				}
+				for(Player p : board.getPlayers()){
+					if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
+						drawOtherPlayer(g, p);
+					}
+				}
 				if (player != null){
-					if (player.calcTile() == null) {
-						//player is on the edge of the board
-						//this is the way error detection is set up
-						System.out.println("Tile");
-					}
-					else if (player.calcTile().getRoomCoords() == null) {
-						//player is on the edge of the board
-						//this is the way error detection is set up
-						System.out.println("Room coords");
-					}
-					else if (player.calcTile().getRoomCoords().equals(new Point(i, j))){
-						//System.out.println(player.calcTile());
-						//System.out.println(player.calcTile().getRoomCoords());
-						
+					if (player.calcTile().getRoomCoords().equals(new Point(i, j))){
 						drawPlayer(g);
 					}
 				}
@@ -224,6 +198,7 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	}
 	
 	public void drawPlayer(Graphics g){
+		g.setColor(Color.black);
 		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
 		updatePlayerImage();
