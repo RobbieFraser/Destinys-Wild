@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
+import clientServer.packets.MovePacket;
 import game.items.Health;
 import game.items.Item;
 import menu.MenuInterface;
@@ -121,6 +122,9 @@ public class DestinysWild implements Runnable{
 
 	public void updateGame(){
 		currentPlayer.updatePlayer();
+		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
+				currentPlayer.getCoords().y);
+		movePacket.writeData(multiplayer.getClient());
 	}
 
 	public void updateUI(){
