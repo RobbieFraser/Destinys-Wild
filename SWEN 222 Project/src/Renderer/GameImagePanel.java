@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -19,7 +17,7 @@ import game.Board;
 import game.Player;
 import game.Room;
 
-public class GameImagePanel extends JPanel implements MouseListener, KeyListener {
+public class GameImagePanel extends JPanel implements MouseListener {
 	
 	private Board board; //The main Board object given from the main Game class
 	private Player player; //The player that the user controls
@@ -78,7 +76,6 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 		player = new Player("Matt", new Point(546, 287), curRoom);
 		setDefault();
 		addMouseListener(this);
-		addKeyListener(this);
 		//waterTest();
 	}
 	
@@ -506,23 +503,6 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		System.out.println("Key Pressed");
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
