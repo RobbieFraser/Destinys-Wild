@@ -103,13 +103,18 @@ public class GameServer extends Thread {
 	}
 
 	public void handleMove(MovePacket packet) {
-		if (packet.getUserName() != null) {
-			int index = getPlayerIndex(packet.getUserName());
-			PlayerMulti player = this.connectedPlayers.get(index);
-			int playerX = packet.getX();
-			int playerY = packet.getY();
-			player.setCoords(playerX, playerY);
-			packet.writeData(this);
+		try{
+			if (packet.getUserName() != null) {
+				int index = getPlayerIndex(packet.getUserName());
+				PlayerMulti player = this.connectedPlayers.get(index);
+				int playerX = packet.getX();
+				int playerY = packet.getY();
+				player.setCoords(playerX, playerY);
+				packet.writeData(this);
+			}
+		}
+		catch(IndexOutOfBoundsException e){
+			System.out.println("Whoops");
 		}
 	}
 

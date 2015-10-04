@@ -217,10 +217,11 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 	}
 	
 	public void drawOtherPlayer(Graphics g, Player p){
+		g.setColor(Color.black);
 		int newX = (int)p.getCoords().getX() - 25;
 		int newY = (int)p.getCoords().getY() - 80;
-		//updatePlayerImage();
-		g.drawImage(playerOtherIMG, newX, newY, null);
+		BufferedImage otherPlayerImage = getOtherPlayerImage(p);
+		g.drawImage(otherPlayerImage, newX, newY, null);
 		int len = (p.getName().length()*4);
 		g.drawString(p.getName(), (newX-len)+13, newY - 20);
 		g.drawString(String.valueOf(p.getWalkState()), (newX-len)+13, newY - 30);
@@ -345,6 +346,68 @@ public class GameImagePanel extends JPanel implements MouseListener, KeyListener
 //		BufferedImage sheet = loadImage("playerSpriteSheet");
 //		BufferedImage playerImage = sheet.getSubimage(0, 0, 26, 82);
 //	}
+	
+	public BufferedImage getOtherPlayerImage(Player player){
+		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
+		BufferedImage playerImage = playerOtherIMG;
+		if(player.isNorth()){
+			if(player.isEast() && player.isWest()){
+				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isWest()){
+				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isEast()){
+				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
+			}
+		}
+		else if(player.isEast()){
+			if(player.isNorth() && player.isSouth()){
+				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isNorth()){
+				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isSouth()){
+				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
+			}
+		}
+		else if(player.isSouth()){
+			if(player.isEast() && player.isWest()){
+				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isWest()){
+				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isEast()){
+				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
+			}
+		}
+		else if(player.isWest()){
+			if(player.isNorth() && player.isSouth()){
+				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isNorth()){
+				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
+			}
+			else if(player.isSouth()){
+				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
+			}
+			else{
+				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
+			}
+		}
+		return playerImage;
+	}
 	
 	public void updatePlayerImage(){
 		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
