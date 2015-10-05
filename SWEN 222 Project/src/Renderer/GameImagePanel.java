@@ -54,8 +54,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int cX = 950; //Compass x
 	private int cY = 50; //Compass y
 	
-	private int wnX = -24; //Wall North x
-	private int wnY = 54; //Wall North y
+	private int wnX = gX-34; //Wall North x
+	private int wnY = gY-262; //Wall North y
+	
+	private int weX = gX+340; //Wall North x
+	private int weY = gY-262; //Wall North y
 	
 	private int viewDir = 0;
 	
@@ -133,17 +136,13 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
         super.paintComponent(g);
-//        drawNorthWall(g, "treesNorth1");
+        
+        drawNorthRoom(g);
+        drawNorthWall(g);
+        drawEastRoom(g);
+        drawEastWall(g);
         drawGround(g);
         drawCompass(g);
-//        drawObject(g, "stoneCube", 6, 5);
-//        drawObject(g, "stoneCube", 5, 5);
-//        drawCharacter(g, "personIdleWest", 6, 6);
-//        drawObject(g, "mossyStone1", 6, 7);
-//        drawObject(g, "brokenStone1", 3, 2);
-//        drawCharacter(g, "personIdleWest", 4, 5);
-//        drawCharacter(g, "personIdleSouth", 2, 5);
-//        tile.Draw(g);
         drawObstacles(g);
         drawScore(g);
 //        g.drawImage(waterSprite, 384, 428, null);
@@ -152,14 +151,67 @@ public class GameImagePanel extends JPanel implements MouseListener {
 //        g.drawImage(waterSprite, 384-obW, 428+obH, null);
     }
 	
-	public void drawGround(Graphics g){
-		BufferedImage ground;
-		try {
-			ground = ImageIO.read(new File("data/images/ground.png"));
-			g.drawImage(ground, gX, gY, null);
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void drawNorthRoom(Graphics g){
+		if((int)player.getCurrentRoom().getBoardPos().getX() != 0){
+			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1, 
+					(int)player.getCurrentRoom().getBoardPos().getY());
+			BufferedImage ground = loadImage("ground.png");
+			g.drawImage(ground, gX-374, gY-176, null);
+			for (int i = 0; i < 10; i++){
+				for (int j = 9; j >= 0; j--){
+					if (northRoom.getObstacles()[i][j] != null){
+						drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
+					}
+					if (northRoom.getItems()[i][j] != null){
+						drawDistantObject(g, northRoom.getItems()[i][j].getType(), j, i, -1);
+					}
+				}
+			}
 		}
+	}
+	
+	public void drawDistantObject(Graphics g, String file, int x, int y, int SorE){
+		int newX = 374*SorE;
+		int newY = -176;
+		
+		newX = newX + gX + obX + (obW*x);
+		newY = newY - (obH*x);
+		
+		newX = newX + (obW*y);
+		newY = newY + gY + obY + (obH*y);
+		
+		BufferedImage object;
+		try {
+			object = ImageIO.read(new File("data/images/" + file + ".png"));
+			g.drawImage(object, newX, newY, null);
+		} catch (IOException e) {
+			//e.printStackTrace();
+			g.drawImage(defaultCube, newX, newY, null);
+		}
+	}
+	
+	public void drawEastRoom(Graphics g){
+		if((int)player.getCurrentRoom().getBoardPos().getY() != 4){
+			Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(), 
+					(int)player.getCurrentRoom().getBoardPos().getY()+1);
+			BufferedImage ground = loadImage("ground.png");
+			g.drawImage(ground, gX+374, gY-176, null);
+			for (int i = 0; i < 10; i++){
+				for (int j = 9; j >= 0; j--){
+					if (eastRoom.getObstacles()[i][j] != null){
+						drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+					}
+					if (eastRoom.getItems()[i][j] != null){
+						drawDistantObject(g, eastRoom.getItems()[i][j].getType(), j, i, 1);
+					}
+				}
+			}
+		}
+	}
+	
+	public void drawGround(Graphics g){
+		BufferedImage ground = loadImage("ground.png");
+		g.drawImage(ground, gX, gY, null);
 	}
 	
 	/*
@@ -187,7 +239,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
 				}
 				for(Player p : board.getPlayers()){
-					if(p != null){
+					if(p != null && p != player){
 						try{
 							if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
 								drawOtherPlayer(g, p);
@@ -249,14 +301,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.drawString("Score: "+score, 22, 557);
 	}
 	
-	public void drawNorthWall(Graphics g, String file){
-		BufferedImage wall;
-		try {
-			wall = ImageIO.read(new File("data/images/treesNorth1.png"));
-			g.drawImage(wall, wnX, wnY, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void drawNorthWall(Graphics g){
+		BufferedImage wall = loadImage("NorthTreesDoor.png");
+		g.drawImage(wall, wnX, wnY, null);
+	}
+	
+	public void drawEastWall(Graphics g){
+		BufferedImage wall = loadImage("EastTreesDoor.png");
+		g.drawImage(wall, weX, weY, null);
 	}
 	
 	public void drawCompass(Graphics g){
