@@ -25,7 +25,7 @@ public class DestinysWild implements Runnable{
 	private DestinysWild game = this;
 	private CountDownLatch latch;
 	private Multiplayer multiplayer = null;
-	private boolean paused;
+	private boolean paused = false;;
 	private MenuInterface mainMenu;
 	private JFrame frame;
 	public int tickCount = 0;
@@ -94,23 +94,25 @@ public class DestinysWild implements Runnable{
 		double diff = 0;
 		long lastTimer = System.currentTimeMillis();
 		while (running) {
-			long now = System.nanoTime();
-			diff += ((now - lastTime) / nsPerTick);
-			lastTime = now;
-			while (diff >= 1) {
-				ticks++;
-				tick();
-				diff--;
-			}
-			try {
-				Thread.sleep(2);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (System.currentTimeMillis() - lastTimer >= 1000) {
-				lastTimer += 1000;
-				//System.out.println("Ticks: " + ticks);
-				ticks = 0;
+			if(!paused){
+				long now = System.nanoTime();
+				diff += ((now - lastTime) / nsPerTick);
+				lastTime = now;
+				while (diff >= 1) {
+					ticks++;
+					tick();
+					diff--;
+				}
+				try {
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (System.currentTimeMillis() - lastTimer >= 1000) {
+					lastTimer += 1000;
+					//System.out.println("Ticks: " + ticks);
+					ticks = 0;
+				}
 			}
 		}
 	}
