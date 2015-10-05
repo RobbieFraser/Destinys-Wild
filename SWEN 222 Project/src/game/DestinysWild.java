@@ -14,8 +14,8 @@ import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
 import game.items.Health;
 import game.items.Item;
-import menu.MenuInterface;
 import view.GameInterface;
+import view.MenuInterface;
 
 public class DestinysWild implements Runnable{
 	private static Board board;
