@@ -1,7 +1,9 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import game.items.Item;
 
@@ -9,7 +11,7 @@ public class Board {
 
 	private Room[][] board = new Room[5][5];
 	private List<Item> offBoardItems = new ArrayList<>();
-	private List<Player> players = new ArrayList<Player>();
+	private Set<Player> players = new HashSet<Player>();
 
 	public Board() {
 
@@ -86,7 +88,7 @@ public class Board {
 		}
 	}
 
-	public List<Player> getPlayers() {
+	public Set<Player> getPlayers() {
 		return players;
 	}
 
@@ -96,6 +98,7 @@ public class Board {
 	
 	public Player getPlayer(String userName){
 		for(Player player : this.players){
+			System.out.println(player.getName() + " is in the board");
 			if(player.getName().equalsIgnoreCase(userName)){
 				return player;
 			}

@@ -29,6 +29,7 @@ public class Multiplayer extends Canvas implements Runnable {
 		this.game = game;
 		this.board = board;
 		this.currentPlayer = currentPlayer;
+		board.addPlayers(currentPlayer);
 		System.out.println("Current Player is: " + currentPlayer.getName());
 	}
 
