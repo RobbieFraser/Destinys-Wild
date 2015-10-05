@@ -27,6 +27,7 @@ public class GameServer extends Thread {
 	public GameServer(Board board, Multiplayer multiplayer) {
 		this.board = board;
 		this.multiplayer = multiplayer;
+		this.connectedPlayers.add(multiplayer.getCurrentPlayer());
 		try {
 			this.socket = new DatagramSocket(9772);
 			System.out.println(InetAddress.getLocalHost().getHostAddress());
@@ -138,7 +139,7 @@ public class GameServer extends Thread {
 
 	public Player getPlayer(String name) {
 		if(multiplayer.getCurrentPlayer().getName().equals(name)){
-			return (PlayerMulti) multiplayer.getCurrentPlayer();
+			return multiplayer.getCurrentPlayer();
 		}
 		for (Player pm : this.connectedPlayers) {
 			if (pm.getName().equals(name)) {
@@ -173,13 +174,10 @@ public class GameServer extends Thread {
 
 		}
 		if (alreadyConnected == false) {
-			if (!player.getName().equals(
-					multiplayer.getCurrentPlayer().getName())) {
-				System.out.println("player added");
+				//System.out.println("player added");
 				this.connectedPlayers.add(player);
 				board.addPlayers(player);
-				System.out.println("player added");
-			}
+				//System.out.println("player added");
 		}
 
 	}
