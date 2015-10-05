@@ -5,17 +5,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
 import game.items.Health;
 import game.items.Item;
-import view.GameInterface;
 import view.MenuInterface;
+import view.GameInterface;
 
 public class DestinysWild implements Runnable{
 	private static Board board;
@@ -25,7 +23,7 @@ public class DestinysWild implements Runnable{
 	private DestinysWild game = this;
 	private CountDownLatch latch;
 	private Multiplayer multiplayer = null;
-	private boolean paused = false;;
+	private boolean paused;
 	private MenuInterface mainMenu;
 	private JFrame frame;
 	public int tickCount = 0;

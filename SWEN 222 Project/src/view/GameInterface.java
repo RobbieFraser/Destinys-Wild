@@ -3,12 +3,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.BorderFactory;
@@ -24,6 +24,8 @@ import Renderer.GameImagePanel;
 import game.Board;
 import game.DestinysWild;
 import game.Player;
+import game.items.Health;
+import game.items.Item;
 
 public class GameInterface{
 	private static final int MAX_FOOD = 5;
@@ -36,6 +38,7 @@ public class GameInterface{
 	private DestinysWild game;
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
+	private Item[] items = new Item[11]; 
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
@@ -172,7 +175,6 @@ public class GameInterface{
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
-
 		// first lets draw the food
 		int numFood = player.numHealthItems(); //should extract from player
 		for (int i = 0; i < numFood; ++i) {
@@ -210,6 +212,8 @@ public class GameInterface{
 			keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		}
 
+		updateItems();
+		
 		//the interface should be updated
 		frame.revalidate();
 		//the repaint method suggests to the board to repaint the frame
@@ -217,6 +221,30 @@ public class GameInterface{
 		frame.repaint();
 	}
 
+	/**
+	 * The items field should be an array that contains the
+	 * players inventory. It should order the items the
+	 * same way that the items are displayed in the interface.
+	 * This method should update the items field.
+	 */
+	private void updateItems() {
+		int numHealthItems = player.numHealthItems();
+		int numTools = player.numToolItems();
+		boolean hasKey = !player.canAddKeyItem();
+		
+		for (int i = 0; i < numHealthItems; ++i) {
+			items[i] = player.getInventory().get(i);
+		}
+		
+		for (int j = 0; j < numTools; ++j) {
+			items[j + MAX_FOOD] = player.getInventory().get(j+numHealthItems);
+		}
+		
+		if (hasKey) {
+			items[11] = player.getInventory().get(numHealthItems+numTools);
+		}
+	}
+	
 	/**
 	 * This method should be called when the image on
 	 * an inventory slot should be redrawn with an
@@ -362,7 +390,7 @@ public class GameInterface{
 	 * currently selected, null is returned.
 	 * @return Name of currently selected item
 	 */
-	public String getSelectedItem() {
+	public Item getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
 		for (int i = 0; i < 12; ++i) {
@@ -370,19 +398,7 @@ public class GameInterface{
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
-				String text = tempLabel.getToolTipText().toLowerCase();
-				if (text.contains("slot")) {
-					//empty slot
-					return null;
-				} else if (text.contains("icon")) {
-					//split on the word Icon
-					String[] words = text.split("icon");
-					return words[0];
-				} else {
-					//return first word
-					System.out.println(text);
-					return text.split(" ")[0];
-				}
+				return items[i];
 			}
 		}
 		return null;
@@ -469,12 +485,11 @@ public class GameInterface{
 		case KeyEvent.VK_EQUALS:
 			updateSelectedSlot(11);
 			break;
-		case KeyEvent.VK_SHIFT:
-			String selectedItemName = getSelectedItem();
-			if (selectedItemName != null) {
+		case KeyEvent.VK_SHIFT:	
+			Item selectedItem = getSelectedItem();
+			if (selectedItem != null && selectedItem instanceof Health) {
 				clearKeysPressed();
-				JOptionPane.showMessageDialog(frame, "User wants to interact with their "
-						+ ""+ selectedItemName+".");
+				player.tryEat(selectedItem.getId());
 			} else {
 				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
 			}
@@ -488,7 +503,6 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_P:
 			//user wants to pause the game.
-			//JOptionPane.showMessageDialog(frame, "The game has been paused.");
 			gamePaused();
 			break;
 		case KeyEvent.VK_Q:
