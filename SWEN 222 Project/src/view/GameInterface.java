@@ -509,10 +509,10 @@ public class GameInterface{
 				throw new Error("Invalid pause menu option.");
 			}
 			break;
-		case KeyEvent.VK_Z:
+		case KeyEvent.VK_Q:
 			updateSelectedSlot(CYCLE_LEFT);
 			break;
-		case KeyEvent.VK_X:
+		case KeyEvent.VK_E:
 			updateSelectedSlot(CYCLE_RIGHT);
 			break;
 		}

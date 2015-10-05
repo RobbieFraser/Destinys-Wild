@@ -3,6 +3,9 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -61,6 +64,21 @@ public class ShopInterface {
 						buyTool(e);					
 					}
 				});
+				//focus will be on the buttons always, so we add the key listener here
+				buyItemButton.addKeyListener(new KeyListener() {
+					@Override
+					public void keyPressed(KeyEvent arg0) {
+						if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+							//user wants to exit the shop interface
+							frame.dispose();
+						}
+					}
+					@Override
+					public void keyReleased(KeyEvent arg0) {}
+					@Override
+					public void keyTyped(KeyEvent arg0) {}
+				});
+				
 				
 				frame.getContentPane().add(buyItemButton);
 			}
@@ -104,7 +122,7 @@ public class ShopInterface {
 					//player can no longer buy this tool
 				} else {
 					int difference = cost - score;
-					JOptionPane.showMessageDialog(frame, "You need "+difference+"more coins to buy the "+toolName);
+					JOptionPane.showMessageDialog(frame, "You need "+difference+" more coins to buy the "+toolName);
 				}
 			}
 		}
