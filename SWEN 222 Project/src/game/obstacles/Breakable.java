@@ -1,10 +1,10 @@
 package game.obstacles;
 
+import java.awt.Point;
+
 import game.DestinysWild;
 import game.Interactable;
-import game.items.Tool;
-
-import java.awt.Point;
+import game.Player;
 
 public class Breakable implements Obstacle, Interactable{
 
@@ -32,17 +32,22 @@ public class Breakable implements Obstacle, Interactable{
 
 	@Override
 	public void interact() {
+		Player player = DestinysWild.getPlayer();
 		int typeLen = type.length();
-		if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 3){
-			DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
-			
+		if(player.hasTool(type.substring(0, typeLen-1))){
+			if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 3){
+				DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
+				
+			}
+			else{
+				int newStage = Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) + 1;
+				String newType = type.substring(0, typeLen-1) + String.valueOf(newStage);
+				type = newType;
+			}
 		}
 		else{
-			int newStage = Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) + 1;
-			String newType = type.substring(0, typeLen-1) + String.valueOf(newStage);
-			type = newType;
+			System.out.println("You don't have the correct tool for the job ;)");
 		}
-		
 	}
 
 

@@ -83,6 +83,14 @@ public class Tool implements Item{
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	/**
+	 * getter for breakable
+	 * @return breakable for this tool
+	 */
+	public String getBreakable(){
+		return breakable;
+	}
 
 	@Override
 	public int getScore() {
