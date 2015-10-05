@@ -1,4 +1,4 @@
-package menu;
+package view;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -109,12 +109,7 @@ public class MenuInterface {
 		JButton toggleMusicButton = new JButton("Toggle Music");
 		toggleMusicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (PlayMusic.getIsPlaying()) {
-					PlayMusic.stopPlaying();
-				}
-				else {
-					PlayMusic.playSound("DestinysWildOST.mp3");
-				}
+				PlayMusic.toggleMusic();
 			}
 		});
 		addKeyListener(toggleMusicButton);
@@ -148,6 +143,9 @@ public class MenuInterface {
 					break;
 				case 'n':
 					newGameButtonPressed();
+					break;
+				case 'm':
+					PlayMusic.toggleMusic();
 					break;
 				}
 				

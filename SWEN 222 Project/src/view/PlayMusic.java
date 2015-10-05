@@ -1,4 +1,4 @@
-package menu;
+package view;
 
 import java.io.FileInputStream;
 
@@ -48,8 +48,13 @@ public class PlayMusic {
 		isPlaying = false;
 		playMP3.close();
 	}
-	
-	public static boolean getIsPlaying() {
-		return isPlaying;
+
+	public static void toggleMusic() {
+		if (isPlaying) {
+			stopPlaying();
+		}
+		else {
+			playSound("DestinysWildOST.mp3");
+		}
 	}
 }

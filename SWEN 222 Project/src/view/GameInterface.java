@@ -51,7 +51,6 @@ public class GameInterface{
 		frame.setVisible(true);
 		latch.countDown();
 		//TODO: Add support for L / R Arrows keys - Change perspective
-		//TODO: Improve Pause menu
 	}
 
 	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
@@ -176,7 +175,6 @@ public class GameInterface{
 		// draw the inventory
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
-		//System.out.println("User interface being updated.");
 
 		// first lets draw the food
 		int numFood = player.numHealthItems(); //should extract from player
@@ -186,21 +184,33 @@ public class GameInterface{
 			//set the labels image to be the food
 			drawBackgroundImage(foodLabel, "itemBox", i);
 		}
+		
+		//we should make sure that any slots that do not contain food
+		//do not display food, so we reset the image back to an empty slot
+		for (int i = numFood; i < 5; ++i) {
+			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i);
+			Image slotBackgroundImage = MenuInterface.loadImage("itemBox.png");
+			toolLabel.setIcon(new ImageIcon(slotBackgroundImage));
+		}
 
 		//now we can draw in weapons
-		int numTools = player.numToolItems(); //should extract from player
+		int numTools = player.numToolItems(); //should emxtract from player
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
 			//set the labels image to be a tool
 			drawBackgroundImage(toolLabel, "toolBox", i + MAX_FOOD);
 		}
-
+		
 		boolean hasNoKey = player.canAddKeyItem(); // should extract from player
 		if (!hasNoKey) {
 			//need to draw players key
 			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
+		} else {
+			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
+			Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
+			keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		}
 
 		//the interface should be updated
@@ -218,7 +228,7 @@ public class GameInterface{
 	 * 		is being drawn onto
 	 * @param type of inventory item
 	 * @param index of slot within the inventoryLabel
-	 * 		to draw onlatch
+	 * 		to draw on latch
 	 */
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
 		//firstly, we set the background image to be the image in question
@@ -416,7 +426,6 @@ public class GameInterface{
 	 */
 	protected void handleKeyPress(KeyEvent arg0, Set<Character> chars) {
 		int keyCode = arg0.getKeyCode();
-		Point currentCoord = player.getCoords();
 
 		//handle number presses
 		if (48 <= keyCode && keyCode <= 57) {
@@ -483,37 +492,16 @@ public class GameInterface{
 		case KeyEvent.VK_P:
 			//user wants to pause the game.
 			//JOptionPane.showMessageDialog(frame, "The game has been paused.");
-			clearKeysPressed();
-			game.setPaused(true);
-
-			String[] buttons = {"Quit and Save Game", "Toggle Music", "Resume Game" };
-
-			int rc = JOptionPane.showOptionDialog(null, "The Game has been Paused - What would you like to do?", "Settings", 
-					JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[2]);
-			if (rc == 2) {
-				//user wants to continue playing the game
-				game.setPaused(false);
-			} else if (rc == 1) {
-				//player wants to toggle the music
-				if (PlayMusic.getIsPlaying()) {
-					PlayMusic.stopPlaying();
-				}
-				else {
-					PlayMusic.playSound("DestinysWildOST.mp3");
-				}
-			} else if (rc == 0) {
-				//player wants to quit the game
-				escapeGame();
-			} else {
-				//dead code
-				throw new Error("Invalid pause menu option.");
-			}
+			gamePaused();
 			break;
 		case KeyEvent.VK_Q:
 			updateSelectedSlot(CYCLE_LEFT);
 			break;
 		case KeyEvent.VK_E:
 			updateSelectedSlot(CYCLE_RIGHT);
+			break;
+		case KeyEvent.VK_M:
+			PlayMusic.toggleMusic();
 			break;
 		}
 		//update the interface (in particular, the mini map)
@@ -532,5 +520,33 @@ public class GameInterface{
 		player.setEast(false);
 		player.setSouth(false);
 		player.setMoving(false);
+	}
+	
+	/**
+	 * This method should be called when the player has pressed 'p'
+	 * and it should bring up the paused game interface. It should
+	 * handle the various options the interface provides.
+	 */
+	private void gamePaused() {
+		clearKeysPressed();
+		game.setPaused(true);
+
+		String[] buttons = {"Quit and Save Game", "Toggle Music", "Resume Game" };
+
+		int rc = JOptionPane.showOptionDialog(null, "The Game has been Paused - What would you like to do?", "Settings", 
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[2]);
+		if (rc == 2) {
+			//user wants to continue playing the game
+			game.setPaused(false);
+		} else if (rc == 1) {
+			//player wants to toggle the music
+			PlayMusic.toggleMusic();
+		} else if (rc == 0) {
+			//player wants to quit the game
+			escapeGame();
+		} else {
+			//dead code
+			throw new Error("Invalid pause menu option.");
+		}
 	}
 }
