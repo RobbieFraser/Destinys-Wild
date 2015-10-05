@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import game.Board;
 import game.Player;
 import game.Room;
+import game.obstacles.Breakable;
 
 public class GameImagePanel extends JPanel implements MouseListener {
 	
@@ -172,7 +173,12 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		for (int i = 0; i < 10; i++){
 			for (int j = 9; j >= 0; j--){
 				if (curRoom.getObstacles()[i][j] != null){
-					drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+					if(curRoom.getObstacles()[i][j] instanceof Breakable){
+						drawBreakable(g, curRoom.getObstacles()[i][j].getType(), j, i);
+					}
+					else{
+						drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+					}
 				}
 				if (curRoom.getItems()[i][j] != null){
 					drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
@@ -307,6 +313,38 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			//e.printStackTrace();
 			g.drawImage(defaultCube, newX, newY, null);
 		}
+	}
+	
+	public void drawBreakable(Graphics g, String file, int x, int y){
+		BufferedImage breakablesIMG = loadImage("BreakablesSheet.png");
+		int subY = 0;
+		if(file.contains("cobblestone")){
+			subY = 0;
+		}
+		else if(file.contains("vine")){
+			subY = 1;
+		}
+		else if(file.contains("fire")){
+			subY = 2;
+		}
+		else{
+			subY = 3;
+		}
+		
+		int subX = Integer.valueOf(String.valueOf(file.charAt(file.length()-1))) - 1;
+		
+		//System.out.println(subX + " | " + subY);
+		
+		int newX = 0;
+		int newY = 0;
+		
+		newX = newX + gX + obX + (obW*x);
+		newY = newY - (obH*x);
+		
+		newX = newX + (obW*y);
+		newY = newY + gY + obY + (obH*y);
+		
+		g.drawImage(breakablesIMG.getSubimage(subX*70, subY*72, 70, 72), newX, newY, null);
 	}
 	
 	public static Point calcRealCoords(Point p){
