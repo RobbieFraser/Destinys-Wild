@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -47,19 +48,6 @@ public class MenuInterface {
 		frame.setContentPane(imagePanel);
 		frame.setResizable(false);
 
-		//initialise key binding
-		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("N"), "New Game");
-		ButtonAction newGame = new ButtonAction("New Game", "This button starts a new game", new Integer(KeyEvent.VK_N));
-		imagePanel.getActionMap().put("New Game", newGame);
-
-		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("L"), "Load Game");
-		ButtonAction loadGame = new ButtonAction("Load Game", "This button loads a previous game.", new Integer(KeyEvent.VK_L));
-		imagePanel.getActionMap().put("Load Game", loadGame);
-
-		imagePanel.getInputMap().put(KeyStroke.getKeyStroke("Q"), "Quit Game");
-		ButtonAction exitGame = new ButtonAction("Quit Game", "This button exits the game.", new Integer(KeyEvent.VK_Q));
-		imagePanel.getActionMap().put("Quit Game", exitGame);
-
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
@@ -86,6 +74,7 @@ public class MenuInterface {
 			}
 		});
 		btnNewGame.setBounds(25, 30, 150, 80);
+		addKeyListener(btnNewGame);
 		//btnNewGame.setBorder(blackline);
 		menuPanel.add(btnNewGame);
 
@@ -98,6 +87,7 @@ public class MenuInterface {
 		});
 		btnLoadGame.setBounds(25, 150, 150, 80);
 	    //btnLoadGame.setBorder(blackline);
+		addKeyListener(btnLoadGame);
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
 
@@ -109,6 +99,7 @@ public class MenuInterface {
 				escapeGame();
 			}
 		});
+		addKeyListener(btnQuitGame);
 		btnQuitGame.setBounds(25, 270, 150, 80);
 		menuPanel.add(btnQuitGame);
 
@@ -120,14 +111,13 @@ public class MenuInterface {
 			public void actionPerformed(ActionEvent e) {
 				if (PlayMusic.getIsPlaying()) {
 					PlayMusic.stopPlaying();
-					System.out.println("Toggle button pressed, music should stop playing.");
 				}
 				else {
 					PlayMusic.playSound("DestinysWildOST.mp3");
-					System.out.println("Toggle button pressed, music should be playing again.");
 				}
 			}
 		});
+		addKeyListener(toggleMusicButton);
 		toggleMusicButton.setBounds(925, 675, 150, 40);
 		frame.getContentPane().add(toggleMusicButton);
 
@@ -136,11 +126,44 @@ public class MenuInterface {
 		frame.getContentPane().add(menuPanel);
 		frame.setVisible(true);
 	}
+	
+	/**
+	 * The focus of the menu interface will by default always
+	 * be on one of the buttons. Therefore the key listener
+	 * for key shortcuts should be added to all buttons, which
+	 * will be done in here.
+	 * @param button button that keylistener should be added to
+	 */
+	private void addKeyListener(JButton button) {
+		button.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				char buttonPressed = arg0.getKeyChar();
+				switch(buttonPressed) {
+				case 'q':
+					escapeGame();
+					break;
+				case 'l':
+					loadGame();
+					break;
+				case 'n':
+					newGameButtonPressed();
+					break;
+				}
+				
+			}
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+		});
+	}
 
 	private void newGameButtonPressed() {
 		String name = JOptionPane.showInputDialog("Enter your name adventurer!");
-		game.newGame(name, frame);
-		//System.out.println("User's name was: "+name);
+		if (name != null) {
+			game.newGame(name, frame);
+		}
 	}
 
 	private void loadGame() {
@@ -183,41 +206,4 @@ public class MenuInterface {
 		}
 	}
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MenuInterface menu = new MenuInterface();
-//					menu.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	public class ButtonAction extends AbstractAction {
-		public ButtonAction(String text, String desc, Integer mnemonic) {
-			super(text);
-			putValue(SHORT_DESCRIPTION, desc);
-			putValue(MNEMONIC_KEY, mnemonic);
-		}
-		public void actionPerformed(ActionEvent e) {
-			String id = e.getActionCommand();
-			switch(id.toLowerCase()) {
-			case "q":
-				escapeGame();
-				break;
-			case "l":
-				loadGame();
-				break;
-			case "n":
-				newGameButtonPressed();
-				break;
-			}
-		}
-	}
 }
