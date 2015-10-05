@@ -7,10 +7,11 @@ import javazoom.jl.player.Player;
 
 public class PlayMusic {
 	private static final String MEDIA_PATH = "data/music/";
-	private FileInputStream musicInputStream;
-	private Player playMP3;
+	private static FileInputStream musicInputStream;
+	private static Player playMP3;
+	private static boolean isPlaying;
 
-	public synchronized void playSound(final String fileName) {
+	public static synchronized void playSound(final String fileName) {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -23,7 +24,7 @@ public class PlayMusic {
 		}).start();
 	}
 
-	public void playMusic(String fileName) {
+	public static void playMusic(String fileName) {
 		try {
 			musicInputStream = new FileInputStream(MEDIA_PATH
 					+ fileName);
@@ -34,16 +35,21 @@ public class PlayMusic {
 		}
 	}
 
-	public void startPlaying(){
+	public static void startPlaying() {
 		try {
+			isPlaying = true;
 			playMP3.play();
 		} catch (JavaLayerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void stopPlaying(){
+	public static void stopPlaying() {
+		isPlaying = false;
 		playMP3.close();
+	}
+	
+	public static boolean getIsPlaying() {
+		return isPlaying;
 	}
 }

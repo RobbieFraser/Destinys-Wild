@@ -26,6 +26,7 @@ import game.DestinysWild;
 import game.Player;
 import menu.ImagePanel;
 import menu.MenuInterface;
+import menu.PlayMusic;
 
 public class GameInterface{
 	private static final int MAX_FOOD = 5;
@@ -52,7 +53,7 @@ public class GameInterface{
 		//TODO: Add support for L / R Arrows keys - Change perspective
 		//TODO: Improve Pause menu
 	}
-	
+
 	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
 		this.latch = latch;
 		this.player = player;
@@ -389,7 +390,7 @@ public class GameInterface{
 	 */
 	protected void handleKeyRelease(KeyEvent e){
 		int keyCode = e.getKeyCode();
-	
+
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			player.setNorth(false);
@@ -416,7 +417,7 @@ public class GameInterface{
 	protected void handleKeyPress(KeyEvent arg0, Set<Character> chars) {
 		int keyCode = arg0.getKeyCode();
 		Point currentCoord = player.getCoords();
-		
+
 		//handle number presses
 		if (48 <= keyCode && keyCode <= 57) {
 			//user has pressed a number key
@@ -428,31 +429,31 @@ public class GameInterface{
 				updateSelectedSlot(keyCode-49);
 			}
 		}
-				
+
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			player.setNorth(true);
 			//up one square
-//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
-//						player.getCoords().y);
+			//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
+			//						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:
 			player.setWest(true);
 			//left one square
-//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
-//					player.getCoords().y);
+			//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
+			//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
 			player.setSouth(true);
 			//moved down one
-//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
-//					player.getCoords().y);
+			//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
+			//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
 			player.setEast(true);
 			//moved right one
-//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
-//					player.getCoords().y);;
+			//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
+			//					player.getCoords().y);;
 			break;
 		case KeyEvent.VK_MINUS:
 			//user wants to select the 11th slot
@@ -484,8 +485,29 @@ public class GameInterface{
 			//JOptionPane.showMessageDialog(frame, "The game has been paused.");
 			clearKeysPressed();
 			game.setPaused(true);
-			JOptionPane.showInputDialog(frame, "The Game has been Paused.", "PAUSED", 1,
-					null, new Object[]{"Continue", "Exit and Save"}, "Continue");
+
+			String[] buttons = {"Quit and Save Game", "Toggle Music", "Resume Game" };
+
+			int rc = JOptionPane.showOptionDialog(null, "The Game has been Paused - What would you like to do?", "Settings", 
+					JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[2]);
+			if (rc == 2) {
+				//user wants to continue playing the game
+				game.setPaused(false);
+			} else if (rc == 1) {
+				//player wants to toggle the music
+				if (PlayMusic.getIsPlaying()) {
+					PlayMusic.stopPlaying();
+				}
+				else {
+					PlayMusic.playSound("DestinysWildOST.mp3");
+				}
+			} else if (rc == 0) {
+				//player wants to quit the game
+				escapeGame();
+			} else {
+				//dead code
+				throw new Error("Invalid pause menu option.");
+			}
 			break;
 		case KeyEvent.VK_Z:
 			updateSelectedSlot(CYCLE_LEFT);
@@ -511,5 +533,4 @@ public class GameInterface{
 		player.setSouth(false);
 		player.setMoving(false);
 	}
-	
 }

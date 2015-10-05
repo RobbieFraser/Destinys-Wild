@@ -86,22 +86,25 @@ public class ShopInterface {
 		}
 		int cost = indexOfTool * 100;
 		Tool tool = weapons[indexOfTool];
+		//capitalise first letter of tool's name
+		String toolName = tool.getType().substring(0, 1).toUpperCase() + tool.getType().substring(1);
 		if (player.getInventory().contains(tool)) {
-			JOptionPane.showMessageDialog(frame, "You've already bought the "+tool.getType()+".");
+			JOptionPane.showMessageDialog(frame, "You've already bought the "+toolName+".");
 		}
 		else {
-			int result = JOptionPane.showConfirmDialog(frame, "The "+tool.getType()+" will cost "+cost+" coins. Are you sure?");
+			int result = JOptionPane.showConfirmDialog(frame, "The "+toolName+" will cost "+cost+" coins. Are you sure?");
 			if (result == JOptionPane.OK_OPTION) {
 				int score = player.getScore();
 				if (score >= cost) {
 					//user can buy this tool
 					//tool should be added to user's inventory
 					player.addInventoryItem(tool);
-					JOptionPane.showMessageDialog(frame, "The "+tool.getType()+" has been added to your inventory.");
+					JOptionPane.showMessageDialog(frame, "The "+toolName+" has been added to your inventory.");
 					player.setScore(score - cost);
 					//player can no longer buy this tool
 				} else {
-					JOptionPane.showMessageDialog(frame, "You don't have enough for the "+tool.getType()+".");
+					int difference = cost - score;
+					JOptionPane.showMessageDialog(frame, "You need "+difference+"more coins to buy the "+toolName);
 				}
 			}
 		}

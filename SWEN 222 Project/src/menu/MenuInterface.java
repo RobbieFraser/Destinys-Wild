@@ -25,7 +25,6 @@ import game.XMLParser;
 public class MenuInterface {
 	private JFrame frame;
 	private static final String IMAGE_PATH = "data/images/";
-	private boolean isPlaying;
 	private DestinysWild game;
 
 	public MenuInterface(DestinysWild game) {
@@ -111,26 +110,21 @@ public class MenuInterface {
 			}
 		});
 		btnQuitGame.setBounds(25, 270, 150, 80);
-		//btnQuitGame.setBorder(blackline);
 		menuPanel.add(btnQuitGame);
 
-		//play song
-		final PlayMusic music = new PlayMusic();
-		music.playSound("DestinysWildOST.mp3");
-		isPlaying = true;
+		PlayMusic.playSound("DestinysWildOST.mp3");
 
 		//Toggle Music Button
 		JButton toggleMusicButton = new JButton("Toggle Music");
 		toggleMusicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (isPlaying) {
-					music.stopPlaying();
-					isPlaying = false;
+				if (PlayMusic.getIsPlaying()) {
+					PlayMusic.stopPlaying();
+					System.out.println("Toggle button pressed, music should stop playing.");
 				}
 				else {
-					final PlayMusic music = new PlayMusic();
-					music.playSound("DestinysWildOST.mp3");
-					isPlaying = true;
+					PlayMusic.playSound("DestinysWildOST.mp3");
+					System.out.println("Toggle button pressed, music should be playing again.");
 				}
 			}
 		});
