@@ -46,16 +46,16 @@ public class GameClient extends Thread {
 		while (true) {
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
-			System.out.println("Packet created");
+		//	System.out.println("Packet created");
 			try {
-				System.out.println("Client attempting to receive packet");
+		//		System.out.println("Client attempting to receive packet");
 				this.socket.receive(packet);
-				System.out.println("Client received packet");
+		//		System.out.println("Client received packet");
 			} catch (IOException e) {
-				System.out.println("Something went wrong");
+		//		System.out.println("Something went wrong");
 				e.printStackTrace();
 			}
-			System.out.println("Client getting ready to parse packet");
+		//	System.out.println("Client getting ready to parse packet");
 			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
 			//String msg = new String(packet.getData());
 			//System.out.println(msg);
@@ -72,7 +72,7 @@ public class GameClient extends Thread {
 		case INVALID:
 			break;
 		case LOGIN:
-			System.out.println("Login Packet found");
+		//	System.out.println("Login Packet found");
 			packet = new LoginPacket(data);
 			handleLogin((LoginPacket)packet,address,port);
 			break;
@@ -85,7 +85,7 @@ public class GameClient extends Thread {
 		case MOVE:
 			packet = new MovePacket(data);
 			handlePacket((MovePacket) packet);
-			System.out.println("Player is moving online");
+		//	System.out.println("Player is moving online");
 		}
 
 	}
@@ -106,7 +106,8 @@ public class GameClient extends Thread {
 		//System.out.println("Current players on board are: " + board.getPlayers());
 		if(!pm.getName().equals(multiplayer.getCurrentPlayer().getName())){
 			board.addPlayers(pm);
-		}	
+			System.out.println("Added: " + pm.getName());
+		}
 	}
 
 	public void sendData(byte[] data) {

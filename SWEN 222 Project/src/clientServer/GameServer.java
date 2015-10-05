@@ -42,19 +42,19 @@ public class GameServer extends Thread {
 
 	public void run() {
 		while (true) {
-			System.out.println("Test");
+			//System.out.println("Test");
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
-				System.out.println("Server receiving packet");
+			//	System.out.println("Server receiving packet");
 				this.socket.receive(packet);
-				System.out.println("Server has received packet");
+				//System.out.println("Server has received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
-			System.out.println("Packet parsed");
+		//	System.out.println("Packet parsed");
 			// String msg = new String(packet.getData());
 			// System.out.println(msg);
 			// System.out.println("CLIENT [ "
@@ -95,9 +95,9 @@ public class GameServer extends Thread {
 			break;
 		case MOVE:
 			packet = new MovePacket(data);
-			System.out.println(((MovePacket) packet).getUserName()
-					+ " has moved to " + ((MovePacket) packet).getX() + ","
-					+ ((MovePacket) packet).getY());
+		//	System.out.println(((MovePacket) packet).getUserName()
+				//	+ " has moved to " + ((MovePacket) packet).getX() + ","
+			//		+ ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
 		}
 	}
@@ -114,7 +114,7 @@ public class GameServer extends Thread {
 			}
 		}
 		catch(IndexOutOfBoundsException e){
-			System.out.println("Whoops");
+			//System.out.println("Whoops");
 		}
 	}
 
@@ -164,7 +164,7 @@ public class GameServer extends Thread {
 				sendData(packet.getData(), pm.getIP(), pm.getPort());
 				packet = new LoginPacket(pm.getName());
 				sendData(packet.getData(), player.getIP(), player.getPort());
-				System.out.println("New player entered");
+				System.out.println("Sending player data to new player");
 			}
 
 		}
