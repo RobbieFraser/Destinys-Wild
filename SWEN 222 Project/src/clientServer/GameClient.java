@@ -1,6 +1,7 @@
 package clientServer;
 
 import game.Board;
+import game.Player;
 import game.PlayerMulti;
 import game.Room;
 
@@ -99,7 +100,7 @@ public class GameClient extends Thread {
 				+ "]" + ((LoginPacket) packet).getUserName()
 				+ " has entered the Wild");
 		Point point = new Point(500, 300);
-		PlayerMulti pm = new PlayerMulti(
+		Player pm = new Player(
 				((LoginPacket) packet).getUserName(), point, board.getRoomFromId(0), address, port);
 		//System.out.println("Handling login of: "+ pm.getName());
 		//board.getPlayers().add(pm);

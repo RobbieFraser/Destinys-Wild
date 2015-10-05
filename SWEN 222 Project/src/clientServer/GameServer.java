@@ -1,6 +1,7 @@
 package clientServer;
 
 import game.Board;
+import game.Player;
 import game.PlayerMulti;
 import game.Room;
 
@@ -20,7 +21,7 @@ import clientServer.packets.Packet.PacketTypes;
 public class GameServer extends Thread {
 	private DatagramSocket socket;
 	private Board board;
-	private List<PlayerMulti> connectedPlayers = new ArrayList<PlayerMulti>();
+	private List<Player> connectedPlayers = new ArrayList<Player>();
 	private Multiplayer multiplayer;
 
 	public GameServer(Board board, Multiplayer multiplayer) {
@@ -36,7 +37,7 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public List<PlayerMulti> getConnectedPlayers() {
+	public List<Player> getConnectedPlayers() {
 		return connectedPlayers;
 	}
 
@@ -106,7 +107,7 @@ public class GameServer extends Thread {
 		try{
 			if (packet.getUserName() != null) {
 				//int index = getPlayerIndex(packet.getUserName());
-				PlayerMulti player = this.getPlayer(packet.getUserName());
+				Player player = this.getPlayer(packet.getUserName());
 				int playerX = packet.getX();
 				int playerY = packet.getY();
 				player.setCoords(playerX, playerY);
@@ -119,14 +120,14 @@ public class GameServer extends Thread {
 	}
 
 	public void removeConnection(DisconnectPacket packet) {
-		PlayerMulti player = getPlayer(packet.getUserName());
+		Player player = getPlayer(packet.getUserName());
 		packet.writeData(this);
 
 	}
 
 	public int getPlayerIndex(String username) {
 		int index = 0;
-		for (PlayerMulti player : this.connectedPlayers) {
+		for (Player player : this.connectedPlayers) {
 			if (player.getName().equals(username)) {
 				break;
 			}
@@ -135,11 +136,11 @@ public class GameServer extends Thread {
 		return index;
 	}
 
-	public PlayerMulti getPlayer(String name) {
+	public Player getPlayer(String name) {
 		if(multiplayer.getCurrentPlayer().getName().equals(name)){
 			return (PlayerMulti) multiplayer.getCurrentPlayer();
 		}
-		for (PlayerMulti pm : this.connectedPlayers) {
+		for (Player pm : this.connectedPlayers) {
 			if (pm.getName().equals(name)) {
 				return pm;
 			}
@@ -147,11 +148,11 @@ public class GameServer extends Thread {
 		return null;
 	}
 
-	public void addConnection(PlayerMulti player, LoginPacket packet) {
+	public void addConnection(Player player, LoginPacket packet) {
 		boolean alreadyConnected = false;
 		System.out.println("Packet username is: " + packet.getUserName());
 		System.out.println("Packet type is: " + packet.packetID);
-		for (PlayerMulti pm : this.connectedPlayers) {
+		for (Player pm : this.connectedPlayers) {
 			if (pm.getName().equalsIgnoreCase(player.getName())) {
 				if (pm.getIP() == null) {
 					pm.setIP(player.getIP());
@@ -194,7 +195,7 @@ public class GameServer extends Thread {
 	}
 
 	public void sendDataToAllClients(byte[] data) {
-		for (PlayerMulti pm : connectedPlayers) {
+		for (Player pm : connectedPlayers) {
 			sendData(data, pm.getIP(), pm.getPort());
 		}
 	}
