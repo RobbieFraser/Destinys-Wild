@@ -9,6 +9,9 @@ import game.items.Item;
 import game.items.Key;
 import game.items.Score;
 import game.items.Tool;
+import game.npcs.EnemyStill;
+import game.npcs.EnemyWalker;
+import game.npcs.NPC;
 
 public class Player {
 	private String name;
@@ -21,6 +24,7 @@ public class Player {
 	private int speed = 2;
 	private String orientation = "north";
 	private Tile currentTile;
+	private Tile prevTile;
 	private boolean isMoving;
 	private boolean north;
 	private boolean south;
@@ -28,6 +32,8 @@ public class Player {
 	private boolean west;
 	private int walkState = 0;
 	private int walkDelay = 0;
+	private boolean invincible;
+	private int invincibleCount = 120;
 
 	public Player(){
 
@@ -68,6 +74,15 @@ public class Player {
 		this.inventory = inventory;
 		this.score = score;
 		this.currentTile = calcTile();
+	}
+	
+	public boolean hasTool(String breakable){
+		for(Item item : inventory){
+			if(item instanceof Tool && ((Tool)item).getBreakable().equals(breakable)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -140,6 +155,7 @@ public class Player {
 	}
 	
 	public void updatePlayer(){
+		updateInvincibility();
 		int count = 0;
 		if(north){
 			tryMove("north");
@@ -172,6 +188,16 @@ public class Player {
 		}
 	}
 
+	public void updateInvincibility(){
+		if(invincible){
+			invincibleCount--;
+			if(invincibleCount == 0){
+				invincible = false;
+				invincibleCount = 120;
+			}
+		}
+	}
+	
 	/**
 	 * After a player has stepped onto a tile, this method calculates whether to push the player
 	 * back or whether to pick up an item or whether to do nothing.
@@ -194,9 +220,94 @@ public class Player {
 			}
 			return true;
 		}
+		else if(occupant instanceof EnemyWalker || occupant instanceof EnemyStill){
+			if(!invincible){
+				setHealth(getHealth() - ((NPC)occupant).getDamage());
+				System.out.println("OUCH! Taken " + ((NPC)occupant).getDamage() + " damage!");
+				invincible = true;
+				if(!checkPulse()){
+					partThisCruelWorldForAnother();
+					return false;
+				}
+			}
+			return (occupant instanceof EnemyWalker);
+		}
 		return false;
 	}
 	
+	/**
+	 * Checks whether the player is still alive
+	 * @return boolean true if pulse is found
+	 */
+	public boolean checkPulse(){
+		if(getHealth() <= 0){
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * The player has died. Reinitialises everything appropriately.
+	 */
+	public void partThisCruelWorldForAnother(){
+		setCurrentRoom(DestinysWild.getBoard().getRoomFromCoords(2, 2));
+		setCoords(540, 325);
+		resetInventory();
+		setScore(0);
+		setHealth(100);
+	}
+	
+	/**
+	 * resets the player's inventory accordingly upon death
+	 */
+	public void resetInventory(){
+		List<Item> toRemove = new ArrayList<>();
+		System.out.println("Health items before death: "+ numHealthItems());
+		for(Item item : inventory){
+			if(item instanceof Key){
+				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
+				toRemove.add(item);
+			}
+			else if(item instanceof Health){
+				toRemove.add(item);
+			}
+		}
+		for(Item item : toRemove){
+			inventory.remove(item);
+		}
+		System.out.println("Health item in inv after death: "+ numHealthItems());
+	}
+	
+	/**
+	 * Attempts to heal the player upon selection of a health item from the inventory
+	 * @param itemId item to eat
+	 * @return boolean success
+	 */
+	public boolean tryEat(int itemId){
+		Item healthItem = null;
+		for(Item item : inventory){
+			if(item.getId() == itemId){
+				healthItem = item;
+			}
+		}
+		if(healthItem != null){
+			if(getHealth() == 100){
+				System.out.println("You don't need to eat that yo");
+				return false;
+			}
+			else{
+				if(getHealth() + healthItem.getHealth() < 100){
+					setHealth(getHealth() + healthItem.getHealth());
+				}
+				else{
+					setHealth(100);
+				}
+				return true;
+
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * Where the game logic player movement is done. The player will be moved onto a tile, 
@@ -206,7 +317,7 @@ public class Player {
 	 */
 	public boolean tryMove(String direction){
 		orientation = direction;
-		Tile prevTile = currentTile;
+		prevTile = currentTile;
 		switch(direction){
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
