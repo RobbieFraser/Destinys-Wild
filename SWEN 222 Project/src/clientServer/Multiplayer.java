@@ -1,16 +1,15 @@
 package clientServer;
 
+import game.Board;
+import game.DestinysWild;
+import game.Player;
+import game.Room;
+
 import java.awt.Canvas;
 import java.awt.HeadlessException;
 import java.awt.Point;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import game.Board;
-import game.DestinysWild;
-import game.Player;
-import game.PlayerMulti;
-import game.Room;
 
 import javax.swing.JOptionPane;
 
@@ -30,6 +29,7 @@ public class Multiplayer extends Canvas implements Runnable {
 		this.game = game;
 		this.board = board;
 		this.currentPlayer = currentPlayer;
+		System.out.println("Current Player is: " + currentPlayer.getName());
 	}
 
 	public void initialise() {

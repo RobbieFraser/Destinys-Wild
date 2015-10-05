@@ -2,10 +2,7 @@ package clientServer;
 
 import game.Board;
 import game.Player;
-import game.PlayerMulti;
-import game.Room;
 
-import java.util.*;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -14,8 +11,12 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
-import clientServer.packets.*;
+import clientServer.packets.DisconnectPacket;
+import clientServer.packets.LoginPacket;
+import clientServer.packets.MovePacket;
+import clientServer.packets.Packet;
 import clientServer.packets.Packet.PacketTypes;
 
 public class GameServer extends Thread {
@@ -44,19 +45,19 @@ public class GameServer extends Thread {
 
 	public void run() {
 		while (true) {
-			//System.out.println("Test");
+			// System.out.println("Test");
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
-			//	System.out.println("Server receiving packet");
+				// System.out.println("Server receiving packet");
 				this.socket.receive(packet);
-				//System.out.println("Server has received packet");
+				// System.out.println("Server has received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
-		//	System.out.println("Packet parsed");
+			// System.out.println("Packet parsed");
 			// String msg = new String(packet.getData());
 			// System.out.println(msg);
 			// System.out.println("CLIENT [ "
@@ -83,8 +84,9 @@ public class GameServer extends Thread {
 					+ "]" + ((LoginPacket) packet).getUserName()
 					+ " has connected");
 			Point point = new Point(500, 300);
-			PlayerMulti pm = new PlayerMulti(
-					((LoginPacket) packet).getUserName(), point, board.getRoomFromId(0), address, port);
+			Player pm = new Player(
+					((LoginPacket) packet).getUserName(), point,
+					board.getRoomFromId(0), address, port);
 			this.addConnection(pm, (LoginPacket) packet);
 			// System.out.println("player added in theory");
 			break;
@@ -97,26 +99,25 @@ public class GameServer extends Thread {
 			break;
 		case MOVE:
 			packet = new MovePacket(data);
-		//	System.out.println(((MovePacket) packet).getUserName()
-				//	+ " has moved to " + ((MovePacket) packet).getX() + ","
-			//		+ ((MovePacket) packet).getY());
+			// System.out.println(((MovePacket) packet).getUserName()
+			// + " has moved to " + ((MovePacket) packet).getX() + ","
+			// + ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
 		}
 	}
 
 	public void handleMove(MovePacket packet) {
-		try{
+		try {
 			if (packet.getUserName() != null) {
-				//int index = getPlayerIndex(packet.getUserName());
+				// int index = getPlayerIndex(packet.getUserName());
 				Player player = this.getPlayer(packet.getUserName());
 				int playerX = packet.getX();
 				int playerY = packet.getY();
 				player.setCoords(playerX, playerY);
 				packet.writeData(this);
 			}
-		}
-		catch(IndexOutOfBoundsException e){
-			//System.out.println("Whoops");
+		} catch (IndexOutOfBoundsException e) {
+			// System.out.println("Whoops");
 		}
 	}
 
@@ -138,9 +139,6 @@ public class GameServer extends Thread {
 	}
 
 	public Player getPlayer(String name) {
-		if(multiplayer.getCurrentPlayer().getName().equals(name)){
-			return multiplayer.getCurrentPlayer();
-		}
 		for (Player pm : this.connectedPlayers) {
 			if (pm.getName().equals(name)) {
 				return pm;
@@ -174,10 +172,13 @@ public class GameServer extends Thread {
 
 		}
 		if (alreadyConnected == false) {
-				//System.out.println("player added");
+			if (!player.equals(multiplayer.getCurrentPlayer())) {
+				// System.out.println("player added");
 				this.connectedPlayers.add(player);
+				System.out.println("Adding: " + player.getName());
 				board.addPlayers(player);
-				//System.out.println("player added");
+				// System.out.println("player added");
+			}
 		}
 
 	}

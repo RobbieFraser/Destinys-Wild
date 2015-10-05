@@ -2,8 +2,6 @@ package clientServer;
 
 import game.Board;
 import game.Player;
-import game.PlayerMulti;
-import game.Room;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -92,7 +90,10 @@ public class GameClient extends Thread {
 	}
 
 	public void handlePacket(MovePacket packet) {
-
+		Player player = board.getPlayer(packet.getUserName());
+		int playerX = packet.getX();
+		int playerY = packet.getY();
+		player.setCoords(playerX, playerY);
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
