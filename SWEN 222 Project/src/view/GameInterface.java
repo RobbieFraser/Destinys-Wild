@@ -24,9 +24,6 @@ import Renderer.GameImagePanel;
 import game.Board;
 import game.DestinysWild;
 import game.Player;
-import menu.ImagePanel;
-import menu.MenuInterface;
-import menu.PlayMusic;
 
 public class GameInterface{
 	private static final int MAX_FOOD = 5;

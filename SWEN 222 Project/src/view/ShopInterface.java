@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import game.Player;
 import game.items.Tool;
-import menu.MenuInterface;
 import game.DestinysWild;
 
 /**

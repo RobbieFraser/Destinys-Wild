@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Point;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class Player {
 		this.inventory = inventory;
 		this.score = score;
 		this.currentTile = calcTile();
+		this.port = -1;
+		this.ipAddress = null;
 	}
 	
 	public boolean hasTool(String breakable){
@@ -649,5 +652,33 @@ public class Player {
 		this.west = west;
 	}
 	
+	/////////////////////////////////ADDING IN PLAYER MULTI THINGS BELOW//////////////////////////////////
+	private InetAddress ipAddress;
+	private int port;
+
+	public Player(String name, Point coords, Room currentRoom, InetAddress ipAddress, int port){
+		this.name = name;
+		this.coords = coords;
+		this.currentRoom = currentRoom;
+		this.ipAddress = ipAddress;
+		this.port = port;
+	}
+
+	public InetAddress getIP(){
+		return ipAddress;
+	}
+
+	public int getPort(){
+		return port;
+	}
+
+	public void setPort(int newPort) {
+		port = newPort;
+	}
+
+	public void setIP(InetAddress ip) {
+		ipAddress = ip;
+
+	}
 
 }

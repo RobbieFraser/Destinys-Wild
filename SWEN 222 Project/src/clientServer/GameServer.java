@@ -105,8 +105,8 @@ public class GameServer extends Thread {
 	public void handleMove(MovePacket packet) {
 		try{
 			if (packet.getUserName() != null) {
-				int index = getPlayerIndex(packet.getUserName());
-				PlayerMulti player = this.connectedPlayers.get(index);
+				//int index = getPlayerIndex(packet.getUserName());
+				PlayerMulti player = this.getPlayer(packet.getUserName());
 				int playerX = packet.getX();
 				int playerY = packet.getY();
 				player.setCoords(playerX, playerY);
@@ -136,6 +136,9 @@ public class GameServer extends Thread {
 	}
 
 	public PlayerMulti getPlayer(String name) {
+		if(multiplayer.getCurrentPlayer().getName().equals(name)){
+			return (PlayerMulti) multiplayer.getCurrentPlayer();
+		}
 		for (PlayerMulti pm : this.connectedPlayers) {
 			if (pm.getName().equals(name)) {
 				return pm;
