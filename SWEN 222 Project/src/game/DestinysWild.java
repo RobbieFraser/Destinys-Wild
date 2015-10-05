@@ -94,7 +94,7 @@ public class DestinysWild implements Runnable{
 		double diff = 0;
 		long lastTimer = System.currentTimeMillis();
 		while (running) {
-			if(!paused){
+			//if(!paused){
 				long now = System.nanoTime();
 				diff += ((now - lastTime) / nsPerTick);
 				lastTime = now;
@@ -113,7 +113,7 @@ public class DestinysWild implements Runnable{
 					//System.out.println("Ticks: " + ticks);
 					ticks = 0;
 				}
-			}
+			//}
 		}
 	}
 
