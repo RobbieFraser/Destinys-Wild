@@ -412,8 +412,8 @@ public class XMLParser {
 				if(currNpc != null){
 					npc.addContent(new Element("Npctype").setText(currNpc.toString()));
 					npc.addContent(new Element("Type").setText(currNpc.getType()));
-					npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getCoords().x)));
-					npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getCoords().y)));
+					npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getRoomCoords().x)));
+					npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getRoomCoords().y)));
 					npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));
 					npc.addContent(new Element("Speed").setText(String.valueOf(currNpc.getSpeed())));
 					npcList.add(npc);

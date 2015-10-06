@@ -6,6 +6,8 @@ public interface NPC {
 	public int getDamage();
 	public int getSpeed();
 	public String getType();
-	public Point getCoords();
+	public Point getRoomCoords();
+	public Point getRealCoords();
 	public String toString();
+	public boolean tryMove();
 }

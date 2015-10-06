@@ -20,6 +20,7 @@ public class Room {
 	private Tile[][] tiles = new Tile[ROOM_SIZE][ROOM_SIZE];
 	private Obstacle[][] obstacles = new Obstacle[ROOM_SIZE][ROOM_SIZE];
 	private NPC[][] npcs = new NPC[ROOM_SIZE][ROOM_SIZE];
+	//TODO Use and ArrayList to store NPC's
 	private Item[][] items = new Item[ROOM_SIZE][ROOM_SIZE];
 
 	/**
@@ -34,6 +35,8 @@ public class Room {
 		this.Id = Id;
 		this.boardPos = boardPos;
 	}
+	
+	//TODO Thinking of adding Logic methods calcTile, calcRealCoords, currTileIsInRoom. For code reuse purposes
 
 	public Room(){
 
@@ -139,8 +142,8 @@ public class Room {
 	}
 
 	public void removeNpcs(NPC npc){
-		npcs[npc.getCoords().x][npc.getCoords().y] = null;
-		Tile tile = getTileFromRoomCoords(new Point(npc.getCoords().x, npc.getCoords().y));
+		npcs[npc.getRoomCoords().x][npc.getRoomCoords().y] = null;
+		Tile tile = getTileFromRoomCoords(new Point(npc.getRoomCoords().x, npc.getRoomCoords().y));
 		tile.setOccupied(false);
 	}
 

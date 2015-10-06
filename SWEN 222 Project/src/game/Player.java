@@ -432,9 +432,6 @@ public class Player {
 				}
 			}
 		}
-		//System.out.println(coords.toString());
-		//System.out.println("Player isn't on a tile in their currentRoom... (This can't be right)");
-		//System.exit(0);
 		return null;
 	}
 

@@ -5,14 +5,35 @@ import java.awt.Point;
 public class EnemyStill implements NPC{
 	private String type;
 
-	private Point coords;
+	private Point roomCoords;
+	private Point realCoords;
 
 	private int damage;
 
 	public EnemyStill(String type, Point coords, int damage){
 		this.type = type;
-		this.coords = coords;
+		this.roomCoords = coords;
 		this.damage = damage;
+	}
+
+	public boolean tryMove(){
+		return false;
+	}
+	
+	
+	
+	/**
+	 * @return the realCoords
+	 */
+	public Point getRealCoords() {
+		return realCoords;
+	}
+
+	/**
+	 * @param realCoords the realCoords to set
+	 */
+	public void setRealCoords(Point realCoords) {
+		this.realCoords = realCoords;
 	}
 
 	public int getDamage() {
@@ -31,12 +52,12 @@ public class EnemyStill implements NPC{
 		this.type = type;
 	}
 
-	public Point getCoords() {
-		return coords;
+	public Point getRoomCoords() {
+		return roomCoords;
 	}
 
-	public void setCoords(Point coords) {
-		this.coords = coords;
+	public void setRoomCoords(Point coords) {
+		this.roomCoords = coords;
 	}
 
 	public int getSpeed() {

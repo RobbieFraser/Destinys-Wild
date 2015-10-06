@@ -7,7 +7,8 @@ import view.ShopInterface;
 
 public class FriendlyStill implements NPC, Interactable{
 	private String type;
-	private Point coords;
+	private Point roomCoords;
+	private Point realCoords;
 	
 	private boolean isTalking;
 	
@@ -15,7 +16,26 @@ public class FriendlyStill implements NPC, Interactable{
 
 	public FriendlyStill(String type, Point coords){
 		this.type = type;
-		this.coords = coords;
+		this.roomCoords = coords;
+	}
+	
+	public boolean tryMove(){
+		return false;
+	}
+
+	
+	/**
+	 * @return the realCoords
+	 */
+	public Point getRealCoords() {
+		return realCoords;
+	}
+
+	/**
+	 * @param realCoords the realCoords to set
+	 */
+	public void setRealCoords(Point realCoords) {
+		this.realCoords = realCoords;
 	}
 
 	public String getType() {
@@ -26,12 +46,12 @@ public class FriendlyStill implements NPC, Interactable{
 		this.type = type;
 	}
 
-	public Point getCoords() {
-		return coords;
+	public Point getRoomCoords() {
+		return roomCoords;
 	}
 
-	public void setCoords(Point coords) {
-		this.coords = coords;
+	public void setRoomCoords(Point coords) {
+		this.roomCoords = coords;
 	}
 
 	public int getDamage() {
