@@ -265,9 +265,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int newY = (int)player.getCoords().getY() - 80;
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
-		int len = (player.getName().length()*4);
-		g.drawString(player.getName(), (newX-len)+13, newY - 20);
-		g.drawString(String.valueOf(player.getWalkState()), (newX-len)+13, newY - 30);
+		int len = (player.getName().length()*8)/2;
+		g.setFont(new Font("Courier new", 20, 15));
+		g.drawString(player.getName(), (newX-len)+25, newY - 20);
 		drawHealth(g, newX, newY);
 	}
 	
@@ -285,9 +285,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	
 	public void drawHealth(Graphics g, int x, int y){
 		g.setColor(Color.black);
-		g.fillRect(x+13-25, y-10, 50, 5);
+		g.fillRect(x, y-10, 50, 5);
 		g.setColor(Color.green);
-		g.fillRect(x+13-25, y-10, player.getHealth()/2, 5);
+		g.fillRect(x, y-10, player.getHealth()/2, 5);
 	}
 	
 	public void drawScore(Graphics g) {
@@ -428,11 +428,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
-	
-//	public void loadPlayerImages(){
-//		BufferedImage sheet = loadImage("playerSpriteSheet");
-//		BufferedImage playerImage = sheet.getSubimage(0, 0, 26, 82);
-//	}
 	
 	public BufferedImage getOtherPlayerImage(Player player){
 		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
