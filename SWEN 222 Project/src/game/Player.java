@@ -305,6 +305,7 @@ public class Player {
 				else{
 					setHealth(100);
 				}
+				inventory.remove(healthItem);
 				return true;
 
 			}

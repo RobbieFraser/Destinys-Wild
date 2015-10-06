@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.BorderFactory;
@@ -186,6 +185,7 @@ public class GameInterface{
 		
 		//we should make sure that any slots that do not contain food
 		//do not display food, so we reset the image back to an empty slot
+		System.out.println(numFood);
 		for (int i = numFood; i < 5; ++i) {
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i);
 			Image slotBackgroundImage = MenuInterface.loadImage("itemBox.png");
@@ -487,9 +487,11 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_SHIFT:	
 			Item selectedItem = getSelectedItem();
-			if (selectedItem != null && selectedItem instanceof Health) {
-				clearKeysPressed();
-				player.tryEat(selectedItem.getId());
+			if (selectedItem != null) {
+				if (selectedItem instanceof Health) {
+					clearKeysPressed();
+					player.tryEat(selectedItem.getId());	
+				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
 			}

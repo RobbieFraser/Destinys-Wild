@@ -2,13 +2,10 @@ package game.npcs;
 
 import java.awt.Point;
 
-public class EnemyWalker implements NPC{
+public class EnemyWalker implements NPC {
 	private String type;
-
 	private Point coords;
-
 	private int speed;
-
 	private int damage;
 
 	public EnemyWalker(String type, Point coords, int speed, int damage){
@@ -53,6 +50,4 @@ public class EnemyWalker implements NPC{
 	public String toString(){
 		return "enemywalker";
 	}
-
-
 }
