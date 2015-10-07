@@ -5,13 +5,20 @@ import game.Player;
 import game.Room;
 
 import java.awt.Point;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import clientServer.packets.BoardPacket;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
@@ -84,13 +91,50 @@ public class GameClient extends Thread {
 			break;
 		case MOVE:
 			packet = new MovePacket(data);
-			handlePacket((MovePacket) packet);
+			handleMovePacket((MovePacket) packet);
 		//	System.out.println("Player is moving online");
+		case BOARD:
+			packet = new BoardPacket(data);
+			handleBoardPacket((BoardPacket) packet);
 		}
 
 	}
 
-	public void handlePacket(MovePacket packet) {
+	public void handleBoardPacket(BoardPacket packet) {
+		byte[] boardData = packet.getData();
+		try {
+			Board newBoard = (Board) convertFromBytes(boardData);
+			this.board = newBoard;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public byte[] convertToBytes(Object object){
+		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
+			        objectOut.writeObject(object);
+			        return byteOutput.toByteArray();
+			    } catch (IOException e) {
+					e.printStackTrace();
+				}
+		return null;
+	}
+
+	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
+	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+	         ObjectInput input = new ObjectInputStream(bis)) {
+	        return input.readObject();
+	    }
+	}
+
+	public void handleMovePacket(MovePacket packet) {
 		Player player = board.getPlayer(packet.getUserName());
 		int playerX = packet.getX();
 		int playerY = packet.getY();

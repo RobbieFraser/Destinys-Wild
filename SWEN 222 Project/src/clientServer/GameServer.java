@@ -5,7 +5,13 @@ import game.Player;
 import game.Room;
 
 import java.awt.Point;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -14,6 +20,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import clientServer.packets.BoardPacket;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
@@ -104,7 +111,45 @@ public class GameServer extends Thread {
 			// + " has moved to " + ((MovePacket) packet).getX() + ","
 			// + ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
+		case BOARD:
+			packet = new BoardPacket(data);
+			this.handleBoard((BoardPacket) packet);
+			break;
+
 		}
+
+	}
+	private void handleBoard(BoardPacket packet) {
+		byte[] boardData = packet.getData();
+		try {
+			Board newBoard = (Board) convertFromBytes(boardData);
+			this.board = newBoard;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public byte[] convertToBytes(Object object){
+		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
+			        objectOut.writeObject(object);
+			        return byteOutput.toByteArray();
+			    } catch (IOException e) {
+					e.printStackTrace();
+				}
+		return null;
+	}
+
+	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
+	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+	         ObjectInput input = new ObjectInputStream(bis)) {
+	        return input.readObject();
+	    }
 	}
 
 	public void handleMove(MovePacket packet) {
