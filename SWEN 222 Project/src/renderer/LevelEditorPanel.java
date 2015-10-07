@@ -28,63 +28,63 @@ import game.obstacles.Breakable;
 import game.obstacles.Obstacle;
 
 public class LevelEditorPanel extends JPanel implements MouseListener, MouseMotionListener{
-	
+
 	//Where to start drawing the board
 	private int drawX = 50;
 	private int drawY = 50;
-	
+
 	//The size of a tile
 	private int size = 50;
-	
+
 	//Set the hover x and y to -1 to indicate that it is neither on the board nor the select list
 	private int hoverX = -1;
 	private int hoverY = -1;
 	private Color hoverColor = new Color(255, 255, 255, 128); //The last int is the transparency value
-	
+
 	//The x and y values for the select list
 	private int selectX = 650;
 	private int selectY = -1;
-	
+
 	//The x and y values for selecting a room on the map
 	private int hoverMapX = -1;
 	private int hoverMapY = -1;
-	
+
 	//The default tile and colours
 	private String type = "stone";
 	private String full = "stoneblock";
 	private Color color = new Color(194, 194, 194);
 	private Color color2 = new Color(143, 143, 143);
 	private String objectType = "Block"; //What kind of object the currently selected tile is
-	
+
 	//The tiles on the current room
 	private EditorTile[][] tiles = new EditorTile[10][10];
-	
+
 	//The list of tiles to select from
 	private List<EditorTileSelect> selects;
-	
+
 	private boolean onBoard = false; //Mouse is on the board
 	private boolean onSelect = false; //Mouse is on the Select list
 	private boolean onMap = false; //Mouse is on the map
-	
+
 	//Booleans for each wall to say if there is a door there or not
 	private boolean north = true;
 	private boolean south = true;
 	private boolean east = true;
 	private boolean west = true;
-	
+
 	//Information about the current Room, including the X and Y values
 	private Room curRoom;
 	private int roomX = 2;
 	private int roomY = 2;
-	
+
 	//The main Board object that everything is run off of
 	private Board board;
-	
+
 	private int id = 0;
-	
+
 	//The TilePicker object to help with drawing the board and getting colours
 	private TilePicker tp = new TilePicker();
-	
+
 	public LevelEditorPanel(Board board){
 		for(int i = 0; i < board.getBoard().length; i++){
 			for(int j = 0; j < board.getBoard()[0].length; j++){
@@ -103,7 +103,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		//Add all the different tile types to the select list
 		curRoom = board.getBoard()[roomX][roomY];
 	}
-	
+
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		drawTrees(g);
@@ -115,14 +115,14 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		drawMap(g);
 		drawHover(g);
 	}
-	
-	/*
+
+	/**
 	 * Draw all Obstacles, Items, and NPCs on the board, using the stored Board Object
 	 */
 	public void drawBoard(Graphics g){
 		Obstacle[][] obs = curRoom.getObstacles();
 		Item[][] items = curRoom.getItems();
-		NPC[][] npcs = curRoom.getNpcs();
+		//NPC[][] npcs = curRoom.getNpcs();
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
@@ -131,13 +131,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(items[row][col] != null){
 					tp.getTile(items[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
-				if(npcs[row][col] != null){
-					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
-				}
+//				if(npcs[row][col] != null){
+//					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
+//				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Draws the tree tiles around the board, purely cosmetic
 	 */
@@ -156,7 +156,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			y += size;
 		}
 	}
-	
+
 	/**
 	 * Draws the map on the side of the screen to display changes made to the Board
 	 */
@@ -176,7 +176,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(r != null){
 					Obstacle[][] obs = r.getObstacles();
 					Item[][] items = r.getItems();
-					NPC[][] npcs = r.getNpcs();
+					//NPC[][] npcs = r.getNpcs();
 					for(int row = 0; row < 10; row++){
 						for(int col = 0; col < 10; col++){
 							if(obs[row][col] != null){
@@ -185,9 +185,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 							if(items[row][col] != null){
 								tp.getTile(items[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
-							if(npcs[row][col] != null){
-								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-							}
+//							if(npcs[row][col] != null){
+//								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
+//							}
 						}
 					}
 				}
@@ -201,7 +201,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		g.setColor(Color.gray);
 		g.drawRect(800, 400, 250, 250);
 	}
-	
+
 	/**
 	 * Draws the doors to the panel, if the corresponding booleans are true
 	 */
@@ -239,7 +239,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			g.drawRect(250, 550, size, size);
 		}
 	}
-	
+
 	/**
 	 * Draw all the tiles in the select list
 	 */
@@ -251,7 +251,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			y += size;
 		}
 	}
-	
+
 	/**
 	 * Draw all the default grass tiles, a 10*10 grid
 	 */
@@ -270,8 +270,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			y += size;
 		}
 	}
-	
-	/*
+
+	/**
 	 * Draw all the tiles that have been placed
 	 */
 	public void drawTiles(Graphics g){
@@ -288,8 +288,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			y += size;
 		}
 	}
-	
-	/*
+
+	/**
 	 * Highlight the tile that the mouse is hovering over on the board or the select list
 	 */
 	public void drawHover(Graphics g){
@@ -306,17 +306,17 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			g.fillRect((hoverMapX*size)+800+1, (hoverMapY*size)+400+1, size-1, size-1);
 		}
 	}
-	
-	/*
+
+	/**
 	 * An algorithm to figure out which tile the mouse is hovering over
 	 */
 	public void checkTile(int x, int y){
 		int oldX = hoverX;
 		int oldY = hoverY;
-		
+
 		hoverX = (x - drawX)/size;
 		hoverY = (y - drawY)/size;
-		
+
 		if(x < drawX || y < drawY){
 			hoverX = -1;
 			hoverY = -1;
@@ -330,13 +330,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		else{
 			onBoard = true;
 		}
-		
+
 		if(oldX != hoverX || oldY != hoverY){
 			this.repaint();
 		}
 	}
-	
-	/*
+
+	/**
 	 * Check which tile the mouse is hovering over on the select list
 	 */
 	public void checkSelect(int x, int y){
@@ -353,7 +353,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			this.repaint();
 		}
 	}
-	
+
 	public void checkMap(int x, int y){
 		if(x > 800 && x < 1050 && y > 400 && y < 650){
 			int oldX = hoverMapX;
@@ -370,8 +370,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			this.repaint();
 		}
 	}
-	
-	/*
+
+	/**
 	 * Add a tile to the tiles array, with the location of the mouse
 	 */
 	public void createTile(){
@@ -392,13 +392,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
 				break;
 			case "EnemyStill":
-				curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
+				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
 				break;
 			case "EnemyWalker":
-				curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
+				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
 				break;
 			case "FriendlyStill":
-				curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
+				//curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
 				break;
 		}
 		//curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
@@ -407,8 +407,8 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		board.printBoard();
 		this.repaint();
 	}
-	
-	/*
+
+	/**
 	 * Change the current tile to the tile clicked on the select list
 	 */
 	public void selectTile(){
@@ -418,7 +418,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		color2 = selects.get(selectY).getColor2();
 		objectType = selects.get(selectY).getObjectType();
 	}
-	
+
 	public void selectRoom(){
 		//If the selected room doesn't exist
 		if(board.getBoard()[hoverMapY][hoverMapX] == null){
@@ -461,11 +461,11 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		roomX = (int)curRoom.getBoardPos().getY();
 		roomY = (int)curRoom.getBoardPos().getX();
 	}
-	
+
 	public void saveBoard(){
 		XMLParser.saveBoard("test.xml", board);
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(onBoard){
@@ -483,34 +483,34 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 
 	@Override
 	public void mouseMoved(MouseEvent e) {

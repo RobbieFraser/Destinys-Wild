@@ -159,7 +159,7 @@ public class XMLParser {
 			default:
 				System.out.println("Misidentifed NPC");
 			}
-			currentRoom.addNpc(temp, npcRow, npcCol); //adds all npc's to the current room
+			currentRoom.addNpc(temp); //adds all npc's to the current room
 		}
 	}
 
@@ -405,19 +405,16 @@ public class XMLParser {
 
 		List<Element> npcList = new ArrayList<>();
 
-		for(int i=0; i<current.getNpcs().length; i++){
-			for(int j=0; j<current.getNpcs()[0].length; j++){
-				NPC currNpc = current.getNpcs()[i][j];
-				Element npc = new Element("Npc");
-				if(currNpc != null){
-					npc.addContent(new Element("Npctype").setText(currNpc.toString()));
-					npc.addContent(new Element("Type").setText(currNpc.getType()));
-					npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getRoomCoords().x)));
-					npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getRoomCoords().y)));
-					npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));
-					npc.addContent(new Element("Speed").setText(String.valueOf(currNpc.getSpeed())));
-					npcList.add(npc);
-				}
+		for(NPC currNpc : current.getNpcs()){
+			Element npc = new Element("Npc");
+			if(currNpc != null){
+				npc.addContent(new Element("Npctype").setText(currNpc.toString()));
+				npc.addContent(new Element("Type").setText(currNpc.getType()));
+				npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getRoomCoords().x)));
+				npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getRoomCoords().y)));
+				npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));
+				npc.addContent(new Element("Speed").setText(String.valueOf(currNpc.getSpeed())));
+				npcList.add(npc);
 			}
 		}
 		return npcList;
