@@ -122,7 +122,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	public void drawBoard(Graphics g){
 		Obstacle[][] obs = curRoom.getObstacles();
 		Item[][] items = curRoom.getItems();
-		NPC[][] npcs = curRoom.getNpcs();
+		//NPC[][] npcs = curRoom.getNpcs();
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
@@ -131,9 +131,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(items[row][col] != null){
 					tp.getTile(items[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
-				if(npcs[row][col] != null){
-					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
-				}
+//				if(npcs[row][col] != null){
+//					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
+//				}
 			}
 		}
 	}
@@ -176,7 +176,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(r != null){
 					Obstacle[][] obs = r.getObstacles();
 					Item[][] items = r.getItems();
-					NPC[][] npcs = r.getNpcs();
+					//NPC[][] npcs = r.getNpcs();
 					for(int row = 0; row < 10; row++){
 						for(int col = 0; col < 10; col++){
 							if(obs[row][col] != null){
@@ -185,9 +185,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 							if(items[row][col] != null){
 								tp.getTile(items[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
-							if(npcs[row][col] != null){
-								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-							}
+//							if(npcs[row][col] != null){
+//								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
+//							}
 						}
 					}
 				}
@@ -392,13 +392,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
 				break;
 			case "EnemyStill":
-				curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
+				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
 				break;
 			case "EnemyWalker":
-				curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
+				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
 				break;
 			case "FriendlyStill":
-				curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
+				//curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
 				break;
 		}
 		//curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));

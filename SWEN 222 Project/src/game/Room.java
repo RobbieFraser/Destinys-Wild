@@ -1,10 +1,12 @@
 package game;
 
-import java.awt.Point;
-
 import game.items.Item;
 import game.npcs.NPC;
 import game.obstacles.Obstacle;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
 
@@ -19,8 +21,8 @@ public class Room {
 	private Point boardPos;
 	private Tile[][] tiles = new Tile[ROOM_SIZE][ROOM_SIZE];
 	private Obstacle[][] obstacles = new Obstacle[ROOM_SIZE][ROOM_SIZE];
-	private NPC[][] npcs = new NPC[ROOM_SIZE][ROOM_SIZE];
-	//TODO Use and ArrayList to store NPC's
+	//private NPC[][] npcs = new NPC[ROOM_SIZE][ROOM_SIZE];
+	private List<NPC> npcs = new ArrayList<>();
 	private Item[][] items = new Item[ROOM_SIZE][ROOM_SIZE];
 
 	/**
@@ -35,7 +37,7 @@ public class Room {
 		this.Id = Id;
 		this.boardPos = boardPos;
 	}
-	
+
 	//TODO Thinking of adding Logic methods calcTile, calcRealCoords, currTileIsInRoom. For code reuse purposes
 
 	public Room(){
@@ -50,10 +52,7 @@ public class Room {
 		for (int i = 0; i < obstacles.length; i++) {
 			System.out.print("| ");
 			for (int j = 0; j < obstacles.length; j++) {
-				if (npcs[i][j] != null){
-					System.out.print(npcs[i][j].getType() + " | ");
-				}
-				else if (obstacles[i][j] != null) {
+				if (obstacles[i][j] != null) {
 					System.out.print(obstacles[i][j].getType() + " | ");
 				}
 				else if (items[i][j] != null) {
@@ -74,15 +73,17 @@ public class Room {
 	public void initialiseTiles(){
 		for(int row=0; row<tiles.length; row++){
 			for(int col=0; col<tiles[0].length; col++){
-				NPC tempNpc = npcs[row][col];
 				Item tempItem = items[row][col];
 				Obstacle tempObs = obstacles[row][col];
 				boolean occupied = false;
-				if(tempNpc != null || tempItem != null || tempObs != null){
+				if(tempItem != null || tempObs != null){
 					occupied = true;
 				}
 				tiles[row][col] = new Tile(new Point(row, col), this, occupied);
 			}
+		}
+		for(NPC npc : npcs){
+			tiles[npc.getRoomCoords().x][npc.getRoomCoords().y] = new Tile(new Point(npc.getRoomCoords().x, npc.getRoomCoords().y), this, true);
 		}
 
 	}
@@ -93,14 +94,16 @@ public class Room {
 	 * @return An OBJECT type which will either be NPC, Item, Obstacle or null
 	 */
 	public Object getTileOccupant(Tile tile){
+		for(NPC npc : npcs){
+			if(tile.getRoomCoords().equals(npc.getRoomCoords())){
+				return npc;
+			}
+		}
 		for(int row=0; row<tiles.length; row++){
 			for(int col=0; col<tiles[0].length; col++){
 				if(tile.getRoomCoords().equals(new Point(row, col))){
 					if(obstacles[row][col] != null){
 						return obstacles[row][col];
-					}
-					else if(npcs[row][col] != null){
-						return npcs[row][col];
 					}
 					else if(items[row][col] != null){
 						return items[row][col];
@@ -127,8 +130,8 @@ public class Room {
 		obstacles[x][y] = obs;
 	}
 
-	public void addNpc(NPC npc, int x, int y){
-		npcs[x][y] = npc;
+	public void addNpc(NPC npc){
+		npcs.add(npc);
 	}
 
 	public void addItem(Item item, int x, int y){
@@ -142,7 +145,7 @@ public class Room {
 	}
 
 	public void removeNpcs(NPC npc){
-		npcs[npc.getRoomCoords().x][npc.getRoomCoords().y] = null;
+		npcs.remove(npc);
 		Tile tile = getTileFromRoomCoords(new Point(npc.getRoomCoords().x, npc.getRoomCoords().y));
 		tile.setOccupied(false);
 	}
@@ -172,7 +175,7 @@ public class Room {
 	/**
 	 * @return the npcs
 	 */
-	public NPC[][] getNpcs() {
+	public List<NPC> getNpcs() {
 		return npcs;
 	}
 

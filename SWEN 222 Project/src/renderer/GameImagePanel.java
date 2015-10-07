@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import game.Board;
 import game.Player;
 import game.Room;
+import game.npcs.NPC;
 import game.obstacles.Breakable;
 
 public class GameImagePanel extends JPanel implements MouseListener {
@@ -235,8 +236,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				if (curRoom.getItems()[i][j] != null){
 					drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
 				}
-				if (curRoom.getNpcs()[i][j] != null){
-					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
+				for(NPC npc : curRoom.getNpcs()){
+					if(npc.getRoomCoords().equals(new Point(i, j))){
+						drawObject(g, npc.getType(), j, i);
+					}
 				}
 				for(Player p : board.getPlayers()){
 					if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
