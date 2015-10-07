@@ -1,12 +1,13 @@
 package game.obstacles;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import game.DestinysWild;
 import game.Interactable;
 import game.Player;
 
-public class Breakable implements Obstacle, Interactable{
+public class Breakable implements Obstacle, Interactable,Serializable{
 
 	private String type;
 	private Point coords;
@@ -25,7 +26,7 @@ public class Breakable implements Obstacle, Interactable{
 	public Point getCoords() {
 		return coords;
 	}
-	
+
 	public String toString(){
 		return "breakable";
 	}
@@ -37,7 +38,7 @@ public class Breakable implements Obstacle, Interactable{
 		if(player.hasTool(type.substring(0, typeLen-1))){
 			if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 3){
 				DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
-				
+
 			}
 			else{
 				int newStage = Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) + 1;

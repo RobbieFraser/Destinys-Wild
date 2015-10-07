@@ -1,8 +1,9 @@
 package game.items;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Score implements Item{
+public class Score implements Item,Serializable{
 
 	private String type;
 
@@ -72,7 +73,7 @@ public class Score implements Item{
 	public int getHealth() {
 		return 0;
 	}
-	
+
 	public String toString(){
 		return "score";
 	}

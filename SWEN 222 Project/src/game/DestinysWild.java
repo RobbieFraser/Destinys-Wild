@@ -135,27 +135,60 @@ public class DestinysWild implements Runnable{
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
 				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId());
 		movePacket.writeData(multiplayer.getClient());
-		byte[] currentBoard = convertToBytes(board);
+		byte[] currentBoard = null;
+		try {
+			currentBoard = convertToBytes(board);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		BoardPacket boardPacket = new BoardPacket(currentBoard);
 		boardPacket.writeData(multiplayer.getClient());
 	}
 
-	public byte[] convertToBytes(Object object){
-		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
-			        objectOut.writeObject(object);
-			        return byteOutput.toByteArray();
-			    } catch (IOException e) {
-					e.printStackTrace();
-				}
-		return null;
+
+	public byte[] convertToBytes(Object object) throws IOException {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(object);
+			oos.flush();
+			bytes = bos.toByteArray();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (oos != null) {
+				oos.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return bytes;
 	}
 
-	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
-	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-	         ObjectInput input = new ObjectInputStream(bis)) {
-	        return input.readObject();
-	    }
+	private Object convertFromBytes(byte[] bytes) throws IOException,
+			ClassNotFoundException {
+		Object obj = null;
+		ByteArrayInputStream bis = null;
+		ObjectInputStream ois = null;
+		try {
+			bis = new ByteArrayInputStream(bytes);
+			ois = new ObjectInputStream(bis);
+			obj = ois.readObject();
+		} finally {
+			if (bis != null) {
+				bis.close();
+			}
+			if (ois != null) {
+				ois.close();
+			}
+		}
+		return obj;
 	}
 
 	public void updateUI(){

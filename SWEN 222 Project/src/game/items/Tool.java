@@ -1,8 +1,9 @@
 package game.items;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Tool implements Item{
+public class Tool implements Item,Serializable{
 
 	private String type;
 	private int id;
@@ -83,7 +84,7 @@ public class Tool implements Item{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * getter for breakable
 	 * @return breakable for this tool
@@ -109,7 +110,7 @@ public class Tool implements Item{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	public String toString(){
 		return "tool";
 	}

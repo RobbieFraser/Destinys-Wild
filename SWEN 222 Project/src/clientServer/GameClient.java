@@ -104,7 +104,12 @@ public class GameClient extends Thread {
 		byte[] boardData = packet.getData();
 		try {
 			Board newBoard = (Board) convertFromBytes(boardData);
-			this.board = newBoard;
+			newBoard.printBoard();
+			for(int i = 0; i < 5; i++){
+				for(int j = 0; j < 5; j++){
+					board.getBoard()[i][j] = newBoard.getBoard()[i][j];
+				}
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -116,22 +121,49 @@ public class GameClient extends Thread {
 
 
 
-	public byte[] convertToBytes(Object object){
-		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
-			        objectOut.writeObject(object);
-			        return byteOutput.toByteArray();
-			    } catch (IOException e) {
-					e.printStackTrace();
-				}
-		return null;
+
+	public byte[] convertToBytes(Object object) throws IOException {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(object);
+			oos.flush();
+			bytes = bos.toByteArray();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (oos != null) {
+				oos.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return bytes;
 	}
 
-	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
-	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-	         ObjectInput input = new ObjectInputStream(bis)) {
-	        return input.readObject();
-	    }
+	private Object convertFromBytes(byte[] bytes) throws IOException,
+			ClassNotFoundException {
+		Object obj = null;
+		ByteArrayInputStream bis = null;
+		ObjectInputStream ois = null;
+		try {
+			bis = new ByteArrayInputStream(bytes);
+			ois = new ObjectInputStream(bis);
+			obj = ois.readObject();
+		} finally {
+			if (bis != null) {
+				bis.close();
+			}
+			if (ois != null) {
+				ois.close();
+			}
+		}
+		return obj;
 	}
 
 	public void handleMovePacket(MovePacket packet) {

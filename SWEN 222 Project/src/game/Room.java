@@ -5,10 +5,11 @@ import game.npcs.NPC;
 import game.obstacles.Obstacle;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
+public class Room implements Serializable{
 
 	private int ROOM_SIZE = 10; //the length of a room, size x size
 

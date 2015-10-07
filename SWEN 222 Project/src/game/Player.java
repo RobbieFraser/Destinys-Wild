@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import game.npcs.EnemyStill;
 import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 
-public class Player {
+public class Player implements Serializable {
 	private String name;
 	private Point coords; //Coords relative to the game window
 	private int health = 100;

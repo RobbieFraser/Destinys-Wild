@@ -1,11 +1,12 @@
 package game.npcs;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import game.Room;
 import game.Tile;
 
-public class EnemyWalker implements NPC {
+public class EnemyWalker implements NPC,Serializable {
 	private String type;
 	private Point roomCoords; //room coords
 	private Point realCoords; // real coords in respect to the window
@@ -44,15 +45,15 @@ public class EnemyWalker implements NPC {
 		}
 	}
 	//TODO these methods. Will also have a canChangeTile method in here for collisions.
-	
+
 	public boolean tryFollow(){
 		return false;
 	}
-	
+
 	public boolean tryLoop(){
 		return false;
 	}
-	
+
 	public int getSpeed() {
 		return speed;
 	}
@@ -60,7 +61,7 @@ public class EnemyWalker implements NPC {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
+
 
 	/**
 	 * @return the strategy
@@ -127,7 +128,7 @@ public class EnemyWalker implements NPC {
 	public void setRealCoords(Point coords) {
 		this.realCoords = coords;
 	}
-	
+
 	/**
 	 * returns this npc's room coords
 	 */
@@ -142,7 +143,7 @@ public class EnemyWalker implements NPC {
 	public void setRoomCoords(Point coords) {
 		this.roomCoords = coords;
 	}
-	
+
 	public String toString(){
 		return "enemywalker";
 	}

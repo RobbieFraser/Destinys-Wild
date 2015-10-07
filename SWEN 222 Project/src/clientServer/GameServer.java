@@ -92,8 +92,7 @@ public class GameServer extends Thread {
 					+ "]" + ((LoginPacket) packet).getUserName()
 					+ " has connected");
 			Point point = new Point(500, 300);
-			Player pm = new Player(
-					((LoginPacket) packet).getUserName(), point,
+			Player pm = new Player(((LoginPacket) packet).getUserName(), point,
 					board.getRoomFromId(0), address, port);
 			this.addConnection(pm, (LoginPacket) packet);
 			// System.out.println("player added in theory");
@@ -119,37 +118,69 @@ public class GameServer extends Thread {
 		}
 
 	}
+
 	private void handleBoard(BoardPacket packet) {
 		byte[] boardData = packet.getData();
 		try {
 			Board newBoard = (Board) convertFromBytes(boardData);
-			this.board = newBoard;
+			newBoard.printBoard();
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
+					board.getBoard()[i][j] = newBoard.getBoard()[i][j];
+				}
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 	}
 
-	public byte[] convertToBytes(Object object){
-		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
-			        objectOut.writeObject(object);
-			        return byteOutput.toByteArray();
-			    } catch (IOException e) {
-					e.printStackTrace();
-				}
-		return null;
+	public byte[] convertToBytes(Object object) throws IOException {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(object);
+			oos.flush();
+			bytes = bos.toByteArray();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (oos != null) {
+				oos.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return bytes;
 	}
 
-	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
-	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-	         ObjectInput input = new ObjectInputStream(bis)) {
-	        return input.readObject();
-	    }
+	private Object convertFromBytes(byte[] bytes) throws IOException,
+			ClassNotFoundException {
+		Object obj = null;
+		ByteArrayInputStream bis = null;
+		ObjectInputStream ois = null;
+		try {
+			bis = new ByteArrayInputStream(bytes);
+			ois = new ObjectInputStream(bis);
+			obj = ois.readObject();
+		} finally {
+			if (bis != null) {
+				bis.close();
+			}
+			if (ois != null) {
+				ois.close();
+			}
+		}
+		return obj;
 	}
 
 	public void handleMove(MovePacket packet) {
@@ -239,7 +270,7 @@ public class GameServer extends Thread {
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 

@@ -1,29 +1,30 @@
 package game.npcs;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import game.Interactable;
 import view.ShopInterface;
 
-public class FriendlyStill implements NPC, Interactable{
+public class FriendlyStill implements NPC, Interactable,Serializable{
 	private String type;
 	private Point roomCoords;
 	private Point realCoords;
-	
+
 	private boolean isTalking;
-	
+
 	private String text;
 
 	public FriendlyStill(String type, Point coords){
 		this.type = type;
 		this.roomCoords = coords;
 	}
-	
+
 	public boolean tryMove(){
 		return false;
 	}
 
-	
+
 	/**
 	 * @return the realCoords
 	 */
@@ -61,18 +62,18 @@ public class FriendlyStill implements NPC, Interactable{
 	public int getSpeed() {
 		return 0;
 	}
-	
+
 	public String toString(){
 		return "friendlystill";
 	}
-	
+
 	/**
 	 * Makes this FriendlyStill shut their mouth
 	 */
 	public void shutUp(){
 		isTalking = false;
 	}
-	
+
 	/**
 	 * Honours this FriendlyStill with the power of free(ish) speech
 	 */
@@ -91,7 +92,7 @@ public class FriendlyStill implements NPC, Interactable{
 		else{
 			speak();
 		}
-		
+
 	}
 
 

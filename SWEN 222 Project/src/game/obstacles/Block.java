@@ -1,8 +1,9 @@
 package game.obstacles;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Block implements Obstacle{
+public class Block implements Obstacle,Serializable{
 	private String type;
 	private Point coords;
 

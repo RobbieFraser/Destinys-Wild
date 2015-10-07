@@ -1,8 +1,9 @@
 package game.items;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Key implements Item{
+public class Key implements Item,Serializable{
 
 	private int id;
 	private Point coords;
@@ -35,7 +36,7 @@ public class Key implements Item{
 	public int getHealth() {
 		return 0;
 	}
-	
+
 	public String toString(){
 		return "key";
 	}

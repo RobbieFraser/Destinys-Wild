@@ -1,10 +1,12 @@
 package game;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import renderer.GameImagePanel;
+import renderer.GameImagePanel;
 
-public class Tile {
+public class Tile implements Serializable{
 	private Point realCoords; //centre of the tile relative to the game window
 	private Point roomCoords; //coords relative to the Room
 	private Room room; //room that this tile belongs to
@@ -42,7 +44,7 @@ public class Tile {
 	public void setOccupied(boolean occupied){
 		this.occupied = occupied;
 	}
-	
+
 	public String isDoorMat(){
 		if(room.getNorth() != -1 && (roomCoords.equals(new Point(0,4)) || roomCoords.equals(new Point(0,5)))){
 			return "north";

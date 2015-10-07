@@ -7,7 +7,6 @@ import clientServer.GameServer;
 public class BoardPacket extends Packet {
 
 	private byte[] data;
-	private Board board;
 
 
 	public BoardPacket(byte[] data){

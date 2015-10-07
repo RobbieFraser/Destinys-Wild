@@ -1,8 +1,9 @@
 package game.npcs;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class EnemyStill implements NPC{
+public class EnemyStill implements NPC,Serializable{
 	private String type;
 
 	private Point roomCoords;
@@ -19,9 +20,9 @@ public class EnemyStill implements NPC{
 	public boolean tryMove(){
 		return false;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @return the realCoords
 	 */
@@ -63,7 +64,7 @@ public class EnemyStill implements NPC{
 	public int getSpeed() {
 		return 0;
 	}
-	
+
 	public String toString(){
 		return "enemystill";
 	}
