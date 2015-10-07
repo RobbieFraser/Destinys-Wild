@@ -19,57 +19,57 @@ import game.Room;
 import game.obstacles.Breakable;
 
 public class GameImagePanel extends JPanel implements MouseListener {
-	
+
 	private Board board; //The main Board object given from the main Game class
 	private Player player; //The player that the user controls
 	private Point curRoomCoords = new Point(2,2); //Temporary?
 	private Room curRoom; //The current Room Object
-	
+
 	private static final String IMAGE_PATH = "data/images/"; //The path to all the images
-	
+
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
 	private BufferedImage playerOtherIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
-	
+
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
-	
+
 	private int obX = 0; //Object x
 	private int obY = 104; //Object y
 	private int obW = 34; //Object width
 	private int obH = 16; //Object Height
-	
+
 	private static int tileX = 0; //Object x
 	private static int tileY = 142; //Object y
 	private static int tileW = 34; //Object width
 	private static int tileH = 16; //Object Height
-	
+
 	private int charX = 24; //Player x
 	private int charY = 82; //Player y
-	private int charW = 34; //Player width 
+	private int charW = 34; //Player width
 	private int charH = 16; //Player Height
-	
+
 	private int cX = 950; //Compass x
 	private int cY = 50; //Compass y
-	
+
 	private int wnX = gX-34; //Wall North x
 	private int wnY = gY-262; //Wall North y
-	
+
 	private int weX = gX+340; //Wall North x
 	private int weY = gY-262; //Wall North y
-	
+
 	private int viewDir = 0;
-	
+
 	private int red;
 	private int green;
 	private int blue;
-	
+
 	private boolean up = true;
-	
+
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
-	
+
 	public GameImagePanel(Board board){
 		red = 120;
 		green = 201;
@@ -82,7 +82,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		addMouseListener(this);
 		//waterTest();
 	}
-	
+
 	public GameImagePanel(Board board, Player player){
 		red = 120;
 		green = 201;
@@ -95,7 +95,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		addMouseListener(this);
 		//waterTest();
 	}
-	
+
 	public void waterTest(){
 		while(true){
 			for(int i = 0; i < 4; i++){
@@ -112,10 +112,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	/*
 	 * Sets the default image
-	 * 
+	 *
 	 * -The default image is used when a file cannot be found in the data folder
 	 * -Useful so that if there is no image for a certain type of obstacle/NPC/item,
 	 *  something will still be drawn
@@ -129,14 +129,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	@Override
     protected void paintComponent(Graphics g) {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
         super.paintComponent(g);
-        
+
         drawNorthRoom(g);
         drawNorthWall(g);
         drawEastRoom(g);
@@ -150,10 +150,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 //        g.drawImage(waterSprite, 384, 428+(obH*2), null);
 //        g.drawImage(waterSprite, 384-obW, 428+obH, null);
     }
-	
+
 	public void drawNorthRoom(Graphics g){
 		if((int)player.getCurrentRoom().getBoardPos().getX() != 0){
-			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1, 
+			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1,
 					(int)player.getCurrentRoom().getBoardPos().getY());
 			BufferedImage ground = loadImage("ground.png");
 			g.drawImage(ground, gX-374, gY-176, null);
@@ -169,17 +169,17 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	public void drawDistantObject(Graphics g, String file, int x, int y, int SorE){
 		int newX = 374*SorE;
 		int newY = -176;
-		
+
 		newX = newX + gX + obX + (obW*x);
 		newY = newY - (obH*x);
-		
+
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
-		
+
 		BufferedImage object;
 		try {
 			object = ImageIO.read(new File("data/images/" + file + ".png"));
@@ -189,10 +189,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			g.drawImage(defaultCube, newX, newY, null);
 		}
 	}
-	
+
 	public void drawEastRoom(Graphics g){
 		if((int)player.getCurrentRoom().getBoardPos().getY() != 4){
-			Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(), 
+			Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
 					(int)player.getCurrentRoom().getBoardPos().getY()+1);
 			BufferedImage ground = loadImage("ground.png");
 			g.drawImage(ground, gX+374, gY-176, null);
@@ -208,18 +208,18 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	public void drawGround(Graphics g){
 		BufferedImage ground = loadImage("ground.png");
 		g.drawImage(ground, gX, gY, null);
 	}
-	
+
 	/*
 	 * Draws all obstacles in current room
-	 * 
+	 *
 	 * -Loops through the obstacles array stored in the current room
 	 * -Loops from back to front so that all obstacles are displayed correctly
-	 * -Calls the drawObject() method to draw each obstacle 
+	 * -Calls the drawObject() method to draw each obstacle
 	 */
 	public void drawObstacles(Graphics g){
 		for (int i = 0; i < 10; i++){
@@ -239,7 +239,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					drawObject(g, curRoom.getNpcs()[i][j].getType(), j, i);
 				}
 				for(Player p : board.getPlayers()){
-					if(p != null && p != player){
+					if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
 						try{
 							if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
 								drawOtherPlayer(g, p);
@@ -258,7 +258,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	public void drawPlayer(Graphics g){
 		g.setColor(Color.black);
 		int newX = (int)player.getCoords().getX() - 25;
@@ -270,7 +270,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.drawString(player.getName(), (newX-len)+25, newY - 20);
 		drawHealth(g, newX, newY);
 	}
-	
+
 	public void drawOtherPlayer(Graphics g, Player p){
 		g.setColor(Color.black);
 		int newX = (int)p.getCoords().getX() - 25;
@@ -282,35 +282,35 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.drawString(String.valueOf(p.getWalkState()), (newX-len)+13, newY - 30);
 		drawHealth(g, newX, newY);
 	}
-	
+
 	public void drawHealth(Graphics g, int x, int y){
 		g.setColor(Color.black);
 		g.fillRect(x, y-10, 50, 5);
 		g.setColor(Color.green);
 		g.fillRect(x, y-10, player.getHealth()/2, 5);
 	}
-	
+
 	public void drawScore(Graphics g) {
 		//draw the white background
 		g.setColor(Color.white);
 		g.fillRect(20, 535, 120, 28);
-		
+
 		int score = player.getScore();
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		g.drawString("Score: "+score, 22, 557);
 	}
-	
+
 	public void drawNorthWall(Graphics g){
 		BufferedImage wall = loadImage("NorthTreesDoor.png");
 		g.drawImage(wall, wnX, wnY, null);
 	}
-	
+
 	public void drawEastWall(Graphics g){
 		BufferedImage wall = loadImage("EastTreesDoor.png");
 		g.drawImage(wall, weX, weY, null);
 	}
-	
+
 	public void drawCompass(Graphics g){
 		BufferedImage compass;
 		try {
@@ -320,17 +320,17 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void drawCharacter(Graphics g, String file, int x, int y){
 		int newX = 0;
 		int newY = 0;
-		
+
 		newX = newX + gX + charX + (charW*x);
 		newY = newY - (charH*x);
-		
+
 		newX = newX + (charW*y);
 		newY = newY + gY + charY + (charH*y);
-		
+
 		BufferedImage character;
 		try {
 			character = ImageIO.read(new File("data/images/" + file + ".png"));
@@ -339,10 +339,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	 * Draws an object given a file name and an x and y
-	 * 
+	 *
 	 * -Algorithm works out placement coordinates
 	 * -Loads Buffered image using filename
 	 * -Draws Buffered image to panel at correct coordinates
@@ -350,13 +350,13 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	public void drawObject(Graphics g, String file, int x, int y){
 		int newX = 0;
 		int newY = 0;
-		
+
 		newX = newX + gX + obX + (obW*x);
 		newY = newY - (obH*x);
-		
+
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
-		
+
 		BufferedImage object;
 		try {
 			object = ImageIO.read(new File("data/images/" + file + ".png"));
@@ -366,7 +366,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			g.drawImage(defaultCube, newX, newY, null);
 		}
 	}
-	
+
 	public void drawBreakable(Graphics g, String file, int x, int y){
 		BufferedImage breakablesIMG = loadImage("BreakablesSheet.png");
 		int subY = 0;
@@ -382,35 +382,35 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		else{
 			subY = 3;
 		}
-		
+
 		int subX = Integer.valueOf(String.valueOf(file.charAt(file.length()-1))) - 1;
-		
+
 		//System.out.println(subX + " | " + subY);
-		
+
 		int newX = 0;
 		int newY = 0;
-		
+
 		newX = newX + gX + obX + (obW*x);
 		newY = newY - (obH*x);
-		
+
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
-		
+
 		g.drawImage(breakablesIMG.getSubimage(subX*70, subY*72, 70, 72), newX, newY, null);
 	}
-	
+
 	public static Point calcRealCoords(Point p){
 		int newX = 0;
 		int newY = 0;
-		
+
 		newX = newX + gX + tileX + (tileW*(int)p.getY());
 		newY = newY - (tileH*(int)p.getY());
-		
+
 		newX = newX + (tileW*(int)p.getX());
 		newY = newY + gY + tileY + (tileH*(int)p.getX());
 		return new Point(newX+tileW, newY+tileH);
 	}
-	
+
 	/**
 	 * This method should load an image in from a filename.
 	 * @param filename
@@ -428,7 +428,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
-	
+
 	public BufferedImage getOtherPlayerImage(Player player){
 		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
 		BufferedImage playerImage = playerOtherIMG;
@@ -490,7 +490,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		return playerImage;
 	}
-	
+
 	public void updatePlayerImage(){
 		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
 		BufferedImage playerImage = playerIMG;
@@ -552,7 +552,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		playerIMG = playerImage;
 	}
-	
+
 	public Board getBoard(){
 		return board;
 	}
@@ -571,25 +571,25 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
