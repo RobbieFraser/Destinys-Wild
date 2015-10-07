@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -61,6 +62,12 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 
 	//The list of tiles to select from
 	private List<EditorTileSelect> selects;
+	private List<EditorTileSelect> obSelects;
+	private List<EditorTileSelect> breakSelects;
+	private List<EditorTileSelect> healthSelects;
+	private List<EditorTileSelect> scoreSelects;
+	private List<EditorTileSelect> enemySelects;
+	private List<EditorTileSelect> npcSelects;
 
 	private boolean onBoard = false; //Mouse is on the board
 	private boolean onSelect = false; //Mouse is on the Select list
@@ -95,6 +102,12 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 		System.out.println("ID count: " + id);
 		selects = tp.getSelects();
+		obSelects = tp.getObSelects();
+		breakSelects = tp.getBreakSelects();
+		healthSelects = tp.getHealthSelects();
+		scoreSelects = tp.getScoreSelects();
+		enemySelects = tp.getEnemySelects();
+		npcSelects = tp.getNPCSelects();
 		this.board = board;
 		//Make the editor listen for mouse inputs
 		addMouseListener(this);
@@ -122,7 +135,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	public void drawBoard(Graphics g){
 		Obstacle[][] obs = curRoom.getObstacles();
 		Item[][] items = curRoom.getItems();
-		//NPC[][] npcs = curRoom.getNpcs();
+		List<NPC> npcs = curRoom.getNpcs();
 		for(int row = 0; row < 10; row++){
 			for(int col = 0; col < 10; col++){
 				if(obs[row][col] != null){
@@ -131,9 +144,11 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(items[row][col] != null){
 					tp.getTile(items[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
 				}
-//				if(npcs[row][col] != null){
-//					tp.getTile(npcs[row][col].getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
-//				}
+				for(NPC npc : npcs){
+					if(npc.getRoomCoords().equals(new Point(row, col))){
+						tp.getTile(npc.getType()).draw(g, (col*size)+drawX, (row*size)+drawY, size);
+					}
+				}
 			}
 		}
 	}
@@ -176,7 +191,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				if(r != null){
 					Obstacle[][] obs = r.getObstacles();
 					Item[][] items = r.getItems();
-					//NPC[][] npcs = r.getNpcs();
+					List<NPC> npcs = r.getNpcs();
 					for(int row = 0; row < 10; row++){
 						for(int col = 0; col < 10; col++){
 							if(obs[row][col] != null){
@@ -185,9 +200,11 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 							if(items[row][col] != null){
 								tp.getTile(items[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
 							}
-//							if(npcs[row][col] != null){
-//								tp.getTile(npcs[row][col].getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
-//							}
+							for(NPC npc : npcs){
+								if(npc.getRoomCoords().equals(new Point(row, col))){
+									tp.getTile(npc.getType()).drawDot(g, (col*5)+800+x, (row*5)+400+y, 5);
+								}
+							}
 						}
 					}
 				}
@@ -246,9 +263,39 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	public void drawSelects(Graphics g){
 		int y = 0;
 		int x = 649;
-		for(EditorTileSelect e : selects){
+		for(EditorTileSelect e : obSelects){
 			e.draw(g, x, y, size);
-			y += size;
+			x += size;
+		}
+		x = 649;
+		y += size;
+		for(EditorTileSelect e : breakSelects){
+			e.draw(g, x, y, size);
+			x += size;
+		}
+		x = 649;
+		y += size;
+		for(EditorTileSelect e : healthSelects){
+			e.draw(g, x, y, size);
+			x += size;
+		}
+		x = 649;
+		y += size;
+		for(EditorTileSelect e : scoreSelects){
+			e.draw(g, x, y, size);
+			x += size;
+		}
+		x = 649;
+		y += size;
+		for(EditorTileSelect e : enemySelects){
+			e.draw(g, x, y, size);
+			x += size;
+		}
+		x = 649;
+		y += size;
+		for(EditorTileSelect e : npcSelects){
+			e.draw(g, x, y, size);
+			x += size;
 		}
 	}
 
@@ -299,7 +346,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		}
 		else if (onSelect){
 			g.setColor(hoverColor);
-			g.fillRect(selectX, (selectY*size)+1, size-1, size-1);
+			g.fillRect((selectX*size)+650, (selectY*size)+1, size-1, size-1);
 		}
 		else if(onMap){
 			g.setColor(hoverColor);
@@ -340,11 +387,61 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Check which tile the mouse is hovering over on the select list
 	 */
 	public void checkSelect(int x, int y){
-		if(x > 650 && x < 750){
+		if(x > 650 && y < 300){
 			int oldY = selectY;
+			int oldX = selectX;
 			selectY = y/size;
+			selectX = (x-650)/size;
+			if(selectY == 0){
+				if(selectX > obSelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
+			if(selectY == 1){
+				if(selectX > breakSelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
+			if(selectY == 2){
+				if(selectX > healthSelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
+			if(selectY == 3){
+				if(selectX > scoreSelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
+			if(selectY == 4){
+				if(selectX > enemySelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
+			if(selectY == 5){
+				if(selectX > npcSelects.size()-1){
+					selectY = oldY;
+					selectX = oldX;
+					onSelect = false;
+					return;
+				}
+			}
 			onSelect = true;
-			if(oldY != selectY){
+			if(oldY != selectY || oldX != selectX){
 				this.repaint();
 			}
 		}
@@ -378,27 +475,40 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		switch(objectType){
 			case "Block":
 				curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
+				curRoom.getItems()[hoverY][hoverX] = null;
 				break;
 			case "Breakable":
 				curRoom.getObstacles()[hoverY][hoverX] = new Breakable(full, new Point(hoverY, hoverX));
+				curRoom.getItems()[hoverY][hoverX] = null;
 				break;
 			case "Health":
 				curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), 10, 99);
+				curRoom.getObstacles()[hoverY][hoverX] = null;
 				break;
 			case "Score":
 				curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), 10, 99);
+				curRoom.getObstacles()[hoverY][hoverX] = null;
 				break;
 			case "Key":
 				curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
+				curRoom.getObstacles()[hoverY][hoverX] = null;
 				break;
 			case "EnemyStill":
+				curRoom.addNpc(new EnemyStill(full, new Point(hoverY, hoverX), 10));
+				curRoom.getObstacles()[hoverY][hoverX] = null;
+				curRoom.getItems()[hoverY][hoverX] = null;
 				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
 				break;
 			case "EnemyWalker":
+				curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10));
+				curRoom.getObstacles()[hoverY][hoverX] = null;
+				curRoom.getItems()[hoverY][hoverX] = null;
 				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
 				break;
 			case "FriendlyStill":
-				//curRoom.getNpcs()[hoverY][hoverX] = new FriendlyStill(full, new Point(hoverY, hoverX));
+				curRoom.addNpc(new FriendlyStill(full, new Point(hoverY, hoverX)));
+				curRoom.getObstacles()[hoverY][hoverX] = null;
+				curRoom.getItems()[hoverY][hoverX] = null;
 				break;
 		}
 		//curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
@@ -412,11 +522,48 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Change the current tile to the tile clicked on the select list
 	 */
 	public void selectTile(){
-		type = selects.get(selectY).getType();
-		full = selects.get(selectY).getFull();
-		color = selects.get(selectY).getColor();
-		color2 = selects.get(selectY).getColor2();
-		objectType = selects.get(selectY).getObjectType();
+		if(selectY == 0){
+			type = obSelects.get(selectX).getType();
+			full = obSelects.get(selectX).getFull();
+			color = obSelects.get(selectX).getColor();
+			color2 = obSelects.get(selectX).getColor2();
+			objectType = obSelects.get(selectX).getObjectType();
+		}
+		else if(selectY == 1){
+			type = breakSelects.get(selectX).getType();
+			full = breakSelects.get(selectX).getFull();
+			color = breakSelects.get(selectX).getColor();
+			color2 = breakSelects.get(selectX).getColor2();
+			objectType = breakSelects.get(selectX).getObjectType();
+		}
+		else if(selectY == 2){
+			type = healthSelects.get(selectX).getType();
+			full = healthSelects.get(selectX).getFull();
+			color = healthSelects.get(selectX).getColor();
+			color2 = healthSelects.get(selectX).getColor2();
+			objectType = healthSelects.get(selectX).getObjectType();
+		}
+		else if(selectY == 3){
+			type = scoreSelects.get(selectX).getType();
+			full = scoreSelects.get(selectX).getFull();
+			color = scoreSelects.get(selectX).getColor();
+			color2 = scoreSelects.get(selectX).getColor2();
+			objectType = scoreSelects.get(selectX).getObjectType();
+		}
+		else if(selectY == 4){
+			type = enemySelects.get(selectX).getType();
+			full = enemySelects.get(selectX).getFull();
+			color = enemySelects.get(selectX).getColor();
+			color2 = enemySelects.get(selectX).getColor2();
+			objectType = enemySelects.get(selectX).getObjectType();
+		}
+		else if(selectY == 5){
+			type = npcSelects.get(selectX).getType();
+			full = npcSelects.get(selectX).getFull();
+			color = npcSelects.get(selectX).getColor();
+			color2 = npcSelects.get(selectX).getColor2();
+			objectType = npcSelects.get(selectX).getObjectType();
+		}
 	}
 
 	public void selectRoom(){
