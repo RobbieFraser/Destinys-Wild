@@ -123,6 +123,7 @@ public class GameServer extends Thread {
 
 	public void removeConnection(DisconnectPacket packet) {
 		Player player = getPlayer(packet.getUserName());
+		this.connectedPlayers.remove(player);
 		packet.writeData(this);
 
 	}
