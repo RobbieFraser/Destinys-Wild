@@ -27,7 +27,6 @@ public class EnemyWalker implements NPC,Serializable {
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
-		this.currentTile = currentRoom.calcTile(realCoords);
 		this.damage = damage;
 		this.speed = speed;
 		switch(type){
@@ -47,6 +46,7 @@ public class EnemyWalker implements NPC,Serializable {
 	 * @return boolean if move occurs
 	 */
 	public boolean tryMove(){
+		currentTile = currentRoom.calcTile(realCoords);
 		switch(strategy){
 			case "follow":
 				return tryFollow();
@@ -76,17 +76,29 @@ public class EnemyWalker implements NPC,Serializable {
 			else{
 				realCoords.translate(speed, -speed);
 			}
+			updateCurrentTile();
 			return true;
 		}
 		else if(nearestPlayer.getCoords().y > realCoords.y){
 			realCoords.translate(-speed, speed);
+			updateCurrentTile();
 			return true;
 		}
 		else if(!(nearestPlayer.getCoords().equals(realCoords))){
 			realCoords.translate(-speed, -speed);
+			updateCurrentTile();
 			return true;
 		}
 		return false; //Doesn't need to move if on top of player
+	}
+	
+	public boolean updateCurrentTile(){
+		if(!(currentRoom.calcTile(realCoords).getRoomCoords().equals(currentTile.getRoomCoords()))){
+			currentTile = currentRoom.calcTile(realCoords);
+			System.out.println("NPC NOW AT: " + currentTile.getRoomCoords().x + ", " + currentTile.getRoomCoords().y);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -96,23 +108,22 @@ public class EnemyWalker implements NPC,Serializable {
 	public boolean tryLoop(){
 		if(loopStep < loopMaxY-1){
 			//move north
-			realCoords.translate(-speed, -speed);
+			realCoords.translate(-speed, -speed/2);
 		}
 		else if(loopStep >= loopMaxY-1 && loopStep < (loopMaxY-1)+(loopMaxX-1)){
 			//move east
-			realCoords.translate(speed, -speed);
+			realCoords.translate(speed, -speed/2);
 		}
 		else if(loopStep >= (loopMaxY-1)+(loopMaxX-1) && loopStep < ((loopMaxY-1)*2) + (loopMaxX-1)){
 			//move south
-			realCoords.translate(speed, speed);
+			realCoords.translate(speed, speed/2);
 		}
 		else{
 			//move west
-			realCoords.translate(-speed, speed);
+			realCoords.translate(-speed, speed/2);
 		}
 		
-		if(!currentRoom.calcTile(realCoords).equals(currentTile)){
-			currentTile = currentRoom.calcTile(realCoords);
+		if(updateCurrentTile()){
 			if(loopStep == ((loopMaxY*2-2) + (loopMaxX*2-2))){
 				loopStep = 0;
 			}
@@ -121,6 +132,10 @@ public class EnemyWalker implements NPC,Serializable {
 			}
 		}
 		return true;
+	}
+	
+	public void resetPos(){
+		realCoords = GameImagePanel.calcRealCoords(roomCoords);
 	}
 
 	public int getSpeed() {

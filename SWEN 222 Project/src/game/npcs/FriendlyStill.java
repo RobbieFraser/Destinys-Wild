@@ -26,10 +26,10 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
-		this.currentTile = currentRoom.calcTile(realCoords);
 	}
 
 	public boolean tryMove(){
+		this.currentTile = currentRoom.calcTile(realCoords);
 		return false;
 	}
 
