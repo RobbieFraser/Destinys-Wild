@@ -49,6 +49,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	//The x and y values for selecting a room on the map
 	private int hoverMapX = -1;
 	private int hoverMapY = -1;
+	
+	//-1 to 4, which door is highlighted (-1 is none)
+	private int hoverDoors = -1;
 
 	//The default tile and colours
 	private String type = "stone";
@@ -72,6 +75,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	private boolean onBoard = false; //Mouse is on the board
 	private boolean onSelect = false; //Mouse is on the Select list
 	private boolean onMap = false; //Mouse is on the map
+	private boolean onDoors = false; //Mouse is on one of the doors
 
 	//Booleans for each wall to say if there is a door there or not
 	private boolean north = true;
@@ -224,36 +228,76 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 */
 	public void drawDoors(Graphics g){
 		if(west){
-			g.setColor(new Color(194, 194, 194));
-			g.fillRect(0, 250, size, size);
-			g.fillRect(0, 300, size, size);
-			g.setColor(new Color(143, 143, 143));
-			g.drawRect(0, 250, size, size);
-			g.drawRect(0, 300, size, size);
+			if(hoverDoors == 3){
+				g.setColor(new Color(214, 214, 214));
+				g.fillRect(0, 250, size, size);
+				g.fillRect(0, 300, size, size);
+				g.setColor(new Color(163, 163, 163));
+				g.drawRect(0, 250, size, size);
+				g.drawRect(0, 300, size, size);
+			}
+			else{
+				g.setColor(new Color(194, 194, 194));
+				g.fillRect(0, 250, size, size);
+				g.fillRect(0, 300, size, size);
+				g.setColor(new Color(143, 143, 143));
+				g.drawRect(0, 250, size, size);
+				g.drawRect(0, 300, size, size);
+			}
 		}
 		if(east){
-			g.setColor(new Color(194, 194, 194));
-			g.fillRect(550, 250, size, size);
-			g.fillRect(550, 300, size, size);
-			g.setColor(new Color(143, 143, 143));
-			g.drawRect(550, 250, size, size);
-			g.drawRect(550, 300, size, size);
+			if(hoverDoors == 1){
+				g.setColor(new Color(214, 214, 214));
+				g.fillRect(550, 250, size, size);
+				g.fillRect(550, 300, size, size);
+				g.setColor(new Color(163, 163, 163));
+				g.drawRect(550, 250, size, size);
+				g.drawRect(550, 300, size, size);
+			}
+			else{
+				g.setColor(new Color(194, 194, 194));
+				g.fillRect(550, 250, size, size);
+				g.fillRect(550, 300, size, size);
+				g.setColor(new Color(143, 143, 143));
+				g.drawRect(550, 250, size, size);
+				g.drawRect(550, 300, size, size);
+			}
 		}
 		if(north){
-			g.setColor(new Color(194, 194, 194));
-			g.fillRect(250, 0, size, size);
-			g.fillRect(300, 0, size, size);
-			g.setColor(new Color(143, 143, 143));
-			g.drawRect(300, 0, size, size);
-			g.drawRect(250, 0, size, size);
+			if(hoverDoors == 0){
+				g.setColor(new Color(214, 214, 214));
+				g.fillRect(250, 0, size, size);
+				g.fillRect(300, 0, size, size);
+				g.setColor(new Color(163, 163, 163));
+				g.drawRect(300, 0, size, size);
+				g.drawRect(250, 0, size, size);
+			}
+			else{
+				g.setColor(new Color(194, 194, 194));
+				g.fillRect(250, 0, size, size);
+				g.fillRect(300, 0, size, size);
+				g.setColor(new Color(143, 143, 143));
+				g.drawRect(300, 0, size, size);
+				g.drawRect(250, 0, size, size);
+			}
 		}
 		if(south){
-			g.setColor(new Color(194, 194, 194));
-			g.fillRect(250, 550, size, size);
-			g.fillRect(300, 550, size, size);
-			g.setColor(new Color(143, 143, 143));
-			g.drawRect(300, 550, size, size);
-			g.drawRect(250, 550, size, size);
+			if(hoverDoors == 2){
+				g.setColor(new Color(214, 214, 214));
+				g.fillRect(250, 550, size, size);
+				g.fillRect(300, 550, size, size);
+				g.setColor(new Color(163, 163, 163));
+				g.drawRect(300, 550, size, size);
+				g.drawRect(250, 550, size, size);
+			}
+			else{
+				g.setColor(new Color(194, 194, 194));
+				g.fillRect(250, 550, size, size);
+				g.fillRect(300, 550, size, size);
+				g.setColor(new Color(143, 143, 143));
+				g.drawRect(300, 550, size, size);
+				g.drawRect(250, 550, size, size);
+			}
 		}
 	}
 
@@ -450,6 +494,29 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			this.repaint();
 		}
 	}
+	
+	public void checkDoors(int x, int y){
+		if(x > 0 && x < 50 && y > 250 && y < 350){
+			hoverDoors = 3; //east
+			onDoors = true;
+		}
+		else if(x > 550 && x < 600 && y > 250 && y < 350){
+			hoverDoors = 1;
+			onDoors = true;
+		}
+		else if(x > 250 && x < 350 && y > 0 && y < 50){
+			hoverDoors = 0;
+			onDoors = true;
+		}
+		else if(x > 250 && x < 350 && y > 550 && y < 600){
+			hoverDoors = 2;
+			onDoors = true;
+		}
+		else {
+			hoverDoors = -1;
+			onDoors = false;
+		}
+	}
 
 	public void checkMap(int x, int y){
 		if(x > 800 && x < 1050 && y > 400 && y < 650){
@@ -608,6 +675,10 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		roomX = (int)curRoom.getBoardPos().getY();
 		roomY = (int)curRoom.getBoardPos().getX();
 	}
+	
+	public void changeDoors(){
+		
+	}
 
 	public void saveBoard(){
 		XMLParser.saveBoard("test.xml", board);
@@ -624,6 +695,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		if(onMap){
 			selectRoom();
 			this.repaint();
+		}
+		if(onDoors){
+			changeDoors();
 		}
 	}
 
@@ -664,6 +738,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		checkTile(e.getX(), e.getY());
 		checkSelect(e.getX(), e.getY());
 		checkMap(e.getX(), e.getY());
+		checkDoors(e.getX(), e.getY());
 	}
 
 }

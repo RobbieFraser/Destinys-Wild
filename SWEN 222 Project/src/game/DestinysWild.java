@@ -5,9 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +20,10 @@ import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
 import game.items.Health;
 import game.items.Item;
-import view.MenuInterface;
+import game.npcs.EnemyWalker;
+import game.npcs.NPC;
 import view.GameInterface;
+import view.MenuInterface;
 
 public class DestinysWild implements Runnable{
 	private static Board board;
@@ -132,6 +132,11 @@ public class DestinysWild implements Runnable{
 
 	public void updateGame(){
 		currentPlayer.updatePlayer();
+		for(NPC enemy : currentPlayer.getCurrentRoom().getNpcs()){
+			if(enemy instanceof EnemyWalker){
+				enemy.tryMove();
+			}
+		}
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
 				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId());
 		movePacket.writeData(multiplayer.getClient());

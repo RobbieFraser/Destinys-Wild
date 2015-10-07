@@ -249,7 +249,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				}
 				for(NPC npc : curRoom.getNpcs()){
 					if(npc.getRoomCoords().equals(new Point(i, j))){
-						drawObject(g, npc.getType(), j, i);
+						drawEnemy(g, npc.getType(), (int)npc.getRealCoords().getX(), (int)npc.getRealCoords().getY());
 					}
 				}
 				for(Player p : board.getPlayers()){
@@ -271,6 +271,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				}
 			}
 		}
+	}
+	
+	public void drawEnemy(Graphics g, String filename, int x, int y){
+		BufferedImage enemyIMG = loadImage(filename + ".png");
+		g.drawImage(enemyIMG, x - (obW), y - (obH*2)-22, null);
 	}
 
 	public void drawPlayer(Graphics g){
@@ -430,7 +435,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * @param filename
 	 * @return
 	 */
-	public static BufferedImage loadImage(String filename) {
+	public BufferedImage loadImage(String filename) {
 		// using the URL means the image loads when stored
 		// in a jar or expanded into individual files.
 		try {
@@ -439,7 +444,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		} catch (IOException e) {
 			// we've encountered an error loading the image. There's not much we
 			// can actually do at this point, except to abort the game.
-			throw new RuntimeException("Unable to load image: " + filename);
+			return defaultCube;
 		}
 	}
 
