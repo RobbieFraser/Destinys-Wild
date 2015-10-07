@@ -66,6 +66,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int red;
 	private int green;
 	private int blue;
+	
+	private boolean hurt = false;
 
 	private boolean up = true;
 
@@ -137,6 +139,15 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
         super.paintComponent(g);
+        
+        //If the player is hurt, increase the hurt int every time this -
+        //method is called until they are no longer invincible
+        if(player.isInvincible()){
+        	hurt = !hurt;
+        }
+        else{
+        	hurt = false;
+        }
 
         drawNorthRoom(g);
         drawNorthWall(g);
@@ -144,7 +155,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
         drawEastWall(g);
         drawGround(g);
         drawCompass(g);
-        drawObstacles(g);
+        drawBoard(g);
         drawScore(g);
 //        g.drawImage(waterSprite, 384, 428, null);
 //        g.drawImage(waterSprite, 384+obW, 428+obH, null);
@@ -222,7 +233,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * -Loops from back to front so that all obstacles are displayed correctly
 	 * -Calls the drawObject() method to draw each obstacle
 	 */
-	public void drawObstacles(Graphics g){
+	public void drawBoard(Graphics g){
 		for (int i = 0; i < 10; i++){
 			for (int j = 9; j >= 0; j--){
 				if (curRoom.getObstacles()[i][j] != null){
@@ -253,7 +264,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						}
 					}
 				}
-				if (player != null){
+				if (player != null && !hurt){
 					if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 						drawPlayer(g);
 					}

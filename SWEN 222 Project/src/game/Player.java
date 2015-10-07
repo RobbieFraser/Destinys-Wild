@@ -587,6 +587,10 @@ public class Player implements Serializable {
 	public String getOrientation() {
 		return orientation;
 	}
+	
+	public boolean isInvincible(){
+		return invincible;
+	}
 
 	public boolean isMoving() {
 		return isMoving;
