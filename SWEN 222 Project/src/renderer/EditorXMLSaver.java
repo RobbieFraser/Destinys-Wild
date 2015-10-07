@@ -1,4 +1,4 @@
-package Renderer;
+package renderer;
 
 public class EditorXMLSaver {
 

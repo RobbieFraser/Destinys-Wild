@@ -1,6 +1,6 @@
 //Author: Matt Meyer
 
-package Renderer;
+package renderer;
 
 import java.awt.Color;
 import java.awt.Graphics;

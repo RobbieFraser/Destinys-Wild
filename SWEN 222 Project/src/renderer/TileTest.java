@@ -1,4 +1,4 @@
-package Renderer;
+package renderer;
 
 import java.awt.Graphics;
 import java.awt.Point;

@@ -2,7 +2,7 @@ package game;
 
 import java.awt.Point;
 
-import Renderer.GameImagePanel;
+import renderer.GameImagePanel;
 
 public class Tile {
 	private Point realCoords; //centre of the tile relative to the game window

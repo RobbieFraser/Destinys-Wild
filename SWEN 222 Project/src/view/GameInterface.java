@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,7 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import Renderer.GameImagePanel;
+
+import renderer.GameImagePanel;
 import game.Board;
 import game.DestinysWild;
 import game.Player;

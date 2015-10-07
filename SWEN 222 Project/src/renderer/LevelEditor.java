@@ -1,4 +1,4 @@
-package Renderer;
+package renderer;
 
 import game.Board;
 import game.XMLParser;
