@@ -133,14 +133,14 @@ public class GameInterface{
 		updateSelectedSlot(0);
 
 		// set up panel which will contain minimap
-		JPanel mapPanel = new JPanel(new BorderLayout());
-		mapPanel.setBorder(blackline);
-		mapPanel.setBounds(830, 460, 250, 250);
-		//extract the board we will use
-		//create the map that will be drawn
-		Map map = new Map(player, board);
-		mapPanel.add(map, BorderLayout.CENTER);
-		frame.getContentPane().add(mapPanel);
+//		JPanel mapPanel = new JPanel(new BorderLayout());
+//		mapPanel.setBorder(blackline);
+//		mapPanel.setBounds(830, 460, 250, 250);
+//		//extract the board we will use
+//		//create the map that will be drawn
+//		Map map = new Map(player, board);
+//		mapPanel.add(map, BorderLayout.CENTER);
+//		frame.getContentPane().add(mapPanel);
 
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

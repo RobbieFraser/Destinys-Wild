@@ -104,8 +104,21 @@ public class GameClient extends Thread {
 		byte[] boardData = packet.getData();
 		try {
 			Room newRoom = (Room) convertFromBytes(boardData);
-			Room roomToChange = board.getRoomFromId(newRoom.getId());
-			roomToChange = newRoom;
+			int id = newRoom.getId();
+			for(int i = 0; i < 10; i++){
+				for(int j = 0; j < 10; j++){
+					if(board.getBoard()[i][j].getId() == id){
+						//board.getBoard()[i][j] = newRoom;
+						for(int a = 0; i < 10; i++){
+							for(int b = 0; j < 10; j++){
+								board.getBoard()[i][j].getObstacles()[a][b] = newRoom.getObstacles()[a][b];
+								board.getBoard()[i][j].getItems()[a][b] = newRoom.getItems()[a][b];
+							}
+
+						}
+					}
+				}
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
