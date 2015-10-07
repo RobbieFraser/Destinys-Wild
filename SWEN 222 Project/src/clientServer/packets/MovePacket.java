@@ -15,7 +15,7 @@ private int roomID;
 		this.userName = dataArray[0];
 		this.x = Integer.parseInt(dataArray[1]);
 		this.y = Integer.parseInt(dataArray[2]);
-		this.roomID = roomID;
+		this.roomID = Integer.parseInt(dataArray[3]);
 	}
 
 	public MovePacket(String userName, int x, int y, int roomID) {
