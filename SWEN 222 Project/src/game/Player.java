@@ -327,10 +327,10 @@ public class Player implements Serializable {
 	public boolean tryMove(String direction){
 		orientation = direction;
 		prevTile = currentTile;
-		currentTile = currentRoom.calcTile(coords);
 		switch(direction){
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
+				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("north")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 					changeRoom(prevTile);
@@ -342,6 +342,7 @@ public class Player implements Serializable {
 				break;
 			case "east":
 				setCoords(getCoords().x + speed, getCoords().y);
+				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("east")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
 					changeRoom(prevTile);
@@ -353,6 +354,7 @@ public class Player implements Serializable {
 				break;
 			case "south":
 				setCoords(getCoords().x, getCoords().y + speed/2);
+				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("south")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
 					changeRoom(prevTile);
@@ -364,6 +366,7 @@ public class Player implements Serializable {
 				break;
 			case "west":
 				setCoords(getCoords().x - speed, getCoords().y);
+				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("west")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
 					changeRoom(prevTile);

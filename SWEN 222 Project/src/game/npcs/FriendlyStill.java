@@ -1,23 +1,32 @@
 package game.npcs;
 
+import game.Interactable;
+import game.Room;
+import game.Tile;
+
 import java.awt.Point;
 import java.io.Serializable;
 
-import game.Interactable;
+import renderer.GameImagePanel;
 import view.ShopInterface;
 
 public class FriendlyStill implements NPC, Interactable,Serializable{
 	private String type;
 	private Point roomCoords;
 	private Point realCoords;
+	private Room currentRoom;
+	private Tile currentTile;
 
 	private boolean isTalking;
 
 	private String text;
 
-	public FriendlyStill(String type, Point coords){
+	public FriendlyStill(String type, Point roomCoords, Room currentRoom){
 		this.type = type;
-		this.roomCoords = coords;
+		this.roomCoords = roomCoords;
+		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
+		this.currentRoom = currentRoom;
+		this.currentTile = currentRoom.calcTile(realCoords);
 	}
 
 	public boolean tryMove(){

@@ -145,15 +145,15 @@ public class XMLParser {
 
 			switch (npcType){
 			case "enemywalker":
-				temp = new EnemyWalker(type, coords, speed, damage);
+				temp = new EnemyWalker(type, coords, speed, damage, currentRoom);
 				break;
 
 			case "enemystill":
-				temp = new EnemyStill(type, coords, damage);
+				temp = new EnemyStill(type, coords, damage, currentRoom);
 				break;
 
 			case "friendlystill":
-				temp = new FriendlyStill(type, coords);
+				temp = new FriendlyStill(type, coords, currentRoom);
 				break;
 
 			default:

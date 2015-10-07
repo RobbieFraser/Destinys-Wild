@@ -1,19 +1,29 @@
 package game.npcs;
 
+import game.Room;
+import game.Tile;
+
 import java.awt.Point;
 import java.io.Serializable;
+
+import renderer.GameImagePanel;
 
 public class EnemyStill implements NPC,Serializable{
 	private String type;
 
 	private Point roomCoords;
 	private Point realCoords;
+	private Room currentRoom;
+	private Tile currentTile;
 
 	private int damage;
 
-	public EnemyStill(String type, Point coords, int damage){
+	public EnemyStill(String type, Point roomCoords, int damage, Room currentRoom){
 		this.type = type;
-		this.roomCoords = coords;
+		this.roomCoords = roomCoords;
+		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
+		this.currentRoom = currentRoom;
+		this.currentTile = currentRoom.calcTile(realCoords);
 		this.damage = damage;
 	}
 

@@ -3,6 +3,7 @@ package game.npcs;
 import java.awt.Point;
 import java.io.Serializable;
 
+import renderer.GameImagePanel;
 import game.Room;
 import game.Tile;
 
@@ -16,9 +17,12 @@ public class EnemyWalker implements NPC,Serializable {
 	private Room currentRoom;
 	private Tile currentTile;
 
-	public EnemyWalker(String type, Point roomCoords, int speed, int damage){
+	public EnemyWalker(String type, Point roomCoords, int speed, int damage, Room currentRoom){
 		this.type = type;
 		this.roomCoords = roomCoords;
+		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
+		this.currentRoom = currentRoom;
+		this.currentTile = currentRoom.calcTile(realCoords);
 		this.damage = damage;
 		this.speed = speed;
 		switch(type){
