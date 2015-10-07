@@ -137,7 +137,8 @@ public class DestinysWild implements Runnable{
 		movePacket.writeData(multiplayer.getClient());
 		byte[] currentBoard = null;
 		try {
-			currentBoard = convertToBytes(board);
+			currentBoard = convertToBytes(currentPlayer.getCurrentRoom());
+			System.out.println("Byte array length is: " + currentBoard.length);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

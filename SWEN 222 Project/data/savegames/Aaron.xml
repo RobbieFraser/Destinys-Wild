@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Player>
   <Name>Aaron</Name>
-  <Posx>528</Posx>
-  <Posy>315</Posy>
+  <Posx>500</Posx>
+  <Posy>300</Posy>
   <Health>100</Health>
   <Currentroom>0</Currentroom>
   <Score>0</Score>
-  <Speed>2</Speed>
+  <Speed>4</Speed>
   <Visitedrooms>
     <Roomid>0</Roomid>
-    <Roomid>1</Roomid>
   </Visitedrooms>
-  <Inventory>
-    <Itemid>31</Itemid>
-    <Itemid>51</Itemid>
-    <Itemid>11</Itemid>
-    <Itemid>41</Itemid>
-    <Itemid>21</Itemid>
-  </Inventory>
+  <Inventory />
 </Player>

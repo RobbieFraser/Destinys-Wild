@@ -103,13 +103,9 @@ public class GameClient extends Thread {
 	public void handleBoardPacket(BoardPacket packet) {
 		byte[] boardData = packet.getData();
 		try {
-			Board newBoard = (Board) convertFromBytes(boardData);
-			newBoard.printBoard();
-			for(int i = 0; i < 5; i++){
-				for(int j = 0; j < 5; j++){
-					board.getBoard()[i][j] = newBoard.getBoard()[i][j];
-				}
-			}
+			Room newRoom = (Room) convertFromBytes(boardData);
+			Room roomToChange = board.getRoomFromId(newRoom.getId());
+			roomToChange = newRoom;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
