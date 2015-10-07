@@ -38,7 +38,38 @@ public class Room {
 		this.boardPos = boardPos;
 	}
 
-	//TODO Thinking of adding Logic methods calcTile, calcRealCoords, currTileIsInRoom. For code reuse purposes
+	/**
+	 * Calculates which Tile the player is standing on
+	 * @return Tile object that the player is standing on
+	 */
+	public Tile calcTile(Point coords){
+		for (int row = 0; row < getTiles().length; ++row) {
+			for (int col = 0; col < getTiles()[0].length; ++col) {
+				Tile current = getTiles()[row][col];
+				if (current != null && current.isOn(coords)){
+					return current;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * whether the currentTile is in the room
+	 * @return boolean whether the current tile is in the currentRoom
+	 */
+	public boolean currTileIsInRoom(Tile currentTile){
+		if(currentTile == null){
+			return false;
+		}
+		return true;
+	}
+
+
+
+
+
+
 
 	public Room(){
 

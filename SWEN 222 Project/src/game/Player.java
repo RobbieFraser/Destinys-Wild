@@ -50,7 +50,7 @@ public class Player {
 		this.name = name;
 		this.coords = coords;
 		this.currentRoom = currentRoom;
-		this.currentTile = calcTile();
+		this.currentTile = currentRoom.calcTile(coords);
 		addCurrentRoom();
 	}
 
@@ -74,7 +74,7 @@ public class Player {
 		this.visitedRooms = visitedRooms;
 		this.inventory = inventory;
 		this.score = score;
-		this.currentTile = calcTile();
+		this.currentTile = currentRoom.calcTile(coords);
 		this.port = -1;
 		this.ipAddress = null;
 	}
@@ -326,65 +326,54 @@ public class Player {
 	public boolean tryMove(String direction){
 		orientation = direction;
 		prevTile = currentTile;
+		currentTile = currentRoom.calcTile(coords);
 		switch(direction){
 			case "north":
 				setCoords(getCoords().x, getCoords().y - speed/2);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("north")){
+				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("north")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 					changeRoom(prevTile);
 				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
+				else if(!currentRoom.currTileIsInRoom(currentTile) || !canChangeTile()){
 					setCoords(getCoords().x, getCoords().y + speed/2);
 					currentTile = prevTile;
 				}
 				break;
 			case "east":
 				setCoords(getCoords().x + speed, getCoords().y);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("east")){
+				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("east")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getEast());
 					changeRoom(prevTile);
 				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
+				else if(!currentRoom.currTileIsInRoom(currentTile) || !canChangeTile()){
 					setCoords(getCoords().x - speed, getCoords().y);
 					currentTile = prevTile;
 				}
 				break;
 			case "south":
 				setCoords(getCoords().x, getCoords().y + speed/2);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("south")){
+				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("south")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getSouth());
 					changeRoom(prevTile);
 				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
+				else if(!currentRoom.currTileIsInRoom(currentTile) || !canChangeTile()){
 					setCoords(getCoords().x, getCoords().y - speed/2);
 					currentTile = prevTile;
 				}
 				break;
 			case "west":
 				setCoords(getCoords().x - speed, getCoords().y);
-				if(!currTileIsInRoom() && prevTile.isDoorMat().equals("west")){
+				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("west")){
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getWest());
 					changeRoom(prevTile);
 				}
-				else if(!currTileIsInRoom() || !canChangeTile()){
+				else if(!currentRoom.currTileIsInRoom(currentTile) || !canChangeTile()){
 					setCoords(getCoords().x + speed, getCoords().y);
 					currentTile = prevTile;
 				}
 				break;
 			default:
 				throw new Error("Invalid Direction");
-		}
-		return true;
-	}
-
-	/**
-	 * whether the currentTile is in the room
-	 * @return boolean whether the current tile is in the currentRoom
-	 */
-	public boolean currTileIsInRoom(){
-		currentTile = calcTile();
-		if(currentTile == null){
-			return false;
 		}
 		return true;
 	}
@@ -420,24 +409,9 @@ public class Player {
 			setCoords(newPoint.x, newPoint.y);
 		}
 
-		currentTile = calcTile();
+		currentTile = currentRoom.calcTile(coords);
 	}
 
-	/**
-	 * Calculates which Tile the player is standing on
-	 * @return Tile object that the player is standing on
-	 */
-	public Tile calcTile(){
-		for (int row = 0; row < currentRoom.getTiles().length; ++row) {
-			for (int col = 0; col < currentRoom.getTiles()[0].length; ++col) {
-				Tile current = currentRoom.getTiles()[row][col];
-				if (current != null && current.isOn(coords)){
-					return current;
-				}
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * adds any room object to the visited Room list

@@ -294,7 +294,7 @@ public class XMLParser {
 			player.setCurrentRoom(currentRoom);
 			player.setScore(score);
 			player.setSpeed(speed);
-			player.setCurrentTile(player.calcTile());
+			player.setCurrentTile(currentRoom.calcTile(new Point(playerx, playery)));
 
 			DestinysWild.setPlayer(player);
 		}

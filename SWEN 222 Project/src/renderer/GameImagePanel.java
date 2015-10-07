@@ -244,7 +244,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				for(Player p : board.getPlayers()){
 					if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
 						try{
-							if (p.calcTile().getRoomCoords().equals(new Point(i, j))){
+							if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
 								drawOtherPlayer(g, p);
 							}
 						}
@@ -254,7 +254,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					}
 				}
 				if (player != null){
-					if (player.calcTile().getRoomCoords().equals(new Point(i, j))){
+					if (player.getCurrentRoom().calcTile(player.getCoords()).getRoomCoords().equals(new Point(i, j))){
 						drawPlayer(g);
 					}
 				}

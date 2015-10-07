@@ -160,8 +160,8 @@ public class DestinysWild implements Runnable{
 		System.out.println("Parser loadGame good");
 		System.out.println("Name: " + getPlayer().getName());
 		System.out.println("Score: " + getPlayer().getScore());
-		System.out.println("Tile's real coords: " + getPlayer().calcTile().getRealCoords().getX() + ", " + getPlayer().calcTile().getRealCoords().getY());
-		System.out.println("Tile's room coords: " + getPlayer().calcTile().getRoomCoords().getX() + ", " + getPlayer().calcTile().getRoomCoords().getY());
+		//System.out.println("Tile's real coords: " + getPlayer().calcTile().getRealCoords().getX() + ", " + getPlayer().calcTile().getRealCoords().getY());
+		//System.out.println("Tile's room coords: " + getPlayer().calcTile().getRoomCoords().getX() + ", " + getPlayer().calcTile().getRoomCoords().getY());
 		System.out.println("Inventory size: " + getPlayer().getInventory().size());
 	}
 
