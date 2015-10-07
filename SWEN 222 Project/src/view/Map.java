@@ -9,7 +9,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -182,27 +184,84 @@ public class Map extends JComponent {
 							visitedRoom = true;
 						}
 					}
+					
 					if (!visitedRoom) {
 						//haven't visited this room
 						//so user shouldn't be able to see it
-						
-						
 						g.setColor(Color.DARK_GRAY);
 						g.fillRect(j*50, i*50, 50, 50);
+						
+						//draw in gaps for doors
+						drawDoorGaps(g, i, j);
 					}
 				}
 			}
+		}	
+
+		//draw all the players
+		Set<Player> players = board.getPlayers();
+		Iterator<Player> iterator = players.iterator();
+		while (iterator.hasNext()) {
+			Player player = iterator.next();
+			//now draw location of player
+			Room currentRoom = player.getCurrentRoom();
+			Point roomCoord = currentRoom.getBoardPos();
+			Point coord = player.getCurrentTile().getRoomCoords();
+
+			if (player.equals(this.player)) {
+				//draw current player as magenta
+				g.setColor(Color.MAGENTA);
+			} else {
+				//draw every other player as cyan
+				g.setColor(Color.CYAN);
+			}
+			g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 		}
-
-
-		//now draw location of player
-		Room currentRoom = player.getCurrentRoom();
-		//Room currentRoom = visitedRooms.get(0);
-		Point roomCoord = currentRoom.getBoardPos();
-		//Point coord = player.getCoords();
-		Point coord = player.getCurrentTile().getRoomCoords();
-
-		g.setColor(Color.MAGENTA);
-		g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
+	}
+	
+	/**
+	 * This method should be called whenever a grey square
+	 * is drawn on top of a room. This square could
+	 * obscure the doors leading to discovered rooms,
+	 * making it hard for the player to see where they can go.
+	 * This method should draw gaps for the doors onto the map.
+	 * @param g graphics that will do the drawing
+	 * @param i x coordinate on the board
+	 * @param j y coordinate on the board
+	 */
+	private void drawDoorGaps(Graphics g, int i, int j) {
+		List<Room> visitedRooms = player.getVisitedRooms();
+		Room room = board.getBoard()[i][j];
+		//set colour to default green
+		g.setColor(new Color(172,211,115));
+		
+		if (room.getNorth() != -1 && i > 0) {
+			//there is a door to the north
+			if (visitedRooms.contains(board.getBoard()[i-1][j])) {
+				//we've been in this room to the north
+				g.fillRect(j*50+20, i*50, 10, 1);
+			}
+		}
+		if (room.getEast() != -1 && j < BOARD_LENGTH - 1) {
+			//there is a door to the east
+			if (visitedRooms.contains(board.getBoard()[i][j+1])) {
+				//we've been in this room to the east
+				g.fillRect((j+1)*50, i*50+20, 1, 10);
+			}
+		}
+		if (room.getSouth() != -1 && i < BOARD_LENGTH - 1) {
+			//there is a door to the south
+			if (visitedRooms.contains(board.getBoard()[i+1][j])) {
+				//we've been in this room to the south
+				g.fillRect(j*50+20, (i+1)*50, 10, 1);
+			}
+		}
+		if (room.getWest() != -1 && j > 0) {
+			//there is a door to the west
+			if (visitedRooms.contains(board.getBoard()[i][j-1])) {
+				//we've been in this room to the west
+				g.fillRect(j*50, i*50+20, 1, 10);
+			}
+		}
 	}
 }
