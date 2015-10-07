@@ -254,7 +254,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					}
 				}
 				if (player != null){
-					if (player.getCurrentRoom().calcTile(player.getCoords()).getRoomCoords().equals(new Point(i, j))){
+					if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 						drawPlayer(g);
 					}
 				}
