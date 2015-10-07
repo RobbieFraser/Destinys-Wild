@@ -88,6 +88,10 @@ public class Player {
 		return false;
 	}
 
+	public void setRoom(Room room){
+		this.currentRoom = room;
+	}
+
 	/**
 	 * Tries to interact with anything within the surround 4 tiles (N E S or W)
 	 * @return boolean whether interaction is successful or not

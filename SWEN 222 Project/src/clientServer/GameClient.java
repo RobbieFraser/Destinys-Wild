@@ -2,6 +2,7 @@ package clientServer;
 
 import game.Board;
 import game.Player;
+import game.Room;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -93,6 +94,9 @@ public class GameClient extends Thread {
 		Player player = board.getPlayer(packet.getUserName());
 		int playerX = packet.getX();
 		int playerY = packet.getY();
+		int roomID = packet.getRoomID();
+		Room room = board.getRoomFromId(roomID);
+		player.setRoom(room);
 		player.setCoords(playerX, playerY);
 	}
 

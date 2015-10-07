@@ -2,6 +2,7 @@ package clientServer;
 
 import game.Board;
 import game.Player;
+import game.Room;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -114,6 +115,8 @@ public class GameServer extends Thread {
 				int playerX = packet.getX();
 				int playerY = packet.getY();
 				player.setCoords(playerX, playerY);
+				Room newRoom = board.getRoomFromId(packet.getRoomID());
+				player.setRoom(newRoom);
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {

@@ -123,7 +123,7 @@ public class DestinysWild implements Runnable{
 	public void updateGame(){
 		currentPlayer.updatePlayer();
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
-				currentPlayer.getCoords().y);
+				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId());
 		movePacket.writeData(multiplayer.getClient());
 	}
 
