@@ -66,12 +66,6 @@ public class Room implements Serializable{
 		return true;
 	}
 
-
-
-
-
-
-
 	public Room(){
 
 	}

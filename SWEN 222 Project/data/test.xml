@@ -393,11 +393,11 @@
     <Npcs>
       <Npc>
         <Npctype>enemywalker</Npctype>
-        <Type>spider</Type>
+        <Type>bats</Type>
         <Row>0</Row>
         <Col>9</Col>
         <Damage>15</Damage>
-        <Speed>5</Speed>
+        <Speed>1</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
