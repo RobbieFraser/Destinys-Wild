@@ -87,7 +87,7 @@ public class DestinysWild implements Runnable{
 		}
 		//System.out.println("Running");
 		long lastTime = System.nanoTime();
-		double nsPerTick = 1000000000D / 60D;
+		double nsPerTick = 1000000000D / 30D;
 		int ticks = 0;
 		double diff = 0;
 		long lastTimer = System.currentTimeMillis();
@@ -197,7 +197,7 @@ public class DestinysWild implements Runnable{
 	public void run() {
 		gameLoop();
 	}
-	
+
 	public static void main(String[] args){
 		DestinysWild game = new DestinysWild();
 		//game.testLoadGame();

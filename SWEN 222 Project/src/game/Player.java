@@ -22,7 +22,7 @@ public class Player {
 	private List<Room> visitedRooms = new ArrayList<>();
 	private List<Item> inventory = new ArrayList<>();
 	private int score = 0;
-	private int speed = 2;
+	private int speed = 4;
 	private String orientation = "north";
 	private Tile currentTile;
 	private Tile prevTile;
@@ -78,7 +78,7 @@ public class Player {
 		this.port = -1;
 		this.ipAddress = null;
 	}
-	
+
 	public boolean hasTool(String breakable){
 		for(Item item : inventory){
 			if(item instanceof Tool && ((Tool)item).getBreakable().equals(breakable)){
@@ -87,7 +87,7 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Tries to interact with anything within the surround 4 tiles (N E S or W)
 	 * @return boolean whether interaction is successful or not
@@ -101,18 +101,18 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	public void updateWalkCycle(){
 		walkState++;
 		if(walkState == 8){
 			walkState = 0;
 		}
 	}
-	
+
 	public int getWalkState(){
 		return walkState;
 	}
-	
+
 	/**
 	 * finds any interactables in the surrounding squares of the player
 	 * @return List<Object> of interactables
@@ -120,16 +120,16 @@ public class Player {
 	public List<Object> getInteractables(){
 		int currTileRow = currentTile.getRoomCoords().x;
 		int currTileCol = currentTile.getRoomCoords().y;
-		
+
 		List<Object> occupants = new ArrayList<>();
-		
+
 		Tile north = currentRoom.getTileFromRoomCoords(new Point(currTileRow-1, currTileCol));
 		Tile east = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol+1));
 		Tile south = currentRoom.getTileFromRoomCoords(new Point(currTileRow+1, currTileCol));
 		Tile west = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol-1));
-		
+
 		Object occupant;
-		
+
 		if(north != null && north.isOccupied()){
 			occupant = currentRoom.getTileOccupant(north);
 			if(occupant instanceof Interactable){
@@ -156,7 +156,7 @@ public class Player {
 		}
 		return occupants;
 	}
-	
+
 	public void updatePlayer(){
 		updateInvincibility();
 		int count = 0;
@@ -179,14 +179,14 @@ public class Player {
 		if(count > 0){
 			if(walkDelay == 0){
 				updateWalkCycle();
-				walkDelay = 5;
+				walkDelay = 2;
 			}
 			else{
 				walkDelay--;
 			}
 		}
 		else{
-			walkDelay = 5;
+			walkDelay = 2;
 			walkState = 0;
 		}
 	}
@@ -200,7 +200,7 @@ public class Player {
 			}
 		}
 	}
-	
+
 	/**
 	 * After a player has stepped onto a tile, this method calculates whether to push the player
 	 * back or whether to pick up an item or whether to do nothing.
@@ -237,7 +237,7 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks whether the player is still alive
 	 * @return boolean true if pulse is found
@@ -248,7 +248,7 @@ public class Player {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * The player has died. Reinitialises everything appropriately.
 	 */
@@ -259,7 +259,7 @@ public class Player {
 		setScore(0);
 		setHealth(100);
 	}
-	
+
 	/**
 	 * resets the player's inventory accordingly upon death
 	 */
@@ -280,7 +280,7 @@ public class Player {
 		}
 		System.out.println("Health item in inv after death: "+ numHealthItems());
 	}
-	
+
 	/**
 	 * Attempts to heal the player upon selection of a health item from the inventory
 	 * @param itemId item to eat
@@ -312,10 +312,10 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Where the game logic player movement is done. The player will be moved onto a tile, 
-	 * then that tile is tested for an occupant. If occupied, the movement is reversed. 
+	 * Where the game logic player movement is done. The player will be moved onto a tile,
+	 * then that tile is tested for an occupant. If occupied, the movement is reversed.
 	 * @param direction the direction the player is trying to move
 	 * @return boolean whether the player move is succesfful or not
 	 */
@@ -372,7 +372,7 @@ public class Player {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * whether the currentTile is in the room
 	 * @return boolean whether the current tile is in the currentRoom
@@ -384,21 +384,21 @@ public class Player {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Updates everything required upon changing room
-	 * @param previousTile the player's previous Tile 
+	 * @param previousTile the player's previous Tile
 	 */
 	public void changeRoom(Tile previousTile){
 		if(!visitedRooms.contains(currentRoom)){
 			addCurrentRoom();
 		}
-		
+
 		int prevX = previousTile.getRoomCoords().x;
 		int prevY = previousTile.getRoomCoords().y;
-		
+
 		Point newPoint;
-		
+
 		if(prevX == 0){
 			newPoint = currentRoom.getTileFromRoomCoords(new Point(9, previousTile.getRoomCoords().y)).getRealCoords();
 			setCoords(newPoint.x, newPoint.y);
@@ -415,7 +415,7 @@ public class Player {
 			newPoint = currentRoom.getTileFromRoomCoords(new Point(previousTile.getRoomCoords().x, 0)).getRealCoords();
 			setCoords(newPoint.x, newPoint.y);
 		}
-		
+
 		currentTile = calcTile();
 	}
 
@@ -480,7 +480,7 @@ public class Player {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * counts the number of health items in the player's inventory
 	 * @return int number of health items
@@ -494,10 +494,10 @@ public class Player {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * counts the number of tools in the player's inventory
-	 * @return int number of tools 
+	 * @return int number of tools
 	 */
 	public int numToolItems(){
 		int count = 0;
@@ -516,7 +516,7 @@ public class Player {
 	public void removeInventoryItem(int index){
 		inventory.remove(index);
 	}
-	
+
 	/**
 	 * removes an item by Item object from player's inventory
 	 * @param item item to be removed
@@ -589,7 +589,7 @@ public class Player {
 	public void setCurrentTile(Tile currentTile){
 		this.currentTile = currentTile;
 	}
-	
+
 	public Tile getCurrentTile(){
 		return currentTile;
 	}
@@ -617,7 +617,7 @@ public class Player {
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
-	
+
 	public boolean isNorth() {
 		return north;
 	}
@@ -649,7 +649,7 @@ public class Player {
 	public void setWest(boolean west) {
 		this.west = west;
 	}
-	
+
 	/////////////////////////////////ADDING IN PLAYER MULTI THINGS BELOW//////////////////////////////////
 	private InetAddress ipAddress;
 	private int port;

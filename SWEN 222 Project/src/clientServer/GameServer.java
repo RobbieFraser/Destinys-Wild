@@ -189,7 +189,7 @@ public class GameServer extends Thread {
 		try {
 			this.socket.send(packet);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

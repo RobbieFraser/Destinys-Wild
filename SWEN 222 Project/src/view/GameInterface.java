@@ -37,7 +37,7 @@ public class GameInterface{
 	private DestinysWild game;
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
-	private Item[] items = new Item[11]; 
+	private Item[] items = new Item[11];
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
@@ -153,7 +153,7 @@ public class GameInterface{
 		//can be held down at once
 		frame.addKeyListener(new MultiKeyListener(this));
 
-		int delay = 10; //milliseconds
+		int delay = 33; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				updateUI();
@@ -182,7 +182,7 @@ public class GameInterface{
 			//set the labels image to be the food
 			drawBackgroundImage(foodLabel, "itemBox", i);
 		}
-		
+
 		//we should make sure that any slots that do not contain food
 		//do not display food, so we reset the image back to an empty slot
 		System.out.println(numFood);
@@ -200,7 +200,7 @@ public class GameInterface{
 			//set the labels image to be a tool
 			drawBackgroundImage(toolLabel, "toolBox", i + MAX_FOOD);
 		}
-		
+
 		boolean hasNoKey = player.canAddKeyItem(); // should extract from player
 		if (!hasNoKey) {
 			//need to draw players key
@@ -213,7 +213,7 @@ public class GameInterface{
 		}
 
 		updateItems();
-		
+
 		//the interface should be updated
 		frame.revalidate();
 		//the repaint method suggests to the board to repaint the frame
@@ -231,20 +231,20 @@ public class GameInterface{
 		int numHealthItems = player.numHealthItems();
 		int numTools = player.numToolItems();
 		boolean hasKey = !player.canAddKeyItem();
-		
+
 		for (int i = 0; i < numHealthItems; ++i) {
 			items[i] = player.getInventory().get(i);
 		}
-		
+
 		for (int j = 0; j < numTools; ++j) {
 			items[j + MAX_FOOD] = player.getInventory().get(j+numHealthItems);
 		}
-		
+
 		if (hasKey) {
 			items[11] = player.getInventory().get(numHealthItems+numTools);
 		}
 	}
-	
+
 	/**
 	 * This method should be called when the image on
 	 * an inventory slot should be redrawn with an
@@ -485,12 +485,12 @@ public class GameInterface{
 		case KeyEvent.VK_EQUALS:
 			updateSelectedSlot(11);
 			break;
-		case KeyEvent.VK_SHIFT:	
+		case KeyEvent.VK_SHIFT:
 			Item selectedItem = getSelectedItem();
 			if (selectedItem != null) {
 				if (selectedItem instanceof Health) {
 					clearKeysPressed();
-					player.tryEat(selectedItem.getId());	
+					player.tryEat(selectedItem.getId());
 				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
@@ -534,7 +534,7 @@ public class GameInterface{
 		player.setSouth(false);
 		player.setMoving(false);
 	}
-	
+
 	/**
 	 * This method should be called when the player has pressed 'p'
 	 * and it should bring up the paused game interface. It should
@@ -546,7 +546,7 @@ public class GameInterface{
 
 		String[] buttons = {"Quit and Save Game", "Toggle Music", "Resume Game" };
 
-		int rc = JOptionPane.showOptionDialog(null, "The Game has been Paused - What would you like to do?", "Settings", 
+		int rc = JOptionPane.showOptionDialog(null, "The Game has been Paused - What would you like to do?", "Settings",
 				JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[2]);
 		if (rc == 2) {
 			//user wants to continue playing the game
