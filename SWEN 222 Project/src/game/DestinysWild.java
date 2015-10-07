@@ -1,13 +1,23 @@
 package game;
 
 import java.awt.Point;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 import clientServer.Multiplayer;
+import clientServer.packets.BoardPacket;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
 import game.items.Health;
@@ -125,6 +135,27 @@ public class DestinysWild implements Runnable{
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
 				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId());
 		movePacket.writeData(multiplayer.getClient());
+		byte[] currentBoard = convertToBytes(board);
+		BoardPacket boardPacket = new BoardPacket(currentBoard);
+		boardPacket.writeData(multiplayer.getClient());
+	}
+
+	public byte[] convertToBytes(Object object){
+		  try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+			         ObjectOutput objectOut = new ObjectOutputStream(byteOutput)) {
+			        objectOut.writeObject(object);
+			        return byteOutput.toByteArray();
+			    } catch (IOException e) {
+					e.printStackTrace();
+				}
+		return null;
+	}
+
+	private Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
+	    try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+	         ObjectInput input = new ObjectInputStream(bis)) {
+	        return input.readObject();
+	    }
 	}
 
 	public void updateUI(){
