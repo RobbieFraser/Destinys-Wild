@@ -67,7 +67,7 @@ public class DestinysWild implements Runnable{
 		setPlayer(new Player(playerName, new Point(500, 300), board.getRoomFromCoords(2, 2)));
 		setUpGame(true);
 	}
-	
+
 	public void joinGame(String playerName, JFrame frame){
 		this.frame = frame;
 		setBoard(XMLParser.initialiseBoard("data/test.xml"));
@@ -148,7 +148,7 @@ public class DestinysWild implements Runnable{
 			}
 		}
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),currentPlayer.getCoords().x,
-				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId());
+				currentPlayer.getCoords().y, currentPlayer.getCurrentRoom().getId(), currentPlayer.getHealth());
 		movePacket.writeData(multiplayer.getClient());
 		byte[] currentBoard = null;
 		try {

@@ -177,6 +177,7 @@ public class GameClient extends Thread {
 
 	public void handleMovePacket(MovePacket packet) {
 		Player player = board.getPlayer(packet.getUserName());
+		player.setHealth(packet.getHealth());
 		int playerX = packet.getX();
 		int playerY = packet.getY();
 		int roomID = packet.getRoomID();

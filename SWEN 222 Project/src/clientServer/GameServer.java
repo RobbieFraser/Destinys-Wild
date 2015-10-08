@@ -197,6 +197,7 @@ public class GameServer extends Thread {
 			if (packet.getUserName() != null) {
 				// int index = getPlayerIndex(packet.getUserName());
 				Player player = this.getPlayer(packet.getUserName());
+				player.setHealth(packet.getHealth());
 				int playerX = packet.getX();
 				int playerY = packet.getY();
 				player.setCoords(playerX, playerY);
