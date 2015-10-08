@@ -184,7 +184,26 @@ public class GameClient extends Thread {
 		Room room = board.getRoomFromId(roomID);
 		player.setRoom(room);
 		player.setCoords(playerX, playerY);
+		player.setNorth(intToBool(packet.getNorth()));
+		player.setEast(intToBool(packet.getEast()));
+		player.setWest(intToBool(packet.getWest()));
+		player.setSouth(intToBool(packet.getSouth()));
 		player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
+	}
+
+
+	public int boolToInt(boolean bool){
+		int boolInt = bool ? 1 : 0;
+		return boolInt;
+	}
+
+	public boolean intToBool(int i){
+		if(i==1){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {

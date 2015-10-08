@@ -204,14 +204,28 @@ public class GameServer extends Thread {
 				Room newRoom = board.getRoomFromId(packet.getRoomID());
 				player.setRoom(newRoom);
 				player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
-				player.setNorth(packet.getNorth());
-				player.setEast(packet.getEast());
-				player.setWest(packet.getWest());
-				player.setSouth(packet.getSouth());
+				player.setNorth(intToBool(packet.getNorth()));
+				player.setEast(intToBool(packet.getEast()));
+				player.setWest(intToBool(packet.getWest()));
+				player.setSouth(intToBool(packet.getSouth()));
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			// System.out.println("Whoops");
+		}
+	}
+
+	public int boolToInt(boolean bool){
+		int boolInt = bool ? 1 : 0;
+		return boolInt;
+	}
+
+	public boolean intToBool(int i){
+		if(i==1){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 

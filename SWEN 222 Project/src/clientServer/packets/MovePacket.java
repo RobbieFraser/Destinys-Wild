@@ -9,10 +9,10 @@ public class MovePacket extends Packet {
 	private int y;
 	private int roomID;
 	private int health;
-	private boolean north;
-	private boolean south;
-	private boolean east;
-	private boolean west;
+	private int north;
+	private int south;
+	private int east;
+	private int west;
 
 	public MovePacket(byte[] data) {
 		super(02);
@@ -22,20 +22,24 @@ public class MovePacket extends Packet {
 		this.y = Integer.parseInt(dataArray[2]);
 		this.roomID = Integer.parseInt(dataArray[3]);
 		this.health = Integer.parseInt(dataArray[4]);
+		this.north = Integer.parseInt(dataArray[5]);
+		this.east = Integer.parseInt(dataArray[6]);
+		this.south = Integer.parseInt(dataArray[7]);
+		this.west = Integer.parseInt(dataArray[8]);
 	}
 
 	public MovePacket(String userName, int x, int y, int roomID, int health,
-			boolean north, boolean east, boolean west, boolean south) {
+			boolean north, boolean east, boolean south, boolean west) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
 		this.y = y;
 		this.roomID = roomID;
 		this.health = health;
-		this.north = north;
-		this.west = west;
-		this.east = east;
-		this.south = south;
+		this.north = boolToInt(north);
+		this.west = boolToInt(west);
+		this.east = boolToInt(east);
+		this.south = boolToInt(south);
 	}
 
 	@Override
@@ -56,19 +60,19 @@ public class MovePacket extends Packet {
 				+ this.getSouth() + "," + this.getWest()).getBytes();
 	}
 
-	public boolean getNorth() {
+	public int getNorth() {
 		return north;
 	}
 
-	public boolean getEast() {
+	public int getEast() {
 		return east;
 	}
 
-	public boolean getSouth() {
+	public int getSouth() {
 		return south;
 	}
 
-	public boolean getWest() {
+	public int getWest() {
 		return west;
 	}
 
@@ -90,5 +94,19 @@ public class MovePacket extends Packet {
 
 	public int getHealth() {
 		return this.health;
+	}
+
+	public int boolToInt(boolean bool){
+		int boolInt = bool ? 1 : 0;
+		return boolInt;
+	}
+
+	public boolean intToBool(int i){
+		if(i==1){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }
