@@ -184,41 +184,49 @@ public class Map extends JComponent {
 							visitedRoom = true;
 						}
 					}
-					
+
 					if (!visitedRoom) {
 						//haven't visited this room
 						//so user shouldn't be able to see it
 						g.setColor(Color.DARK_GRAY);
 						g.fillRect(j*50, i*50, 50, 50);
-						
+
 						//draw in gaps for doors
 						drawDoorGaps(g, i, j);
 					}
 				}
 			}
-		}	
+		}
 
 		//draw all the players
 		Set<Player> players = board.getPlayers();
 		Iterator<Player> iterator = players.iterator();
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
+			if (player == null) {
+				throw new Error("Null player");
+			}
 			//now draw location of player
 			Room currentRoom = player.getCurrentRoom();
+			if (currentRoom == null) {
+				System.exit(0);
+			}
 			Point roomCoord = currentRoom.getBoardPos();
 			Point coord = player.getCurrentTile().getRoomCoords();
 
 			if (player.equals(this.player)) {
 				//draw current player as magenta
 				g.setColor(Color.MAGENTA);
+				g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 			} else {
 				//draw every other player as cyan
 				g.setColor(Color.CYAN);
+				System.out.println("Other player is on :"+roomCoord.x + " " +roomCoord.y);
+				g.fillRect(roomCoord.x * 50 + coord.x * 5, roomCoord.y * 50 + coord.y * 5, 5, 5);
 			}
-			g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 		}
 	}
-	
+
 	/**
 	 * This method should be called whenever a grey square
 	 * is drawn on top of a room. This square could
@@ -234,7 +242,7 @@ public class Map extends JComponent {
 		Room room = board.getBoard()[i][j];
 		//set colour to default green
 		g.setColor(new Color(172,211,115));
-		
+
 		if (room.getNorth() != -1 && i > 0) {
 			//there is a door to the north
 			if (visitedRooms.contains(board.getBoard()[i-1][j])) {

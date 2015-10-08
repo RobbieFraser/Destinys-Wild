@@ -587,7 +587,7 @@ public class Player implements Serializable {
 	public String getOrientation() {
 		return orientation;
 	}
-	
+
 	public boolean isInvincible(){
 		return invincible;
 	}
@@ -646,6 +646,8 @@ public class Player implements Serializable {
 		this.currentRoom = currentRoom;
 		this.ipAddress = ipAddress;
 		this.port = port;
+		this.currentTile = currentRoom.calcTile(coords);
+		addCurrentRoom();
 	}
 
 	public InetAddress getIP(){
