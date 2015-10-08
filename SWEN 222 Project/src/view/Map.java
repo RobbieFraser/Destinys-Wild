@@ -217,13 +217,12 @@ public class Map extends JComponent {
 			if (player.equals(this.player)) {
 				//draw current player as magenta
 				g.setColor(Color.MAGENTA);
-				g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 			} else {
 				//draw every other player as cyan
 				g.setColor(Color.CYAN);
-				System.out.println("Other player is on :"+roomCoord.x + " " +roomCoord.y);
-				g.fillRect(roomCoord.x * 50 + coord.x * 5, roomCoord.y * 50 + coord.y * 5, 5, 5);
+				//System.out.println("Other player is on :"+roomCoord.x + " " +roomCoord.y);
 			}
+			g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
 		}
 	}
 
