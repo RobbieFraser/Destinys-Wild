@@ -40,8 +40,7 @@ public class GameInterface{
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
 	private Item[] items = new Item[11];
-	
-	
+	private String orientation = "north";
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
@@ -408,32 +407,6 @@ public class GameInterface{
 	}
 
 	/**
-	 * This method should be called when the KeyListener
-	 * detects that the user has released a key. If the
-	 * key was a direction key, then they should stop moving
-	 * in that direction.
-	 * @param e
-	 */
-	protected void handleKeyRelease(KeyEvent e){
-		int keyCode = e.getKeyCode();
-
-		switch (keyCode) {
-		case KeyEvent.VK_W:
-			player.setNorth(false);
-			break;
-		case KeyEvent.VK_A:
-			player.setWest(false);
-			break;
-		case KeyEvent.VK_S:
-			player.setSouth(false);
-			break;
-		case KeyEvent.VK_D:
-			player.setEast(false);
-			break;
-		}
-	}
-
-	/**
 	 * This method should be called when the user has pressed
 	 * a key. If the key they have pressed is relevant to the
 	 * game, then this method should carry out that keys action.
@@ -457,25 +430,29 @@ public class GameInterface{
 
 		switch (keyCode) {
 		case KeyEvent.VK_W:
-			player.setNorth(true);
+			setPlayerDirection(keyCode);
+			//player.setNorth(true);
 			//up one square
 			//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
 			//						player.getCoords().y);
 			break;
 		case KeyEvent.VK_A:
-			player.setWest(true);
+			setPlayerDirection(keyCode);
+			//player.setWest(true);
 			//left one square
 			//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
 			//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_S:
-			player.setSouth(true);
+			setPlayerDirection(keyCode);
+			//player.setSouth(true);
 			//moved down one
 			//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
 			//					player.getCoords().y);
 			break;
 		case KeyEvent.VK_D:
-			player.setEast(true);
+			setPlayerDirection(keyCode);
+			//player.setEast(true);
 			//moved right one
 			//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 			//					player.getCoords().y);;
@@ -518,15 +495,121 @@ public class GameInterface{
 			PlayMusic.toggleMusic();
 			break;
 		case KeyEvent.VK_LEFT:
-			//TODO: Rotate screen 90' to the left
-			System.out.println("Left");
+			setNextOrientation(CYCLE_LEFT);
 			break;
 		case KeyEvent.VK_RIGHT:
-			//TODO: Rotate screen 90' to the right
+			setNextOrientation(CYCLE_RIGHT);
 			break;
 		}
 		//update the interface (in particular, the mini map)
 		//updateUI();
+	}
+	
+	/**
+	 * This method should set the player's direction according
+	 * to their key press as well as their current
+	 * orientation field.
+	 * @param keyCode
+	 */
+	private void setPlayerDirection (int keyCode) {
+		if (keyCode == KeyEvent.VK_W && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("west")) {
+			player.setNorth(true);
+		}
+		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("west")) {
+			player.setEast(true);
+		}
+		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("west")) {
+			player.setSouth(true);
+		}
+		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("west")) {
+			player.setWest(true);
+		}
+	}
+	
+	/**
+	 * This method should update the orientation field to be 
+	 * the next orientation in the north, east, south, west
+	 * cycle. The direction that the cycle is traversed comes
+	 * from the direction parameter.
+	 * @param direction to go through cycle
+	 */
+	private void setNextOrientation(int direction) {
+		String[] orientations = {"north", "east", "south", "west"};
+		
+		if (direction == CYCLE_RIGHT) {
+			if (orientation.equals("west")) {
+				orientation = "north";
+			} else {
+				loop: for (int i = 0; i < 3; ++i) {
+					if (orientations[i].equals(orientation)) {
+						orientation = orientations[i+1];
+						break loop;
+					}
+				}	
+			}
+		}
+		if (direction == CYCLE_LEFT) {
+			if (orientation.equals("north")) {
+				orientation = "west";
+			} else {
+				loop: for (int i = 3; i > 0; --i) {
+					if (orientations[i].equals(orientation)) {
+						orientation = orientations[i-1];
+						break loop;
+					}
+				}	
+			}
+		}
+		System.out.println(orientation.toUpperCase());
+	}
+
+
+	/**
+	 * This method should be called when the KeyListener
+	 * detects that the user has released a key. If the
+	 * key was a direction key, then they should stop moving
+	 * in that direction.
+	 * @param e
+	 */
+	protected void handleKeyRelease(KeyEvent e){
+		int keyCode = e.getKeyCode();
+
+		if (keyCode == KeyEvent.VK_W && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("west")) {
+			player.setNorth(false);
+		}
+		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("west")) {
+			player.setEast(false);
+		}
+		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_A && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("west")) {
+			player.setSouth(false);
+		}
+		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
+				|| keyCode == KeyEvent.VK_W && orientation.equals("east")
+				|| keyCode == KeyEvent.VK_D && orientation.equals("south")
+				|| keyCode == KeyEvent.VK_S && orientation.equals("west")) {
+			player.setWest(false);
+		}
 	}
 
 	/**
