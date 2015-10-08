@@ -32,7 +32,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
-	private BufferedImage playerOtherIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
+	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
@@ -66,7 +66,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int red;
 	private int green;
 	private int blue;
-	
+
 	private boolean hurt = false;
 
 	private boolean up = true;
@@ -139,7 +139,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
         super.paintComponent(g);
-        
+
         //If the player is hurt, increase the hurt int every time this -
         //method is called until they are no longer invincible
         if(player.isInvincible()){
@@ -272,7 +272,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	public void drawEnemy(Graphics g, String filename, int x, int y){
 		BufferedImage enemyIMG = loadImage(filename + ".png");
 		g.drawImage(enemyIMG, x - (obW), y - (obH*2)-22, null);
@@ -287,7 +287,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int len = (player.getName().length()*8)/2;
 		g.setFont(new Font("Courier new", 20, 15));
 		g.drawString(player.getName(), (newX-len)+25, newY - 20);
-		drawHealth(g, newX, newY);
+		drawHealth(g, newX, newY, player);
 	}
 
 	public void drawOtherPlayer(Graphics g, Player p){
@@ -299,14 +299,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int len = (p.getName().length()*4);
 		g.drawString(p.getName(), (newX-len)+13, newY - 20);
 		g.drawString(String.valueOf(p.getWalkState()), (newX-len)+13, newY - 30);
-		drawHealth(g, newX, newY);
+		drawHealth(g, newX, newY, p);
 	}
 
-	public void drawHealth(Graphics g, int x, int y){
+	public void drawHealth(Graphics g, int x, int y, Player p){
 		g.setColor(Color.black);
 		g.fillRect(x, y-10, 50, 5);
 		g.setColor(Color.green);
-		g.fillRect(x, y-10, player.getHealth()/2, 5);
+		g.fillRect(x, y-10, p.getHealth()/2, 5);
 	}
 
 	public void drawScore(Graphics g) {
@@ -449,7 +449,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public BufferedImage getOtherPlayerImage(Player player){
-		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
+		BufferedImage sheet = loadImage("otherSpriteSheetWalking.png");
 		BufferedImage playerImage = playerOtherIMG;
 		if(player.isNorth()){
 			if(player.isEast() && player.isWest()){
