@@ -213,10 +213,10 @@ public class Map extends JComponent {
 
 			if (player.equals(this.player)) {
 				//draw current player as magenta
-				g.setColor(Color.MAGENTA);
+				g.setColor(new Color(109, 137, 153));
 			} else {
 				//draw every other player as cyan
-				g.setColor(Color.CYAN);
+				g.setColor(new Color(171, 150, 110));
 				//System.out.println("Other player is on :"+roomCoord.x + " " +roomCoord.y);
 			}
 			g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);

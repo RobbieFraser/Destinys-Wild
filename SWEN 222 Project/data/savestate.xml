@@ -393,11 +393,11 @@
     <Npcs>
       <Npc>
         <Npctype>enemywalker</Npctype>
-        <Type>spider</Type>
+        <Type>bats</Type>
         <Row>0</Row>
         <Col>9</Col>
         <Damage>15</Damage>
-        <Speed>5</Speed>
+        <Speed>1</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
@@ -527,36 +527,17 @@
     <South>13</South>
     <West>0</West>
     <Obstacles />
-    <Npcs />
-    <Items>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>3</Row>
-        <Col>6</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>4</Row>
-        <Col>4</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-      <Item>
-        <Itemtype>health</Itemtype>
-        <Type>apple</Type>
-        <Id>99</Id>
-        <Row>6</Row>
-        <Col>7</Col>
-        <Health>10</Health>
-        <Score>0</Score>
-      </Item>
-    </Items>
+    <Npcs>
+      <Npc>
+        <Npctype>enemywalker</Npctype>
+        <Type>snail</Type>
+        <Row>9</Row>
+        <Col>0</Col>
+        <Damage>45</Damage>
+        <Speed>1</Speed>
+      </Npc>
+    </Npcs>
+    <Items />
   </Room>
   <Room>
     <Id>12</Id>
