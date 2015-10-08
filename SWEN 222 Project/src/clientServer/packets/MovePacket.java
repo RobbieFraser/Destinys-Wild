@@ -13,6 +13,7 @@ public class MovePacket extends Packet {
 	private int south;
 	private int east;
 	private int west;
+	private int walkstate;
 
 	public MovePacket(byte[] data) {
 		super(02);
@@ -26,10 +27,11 @@ public class MovePacket extends Packet {
 		this.east = Integer.parseInt(dataArray[6]);
 		this.south = Integer.parseInt(dataArray[7]);
 		this.west = Integer.parseInt(dataArray[8]);
+		this.walkstate = Integer.parseInt(dataArray[9]);
 	}
 
 	public MovePacket(String userName, int x, int y, int roomID, int health,
-			boolean north, boolean east, boolean south, boolean west) {
+			boolean north, boolean east, boolean south, boolean west, int walkstate) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
@@ -57,7 +59,7 @@ public class MovePacket extends Packet {
 		return ("02" + this.userName + "," + this.getX() + "," + this.getY()
 				+ "," + this.getRoomID() + "," + this.getHealth() + ","
 				+ this.getNorth() + "," + this.getEast() + ","
-				+ this.getSouth() + "," + this.getWest()).getBytes();
+				+ this.getSouth() + "," + this.getWest() +"," + this.getWalkstate()).getBytes();
 	}
 
 	public int getNorth() {
@@ -94,6 +96,10 @@ public class MovePacket extends Packet {
 
 	public int getHealth() {
 		return this.health;
+	}
+
+	public int getWalkstate(){
+		return this.walkstate;
 	}
 
 	public int boolToInt(boolean bool){

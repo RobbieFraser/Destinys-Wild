@@ -206,6 +206,16 @@ public class Player implements Serializable {
 		}
 	}
 
+	public void takeDamage(int damage){
+		if(!invincible){
+			setHealth(getHealth()-damage);
+			invincible = true;
+			if(!checkPulse()){
+				partThisCruelWorldForAnother();
+			}
+		}
+	}
+
 	/**
 	 * After a player has stepped onto a tile, this method calculates whether to push the player
 	 * back or whether to pick up an item or whether to do nothing.
@@ -229,15 +239,7 @@ public class Player implements Serializable {
 			return true;
 		}
 		else if(occupant instanceof EnemyWalker || occupant instanceof EnemyStill){
-			if(!invincible){
-				setHealth(getHealth() - ((NPC)occupant).getDamage());
-				System.out.println("OUCH! Taken " + ((NPC)occupant).getDamage() + " damage!");
-				invincible = true;
-				if(!checkPulse()){
-					partThisCruelWorldForAnother();
-					return false;
-				}
-			}
+			takeDamage(((NPC)occupant).getDamage());
 			return (occupant instanceof EnemyWalker);
 		}
 		return false;
@@ -594,6 +596,10 @@ public class Player implements Serializable {
 
 	public boolean isMoving() {
 		return isMoving;
+	}
+
+	public void updateWalkState(int i){
+		walkState = i;
 	}
 
 	public void setOrientation(String orientation) {

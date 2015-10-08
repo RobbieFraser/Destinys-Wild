@@ -208,6 +208,7 @@ public class GameServer extends Thread {
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
 				player.setSouth(intToBool(packet.getSouth()));
+				player.updateWalkCycle();
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {

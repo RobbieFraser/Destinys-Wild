@@ -155,7 +155,7 @@ public class DestinysWild implements Runnable {
 				currentPlayer.getCurrentRoom().getId(),
 				currentPlayer.getHealth(), currentPlayer.isNorth(),
 				currentPlayer.isEast(), currentPlayer.isSouth(),
-				currentPlayer.isWest());
+				currentPlayer.isWest(),currentPlayer.getWalkState());
 		movePacket.writeData(multiplayer.getClient());
 		byte[] currentBoard = null;
 		try {

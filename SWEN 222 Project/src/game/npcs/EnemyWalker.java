@@ -18,9 +18,7 @@ public class EnemyWalker implements NPC,Serializable {
 	private String strategy;
 	private Room currentRoom;
 	private Tile currentTile;
-	private int loopStep = 0;
-	private int loopMaxY = 5; //Dimensions	  loop
-	private int loopMaxX = 3; //		   of
+	private int dir = 0;
 
 	public EnemyWalker(String type, Point roomCoords, int speed, int damage, Room currentRoom){
 		this.type = type;
@@ -110,46 +108,45 @@ public class EnemyWalker implements NPC,Serializable {
 	 * @return boolean if can move
 	 */
 	public boolean tryLoop(){
-		if(loopStep < loopMaxY-1){
+		if(dir == 0){
 			//move north
-			realCoords.translate(-speed, -speed/2);
-			tryChangeTile(-speed, -speed/2);
-		}
-		else if(loopStep >= loopMaxY-1 && loopStep < (loopMaxY-1)+(loopMaxX-1)){
-			//move east
-			realCoords.translate(speed, -speed/2);
-			tryChangeTile(speed, -speed/2);
-		}
-		else if(loopStep >= (loopMaxY-1)+(loopMaxX-1) && loopStep < ((loopMaxY-1)*2) + (loopMaxX-1)){
-			//move south
-			realCoords.translate(speed, speed/2);
-			tryChangeTile(speed, speed/2);
-		}
-		else{
-			//move west
-			realCoords.translate(-speed, speed/2);
-			tryChangeTile(-speed, speed/2);
-		}
+			realCoords.translate(0, -speed);
+			if(!tryChangeTile(0, -speed)){
+				dir = 1;
+			}
 
-		if(updateCurrentTile()){
-			if(loopStep == ((loopMaxY*2-2) + (loopMaxX*2-2))){
-				loopStep = 0;
-			}
-			else{
-				loopStep++;
+		}
+		else if(dir == 1){
+			//move south
+			realCoords.translate(0, speed);
+			if(!tryChangeTile(0, speed)){
+				dir = 0;
 			}
 		}
+		System.out.println("Snail's current position: " + currentTile.getRoomCoords().x + ", " + currentTile.getRoomCoords().y + ", " + currentTile.isOccupied());
 		return true;
 	}
 
 	public boolean tryChangeTile(int x, int y){
+		checkHitPlayer();
+		currentTile.setOccupied(false);
 		currentTile = currentRoom.calcTile(realCoords);
 		if(currentTile == null){
 			realCoords.translate(-x, -y);
 			currentTile = currentRoom.calcTile(realCoords);
+			currentTile.setOccupied(true);
 			return false;
 		}
+		currentTile.setOccupied(true);
 		return true;
+	}
+
+	public void checkHitPlayer(){
+		for(Player player : DestinysWild.getBoard().getPlayers()){
+			if(currentTile.getRoomCoords().equals(player.getCurrentTile().getRoomCoords())){
+				player.takeDamage(damage);
+			}
+		}
 	}
 
 	public void resetPos(){
