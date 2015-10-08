@@ -188,7 +188,8 @@ public class GameClient extends Thread {
 		player.setEast(intToBool(packet.getEast()));
 		player.setWest(intToBool(packet.getWest()));
 		player.setSouth(intToBool(packet.getSouth()));
-		player.updateWalkCycle();
+		player.updatePlayer();
+		System.out.println(player.getWalkState());
 		player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
 	}
 

@@ -144,7 +144,7 @@ public class DestinysWild implements Runnable {
 	}
 
 	public void updateGame() {
-		currentPlayer.updatePlayer();
+		//currentPlayer.updatePlayer();
 		for (NPC enemy : currentPlayer.getCurrentRoom().getNpcs()) {
 			if (enemy instanceof EnemyWalker) {
 				enemy.tryMove();
