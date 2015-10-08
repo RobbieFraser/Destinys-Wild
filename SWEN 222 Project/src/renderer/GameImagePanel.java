@@ -32,7 +32,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
 	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
-	private BufferedImage playerOtherIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
+	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
@@ -449,7 +449,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public BufferedImage getOtherPlayerImage(Player player){
-		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
+		BufferedImage sheet = loadImage("otherSpriteSheetWalking.png");
 		BufferedImage playerImage = playerOtherIMG;
 		if(player.isNorth()){
 			if(player.isEast() && player.isWest()){
