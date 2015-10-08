@@ -48,6 +48,7 @@ public class ShopInterface {
 		frame.setBounds(300, 150, 400, 300);
 		frame.setResizable(false);
 		frame.setLayout(null);
+		frame.setAlwaysOnTop(true);
 		
 		//we set up 6 panels which will each contain a tool
 		for (int i = 0; i < 2; ++i) {

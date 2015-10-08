@@ -40,6 +40,8 @@ public class GameInterface{
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
 	private Item[] items = new Item[11];
+	
+	
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
@@ -514,6 +516,13 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_M:
 			PlayMusic.toggleMusic();
+			break;
+		case KeyEvent.VK_LEFT:
+			//TODO: Rotate screen 90' to the left
+			System.out.println("Left");
+			break;
+		case KeyEvent.VK_RIGHT:
+			//TODO: Rotate screen 90' to the right
 			break;
 		}
 		//update the interface (in particular, the mini map)
