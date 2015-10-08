@@ -185,10 +185,6 @@ public class GameClient extends Thread {
 		player.setRoom(room);
 		player.setCoords(playerX, playerY);
 		player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
-		player.setNorth(packet.getNorth());
-		player.setEast(packet.getEast());
-		player.setWest(packet.getWest());
-		player.setSouth(packet.getSouth());
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
