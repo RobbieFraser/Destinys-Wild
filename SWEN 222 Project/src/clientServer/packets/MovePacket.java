@@ -9,6 +9,10 @@ public class MovePacket extends Packet {
 	private int y;
 	private int roomID;
 	private int health;
+	private boolean north;
+	private boolean south;
+	private boolean east;
+	private boolean west;
 
 	public MovePacket(byte[] data) {
 		super(02);
@@ -20,13 +24,18 @@ public class MovePacket extends Packet {
 		this.health = Integer.parseInt(dataArray[4]);
 	}
 
-	public MovePacket(String userName, int x, int y, int roomID, int health) {
+	public MovePacket(String userName, int x, int y, int roomID, int health,
+			boolean north, boolean east, boolean west, boolean south) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
 		this.y = y;
 		this.roomID = roomID;
 		this.health = health;
+		this.north = north;
+		this.west = west;
+		this.east = east;
+		this.south = south;
 	}
 
 	@Override
@@ -42,7 +51,25 @@ public class MovePacket extends Packet {
 	@Override
 	public byte[] getData() {
 		return ("02" + this.userName + "," + this.getX() + "," + this.getY()
-				+ "," + this.getRoomID() + "," + this.getHealth()).getBytes();
+				+ "," + this.getRoomID() + "," + this.getHealth() + ","
+				+ this.getNorth() + "," + this.getEast() + ","
+				+ this.getSouth() + "," + this.getWest()).getBytes();
+	}
+
+	public boolean getNorth() {
+		return north;
+	}
+
+	public boolean getEast() {
+		return east;
+	}
+
+	public boolean getSouth() {
+		return south;
+	}
+
+	public boolean getWest() {
+		return west;
 	}
 
 	public String getUserName() {
@@ -61,7 +88,7 @@ public class MovePacket extends Packet {
 		return this.roomID;
 	}
 
-	public int getHealth(){
+	public int getHealth() {
 		return this.health;
 	}
 }
