@@ -202,6 +202,7 @@ public class GameServer extends Thread {
 				player.setCoords(playerX, playerY);
 				Room newRoom = board.getRoomFromId(packet.getRoomID());
 				player.setRoom(newRoom);
+				player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {

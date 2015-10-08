@@ -183,6 +183,7 @@ public class GameClient extends Thread {
 		Room room = board.getRoomFromId(roomID);
 		player.setRoom(room);
 		player.setCoords(playerX, playerY);
+		player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
