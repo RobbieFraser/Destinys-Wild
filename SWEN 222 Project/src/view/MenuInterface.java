@@ -58,24 +58,20 @@ public class MenuInterface {
 
 		//set up menupanel
 		JPanel menuPanel = new JPanel();
-		//Border blackline = BorderFactory.createLineBorder(Color.BLACK, 2);
-		//menuPanel.setBorder(blackline);
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(new Color(0,0,0,0));
 		menuPanel.setOpaque(false);
-		menuPanel.setBounds(430, 240, 200, 400);
+		menuPanel.setBounds(425, 240, 250, 400);
 
 		//New Game button
-		ImageIcon newGameImage = new ImageIcon(loadImage("playgamebutton.png"));
-		JButton btnNewGame = new JButton(newGameImage);
+		JButton btnNewGame = new JButton("Play Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newGameButtonPressed();
+				newGame();
 			}
 		});
-		btnNewGame.setBounds(25, 30, 150, 80);
+		btnNewGame.setBounds(0, 30, 200, 70);
 		addKeyListener(btnNewGame);
-		//btnNewGame.setBorder(blackline);
 		menuPanel.add(btnNewGame);
 
 		//Load Game button
@@ -85,22 +81,32 @@ public class MenuInterface {
 				loadGame();
 			}
 		});
-		btnLoadGame.setBounds(25, 150, 150, 80);
-	    //btnLoadGame.setBorder(blackline);
+		btnLoadGame.setBounds(0, 130, 200, 70);
 		addKeyListener(btnLoadGame);
 		btnLoadGame.setOpaque(false);
 		menuPanel.add(btnLoadGame);
+		
+		//Join Game button
+		JButton btnJoinGame = new JButton("Join Game");
+		btnJoinGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				joinGame();
+			}
+		});
+		btnJoinGame.setBounds(0, 230, 200, 70);
+		addKeyListener(btnJoinGame);
+		btnJoinGame.setOpaque(false);
+		menuPanel.add(btnJoinGame);
 
 		//Quit Game button
-		ImageIcon quitGameImage = new ImageIcon(loadImage("quitgamebutton.png"));
-		JButton btnQuitGame = new JButton(quitGameImage);
+		JButton btnQuitGame = new JButton("Quit Game");
 		btnQuitGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				escapeGame();
 			}
 		});
 		addKeyListener(btnQuitGame);
-		btnQuitGame.setBounds(25, 270, 150, 80);
+		btnQuitGame.setBounds(0, 330, 200, 70);
 		menuPanel.add(btnQuitGame);
 
 		PlayMusic.playSound("DestinysWildOST.mp3");
@@ -142,7 +148,10 @@ public class MenuInterface {
 					loadGame();
 					break;
 				case 'n':
-					newGameButtonPressed();
+					newGame();
+					break;
+				case 'j':
+					joinGame();
 					break;
 				case 'm':
 					PlayMusic.toggleMusic();
@@ -157,7 +166,7 @@ public class MenuInterface {
 		});
 	}
 
-	private void newGameButtonPressed() {
+	private void newGame() {
 		String name = JOptionPane.showInputDialog("Enter your name adventurer!");
 		if (name != null) {
 			game.newGame(name, frame);
@@ -175,6 +184,13 @@ public class MenuInterface {
 			//send file through to the parser
 			game.loadGame(saveGame, frame);
 
+		}
+	}
+	
+	private void joinGame() {
+		String name = JOptionPane.showInputDialog("Enter your name adventurer!");
+		if (name != null) {
+			game.joinGame(name, frame);
 		}
 	}
 

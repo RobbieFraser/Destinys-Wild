@@ -47,28 +47,38 @@ public class DestinysWild implements Runnable{
 		//initialiseTestPlayer();
 	}
 
-	public void setUpGame(){
-		multiplayer  = new Multiplayer(this,board,currentPlayer);
-		multiplayer.start();
+	public void setUpGame(boolean startServer) {
+		multiplayer = new Multiplayer(this,board,currentPlayer);
+		if (startServer) {
+			multiplayer.startServer();
+		} else {
+			multiplayer.joinServer();
+		}
 		latch = new CountDownLatch(1);
 		setUpUI();
 		mainMenu.remove();
 		Thread thread = new Thread(this);
 		thread.start();
-
 	}
 
 	public void newGame(String playerName, JFrame frame){
 		this.frame = frame;
 		setBoard(XMLParser.initialiseBoard("data/test.xml"));
 		setPlayer(new Player(playerName, new Point(500, 300), board.getRoomFromCoords(2, 2)));
-		setUpGame();
+		setUpGame(true);
+	}
+	
+	public void joinGame(String playerName, JFrame frame){
+		this.frame = frame;
+		setBoard(XMLParser.initialiseBoard("data/test.xml"));
+		setPlayer(new Player(playerName, new Point(500, 300), board.getRoomFromCoords(2, 2)));
+		setUpGame(false);
 	}
 
 	public void loadGame(File currentPlayerFile, JFrame frame){
 		this.frame = frame;
 		XMLParser.loadGame(currentPlayerFile);
-		setUpGame();
+		setUpGame(true);
 	}
 
 	public void setUpUI(){

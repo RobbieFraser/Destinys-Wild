@@ -132,15 +132,15 @@ public class GameInterface{
 		//intialise the selected item to be the first food slot as a default
 		updateSelectedSlot(0);
 
-		// set up panel which will contain minimap
-//		JPanel mapPanel = new JPanel(new BorderLayout());
-//		mapPanel.setBorder(blackline);
-//		mapPanel.setBounds(830, 460, 250, 250);
-//		//extract the board we will use
-//		//create the map that will be drawn
-//		Map map = new Map(player, board);
-//		mapPanel.add(map, BorderLayout.CENTER);
-//		frame.getContentPane().add(mapPanel);
+		//set up panel which will contain minimap
+		JPanel mapPanel = new JPanel(new BorderLayout());
+		mapPanel.setBorder(blackline);
+		mapPanel.setBounds(830, 460, 250, 250);
+		//extract the board we will use
+		//create the map that will be drawn
+		Map map = new Map(player, board);
+		mapPanel.add(map, BorderLayout.CENTER);
+		frame.getContentPane().add(mapPanel);
 
 		//initialise window listener
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -187,7 +187,6 @@ public class GameInterface{
 
 		//we should make sure that any slots that do not contain food
 		//do not display food, so we reset the image back to an empty slot
-		System.out.println(numFood);
 		for (int i = numFood; i < 5; ++i) {
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i);
 			Image slotBackgroundImage = MenuInterface.loadImage("itemBox.png");
@@ -195,7 +194,7 @@ public class GameInterface{
 		}
 
 		//now we can draw in weapons
-		int numTools = player.numToolItems(); //should emxtract from player
+		int numTools = player.numToolItems(); //should extract from player
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
@@ -395,7 +394,7 @@ public class GameInterface{
 	public Item getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
-		for (int i = 0; i < 12; ++i) {
+		for (int i = 0; i < 11; ++i) {
 			//number of slots is small, so we can just iterate through them all
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
@@ -494,8 +493,6 @@ public class GameInterface{
 					clearKeysPressed();
 					player.tryEat(selectedItem.getId());
 				}
-			} else {
-				JOptionPane.showMessageDialog(frame, "User cannot interact with an empty slot.");
 			}
 			break;
 		case KeyEvent.VK_SPACE:

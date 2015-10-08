@@ -51,32 +51,62 @@ public class Multiplayer extends Canvas implements Runnable {
 	}
 
 	public synchronized void start(){
+//		running = true;
+//		//thread = new Thread(this, "Multiplayer");
+//		if (JOptionPane.showConfirmDialog(this,
+//				"Do you want to start the server?") == 0) {
+//			server = new GameServer(board,this);
+//			server.start();
+//			try {
+//				JOptionPane.showMessageDialog(null, "The server's IP address is: " + InetAddress.getLocalHost().getHostAddress());
+//			} catch (HeadlessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (UnknownHostException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if(server==null){
+//		String ipAddress =	JOptionPane.showInputDialog(null,"Enter the server's IP Address");
+//		client = new GameClient(board,ipAddress,this);
+//			}
+//		else{
+//			client = new GameClient(board,null,this);
+//		}
+//		client.start();
+//		initialise();
+//		//thread.start();
+	}
+	
+	public synchronized void startServer() {
 		running = true;
-		//thread = new Thread(this, "Multiplayer");
-		if (JOptionPane.showConfirmDialog(this,
-				"Do you want to start the server?") == 0) {
-			server = new GameServer(board,this);
-			server.start();
-			try {
-				JOptionPane.showMessageDialog(null, "The server's IP address is: " + InetAddress.getLocalHost().getHostAddress());
-			} catch (HeadlessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		server = new GameServer(board,this);
+		server.start();
+		try {
+			JOptionPane.showMessageDialog(null, "The server's IP address is: " + InetAddress.getLocalHost().getHostAddress());
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if(server==null){
-		String ipAddress =	JOptionPane.showInputDialog(null,"Enter the server's IP Address");
-		client = new GameClient(board,ipAddress,this);
-			}
-		else{
-			client = new GameClient(board,null,this);
-		}
+		client = new GameClient(board,null,this);
 		client.start();
 		initialise();
-		//thread.start();
+	}
+	
+	public synchronized void joinServer() {
+		running = true;
+		String ipAddress = JOptionPane.showInputDialog(null,"Enter the server's IP Address");
+		if (ipAddress.equals("")) {
+			JOptionPane.showMessageDialog(null, "No IP Address was entered, so a regular game was created.");
+		}
+		client = new GameClient(board,ipAddress,this);
+		client.start();
+		initialise();
+
 	}
 
 	public synchronized void stop() {
