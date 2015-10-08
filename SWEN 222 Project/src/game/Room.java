@@ -111,7 +111,6 @@ public class Room implements Serializable{
 		for(NPC npc : npcs){
 			tiles[npc.getRoomCoords().x][npc.getRoomCoords().y] = new Tile(new Point(npc.getRoomCoords().x, npc.getRoomCoords().y), this, true);
 		}
-
 	}
 
 	/**

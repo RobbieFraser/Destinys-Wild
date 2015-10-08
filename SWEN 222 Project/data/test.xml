@@ -529,7 +529,7 @@
     <Obstacles />
     <Npcs>
       <Npc>
-      	<Npctype>enemystill</Npctype>
+      	<Npctype>enemywalker</Npctype>
       	<Type>snail</Type>
       	<Row>9</Row>
       	<Col>0</Col>

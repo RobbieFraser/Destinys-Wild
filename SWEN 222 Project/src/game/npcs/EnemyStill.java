@@ -23,11 +23,11 @@ public class EnemyStill implements NPC,Serializable{
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
-		this.currentTile = currentRoom.calcTile(realCoords);
 		this.damage = damage;
 	}
 
 	public boolean tryMove(){
+		this.currentTile = currentRoom.calcTile(realCoords);
 		return false;
 	}
 
