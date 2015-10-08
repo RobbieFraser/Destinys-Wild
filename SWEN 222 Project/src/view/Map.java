@@ -208,9 +208,6 @@ public class Map extends JComponent {
 			}
 			//now draw location of player
 			Room currentRoom = player.getCurrentRoom();
-			if (currentRoom == null) {
-				System.exit(0);
-			}
 			Point roomCoord = currentRoom.getBoardPos();
 			Point coord = player.getCurrentTile().getRoomCoords();
 

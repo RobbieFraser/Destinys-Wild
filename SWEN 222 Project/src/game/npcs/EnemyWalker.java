@@ -69,29 +69,33 @@ public class EnemyWalker implements NPC,Serializable {
 				nearestPlayer = player;
 			}
 		}
-		if(nearestPlayer.getCoords().x > realCoords.x){
+		if(nearestPlayer != null && nearestPlayer.getCoords().x > realCoords.x){
 			if(nearestPlayer.getCoords().y > realCoords.y){
 				realCoords.translate(speed, speed);
+				tryChangeTile(speed, speed);
 			}
 			else{
 				realCoords.translate(speed, -speed);
+				tryChangeTile(speed, -speed);
 			}
 			updateCurrentTile();
 			return true;
 		}
-		else if(nearestPlayer.getCoords().y > realCoords.y){
+		else if(nearestPlayer != null && nearestPlayer.getCoords().y > realCoords.y){
 			realCoords.translate(-speed, speed);
+			tryChangeTile(-speed, speed);
 			updateCurrentTile();
 			return true;
 		}
-		else if(!(nearestPlayer.getCoords().equals(realCoords))){
+		else if(nearestPlayer != null && !(nearestPlayer.getCoords().equals(realCoords))){
 			realCoords.translate(-speed, -speed);
+			tryChangeTile(-speed, -speed);
 			updateCurrentTile();
 			return true;
 		}
 		return false; //Doesn't need to move if on top of player
 	}
-	
+
 	public boolean updateCurrentTile(){
 		if(!(currentRoom.calcTile(realCoords).getRoomCoords().equals(currentTile.getRoomCoords()))){
 			currentTile = currentRoom.calcTile(realCoords);
@@ -109,20 +113,24 @@ public class EnemyWalker implements NPC,Serializable {
 		if(loopStep < loopMaxY-1){
 			//move north
 			realCoords.translate(-speed, -speed/2);
+			tryChangeTile(-speed, -speed/2);
 		}
 		else if(loopStep >= loopMaxY-1 && loopStep < (loopMaxY-1)+(loopMaxX-1)){
 			//move east
 			realCoords.translate(speed, -speed/2);
+			tryChangeTile(speed, -speed/2);
 		}
 		else if(loopStep >= (loopMaxY-1)+(loopMaxX-1) && loopStep < ((loopMaxY-1)*2) + (loopMaxX-1)){
 			//move south
 			realCoords.translate(speed, speed/2);
+			tryChangeTile(speed, speed/2);
 		}
 		else{
 			//move west
 			realCoords.translate(-speed, speed/2);
+			tryChangeTile(-speed, speed/2);
 		}
-		
+
 		if(updateCurrentTile()){
 			if(loopStep == ((loopMaxY*2-2) + (loopMaxX*2-2))){
 				loopStep = 0;
@@ -133,7 +141,17 @@ public class EnemyWalker implements NPC,Serializable {
 		}
 		return true;
 	}
-	
+
+	public boolean tryChangeTile(int x, int y){
+		currentTile = currentRoom.calcTile(realCoords);
+		if(currentTile == null){
+			realCoords.translate(-x, -y);
+			currentTile = currentRoom.calcTile(realCoords);
+			return false;
+		}
+		return true;
+	}
+
 	public void resetPos(){
 		realCoords = GameImagePanel.calcRealCoords(roomCoords);
 	}

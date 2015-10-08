@@ -35,7 +35,7 @@ public class Player implements Serializable {
 	private int walkState = 0;
 	private int walkDelay = 0;
 	private boolean invincible;
-	private int invincibleCount = 120;
+	private int invincibleCount = 60;
 
 	public Player(){
 
