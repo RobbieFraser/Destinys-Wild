@@ -1,15 +1,17 @@
 package game.npcs;
 
-import java.awt.Point;
-import java.io.Serializable;
-
 import game.DestinysWild;
+import game.Interactable;
 import game.Player;
 import game.Room;
 import game.Tile;
+
+import java.awt.Point;
+import java.io.Serializable;
+
 import renderer.GameImagePanel;
 
-public class EnemyWalker implements NPC,Serializable {
+public class EnemyWalker implements NPC, Serializable, Interactable {
 	private String type;
 	private Point roomCoords; //room coords
 	private Point realCoords; // real coords in respect to the window
@@ -146,11 +148,15 @@ public class EnemyWalker implements NPC,Serializable {
 	public void takeDamage(int damage){
 		health = health - damage;
 		if(!checkPulse()){
-
+			currentTile.setOccupied(false);
+			currentRoom.removeNpcs(this);
 		}
 	}
 
 	public boolean checkPulse(){
+		if(health <= 0){
+			return false;
+		}
 		return true;
 	}
 
@@ -250,5 +256,11 @@ public class EnemyWalker implements NPC,Serializable {
 
 	public String toString(){
 		return "enemywalker";
+	}
+
+	@Override
+	public void interact() {
+		takeDamage(2);
+
 	}
 }

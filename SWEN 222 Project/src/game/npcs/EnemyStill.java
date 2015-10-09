@@ -1,5 +1,6 @@
 package game.npcs;
 
+import game.Interactable;
 import game.Room;
 import game.Tile;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
 
 import renderer.GameImagePanel;
 
-public class EnemyStill implements NPC,Serializable{
+public class EnemyStill implements NPC, Serializable, Interactable{
 	private String type;
 
 	private Point roomCoords;
@@ -36,14 +37,17 @@ public class EnemyStill implements NPC,Serializable{
 	public void takeDamage(int damage){
 		health = health - damage;
 		if(!checkPulse()){
-
+			currentTile.setOccupied(false);
+			currentRoom.removeNpcs(this);
 		}
 	}
 
 	public boolean checkPulse(){
+		if(health <= 0){
+			return false;
+		}
 		return true;
 	}
-
 
 	/**
 	 * @return the realCoords
@@ -93,6 +97,12 @@ public class EnemyStill implements NPC,Serializable{
 
 	public Tile getCurrentTile(){
 		return currentTile;
+	}
+
+	@Override
+	public void interact() {
+		takeDamage(2);
+
 	}
 
 }

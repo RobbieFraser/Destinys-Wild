@@ -13,32 +13,32 @@ import javax.swing.JToolBar;
 import game.Board;
 
 public class TestFrame extends JFrame {
-	
+
 	private Board board;
-	
+
 	private int red;
 	private int green;
 	private int blue;
-	
+
 	private boolean up = true;
-	
+
 	private GameImagePanel gamePanel;
 	private LevelEditorPanel editPanel;
 	private boolean editor = false;
-	
-	
+
+
 	/*
 	 * This version of the TestFrame constructor inits the Game Panel
 	 */
-	public TestFrame(Board board){
-		super("Test Renderer");
-		this.board = board;
-		gamePanel = new GameImagePanel(board);
-		setUp();
-		//gamePanel.waterTest();
-		//loop();
-	}
-	
+//	public TestFrame(Board board){
+//		super("Test Renderer");
+//		this.board = board;
+//		gamePanel = new GameImagePanel(board);
+//		setUp();
+//		//gamePanel.waterTest();
+//		//loop();
+//	}
+
 	/*
 	 * This version of the TestFrame constructor inits the Level editor
 	 */
@@ -49,7 +49,7 @@ public class TestFrame extends JFrame {
 		editPanel = new LevelEditorPanel(board);
 		setUp();
 	}
-	
+
 	/*
 	 * Just for fun, a crazy Hotline Miami style background for the game panel
 	 */
@@ -113,7 +113,7 @@ public class TestFrame extends JFrame {
 			}
 		}
 	}
-	
+
 	public void setUp(){
 		setResizable(false); //Makes the window not to be able to change size
 		pack();
@@ -130,7 +130,7 @@ public class TestFrame extends JFrame {
 	            {
 	            	editPanel.saveBoard();
 	            }
-	        }); 
+	        });
 		    toolbar.add(button);
 		    Container contentPane = this.getContentPane();
 		    contentPane.add(toolbar, BorderLayout.NORTH);
@@ -141,7 +141,7 @@ public class TestFrame extends JFrame {
 		}
 		setVisible(true);
 	}
-	
+
 	public void addGamePanel(){
 		red = 123;
 		green = 123;
@@ -149,7 +149,7 @@ public class TestFrame extends JFrame {
 		gamePanel.setBackground(new Color(120, 201, 255));
 		getContentPane().add(gamePanel);
 	}
-	
+
 	public void addEditPanel(){
 		editPanel.setBackground(new Color(120, 201, 255));
 		getContentPane().add(editPanel);
