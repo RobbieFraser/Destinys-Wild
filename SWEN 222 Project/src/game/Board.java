@@ -99,7 +99,7 @@ public class Board implements Serializable{
 
 	public Player getPlayer(String userName){
 		for(Player player : this.players){
-			System.out.println(player.getName() + " is in the board");
+		//	System.out.println(player.getName() + " is in the board");
 			if(player.getName().equalsIgnoreCase(userName)){
 				return player;
 			}
