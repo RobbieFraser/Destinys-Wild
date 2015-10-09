@@ -34,6 +34,11 @@ public class GameServer extends Thread {
 	private List<Player> connectedPlayers = new ArrayList<Player>();
 	private Multiplayer multiplayer;
 
+	/**
+	 *Constructor for a GameServer which takes in a Board and a Multiplayer object
+	 * @param board
+	 * @param multiplayer
+	 */
 	public GameServer(Board board, Multiplayer multiplayer) {
 		this.board = board;
 		this.multiplayer = multiplayer;
@@ -48,37 +53,28 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public List<Player> getConnectedPlayers() {
-		return connectedPlayers;
-	}
-
 	public void run() {
 		while (true) {
-			// System.out.println("Test");
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
-				// System.out.println("Server receiving packet");
 				this.socket.receive(packet);
-				// System.out.println("Server has received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
-			// System.out.println("Packet parsed");
-			// String msg = new String(packet.getData());
-			// System.out.println(msg);
-			// System.out.println("CLIENT [ "
-			// + packet.getAddress().getHostAddress() + ":"
-			// + packet.getPort() + "] >" + msg);
-			// if (msg.trim().equalsIgnoreCase("ping")) {
-			// sendData("pong".getBytes(), packet.getAddress(),
-			// packet.getPort());
-			// }
 		}
 	}
 
+	/**
+	 *This method receives an array of bytes, an InetAddress and a port number
+	 *and processes the array of bytes into the relevant packet. It then
+	 *performs a handle method based off the type of packet it is.
+	 * @param data
+	 * @param address
+	 * @param port
+	 */
 	private void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
 		Packet packet = null;
@@ -107,9 +103,6 @@ public class GameServer extends Thread {
 			break;
 		case MOVE:
 			packet = new MovePacket(data);
-			// System.out.println(((MovePacket) packet).getUserName()
-			// + " has moved to " + ((MovePacket) packet).getX() + ","
-			// + ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
 			break;
 		case REMOVEITEM:
@@ -119,6 +112,11 @@ public class GameServer extends Thread {
 		}
 	}
 
+	/**
+	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
+	 *from the data stored inside it. It then removes the item from the room.
+	 * @param packet
+	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
 		Room itemRoom = board.getRoomFromId(packet.getRoomID());
 		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
@@ -127,6 +125,12 @@ public class GameServer extends Thread {
 		}
 	}
 
+	/**
+	 *This method takes a MovePacket and obtains the Player, their health and X and Y positions.
+	 *It then sets their room, co-ordinates and what direction(s) they are moving in. Once it has
+	 *done this, it updates the player and sets their current tile.
+	 * @param packet
+	 */
 	public void handleMove(MovePacket packet) {
 		try {
 			if (packet.getUserName() != null) {
@@ -152,19 +156,11 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public int boolToInt(boolean bool) {
-		int boolInt = bool ? 1 : 0;
-		return boolInt;
-	}
-
-	public boolean intToBool(int i) {
-		if (i == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 *Removes a player from the game by sending a DisconnectPacket
+	 *with the player's information
+	 * @param packet
+	 */
 	public void removeConnection(DisconnectPacket packet) {
 		Player player = getPlayer(packet.getUserName());
 		this.connectedPlayers.remove(player);
@@ -173,6 +169,11 @@ public class GameServer extends Thread {
 
 	}
 
+	/**
+	 * Helper method that gets the index of a player in the list
+	 * @param username
+	 * @return
+	 */
 	public int getPlayerIndex(String username) {
 		int index = 0;
 		for (Player player : this.connectedPlayers) {
@@ -184,6 +185,11 @@ public class GameServer extends Thread {
 		return index;
 	}
 
+	/**
+	 * Gets a player from the set of connectedPlayers by searching for their name
+	 * @param name
+	 * @return
+	 */
 	public Player getPlayer(String name) {
 		for (Player pm : this.connectedPlayers) {
 			if (pm.getName().equals(name)) {
@@ -193,6 +199,15 @@ public class GameServer extends Thread {
 		return null;
 	}
 
+	/**
+	 * Takes a Player and a LoginPacket amd checks if the Player is already in the
+	 * list of connected players. If it is, it is marked as connected and its port and
+	 * IP are set to to the matching player's port and IP. If it is not
+	 * in the list, a LoginPacket is sent out and it is added to the list of connected players
+	 * on the server and the list of players on the Board.
+	 * @param player
+	 * @param packet
+	 */
 	public void addConnection(Player player, LoginPacket packet) {
 		boolean alreadyConnected = false;
 		System.out.println("Packet username is: " + packet.getUserName());
@@ -219,16 +234,20 @@ public class GameServer extends Thread {
 		}
 		if (alreadyConnected == false) {
 			if (!player.equals(multiplayer.getCurrentPlayer())) {
-				// System.out.println("player added");
 				this.connectedPlayers.add(player);
 				System.out.println("Adding: " + player.getName());
 				board.addPlayers(player);
-				// System.out.println("player added");
 			}
 		}
 
 	}
 
+	/**
+	 *Sends data in the form of a byte array to the desired InetAddress and port
+	 * @param data
+	 * @param ipAddress
+	 * @param port
+	 */
 	public void sendData(byte[] data, InetAddress ipAddress, int port) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
 				ipAddress, port);
@@ -239,9 +258,41 @@ public class GameServer extends Thread {
 		}
 	}
 
+	/**
+	 * Sends data in the form of a byte array to all players in the connectedPlayers list
+	 * @param data
+	 */
 	public void sendDataToAllClients(byte[] data) {
 		for (Player pm : connectedPlayers) {
 			sendData(data, pm.getIP(), pm.getPort());
 		}
 	}
+
+	public List<Player> getConnectedPlayers() {
+		return connectedPlayers;
+	}
+
+	/**
+	 * Helper method that represents a boolean as an int
+	 * @param bool
+	 * @return
+	 */
+	public int boolToInt(boolean bool) {
+		int boolInt = bool ? 1 : 0;
+		return boolInt;
+	}
+
+	/**
+	 * Helper method that represents an int as a boolean
+	 * @param i
+	 * @return
+	 */
+	public boolean intToBool(int i) {
+		if (i == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

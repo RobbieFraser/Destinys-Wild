@@ -30,10 +30,16 @@ public class GameClient extends Thread {
 
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
-	// testing change
 	private Board board;
 	private Multiplayer multiplayer;
 
+	/**
+	 *Constructor for GameClient which takes in a Board, IP Address in the form of a String
+	 *and a Multiplayer object
+	 * @param board
+	 * @param ipName
+	 * @param multiplayer
+	 */
 	public GameClient(Board board, String ipName, Multiplayer multiplayer) {
 		this.board = board;
 		this.multiplayer = multiplayer;
@@ -54,25 +60,25 @@ public class GameClient extends Thread {
 		while (true) {
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
-			// System.out.println("Packet created");
 			try {
-				// System.out.println("Client attempting to receive packet");
 				this.socket.receive(packet);
-				// System.out.println("Client received packet");
 			} catch (IOException e) {
-				// System.out.println("Something went wrong");
 				e.printStackTrace();
 			}
-			// System.out.println("Client getting ready to parse packet");
 			this.parsePacket(packet.getData(), packet.getAddress(),
 					packet.getPort());
-			// String msg = new String(packet.getData());
-			// System.out.println(msg);
-			// System.out.println("SERVER > " + msg);
 		}
 	}
 
-	private void parsePacket(byte[] data, InetAddress address, int port) {
+	/**
+	 *This method receives an array of bytes, an InetAddress and a port number
+	 *and processes the array of bytes into the relevant packet. It then
+	 *performs a handle method based off the type of packet it is.
+	 * @param data
+	 * @param address
+	 * @param port
+	 */
+	public void parsePacket(byte[] data, InetAddress address, int port) {
 		String msg = new String(data).trim();
 		PacketTypes packetTypes = Packet.getPacket(msg.substring(0, 2));
 		Packet packet = null;
@@ -81,7 +87,6 @@ public class GameClient extends Thread {
 		case INVALID:
 			break;
 		case LOGIN:
-			// System.out.println("Login Packet found");
 			packet = new LoginPacket(data);
 			handleLogin((LoginPacket) packet, address, port);
 			break;
@@ -97,7 +102,6 @@ public class GameClient extends Thread {
 			packet = new MovePacket(data);
 			handleMovePacket((MovePacket) packet);
 			break;
-			// System.out.println("Player is moving online");
 		case REMOVEITEM:
 			packet = new RemoveItemPacket(data);
 			handleRemoveItemPacket((RemoveItemPacket) packet);
@@ -106,11 +110,23 @@ public class GameClient extends Thread {
 
 	}
 
+	/**
+	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
+	 *from the data stored inside it. It then removes the item from the room.
+	 * @param packet
+	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
 		Room itemRoom = board.getRoomFromId(packet.getRoomID());
 		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
 		itemRoom.removeItems(itemToRemove);
 	}
+
+	/**
+	 *This method takes a MovePacket and obtains the Player, their health and X and Y positions.
+	 *It then sets their room, co-ordinates and what direction(s) they are moving in. Once it has
+	 *done this, it updates the player and sets their current tile.
+	 * @param packet
+	 */
 	public void handleMovePacket(MovePacket packet) {
 		Player player = board.getPlayer(packet.getUserName());
 		player.setHealth(packet.getHealth());
@@ -129,19 +145,14 @@ public class GameClient extends Thread {
 				player.getCoords()));
 	}
 
-	public int boolToInt(boolean bool) {
-		int boolInt = bool ? 1 : 0;
-		return boolInt;
-	}
-
-	public boolean intToBool(int i) {
-		if (i == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 *This method deals with logging in and joining the server. It takes a LoginPacket,
+	 *an InetAddress and a port number. It creates a new Player object and adds it to the
+	 *Set of Players in Board and initialises their location to the home location.
+	 * @param packet
+	 * @param address
+	 * @param port
+	 */
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
 		System.out.println("[" + address.getHostAddress() + ":" + port + "]"
 				+ ((LoginPacket) packet).getUserName()
@@ -149,16 +160,16 @@ public class GameClient extends Thread {
 		Point point = new Point(500, 300);
 		Player pm = new Player(((LoginPacket) packet).getUserName(), point,
 				board.getRoomFromId(0), address, port);
-		// System.out.println("Handling login of: "+ pm.getName());
-		// board.getPlayers().add(pm);
-		// System.out.println("Current players on board are: " +
-		// board.getPlayers());
 		if (!pm.getName().equals(multiplayer.getCurrentPlayer().getName())) {
 			board.addPlayers(pm);
 			System.out.println("Added: " + pm.getName());
 		}
 	}
 
+	/**
+	 * This method sends data in the form of an array of bytes to the server.
+	 * @param data
+	 */
 	public void sendData(byte[] data) {
 		DatagramPacket packet = new DatagramPacket(data, data.length,
 				ipAddress, 9772);
@@ -166,6 +177,30 @@ public class GameClient extends Thread {
 			this.socket.send(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Helper method that represents a boolean as an int. (1 for true, 0 for false)
+	 * @param bool
+	 * @return
+	 */
+	public int boolToInt(boolean bool) {
+		int boolInt = bool ? 1 : 0;
+		return boolInt;
+	}
+
+
+	/**
+	 * This is another helper method, that represents an int as a boolean
+	 * @param i
+	 * @return
+	 */
+	public boolean intToBool(int i) {
+		if (i == 1) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
