@@ -15,6 +15,7 @@ public class EnemyWalker implements NPC,Serializable {
 	private Point realCoords; // real coords in respect to the window
 	private int speed;
 	private int damage;
+	private int health;
 	private String strategy;
 	private Room currentRoom;
 	private Tile currentTile;
@@ -26,6 +27,7 @@ public class EnemyWalker implements NPC,Serializable {
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
 		this.damage = damage;
+		this.health = damage;
 		this.speed = speed;
 		switch(type){
 			case "bats":
@@ -139,6 +141,17 @@ public class EnemyWalker implements NPC,Serializable {
 				player.takeDamage(damage);
 			}
 		}
+	}
+
+	public void takeDamage(int damage){
+		health = health - damage;
+		if(!checkPulse()){
+
+		}
+	}
+
+	public boolean checkPulse(){
+		return true;
 	}
 
 	public void resetPos(){

@@ -17,6 +17,7 @@ public class EnemyStill implements NPC,Serializable{
 	private Tile currentTile;
 
 	private int damage;
+	private int health;
 
 	public EnemyStill(String type, Point roomCoords, int damage, Room currentRoom){
 		this.type = type;
@@ -24,6 +25,7 @@ public class EnemyStill implements NPC,Serializable{
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
 		this.damage = damage;
+		this.health = damage;
 	}
 
 	public boolean tryMove(){
@@ -31,6 +33,16 @@ public class EnemyStill implements NPC,Serializable{
 		return false;
 	}
 
+	public void takeDamage(int damage){
+		health = health - damage;
+		if(!checkPulse()){
+
+		}
+	}
+
+	public boolean checkPulse(){
+		return true;
+	}
 
 
 	/**

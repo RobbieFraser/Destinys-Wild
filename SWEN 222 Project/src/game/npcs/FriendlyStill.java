@@ -34,6 +34,10 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	}
 
 
+	public void takeDamage(int damage){
+
+	}
+
 	/**
 	 * @return the realCoords
 	 */
@@ -90,6 +94,9 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 		if(type.equals("fladnag")){
 			text = "You shall not pass!!!!!";
 		}
+		if(type.equals("shopkeeper")){
+			text = "Shop is closed bruh";
+		}
 		isTalking = true;
 	}
 
@@ -97,6 +104,9 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public void interact() {
 		if(type.equals("shopkeeper")){
 			new ShopInterface();
+		}
+		else if(type.equals("fladnag")){
+			speak();
 		}
 		else{
 			speak();

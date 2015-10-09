@@ -13,4 +13,5 @@ public interface NPC {
 	public Point getRealCoords();
 	public String toString();
 	public boolean tryMove();
+	public void takeDamage(int damage);
 }
