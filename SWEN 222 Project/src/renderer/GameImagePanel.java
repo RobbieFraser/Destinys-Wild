@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -18,7 +17,6 @@ import game.Board;
 import game.Player;
 import game.Room;
 import game.items.Item;
-import game.items.Tool;
 import game.npcs.NPC;
 import game.obstacles.Breakable;
 
@@ -30,6 +28,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private Room curRoom; //The current Room Object
 
 	private static final String IMAGE_PATH = "data/images/"; //The path to all the images
+	private static final int DAY_TIME = 0;
+	private static final int DUSK = 1;
+	private static final int NIGHT_TIME = 2;
+	private static final int DAWN = 3;
 
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
@@ -38,6 +40,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private int time = 0;
+	private int state = DAY_TIME;
 	private boolean timeUp = true;
 	
 	private static int gX = 200; //Ground x
@@ -69,10 +72,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	private int viewDir = 0;
 
-	private int red;
-	private int green;
-	private int blue;
-
 	private boolean hurt = false;
 
 	private boolean up = true;
@@ -93,37 +92,19 @@ public class GameImagePanel extends JPanel implements MouseListener {
 //	}
 
 	public GameImagePanel(Board board, Player player){
-		red = 120;
-		green = 201;
-		blue = 255;
-		this.setBackground(new Color(red, green, blue));
 		this.board = board;
 		this.player = player;
 		curRoom = player.getCurrentRoom();
 		setDefault();
 		addMouseListener(this);
+		updateBackground();
 		//waterTest();
 	}
-	
-	public void changeTime(){
-		if (timeUp) {
-			time++;
-			if(time == 125){
-				timeUp = false;
-			}
-		}
-		else{
-			time--;
-			if(time == 0){
-				timeUp = true;
-			}
-		}
-	}
 
-	public void waterTest(){
-		while(true){
-			for(int i = 0; i < 4; i++){
-				for(int j = 0; j < 4; j++){
+	public void waterTest() {
+		while (true) {
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
 					waterSprite = water.getSubimage(j*70, i*34, 70, 34);
 					this.repaint();
 					try {
@@ -154,7 +135,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 	}
 
-
 	@Override
 	protected void paintComponent(Graphics g) {
 		curRoom = player.getCurrentRoom();
@@ -163,10 +143,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 		//If the player is hurt, increase the hurt int every time this -
 		//method is called until they are no longer invincible
-		if(player.isInvincible()){
+		if (player.isInvincible()){
 			hurt = !hurt;
-		}
-		else{
+		} else {
 			hurt = false;
 		}
 
@@ -178,25 +157,84 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawCompass(g);
 		drawBoard(g);
 		drawScore(g);
-		drawDarkness(g);
+		drawDarkness(g);	
 		updateBackground();
 
-		//        g.drawImage(waterSprite, 384, 428, null);
-		//        g.drawImage(waterSprite, 384+obW, 428+obH, null);
-		//        g.drawImage(waterSprite, 384, 428+(obH*2), null);
-		//        g.drawImage(waterSprite, 384-obW, 428+obH, null);
+		//g.drawImage(waterSprite, 384, 428, null);
+		//g.drawImage(waterSprite, 384+obW, 428+obH, null);
+		//g.drawImage(waterSprite, 384, 428+(obH*2), null);
+		//g.drawImage(waterSprite, 384-obW, 428+obH, null);
+	}
+	
+	/**
+	 * This method should be called to update the time field.
+	 * When the field reaches certain values, the time of day
+	 * should change. The value of time should go up to 63, then
+	 * back down to 0.
+	 */
+	public void changeTime() {	
+		//sanity check
+		if (time < 0 || time > 63) {
+			throw new Error("Invalid time value");
+		}
+		
+		if (timeUp) {
+			time++;
+			if (time == 40) {
+				state = DUSK;
+			} else if (time == 63) {
+				timeUp = false;
+				state = NIGHT_TIME;
+			}
+		}
+		else {
+			time--;
+			if (time == 20) {
+				state = DAWN;
+			}
+			else if (time == 0) {
+				timeUp = true;
+				state = DAY_TIME;
+			}
+		}
 	}
 
+	/**
+	 * This method should be called when it is not the state is
+	 * not DAY_TIME. This method should iterate through every
+	 * 10x10 area of pixels on the game panel, and draw variable
+	 * levels of darkness depending on the time of day. A circle
+	 * of light should be left around the player.
+	 * @param g graphics that are doing the drawing
+	 */
 	private void drawDarkness(Graphics g) {
-		Point playerCoords = player.getCoords();
+		if (state == DAY_TIME) {
+			//no need to draw the dark
+			return;
+		}
 		for (int i = 0; i < 110; ++i) {
 			for (int j = 0; j < 80; ++j) {
-				if (isPointInside(i*10, j*10+50, playerCoords)) {
-					//don't draw in here
-					g.setColor(new Color(0, 0, 0, 80));
-					//g.fillRect(i*10, j*10, 10, 10);
-				} else {
-					g.setColor(new Color(0, 0, 0, time*2));
+				//initially assumed that black drawn
+				boolean drawDarkness = true;
+				//light should be drawn around every player
+				for (Player player: board.getPlayers()) {
+					//only draw this player's torch if they are the current player's room
+					if (player != null && player.getCurrentRoom().equals(this.player.getCurrentRoom())) {
+						Point playerCoords = player.getCoords();
+						if (isPointInside(i*10, j*10+50, playerCoords)) {
+							//this 10x10 square is inside the player's area
+							drawDarkness = false;
+						}	
+					}
+				}
+				if (drawDarkness) {
+					if (state == NIGHT_TIME) {
+						g.setColor(new Color(0, 0, 0, 230));
+					} else if (state == DUSK) {
+						g.setColor(new Color(0, 0, 0, (time - 40) * 10));
+					} else if (state == DAWN) {
+						g.setColor(new Color(0, 0, 0, time*12));	
+					}
 					g.fillRect(i*10, j*10, 10, 10);
 				}
 			}
@@ -218,6 +256,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		//check if the players inventory contains the torch
 		for (Item item: player.getInventory()) {
 			if (item.getType().equals("torch")) {
+				//they can see more of the room
 				radius = 150;
 			}
 		}
@@ -229,12 +268,45 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		return distance <= radius;
 	}
 
+	/**
+	 * This method should be called when the game panel is redrawn.
+	 * It should update the background colour of the game. The 
+	 * background colour will vary depending on the time of day.
+	 */
 	private void updateBackground() {
 		Color backgroundColour;
-		if (time < 100) {
+		Color current = this.getBackground();
+		if (state == DAY_TIME) {
 			//day time
+			backgroundColour = new Color(120, 201, 255);
+		} else if (state == DUSK) {
+			//slowly approach 0
+			backgroundColour = new Color((int) (current.getRed()*0.99999999999),
+					(int) (current.getGreen()*0.99999999999),  (int) (current.getBlue()*0.99999999999));
+		} else if (state == DAWN) {
+			//go up to light blue
+			//we need to make sure we don't exceed the light blue colour for day time
+			
+			int red = (int) ((1+current.getRed())*1.001);
+			if (red > 120) {
+				red = current.getRed();
+			}
+			int green = (int) ((1+current.getGreen())*1.001);
+			if (green > 201) {
+				green = current.getGreen();
+			}
+			//sky should get blue the fastest
+			int blue = (int) ((1+current.getBlue())*1.01);
+			if (blue >= 255) {
+				blue = current.getBlue();
+			}
+			backgroundColour = new Color(red, green, blue);
 		}
-		
+		else {
+			//night time
+			backgroundColour = new Color(0, 0, 0, 240);
+		}
+		this.setBackground(backgroundColour);
 	}
 	
 	public void drawNorthRoom(Graphics g){

@@ -295,9 +295,11 @@ public class Player implements Serializable {
 	 * @return boolean success
 	 */
 	public boolean tryEat(int itemId){
+		System.out.println("In try eat method");
 		Item healthItem = null;
 		for(Item item : inventory){
 			if(item.getId() == itemId){
+				System.out.println("Food found");
 				healthItem = item;
 			}
 		}
@@ -307,6 +309,7 @@ public class Player implements Serializable {
 				return false;
 			}
 			else{
+				System.out.println("Item should've been eaten..");
 				if(getHealth() + healthItem.getHealth() < 100){
 					setHealth(getHealth() + healthItem.getHealth());
 				}

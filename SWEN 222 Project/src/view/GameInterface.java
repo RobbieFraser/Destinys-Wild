@@ -54,6 +54,9 @@ public class GameInterface{
 		updateUI();
 		frame.setVisible(true);
 		latch.countDown();
+		
+		//TODO: Fix inventory --> Assumes all food, then all weapons etc
+		//Will not work if weapons picked up before food, or not strictly in order
 	}
 
 	/**
@@ -393,6 +396,7 @@ public class GameInterface{
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
+				System.out.println("Index: "+i+" "+items[i].toString());
 				return items[i];
 			}
 		}
@@ -460,7 +464,9 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_SHIFT:
 			Item selectedItem = getSelectedItem();
+			System.out.println(selectedItem.getType());
 			if (selectedItem != null) {
+				System.out.println("Item is not null");
 				if (selectedItem instanceof Health) {
 					clearKeysPressed();
 					player.tryEat(selectedItem.getId());

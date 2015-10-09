@@ -45,7 +45,7 @@ public class ShopInterface {
 	private void initialiseInterface() {
 		frame = new JFrame();
 		frame.setTitle("Shop");
-		frame.setBounds(300, 150, 400, 300);
+		frame.setBounds(400, 150, 400, 300);
 		frame.setResizable(false);
 		frame.setLayout(null);
 		frame.setAlwaysOnTop(true);

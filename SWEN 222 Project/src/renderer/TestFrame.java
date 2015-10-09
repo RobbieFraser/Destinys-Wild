@@ -1,3 +1,4 @@
+
 package renderer;
 
 import java.awt.BorderLayout;
@@ -25,19 +26,6 @@ public class TestFrame extends JFrame {
 	private GameImagePanel gamePanel;
 	private LevelEditorPanel editPanel;
 	private boolean editor = false;
-
-
-	/*
-	 * This version of the TestFrame constructor inits the Game Panel
-	 */
-//	public TestFrame(Board board){
-//		super("Test Renderer");
-//		this.board = board;
-//		gamePanel = new GameImagePanel(board);
-//		setUp();
-//		//gamePanel.waterTest();
-//		//loop();
-//	}
 
 	/*
 	 * This version of the TestFrame constructor inits the Level editor
@@ -171,3 +159,5 @@ public class TestFrame extends JFrame {
 		getContentPane().add(editPanel);
 	}
 }
+
+
