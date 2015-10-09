@@ -49,7 +49,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	//The x and y values for selecting a room on the map
 	private int hoverMapX = -1;
 	private int hoverMapY = -1;
-	
+
 	//-1 to 4, which door is highlighted (-1 is none)
 	private int hoverDoors = -1;
 
@@ -214,6 +214,21 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 				}
 				g.setColor(new Color(91, 188, 95));
 				g.drawRect(x+800, y+400, size, size);
+				if(r != null){
+					g.setColor(new Color(125, 235, 129));
+					if(r.getNorth() != -1){
+						g.drawRect(x+800 + 20, y+400, 10, 1);
+					}
+					if(r.getSouth() != -1){
+						g.drawRect(x+800 + 20, y+400 + size, 10, 1);
+					}
+					if(r.getWest() != -1){
+						g.drawRect(x+800, y+400 + 20, 1, 10);
+					}
+					if(r.getNorth() != -1){
+						g.drawRect(x+800 + size, y+400 + 20, 1, 10);
+					}
+				}
 				x += size;
 			}
 			x = 0;
@@ -494,7 +509,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 			this.repaint();
 		}
 	}
-	
+
 	public void checkDoors(int x, int y){
 		if(x > 0 && x < 50 && y > 250 && y < 350){
 			hoverDoors = 3; //east
@@ -674,10 +689,94 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		curRoom = board.getBoard()[hoverMapY][hoverMapX];
 		roomX = (int)curRoom.getBoardPos().getY();
 		roomY = (int)curRoom.getBoardPos().getX();
+		if(curRoom.getNorth() == -1){
+			north = false;
+		}
+		else{
+			north = true;
+		}
+		if(curRoom.getEast() == -1){
+			east = false;
+		}
+		else{
+			east = true;
+		}
+		if(curRoom.getSouth() == -1){
+			south = false;
+		}
+		else{
+			south = true;
+		}
+		if(curRoom.getWest() == -1){
+			west = false;
+		}
+		else{
+			west = true;
+		}
 	}
-	
+
 	public void changeDoors(){
-		
+		System.out.println(hoverDoors);
+		if(hoverDoors == 0){
+			north = !north;
+			if(north){
+				if(board.getRoomFromCoords(roomY - 1, roomX) != null){
+					curRoom.setNorth(board.getRoomFromCoords(roomY - 1, roomX).getId());
+					board.getRoomFromCoords(roomY - 1, roomX).setSouth(curRoom.getId());
+				}
+			}
+			else{
+				curRoom.setNorth(-1);
+				if(board.getRoomFromCoords(roomY - 1, roomX) != null){
+					board.getRoomFromCoords(roomY - 1, roomX).setSouth(-1);
+				}
+			}
+		}
+		if(hoverDoors == 1){
+			east = !east;
+			if(east){
+				if(board.getRoomFromCoords(roomY, roomX + 1) != null){
+					curRoom.setEast(board.getRoomFromCoords(roomY, roomX + 1).getId());
+					board.getRoomFromCoords(roomY, roomX + 1).setWest(curRoom.getId());
+				}
+			}
+			else{
+				curRoom.setEast(-1);
+				if(board.getRoomFromCoords(roomY, roomX + 1) != null){
+					board.getRoomFromCoords(roomY, roomX + 1).setWest(-1);
+				}
+			}
+		}
+		if(hoverDoors == 2){
+			south = !south;
+			if(south){
+				if(board.getRoomFromCoords(roomY + 1, roomX) != null){
+					curRoom.setSouth(board.getRoomFromCoords(roomY + 1, roomX).getId());
+					board.getRoomFromCoords(roomY + 1, roomX).setNorth(curRoom.getId());
+				}
+			}
+			else{
+				curRoom.setSouth(-1);
+				if(board.getRoomFromCoords(roomY + 1, roomX) != null){
+					board.getRoomFromCoords(roomY + 1, roomX).setNorth(-1);
+				}
+			}
+		}
+		if(hoverDoors == 3){
+			west = !west;
+			if(west){
+				if(board.getRoomFromCoords(roomY, roomX - 1) != null){
+					curRoom.setWest(board.getRoomFromCoords(roomY, roomX - 1).getId());
+					board.getRoomFromCoords(roomY, roomX - 1).setEast(curRoom.getId());
+				}
+			}
+			else{
+				curRoom.setWest(-1);
+				if(board.getRoomFromCoords(roomY, roomX - 1) != null){
+					board.getRoomFromCoords(roomY, roomX - 1).setEast(-1);
+				}
+			}
+		}
 	}
 
 	public void saveBoard(){
