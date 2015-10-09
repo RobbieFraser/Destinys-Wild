@@ -32,7 +32,7 @@ public class DestinysWild implements Runnable {
 	private boolean running = true;
 	private DestinysWild game = this;
 	private CountDownLatch latch;
-	private Multiplayer multiplayer = null;
+	private static Multiplayer multiplayer = null;
 	private boolean paused;
 	private MenuInterface mainMenu;
 	private JFrame frame;
@@ -143,6 +143,10 @@ public class DestinysWild implements Runnable {
 	private void tick() {
 		tickCount++;
 		updateGame();
+	}
+
+	public static Multiplayer getMultiplayer(){
+		return multiplayer;
 	}
 
 	public void updateGame() {

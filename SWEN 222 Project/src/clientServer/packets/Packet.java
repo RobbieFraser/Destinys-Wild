@@ -7,7 +7,7 @@ public abstract class Packet {
 
 
 	public static enum PacketTypes{
-		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), BOARD(03);
+		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), BOARD(03), REMOVEITEM(04);
 		private int packetID;
 		private PacketTypes(int packetID){
 			this.packetID = packetID;

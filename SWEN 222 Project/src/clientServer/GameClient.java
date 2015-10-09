@@ -3,6 +3,7 @@ package clientServer;
 import game.Board;
 import game.Player;
 import game.Room;
+import game.items.Item;
 
 import java.awt.Point;
 import java.io.ByteArrayInputStream;
@@ -24,6 +25,7 @@ import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
 import clientServer.packets.Packet.PacketTypes;
+import clientServer.packets.RemoveItemPacket;
 
 public class GameClient extends Thread {
 
@@ -33,12 +35,12 @@ public class GameClient extends Thread {
 	private Board board;
 	private Multiplayer multiplayer;
 
-	public GameClient(Board board,String ipName, Multiplayer multiplayer) {
+	public GameClient(Board board, String ipName, Multiplayer multiplayer) {
 		this.board = board;
 		this.multiplayer = multiplayer;
 		try {
 			this.socket = new DatagramSocket();
-			this.ipAddress =  InetAddress.getByName(ipName);
+			this.ipAddress = InetAddress.getByName(ipName);
 			System.out.println("Client initialisng");
 		} catch (SocketException e) {
 			System.out.println("Socket exception.");
@@ -53,20 +55,21 @@ public class GameClient extends Thread {
 		while (true) {
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
-		//	System.out.println("Packet created");
+			// System.out.println("Packet created");
 			try {
-		//		System.out.println("Client attempting to receive packet");
+				// System.out.println("Client attempting to receive packet");
 				this.socket.receive(packet);
-		//		System.out.println("Client received packet");
+				// System.out.println("Client received packet");
 			} catch (IOException e) {
-		//		System.out.println("Something went wrong");
+				// System.out.println("Something went wrong");
 				e.printStackTrace();
 			}
-		//	System.out.println("Client getting ready to parse packet");
-			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
-			//String msg = new String(packet.getData());
-			//System.out.println(msg);
-		//	System.out.println("SERVER > " + msg);
+			// System.out.println("Client getting ready to parse packet");
+			this.parsePacket(packet.getData(), packet.getAddress(),
+					packet.getPort());
+			// String msg = new String(packet.getData());
+			// System.out.println(msg);
+			// System.out.println("SERVER > " + msg);
 		}
 	}
 
@@ -79,25 +82,38 @@ public class GameClient extends Thread {
 		case INVALID:
 			break;
 		case LOGIN:
-		//	System.out.println("Login Packet found");
+			// System.out.println("Login Packet found");
 			packet = new LoginPacket(data);
-			handleLogin((LoginPacket)packet,address,port);
+			handleLogin((LoginPacket) packet, address, port);
 			break;
 		case DISCONNECT:
 			packet = new DisconnectPacket(data);
-			 System.out.println("[" + address.getHostAddress() + ":" + port + "] "
-	                    + ((DisconnectPacket) packet).getUserName() + " has left the Wild...");
-			 board.removePlayers(board.getPlayer(((DisconnectPacket)packet).getUserName()));
+			System.out.println("[" + address.getHostAddress() + ":" + port
+					+ "] " + ((DisconnectPacket) packet).getUserName()
+					+ " has left the Wild...");
+			board.removePlayers(board.getPlayer(((DisconnectPacket) packet)
+					.getUserName()));
 			break;
 		case MOVE:
 			packet = new MovePacket(data);
 			handleMovePacket((MovePacket) packet);
-		//	System.out.println("Player is moving online");
+			break;
+			// System.out.println("Player is moving online");
 		case BOARD:
 			packet = new BoardPacket(data);
 			handleBoardPacket((BoardPacket) packet);
+		case REMOVEITEM:
+			packet = new RemoveItemPacket(data);
+			handleRemoveItemPacket((RemoveItemPacket) packet);
+			break;
 		}
 
+	}
+
+	public void handleRemoveItemPacket(RemoveItemPacket packet) {
+		Room itemRoom = board.getRoomFromId(packet.getRoomID());
+		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
+		itemRoom.removeItems(itemToRemove);
 	}
 
 	public void handleBoardPacket(BoardPacket packet) {
@@ -105,14 +121,16 @@ public class GameClient extends Thread {
 		try {
 			Room newRoom = (Room) convertFromBytes(boardData);
 			int id = newRoom.getId();
-			for(int i = 0; i < 10; i++){
-				for(int j = 0; j < 10; j++){
-					if(board.getBoard()[i][j].getId() == id){
-						//board.getBoard()[i][j] = newRoom;
-						for(int a = 0; i < 10; i++){
-							for(int b = 0; j < 10; j++){
-								board.getBoard()[i][j].getObstacles()[a][b] = newRoom.getObstacles()[a][b];
-								board.getBoard()[i][j].getItems()[a][b] = newRoom.getItems()[a][b];
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					if (board.getBoard()[i][j].getId() == id) {
+						// board.getBoard()[i][j] = newRoom;
+						for (int a = 0; i < 10; i++) {
+							for (int b = 0; j < 10; j++) {
+								board.getBoard()[i][j].getObstacles()[a][b] = newRoom
+										.getObstacles()[a][b];
+								board.getBoard()[i][j].getItems()[a][b] = newRoom
+										.getItems()[a][b];
 							}
 
 						}
@@ -121,15 +139,12 @@ public class GameClient extends Thread {
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
-
-
-
 
 	public byte[] convertToBytes(Object object) throws IOException {
 		byte[] bytes = null;
@@ -189,35 +204,35 @@ public class GameClient extends Thread {
 		player.setWest(intToBool(packet.getWest()));
 		player.setSouth(intToBool(packet.getSouth()));
 		player.updatePlayer();
-		player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
+		player.setCurrentTile(player.getCurrentRoom().calcTile(
+				player.getCoords()));
 	}
 
-
-	public int boolToInt(boolean bool){
+	public int boolToInt(boolean bool) {
 		int boolInt = bool ? 1 : 0;
 		return boolInt;
 	}
 
-	public boolean intToBool(int i){
-		if(i==1){
+	public boolean intToBool(int i) {
+		if (i == 1) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
 
 	private void handleLogin(LoginPacket packet, InetAddress address, int port) {
-		System.out.println("[" + address.getHostAddress() + ":" + port
-				+ "]" + ((LoginPacket) packet).getUserName()
+		System.out.println("[" + address.getHostAddress() + ":" + port + "]"
+				+ ((LoginPacket) packet).getUserName()
 				+ " has entered the Wild");
 		Point point = new Point(500, 300);
-		Player pm = new Player(
-				((LoginPacket) packet).getUserName(), point, board.getRoomFromId(0), address, port);
-		//System.out.println("Handling login of: "+ pm.getName());
-		//board.getPlayers().add(pm);
-		//System.out.println("Current players on board are: " + board.getPlayers());
-		if(!pm.getName().equals(multiplayer.getCurrentPlayer().getName())){
+		Player pm = new Player(((LoginPacket) packet).getUserName(), point,
+				board.getRoomFromId(0), address, port);
+		// System.out.println("Handling login of: "+ pm.getName());
+		// board.getPlayers().add(pm);
+		// System.out.println("Current players on board are: " +
+		// board.getPlayers());
+		if (!pm.getName().equals(multiplayer.getCurrentPlayer().getName())) {
 			board.addPlayers(pm);
 			System.out.println("Added: " + pm.getName());
 		}

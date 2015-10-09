@@ -3,6 +3,7 @@ package clientServer;
 import game.Board;
 import game.Player;
 import game.Room;
+import game.items.Item;
 
 import java.awt.Point;
 import java.io.ByteArrayInputStream;
@@ -25,6 +26,7 @@ import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
+import clientServer.packets.RemoveItemPacket;
 import clientServer.packets.Packet.PacketTypes;
 
 public class GameServer extends Thread {
@@ -110,13 +112,22 @@ public class GameServer extends Thread {
 			// + " has moved to " + ((MovePacket) packet).getX() + ","
 			// + ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
+			break;
 		case BOARD:
 			packet = new BoardPacket(data);
 			this.handleBoard((BoardPacket) packet);
 			break;
-
+		case REMOVEITEM:
+			packet = new RemoveItemPacket(data);
+			this.handleRemoveItemPacket((RemoveItemPacket) packet);
+			break;
 		}
+	}
 
+	public void handleRemoveItemPacket(RemoveItemPacket packet) {
+		Room itemRoom = board.getRoomFromId(packet.getRoomID());
+		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
+		itemRoom.removeItems(itemToRemove);
 	}
 
 	private void handleBoard(BoardPacket packet) {

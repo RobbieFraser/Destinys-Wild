@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import clientServer.packets.RemoveItemPacket;
+
 public class Room implements Serializable{
 
 	private int ROOM_SIZE = 10; //the length of a room, size x size
@@ -37,6 +39,18 @@ public class Room implements Serializable{
 		this.west = west;
 		this.Id = Id;
 		this.boardPos = boardPos;
+	}
+
+	public Item getItemFromId(int id){
+		for (int row = 0; row < getItems().length; ++row) {
+			for (int col = 0; col < getItems()[0].length; ++col) {
+				Item item = getItems()[row][col];
+				if(item != null && item.getId() == id){
+					return item;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -179,6 +193,8 @@ public class Room implements Serializable{
 		items[item.getCoords().x][item.getCoords().y] = null;
 		Tile tile = getTileFromRoomCoords(new Point(item.getCoords().x, item.getCoords().y));
 		tile.setOccupied(false);
+		RemoveItemPacket removePacket = new RemoveItemPacket(this.getId(),item.getId());
+		removePacket.writeData(DestinysWild.getMultiplayer().getClient());
 	}
 
 	public Item[][] getItems(){
