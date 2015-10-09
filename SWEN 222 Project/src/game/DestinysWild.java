@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import clientServer.Multiplayer;
-import clientServer.packets.BoardPacket;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
 import game.items.Health;
@@ -161,61 +160,6 @@ public class DestinysWild implements Runnable {
 				currentPlayer.isEast(), currentPlayer.isSouth(),
 				currentPlayer.isWest(),currentPlayer.getWalkState());
 		movePacket.writeData(multiplayer.getClient());
-		byte[] currentBoard = null;
-		try {
-			currentBoard = convertToBytes(currentPlayer.getCurrentRoom());
-			// System.out.println("Byte array length is: " +
-			// currentBoard.length);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BoardPacket boardPacket = new BoardPacket(currentBoard);
-		boardPacket.writeData(multiplayer.getClient());
-	}
-
-	public byte[] convertToBytes(Object object) throws IOException {
-		byte[] bytes = null;
-		ByteArrayOutputStream bos = null;
-		ObjectOutputStream oos = null;
-		try {
-			bos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(bos);
-			oos.writeObject(object);
-			oos.flush();
-			bytes = bos.toByteArray();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
-			if (bos != null) {
-				bos.close();
-			}
-		}
-		return bytes;
-	}
-
-	private Object convertFromBytes(byte[] bytes) throws IOException,
-			ClassNotFoundException {
-		Object obj = null;
-		ByteArrayInputStream bis = null;
-		ObjectInputStream ois = null;
-		try {
-			bis = new ByteArrayInputStream(bytes);
-			ois = new ObjectInputStream(bis);
-			obj = ois.readObject();
-		} finally {
-			if (bis != null) {
-				bis.close();
-			}
-			if (ois != null) {
-				ois.close();
-			}
-		}
-		return obj;
 	}
 
 	public void updateUI() {
