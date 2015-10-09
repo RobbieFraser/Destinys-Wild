@@ -190,11 +190,11 @@ public class Room implements Serializable{
 	}
 
 	public void removeItems(Item item){
+		RemoveItemPacket removePacket = new RemoveItemPacket(this.getId(),item.getId());
+		removePacket.writeData(DestinysWild.getMultiplayer().getClient());
 		items[item.getCoords().x][item.getCoords().y] = null;
 		Tile tile = getTileFromRoomCoords(new Point(item.getCoords().x, item.getCoords().y));
 		tile.setOccupied(false);
-		RemoveItemPacket removePacket = new RemoveItemPacket(this.getId(),item.getId());
-		removePacket.writeData(DestinysWild.getMultiplayer().getClient());
 	}
 
 	public Item[][] getItems(){

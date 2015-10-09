@@ -127,7 +127,9 @@ public class GameServer extends Thread {
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
 		Room itemRoom = board.getRoomFromId(packet.getRoomID());
 		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
-		itemRoom.removeItems(itemToRemove);
+		if (itemToRemove != null) {
+			itemRoom.removeItems(itemToRemove);
+		}
 	}
 
 	private void handleBoard(BoardPacket packet) {
@@ -135,14 +137,16 @@ public class GameServer extends Thread {
 		try {
 			Room newRoom = (Room) convertFromBytes(boardData);
 			int id = newRoom.getId();
-			for(int i = 0; i < 10; i++){
-				for(int j = 0; j < 10; j++){
-					if(board.getBoard()[i][j].getId() == id){
-						//board.getBoard()[i][j] = newRoom;
-						for(int a = 0; i < 10; i++){
-							for(int b = 0; j < 10; j++){
-								board.getBoard()[i][j].getObstacles()[a][b] = newRoom.getObstacles()[a][b];
-								board.getBoard()[i][j].getItems()[a][b] = newRoom.getItems()[a][b];
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					if (board.getBoard()[i][j].getId() == id) {
+						// board.getBoard()[i][j] = newRoom;
+						for (int a = 0; i < 10; i++) {
+							for (int b = 0; j < 10; j++) {
+								board.getBoard()[i][j].getObstacles()[a][b] = newRoom
+										.getObstacles()[a][b];
+								board.getBoard()[i][j].getItems()[a][b] = newRoom
+										.getItems()[a][b];
 							}
 
 						}
@@ -214,7 +218,8 @@ public class GameServer extends Thread {
 				player.setCoords(playerX, playerY);
 				Room newRoom = board.getRoomFromId(packet.getRoomID());
 				player.setRoom(newRoom);
-				player.setCurrentTile(player.getCurrentRoom().calcTile(player.getCoords()));
+				player.setCurrentTile(player.getCurrentRoom().calcTile(
+						player.getCoords()));
 				player.setNorth(intToBool(packet.getNorth()));
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
@@ -227,16 +232,15 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public int boolToInt(boolean bool){
+	public int boolToInt(boolean bool) {
 		int boolInt = bool ? 1 : 0;
 		return boolInt;
 	}
 
-	public boolean intToBool(int i){
-		if(i==1){
+	public boolean intToBool(int i) {
+		if (i == 1) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
