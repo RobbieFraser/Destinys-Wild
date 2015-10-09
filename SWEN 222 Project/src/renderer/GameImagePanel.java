@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import game.Board;
 import game.Player;
 import game.Room;
+import game.items.Item;
+import game.items.Tool;
 import game.npcs.NPC;
 import game.obstacles.Breakable;
 
@@ -34,6 +37,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
 	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
+	private int time = 0;
+	private boolean timeUp = true;
+	
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
 
@@ -73,18 +79,18 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 
-	public GameImagePanel(Board board){
-		red = 120;
-		green = 201;
-		blue = 255;
-		this.setBackground(new Color(red, green, blue));
-		this.board = board;
-		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
-		player = new Player("Matt", new Point(546, 287), curRoom);
-		setDefault();
-		addMouseListener(this);
-		//waterTest();
-	}
+//	public GameImagePanel(Board board){
+//		red = 120;
+//		green = 201;
+//		blue = 255;
+//		this.setBackground(new Color(red, green, blue));
+//		this.board = board;
+//		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
+//		player = new Player("Matt", new Point(546, 287), curRoom);
+//		setDefault();
+//		addMouseListener(this);
+//		//waterTest();
+//	}
 
 	public GameImagePanel(Board board, Player player){
 		red = 120;
@@ -97,6 +103,21 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		setDefault();
 		addMouseListener(this);
 		//waterTest();
+	}
+	
+	public void changeTime(){
+		if (timeUp) {
+			time++;
+			if(time == 125){
+				timeUp = false;
+			}
+		}
+		else{
+			time--;
+			if(time == 0){
+				timeUp = true;
+			}
+		}
 	}
 
 	public void waterTest(){
@@ -135,36 +156,89 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 
 	@Override
-    protected void paintComponent(Graphics g) {
+	protected void paintComponent(Graphics g) {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
-        super.paintComponent(g);
+		super.paintComponent(g);
 
-        //If the player is hurt, increase the hurt int every time this -
-        //method is called until they are no longer invincible
-        if(player.isInvincible()){
-        	hurt = !hurt;
-        }
-        else{
-        	hurt = false;
-        }
+		//If the player is hurt, increase the hurt int every time this -
+		//method is called until they are no longer invincible
+		if(player.isInvincible()){
+			hurt = !hurt;
+		}
+		else{
+			hurt = false;
+		}
 
-        drawNorthRoom(g);
-        drawNorthWall(g);
-        drawEastRoom(g);
-        drawEastWall(g);
-        drawGround(g);
-        drawCompass(g);
-        drawBoard(g);
-        drawScore(g);
-//        g.drawImage(waterSprite, 384, 428, null);
-//        g.drawImage(waterSprite, 384+obW, 428+obH, null);
-//        g.drawImage(waterSprite, 384, 428+(obH*2), null);
-//        g.drawImage(waterSprite, 384-obW, 428+obH, null);
-    }
+		drawNorthRoom(g);
+		drawNorthWall(g);
+		drawEastRoom(g);
+		drawEastWall(g);
+		drawGround(g);
+		drawCompass(g);
+		drawBoard(g);
+		drawScore(g);
+		drawDarkness(g);
+		updateBackground();
 
+		//        g.drawImage(waterSprite, 384, 428, null);
+		//        g.drawImage(waterSprite, 384+obW, 428+obH, null);
+		//        g.drawImage(waterSprite, 384, 428+(obH*2), null);
+		//        g.drawImage(waterSprite, 384-obW, 428+obH, null);
+	}
+
+	private void drawDarkness(Graphics g) {
+		Point playerCoords = player.getCoords();
+		for (int i = 0; i < 110; ++i) {
+			for (int j = 0; j < 80; ++j) {
+				if (isPointInside(i*10, j*10+50, playerCoords)) {
+					//don't draw in here
+					g.setColor(new Color(0, 0, 0, 80));
+					//g.fillRect(i*10, j*10, 10, 10);
+				} else {
+					g.setColor(new Color(0, 0, 0, time*2));
+					g.fillRect(i*10, j*10, 10, 10);
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method should return true if the two values x and
+	 * y are contained within a circle with a radius centred
+	 * on the point.
+	 * @param x x coord
+	 * @param y y coord
+	 * @param point centre of circle
+	 * @return true if point is inside circle, otherwise false
+	 */
+	private boolean isPointInside(int x, int y, Point point) {
+		int radius = 50;
+		
+		//check if the players inventory contains the torch
+		for (Item item: player.getInventory()) {
+			if (item.getType().equals("torch")) {
+				radius = 150;
+			}
+		}
+		
+		//use the pythagorean theorem
+		int xDiff = Math.abs(point.x - x);
+		int yDiff = Math.abs(point.y - y);
+		double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+		return distance <= radius;
+	}
+
+	private void updateBackground() {
+		Color backgroundColour;
+		if (time < 100) {
+			//day time
+		}
+		
+	}
+	
 	public void drawNorthRoom(Graphics g){
-		if((int)player.getCurrentRoom().getBoardPos().getX() != 0){
+		if ((int) player.getCurrentRoom().getBoardPos().getX() != 0) {
 			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1,
 					(int)player.getCurrentRoom().getBoardPos().getY());
 			BufferedImage ground = loadImage("ground.png");

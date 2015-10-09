@@ -131,7 +131,9 @@ public class DestinysWild implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
+				//System.out.println("Daytime changed");
 				// System.out.println("Ticks: " + ticks);
+				ui.changeTime();
 				ticks = 0;
 			}
 			// }

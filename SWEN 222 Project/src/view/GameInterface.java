@@ -33,6 +33,7 @@ public class GameInterface{
 	private static final int MAX_TOOLS = 6;
 	private static final int CYCLE_LEFT = -2;
 	private static final int CYCLE_RIGHT = -1;
+	
 	public JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
@@ -40,26 +41,14 @@ public class GameInterface{
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
 	private Item[] items = new Item[11];
-	private String orientation = "north";
+	private String orientation;
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
 		this.latch = latch;
 		this.player = player;
 		this.board = board;
 		this.game = game;
-		gamePanel = new GameImagePanel(board, player);
-		initialiseInterface();
-		updateUI();
-		frame.setVisible(true);
-		latch.countDown();
-		//TODO: Add support for L / R Arrows keys - Change perspective
-	}
-
-	public void setInterface(Player player, DestinysWild game, Board board, CountDownLatch latch){
-		this.latch = latch;
-		this.player = player;
-		this.board = board;
-		this.game = game;
+		this.orientation = "north";
 		gamePanel = new GameImagePanel(board, player);
 		initialiseInterface();
 		updateUI();
@@ -313,6 +302,10 @@ public class GameInterface{
 		} else {
 			return "key";
 		}
+	}
+	
+	public void changeTime(){
+		gamePanel.changeTime();
 	}
 
 	/**
