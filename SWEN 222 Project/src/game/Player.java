@@ -295,25 +295,22 @@ public class Player implements Serializable {
 	 * @return boolean success
 	 */
 	public boolean tryEat(int itemId){
-		System.out.println("In try eat method");
 		Item healthItem = null;
-		for(Item item : inventory){
-			if(item.getId() == itemId){
-				System.out.println("Food found");
+		for (Item item : inventory){
+			if (item.getId() == itemId){
 				healthItem = item;
 			}
 		}
-		if(healthItem != null){
-			if(getHealth() == 100){
-				System.out.println("You don't need to eat that yo");
+		if (healthItem != null){
+			if (getHealth() == 100){
 				return false;
 			}
 			else{
-				System.out.println("Item should've been eaten..");
-				if(getHealth() + healthItem.getHealth() < 100){
+				if (getHealth() + healthItem.getHealth() < 100){
 					setHealth(getHealth() + healthItem.getHealth());
 				}
-				else{
+				else {
+					//don't want player to have over 100 health
 					setHealth(100);
 				}
 				inventory.remove(healthItem);
@@ -562,8 +559,38 @@ public class Player implements Serializable {
 		return visitedRooms;
 	}
 
+	/**
+	 * Because of the way various methods in GameInterface
+	 * are set up, it is convenient if the items in the
+	 * inventory are returned with all health items first,
+	 * then tool items, then key items.
+	 * @return sorted inventory
+	 */
 	public List<Item> getInventory() {
-		return inventory;
+		List<Item> sortedInventory = new ArrayList<Item>();
+		
+		//add health items
+		for (int i = 0; i < inventory.size(); ++i) {
+			if (inventory.get(i) instanceof Health) {
+				sortedInventory.add(inventory.get(i));
+			}
+		}
+		
+		//add tools
+		for (int i = 0; i < inventory.size(); ++i) {
+			if (inventory.get(i) instanceof Tool) {
+				sortedInventory.add(inventory.get(i));
+			}
+		}
+		
+		//finally, add key
+		for (int i = 0; i < inventory.size(); ++i) {
+			if (inventory.get(i) instanceof Key) {
+				sortedInventory.add(inventory.get(i));
+			}
+		}
+		
+		return sortedInventory;
 	}
 
 	public int getScore() {

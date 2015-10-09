@@ -40,7 +40,6 @@ public class GameInterface{
 	private DestinysWild game;
 	private GameImagePanel gamePanel;
 	private CountDownLatch latch;
-	private Item[] items = new Item[11];
 	private String orientation;
 
 	public GameInterface(Player player, DestinysWild game, Board board, CountDownLatch latch) {
@@ -54,9 +53,6 @@ public class GameInterface{
 		updateUI();
 		frame.setVisible(true);
 		latch.countDown();
-		
-		//TODO: Fix inventory --> Assumes all food, then all weapons etc
-		//Will not work if weapons picked up before food, or not strictly in order
 	}
 
 	/**
@@ -100,16 +96,6 @@ public class GameInterface{
 			for (int j = 0; j < 3; ++j) {
 				JLabel toolBox = new JLabel(new ImageIcon(MenuInterface.loadImage("toolBox.png")));
 				toolBox.setBounds(465 + j * 65, 10 + i * 65, 56, 56);
-				if ((i * 3 + j) == 4) {
-					//10th item
-					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press 0 to select.");
-				} else if ((i * 3 + j) == 5) {
-					//11th item
-					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press - to select.");
-				} else {
-					//0 - 9th item
-					toolBox.setToolTipText("Tool slot "+(i*3+j+1)+" - press "+(i*3+j+6)+" to select.");
-				}
 				inventoryPanel.add(toolBox);
 			}
 		}
@@ -117,11 +103,11 @@ public class GameInterface{
 		// set up key slot
 		// player can only hold 1 key at a time
 		JLabel keyBox = new JLabel(new ImageIcon(MenuInterface.loadImage("keyBox.png")));
-		keyBox.setToolTipText("Key Slot - press = to select.");
 		keyBox.setBounds(670, 20, 100, 100);
 		inventoryPanel.add(keyBox);
 
 		frame.getContentPane().add(inventoryPanel);
+		
 		//intialise the selected item to be the first food slot as a default
 		updateSelectedSlot(0);
 
@@ -170,7 +156,7 @@ public class GameInterface{
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
 		// first lets draw the food
-		int numFood = player.numHealthItems(); //should extract from player
+		int numFood = player.numHealthItems();
 		for (int i = 0; i < numFood; ++i) {
 			//extract the foodLabel from the inventoryPanel
 			JLabel foodLabel = (JLabel) inventoryPanel.getComponent(i);
@@ -187,7 +173,7 @@ public class GameInterface{
 		}
 
 		//now we can draw in weapons
-		int numTools = player.numToolItems(); //should extract from player
+		int numTools = player.numToolItems();
 		for (int i = 0; i < numTools; ++i) {
 			//extract the tool label from the inventory label
 			JLabel toolLabel = (JLabel) inventoryPanel.getComponent(i + MAX_FOOD);
@@ -195,18 +181,15 @@ public class GameInterface{
 			drawBackgroundImage(toolLabel, "toolBox", i + MAX_FOOD);
 		}
 
-		boolean hasNoKey = player.canAddKeyItem(); // should extract from player
-		if (!hasNoKey) {
+		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
+		boolean hasKey = !player.canAddKeyItem();
+		if (hasKey) {
 			//need to draw players key
-			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
 		} else {
-			JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 			Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
 			keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		}
-
-		updateItems();
 
 		//the interface should be updated
 		frame.revalidate();
@@ -216,31 +199,7 @@ public class GameInterface{
 	}
 
 	/**
-	 * The items field should be an array that contains the
-	 * players inventory. It should order the items the
-	 * same way that the items are displayed in the interface.
-	 * This method should update the items field.
-	 */
-	private void updateItems() {
-		int numHealthItems = player.numHealthItems();
-		int numTools = player.numToolItems();
-		boolean hasKey = !player.canAddKeyItem();
-
-		for (int i = 0; i < numHealthItems; ++i) {
-			items[i] = player.getInventory().get(i);
-		}
-
-		for (int j = 0; j < numTools; ++j) {
-			items[j + MAX_FOOD] = player.getInventory().get(j+numHealthItems);
-		}
-
-		if (hasKey) {
-			items[11] = player.getInventory().get(numHealthItems+numTools);
-		}
-	}
-
-	/**
-	 * This method should be called when the image on
+	 * This method should be called when the image of
 	 * an inventory slot should be redrawn with an
 	 * item's image.
 	 * @param inventoryLabel label that new image
@@ -262,21 +221,7 @@ public class GameInterface{
 		g.drawImage(slotBackgroundImage, 0, 0, null, null);
 
 		//update the panel description (hover over text)
-		if (type.equals("toolBox")) {
-			if (index == 9) {
-				//10th slot
-				inventoryLabel.setToolTipText(imageName+" - press 0 to select.");
-			} else if (index == 10) {
-				//11th slot
-				inventoryLabel.setToolTipText(imageName+" - press - to select.");
-			} else {
-				//6th - 9th slot
-				inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
-			}
-		} else if (type.equals("keyBox")) {
-			//12th slot
-			inventoryLabel.setToolTipText(imageName+" - press = to select.");
-		} else {
+		if (type.equals("itemBox")) {
 			//1st - 5th slot
 			inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
 		}
@@ -297,12 +242,17 @@ public class GameInterface{
 		if (index < 0 || index > 12) {
 			throw new Error("Invalid index exception");
 		}
-
+		
 		if (index < 5) {
-			return "appleIcon";
+			return player.getInventory().get(index).getType() + "Icon";
 		} else if (index < 11) {
+			//say we are given an index of 5
+			//then we want the first item
+			//int toolNum = index - MAX_FOOD;
+			//System.out.println(index + " " +player.getInventory().get(toolNum+player.numHealthItems()).getType());
 			return "pickaxeIcon";
 		} else {
+			System.out.println(index + " " +player.getInventory().get(player.numToolItems()+player.numHealthItems()).getType());
 			return "key";
 		}
 	}
@@ -310,6 +260,7 @@ public class GameInterface{
 	public void changeTime(){
 		gamePanel.changeTime();
 	}
+	
 
 	/**
 	 * This method should be called when the user has
@@ -326,13 +277,14 @@ public class GameInterface{
 			System.exit(0);
 		}
 	}
+	
 
 	/**
 	 * This method should draw a blue border around the
 	 * an inventory slot at the given index the inventory panel.
 	 */
 	private void updateSelectedSlot(int index) {
-		if (index < -2 || index > 11) {
+		if (index < -2 || index > 5) {
 			throw new Error("Invalid index");
 		}
 
@@ -340,7 +292,7 @@ public class GameInterface{
 
 		int indexOfCurrentSelectedItem = 0;
 		//first, we need to remove the blue border from the previous selected item
-		for (int i = 0; i < 12; ++i) {
+		for (int i = 0; i < 5; ++i) {
 			//number of slots is small, so we can just iterate through them all
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
@@ -356,14 +308,14 @@ public class GameInterface{
 		if (index == CYCLE_LEFT) {
 			//check for special case, have to loop around
 			if (indexOfCurrentSelectedItem == 0) {
-				selectedLabel = (JLabel) inventoryPanel.getComponent(11);
+				selectedLabel = (JLabel) inventoryPanel.getComponent(4);
 			} else {
 				//go to previous slot
 				selectedLabel = (JLabel) inventoryPanel.getComponent(indexOfCurrentSelectedItem - 1);
 			}
 		} else if (index == CYCLE_RIGHT) {
 			//check for special case, have to loop around
-			if (indexOfCurrentSelectedItem == 11) {
+			if (indexOfCurrentSelectedItem == 4) {
 				selectedLabel = (JLabel) inventoryPanel.getComponent(0);
 			} else {
 				//go to previous slot
@@ -381,6 +333,7 @@ public class GameInterface{
 		frame.revalidate();
 		frame.repaint();
 	}
+	
 
 	/**
 	 * This method should return the item in the inventory
@@ -391,13 +344,18 @@ public class GameInterface{
 	public Item getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
-		for (int i = 0; i < 11; ++i) {
-			//number of slots is small, so we can just iterate through them all
+		for (int i = 0; i < 5; ++i) {
+			//only food can be selected
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
-				System.out.println("Index: "+i+" "+items[i].toString());
-				return items[i];
+				//need to access player's inventory
+				//eg: pickaxe, apple, machete, apple
+				for (Item item: player.getInventory()) {
+					if (item instanceof Health) {
+						return item;
+					}
+				}
 			}
 		}
 		return null;
@@ -414,15 +372,9 @@ public class GameInterface{
 		int keyCode = arg0.getKeyCode();
 
 		//handle number presses
-		if (48 <= keyCode && keyCode <= 57) {
-			//user has pressed a number key
-			if (keyCode == 48) {
-				//0 is a special case, this corresponds to 10th slot
-				updateSelectedSlot(9);
-			} else {
-				//1-9
-				updateSelectedSlot(keyCode-49);
-			}
+		if (49 <= keyCode && keyCode < 54) {
+			//user has pressed 1-5
+			updateSelectedSlot(keyCode-49);
 		}
 
 		switch (keyCode) {
@@ -454,23 +406,11 @@ public class GameInterface{
 			//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
 			//					player.getCoords().y);;
 			break;
-		case KeyEvent.VK_MINUS:
-			//user wants to select the 11th slot
-			updateSelectedSlot(10);
-			break;
-			//user wants to select the 12th slot
-		case KeyEvent.VK_EQUALS:
-			updateSelectedSlot(11);
-			break;
 		case KeyEvent.VK_SHIFT:
 			Item selectedItem = getSelectedItem();
-			System.out.println(selectedItem.getType());
-			if (selectedItem != null) {
-				System.out.println("Item is not null");
-				if (selectedItem instanceof Health) {
-					clearKeysPressed();
-					player.tryEat(selectedItem.getId());
-				}
+			if (selectedItem != null && selectedItem instanceof Health) {
+				clearKeysPressed();
+				player.tryEat(selectedItem.getId());
 			}
 			break;
 		case KeyEvent.VK_SPACE:
@@ -536,6 +476,7 @@ public class GameInterface{
 			player.setWest(true);
 		}
 	}
+	
 
 	/**
 	 * This method should update the orientation field to be
@@ -573,6 +514,7 @@ public class GameInterface{
 		}
 		System.out.println(orientation.toUpperCase());
 	}
+	
 
 
 	/**
@@ -610,6 +552,7 @@ public class GameInterface{
 			player.setWest(false);
 		}
 	}
+	
 
 	/**
 	 * This method should be called when an interface pops up
@@ -624,6 +567,7 @@ public class GameInterface{
 		player.setSouth(false);
 		player.setMoving(false);
 	}
+	
 
 	/**
 	 * This method should be called when the player has pressed 'p'
