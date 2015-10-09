@@ -79,5 +79,8 @@ public class EnemyStill implements NPC,Serializable{
 		return "enemystill";
 	}
 
+	public Tile getCurrentTile(){
+		return currentTile;
+	}
 
 }

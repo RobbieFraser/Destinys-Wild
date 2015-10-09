@@ -120,7 +120,7 @@ public class Room implements Serializable{
 	 */
 	public Object getTileOccupant(Tile tile){
 		for(NPC npc : npcs){
-			if(tile.getRoomCoords().equals(npc.getRoomCoords())){
+			if(tile.getRoomCoords().equals(npc.getCurrentTile().getRoomCoords())){
 				return npc;
 			}
 		}

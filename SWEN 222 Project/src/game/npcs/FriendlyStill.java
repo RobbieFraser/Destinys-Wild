@@ -104,5 +104,9 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 
 	}
 
+	public Tile getCurrentTile(){
+		return currentTile;
+	}
+
 
 }

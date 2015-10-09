@@ -201,7 +201,7 @@ public class Player implements Serializable {
 			invincibleCount--;
 			if(invincibleCount == 0){
 				invincible = false;
-				invincibleCount = 120;
+				invincibleCount = 60;
 			}
 		}
 	}
@@ -225,6 +225,7 @@ public class Player implements Serializable {
 		if(!currentTile.isOccupied()){
 			return true;
 		}
+		//tile is occupied
 		Object occupant = currentRoom.getTileOccupant(currentTile);
 		if(occupant instanceof Item){
 			if(addInventoryItem((Item)occupant)){

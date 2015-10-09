@@ -67,6 +67,7 @@ public class EnemyWalker implements NPC,Serializable {
 				nearestPlayer = player;
 			}
 		}
+		checkHitPlayer();
 		if(nearestPlayer != null && nearestPlayer.getCoords().x > realCoords.x){
 			if(nearestPlayer.getCoords().y > realCoords.y){
 				realCoords.translate(speed, speed);
@@ -76,31 +77,19 @@ public class EnemyWalker implements NPC,Serializable {
 				realCoords.translate(speed, -speed);
 				tryChangeTile(speed, -speed);
 			}
-			updateCurrentTile();
 			return true;
 		}
 		else if(nearestPlayer != null && nearestPlayer.getCoords().y > realCoords.y){
 			realCoords.translate(-speed, speed);
 			tryChangeTile(-speed, speed);
-			updateCurrentTile();
 			return true;
 		}
 		else if(nearestPlayer != null && !(nearestPlayer.getCoords().equals(realCoords))){
 			realCoords.translate(-speed, -speed);
 			tryChangeTile(-speed, -speed);
-			updateCurrentTile();
 			return true;
 		}
 		return false; //Doesn't need to move if on top of player
-	}
-
-	public boolean updateCurrentTile(){
-		if(!(currentRoom.calcTile(realCoords).getRoomCoords().equals(currentTile.getRoomCoords()))){
-			currentTile = currentRoom.calcTile(realCoords);
-			System.out.println("NPC NOW AT: " + currentTile.getRoomCoords().x + ", " + currentTile.getRoomCoords().y);
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -114,7 +103,6 @@ public class EnemyWalker implements NPC,Serializable {
 			if(!tryChangeTile(0, -speed)){
 				dir = 1;
 			}
-
 		}
 		else if(dir == 1){
 			//move south
@@ -123,21 +111,25 @@ public class EnemyWalker implements NPC,Serializable {
 				dir = 0;
 			}
 		}
-		System.out.println("Snail's current position: " + currentTile.getRoomCoords().x + ", " + currentTile.getRoomCoords().y + ", " + currentTile.isOccupied());
 		return true;
 	}
 
 	public boolean tryChangeTile(int x, int y){
-		checkHitPlayer();
 		currentTile.setOccupied(false);
 		currentTile = currentRoom.calcTile(realCoords);
-		if(currentTile == null){
+		boolean loop = false;
+		if(strategy == "loop"){
+			loop = true;
+		}
+		if(currentTile == null || (currentTile.isOccupied() && loop)){
 			realCoords.translate(-x, -y);
 			currentTile = currentRoom.calcTile(realCoords);
 			currentTile.setOccupied(true);
+			checkHitPlayer();
 			return false;
 		}
 		currentTile.setOccupied(true);
+		checkHitPlayer();
 		return true;
 	}
 
