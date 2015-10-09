@@ -21,7 +21,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import clientServer.packets.BoardPacket;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
@@ -113,10 +112,6 @@ public class GameServer extends Thread {
 			// + ((MovePacket) packet).getY());
 			this.handleMove((MovePacket) packet);
 			break;
-		case BOARD:
-			packet = new BoardPacket(data);
-			this.handleBoard((BoardPacket) packet);
-			break;
 		case REMOVEITEM:
 			packet = new RemoveItemPacket(data);
 			this.handleRemoveItemPacket((RemoveItemPacket) packet);
@@ -130,81 +125,6 @@ public class GameServer extends Thread {
 		if (itemToRemove != null) {
 			itemRoom.removeItems(itemToRemove);
 		}
-	}
-
-	private void handleBoard(BoardPacket packet) {
-		byte[] boardData = packet.getData();
-		try {
-			Room newRoom = (Room) convertFromBytes(boardData);
-			int id = newRoom.getId();
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
-					if (board.getBoard()[i][j].getId() == id) {
-						// board.getBoard()[i][j] = newRoom;
-						for (int a = 0; i < 10; i++) {
-							for (int b = 0; j < 10; j++) {
-								board.getBoard()[i][j].getObstacles()[a][b] = newRoom
-										.getObstacles()[a][b];
-								board.getBoard()[i][j].getItems()[a][b] = newRoom
-										.getItems()[a][b];
-							}
-
-						}
-					}
-				}
-			}
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-		}
-
-	}
-
-	public byte[] convertToBytes(Object object) throws IOException {
-		byte[] bytes = null;
-		ByteArrayOutputStream bos = null;
-		ObjectOutputStream oos = null;
-		try {
-			bos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(bos);
-			oos.writeObject(object);
-			oos.flush();
-			bytes = bos.toByteArray();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
-			if (bos != null) {
-				bos.close();
-			}
-		}
-		return bytes;
-	}
-
-	private Object convertFromBytes(byte[] bytes) throws IOException,
-			ClassNotFoundException {
-		Object obj = null;
-		ByteArrayInputStream bis = null;
-		ObjectInputStream ois = null;
-		try {
-			bis = new ByteArrayInputStream(bytes);
-			ois = new ObjectInputStream(bis);
-			obj = ois.readObject();
-		} finally {
-			if (bis != null) {
-				bis.close();
-			}
-			if (ois != null) {
-				ois.close();
-			}
-		}
-		return obj;
 	}
 
 	public void handleMove(MovePacket packet) {
