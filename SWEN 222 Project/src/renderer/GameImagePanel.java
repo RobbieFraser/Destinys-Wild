@@ -468,11 +468,17 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public void drawNorthWall(Graphics g){
 		BufferedImage wall = loadImage("NorthTreesDoor.png");
+		if(curRoom.getNorth() == -1){
+			wall = loadImage("NorthTrees.png");
+		}
 		g.drawImage(wall, wnX, wnY, null);
 	}
 
 	public void drawEastWall(Graphics g){
 		BufferedImage wall = loadImage("EastTreesDoor.png");
+		if(curRoom.getEast() == -1){
+			wall = loadImage("EastTrees.png");
+		}
 		g.drawImage(wall, weX, weY, null);
 	}
 
