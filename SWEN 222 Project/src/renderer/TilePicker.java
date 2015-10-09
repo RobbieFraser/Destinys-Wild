@@ -24,15 +24,30 @@ public class TilePicker {
 	 */
 	public void initSelects(){
 		selects.add(new EditorTileSelect(new EditorTile(99, 99, "???", "???", new Color(255, 167, 246), new Color(255, 65, 235)), "Block"));
+
 		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "???", "???", new Color(255, 167, 246), new Color(255, 65, 235)), "Block"));
 		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "stone", "stoneblock", new Color(194, 194, 194), new Color(143, 143, 143)), "Block"));
-		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "cobble", "cobblestone1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Bstone", "brokenstone1", new Color(194, 194, 194), new Color(143, 143, 143)), "Block"));
 		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Mstone", "mossyStone1", new Color(194, 194, 194), new Color(25, 123, 48)), "Block"));
-		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", "coin", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Water", "water", new Color(105, 232, 255), new Color(25, 152, 255)), "Block"));
+		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Stump", "stump", new Color(105, 232, 255), new Color(25, 152, 255)), "Block"));
+		obSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Hole", "hole", new Color(105, 232, 255), new Color(25, 152, 255)), "Block"));
+
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "cobble", "cobblestone1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "vine", "vine1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "fire", "fire1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+
+		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin", "coin", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
+		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin2", "coin1", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
+		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin3", "coin2", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
+		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Gem", "gem", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
+
 		healthSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Apple", "apple", new Color(255, 59, 59), new Color(156, 38, 38)), "Health"));
+		healthSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Potion", "potion", new Color(255, 59, 59), new Color(156, 38, 38)), "Health"));
+
 		enemySelects.add(new EditorTileSelect(new EditorTile(99, 99, "Spike", "spike", new Color(167, 167, 167), new Color(210, 210, 210)), "EnemyStill"));
+		enemySelects.add(new EditorTileSelect(new EditorTile(99, 99, "Snail", "snail", new Color(167, 167, 167), new Color(210, 210, 210)), "EnemyWalker"));
+		enemySelects.add(new EditorTileSelect(new EditorTile(99, 99, "Bats", "bats", new Color(167, 167, 167), new Color(210, 210, 210)), "EnemyWalker"));
 	}
 
 	/*

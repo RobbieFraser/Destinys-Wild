@@ -124,6 +124,8 @@ public class TestFrame extends JFrame {
 			JToolBar toolbar = new JToolBar();
 		    toolbar.setRollover(true);
 		    JButton button = new JButton("Save");
+		    JButton place = new JButton("Place");
+		    JButton delete = new JButton("Erase");
 		    //Add action listener to button
 	        button.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e)
@@ -131,7 +133,21 @@ public class TestFrame extends JFrame {
 	            	editPanel.saveBoard();
 	            }
 	        });
+	        place.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	            	editPanel.setErase(false);
+	            }
+	        });
+	        delete.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	            	editPanel.setErase(true);
+	            }
+	        });
 		    toolbar.add(button);
+		    toolbar.add(place);
+		    toolbar.add(delete);
 		    Container contentPane = this.getContentPane();
 		    contentPane.add(toolbar, BorderLayout.NORTH);
 			addEditPanel();

@@ -30,6 +30,8 @@ import game.obstacles.Obstacle;
 
 public class LevelEditorPanel extends JPanel implements MouseListener, MouseMotionListener{
 
+	private boolean erase = false;
+
 	//Where to start drawing the board
 	private int drawX = 50;
 	private int drawY = 50;
@@ -554,44 +556,67 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Add a tile to the tiles array, with the location of the mouse
 	 */
 	public void createTile(){
-		switch(objectType){
-			case "Block":
-				curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
-				curRoom.getItems()[hoverY][hoverX] = null;
-				break;
-			case "Breakable":
-				curRoom.getObstacles()[hoverY][hoverX] = new Breakable(full, new Point(hoverY, hoverX));
-				curRoom.getItems()[hoverY][hoverX] = null;
-				break;
-			case "Health":
-				curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), 10, 99);
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				break;
-			case "Score":
-				curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), 10, 99);
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				break;
-			case "Key":
-				curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				break;
-			case "EnemyStill":
-				curRoom.addNpc(new EnemyStill(full, new Point(hoverY, hoverX), 10, curRoom));
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				curRoom.getItems()[hoverY][hoverX] = null;
-				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
-				break;
-			case "EnemyWalker":
-				curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10, curRoom));
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				curRoom.getItems()[hoverY][hoverX] = null;
-				//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
-				break;
-			case "FriendlyStill":
-				curRoom.addNpc(new FriendlyStill(full, new Point(hoverY, hoverX), curRoom));
-				curRoom.getObstacles()[hoverY][hoverX] = null;
-				curRoom.getItems()[hoverY][hoverX] = null;
-				break;
+		if(erase){
+			curRoom.getObstacles()[hoverY][hoverX] = null;
+			curRoom.getItems()[hoverY][hoverX] = null;
+			NPC temp = null;
+			for(NPC npc : curRoom.getNpcs()){
+				if(npc.getRoomCoords().equals(new Point(hoverY, hoverX))){
+					temp = npc;
+				}
+			}
+			if(temp != null){
+				curRoom.removeNpcs(temp);
+			}
+		}
+		else{
+			int count = 1;
+			for(int i = 0; i < 10; i++){
+				for(int j = 0; j < 10; j++){
+					if(curRoom.getItems()[i][j] != null){
+						count++;
+					}
+				}
+			}
+			switch(objectType){
+				case "Block":
+					curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
+					curRoom.getItems()[hoverY][hoverX] = null;
+					break;
+				case "Breakable":
+					curRoom.getObstacles()[hoverY][hoverX] = new Breakable(full, new Point(hoverY, hoverX));
+					curRoom.getItems()[hoverY][hoverX] = null;
+					break;
+				case "Health":
+					curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), 10, Integer.valueOf(count + "" + curRoom.getId()));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					break;
+				case "Score":
+					curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), 10, Integer.valueOf(count + "" + curRoom.getId()));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					break;
+				case "Key":
+					curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					break;
+				case "EnemyStill":
+					curRoom.addNpc(new EnemyStill(full, new Point(hoverY, hoverX), 10, curRoom));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					curRoom.getItems()[hoverY][hoverX] = null;
+					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
+					break;
+				case "EnemyWalker":
+					curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10, curRoom));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					curRoom.getItems()[hoverY][hoverX] = null;
+					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
+					break;
+				case "FriendlyStill":
+					curRoom.addNpc(new FriendlyStill(full, new Point(hoverY, hoverX), curRoom));
+					curRoom.getObstacles()[hoverY][hoverX] = null;
+					curRoom.getItems()[hoverY][hoverX] = null;
+					break;
+			}
 		}
 		//curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));
 		//tiles[hoverX][hoverY] = new EditorTile(hoverX, hoverY, type, full, color, color2);
@@ -798,6 +823,10 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 		if(onDoors){
 			changeDoors();
 		}
+	}
+
+	public void setErase(boolean b){
+		erase = b;
 	}
 
 	@Override
