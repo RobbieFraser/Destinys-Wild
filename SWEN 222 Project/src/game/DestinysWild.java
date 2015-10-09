@@ -62,7 +62,7 @@ public class DestinysWild implements Runnable {
 
 	public void newGame(String playerName, JFrame frame) {
 		this.frame = frame;
-		setBoard(XMLParser.initialiseBoard("data/test.xml"));
+		setBoard(XMLParser.initialiseBoard("data/board.xml"));
 		setPlayer(new Player(playerName, new Point(500, 300),
 				board.getRoomFromCoords(2, 2)));
 		setUpGame(true);
@@ -70,7 +70,7 @@ public class DestinysWild implements Runnable {
 
 	public void joinGame(String playerName, JFrame frame) {
 		this.frame = frame;
-		setBoard(XMLParser.initialiseBoard("data/test.xml"));
+		setBoard(XMLParser.initialiseBoard("data/board.xml"));
 		setPlayer(new Player(playerName, new Point(500, 300),
 				board.getRoomFromCoords(2, 2)));
 		setUpGame(false);

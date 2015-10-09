@@ -588,11 +588,31 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					curRoom.getItems()[hoverY][hoverX] = null;
 					break;
 				case "Health":
-					curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), 10, Integer.valueOf(count + "" + curRoom.getId()));
+					int val = 0;
+					if(full.equals("apple")){
+						val = 15;
+					}
+					else{
+						val = 50;
+					}
+					curRoom.getItems()[hoverY][hoverX] = new Health(full, new Point(hoverY, hoverX), val, Integer.valueOf(count + "" + curRoom.getId()));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					break;
 				case "Score":
-					curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), 10, Integer.valueOf(count + "" + curRoom.getId()));
+					int money = 0;
+					if(full.equals("coins1")){
+						money = 10;
+					}
+					else if(full.equals("coins2")){
+						money = 20;
+					}
+					else if(full.equals("coins3")){
+						money = 30;
+					}
+					else{
+						money = 100;
+					}
+					curRoom.getItems()[hoverY][hoverX] = new Score(full, new Point(hoverY, hoverX), money, Integer.valueOf(count + "" + curRoom.getId()));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					break;
 				case "Key":
@@ -606,7 +626,17 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
 					break;
 				case "EnemyWalker":
-					curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10, curRoom));
+					int speed = 0;
+					int damage = 0;
+					if(full.equals("bats")){
+						speed = 1;
+						damage = 15;
+					}
+					else{
+						speed = 2;
+						damage = 30;
+					}
+					curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), speed, damage, curRoom));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					curRoom.getItems()[hoverY][hoverX] = null;
 					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
@@ -805,7 +835,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	}
 
 	public void saveBoard(){
-		XMLParser.saveBoard("test.xml", board);
+		XMLParser.saveBoard("board.xml", board);
 	}
 
 	@Override

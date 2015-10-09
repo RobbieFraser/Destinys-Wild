@@ -33,7 +33,7 @@ public class GameInterface{
 	private static final int MAX_TOOLS = 6;
 	private static final int CYCLE_LEFT = -2;
 	private static final int CYCLE_RIGHT = -1;
-	
+
 	public JFrame frame;
 	private Player player; //player whose game state will be drawn
 	private Board board;
@@ -303,7 +303,7 @@ public class GameInterface{
 			return "key";
 		}
 	}
-	
+
 	public void changeTime(){
 		gamePanel.changeTime();
 	}
@@ -497,7 +497,7 @@ public class GameInterface{
 		//update the interface (in particular, the mini map)
 		//updateUI();
 	}
-	
+
 	/**
 	 * This method should set the player's direction according
 	 * to their key press as well as their current
@@ -530,9 +530,9 @@ public class GameInterface{
 			player.setWest(true);
 		}
 	}
-	
+
 	/**
-	 * This method should update the orientation field to be 
+	 * This method should update the orientation field to be
 	 * the next orientation in the north, east, south, west
 	 * cycle. The direction that the cycle is traversed comes
 	 * from the direction parameter.
@@ -540,7 +540,7 @@ public class GameInterface{
 	 */
 	private void setNextOrientation(int direction) {
 		String[] orientations = {"north", "east", "south", "west"};
-		
+
 		if (direction == CYCLE_RIGHT) {
 			if (orientation.equals("west")) {
 				orientation = "north";
@@ -550,7 +550,7 @@ public class GameInterface{
 						orientation = orientations[i+1];
 						break loop;
 					}
-				}	
+				}
 			}
 		}
 		if (direction == CYCLE_LEFT) {
@@ -562,7 +562,7 @@ public class GameInterface{
 						orientation = orientations[i-1];
 						break loop;
 					}
-				}	
+				}
 			}
 		}
 		System.out.println(orientation.toUpperCase());
