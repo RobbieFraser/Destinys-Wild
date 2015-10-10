@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.MovePacket;
+import clientServer.packets.TimePacket;
 import game.items.Health;
 import game.items.Item;
 import game.npcs.EnemyWalker;
@@ -27,7 +28,7 @@ import view.MenuInterface;
 public class DestinysWild implements Runnable {
 	private static Board board;
 	private static Player currentPlayer;
-	private GameInterface ui;
+	private static GameInterface ui;
 	private boolean running = true;
 	private DestinysWild game = this;
 	private CountDownLatch latch;
@@ -153,6 +154,8 @@ public class DestinysWild implements Runnable {
 		for (NPC enemy : currentPlayer.getCurrentRoom().getNpcs()) {
 			enemy.tryMove();
 		}
+		TimePacket timePacket = new TimePacket(getGameInterface().getGameImagePanel().getTime());
+		timePacket.writeData(multiplayer.getClient());
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),
 				currentPlayer.getCoords().x, currentPlayer.getCoords().y,
 				currentPlayer.getCurrentRoom().getId(),
@@ -229,6 +232,10 @@ public class DestinysWild implements Runnable {
 
 	public static void setBoard(Board b) {
 		board = b;
+	}
+
+	public static GameInterface getGameInterface(){
+		return ui;
 	}
 
 	public static void setPlayer(Player player) {

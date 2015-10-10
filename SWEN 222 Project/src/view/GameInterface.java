@@ -55,6 +55,10 @@ public class GameInterface{
 		latch.countDown();
 	}
 
+	public GameImagePanel getGameImagePanel(){
+		return gamePanel;
+	}
+
 	/**
 	 * This method should initialise the game interface.
 	 * It should load the gamePanel to be the background

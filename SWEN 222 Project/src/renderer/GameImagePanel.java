@@ -42,7 +42,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int time = 0;
 	private int state = DAY_TIME;
 	private boolean timeUp = true;
-	
+
 	private static int gX = 200; //Ground x
 	private static int gY = 180; //Ground y
 
@@ -157,7 +157,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawCompass(g);
 		drawBoard(g);
 		drawScore(g);
-		drawDarkness(g);	
+		drawDarkness(g);
 		updateBackground();
 
 		//g.drawImage(waterSprite, 384, 428, null);
@@ -165,19 +165,27 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		//g.drawImage(waterSprite, 384, 428+(obH*2), null);
 		//g.drawImage(waterSprite, 384-obW, 428+obH, null);
 	}
-	
+
+	public void setTime(int newTime){
+		this.time = newTime;
+	}
+
+	public int getTime(){
+		return this.time;
+	}
+
 	/**
 	 * This method should be called to update the time field.
 	 * When the field reaches certain values, the time of day
 	 * should change. The value of time should go up to 63, then
 	 * back down to 0.
 	 */
-	public void changeTime() {	
+	public void changeTime() {
 		//sanity check
 		if (time < 0 || time > 63) {
 			throw new Error("Invalid time value");
 		}
-		
+
 		if (timeUp) {
 			time++;
 			if (time == 40) {
@@ -224,7 +232,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						if (isPointInside(i*10, j*10+50, playerCoords)) {
 							//this 10x10 square is inside the player's area
 							drawDarkness = false;
-						}	
+						}
 					}
 				}
 				if (drawDarkness) {
@@ -233,7 +241,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					} else if (state == DUSK) {
 						g.setColor(new Color(0, 0, 0, (time - 40) * 10));
 					} else if (state == DAWN) {
-						g.setColor(new Color(0, 0, 0, time*12));	
+						g.setColor(new Color(0, 0, 0, time*12));
 					}
 					g.fillRect(i*10, j*10, 10, 10);
 				}
@@ -252,7 +260,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 */
 	private boolean isPointInside(int x, int y, Point point) {
 		int radius = 50;
-		
+
 		//check if the players inventory contains the torch
 		for (Item item: player.getInventory()) {
 			if (item.getType().equals("torch")) {
@@ -260,7 +268,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				radius = 150;
 			}
 		}
-		
+
 		//use the pythagorean theorem
 		int xDiff = Math.abs(point.x - x);
 		int yDiff = Math.abs(point.y - y);
@@ -270,7 +278,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	/**
 	 * This method should be called when the game panel is redrawn.
-	 * It should update the background colour of the game. The 
+	 * It should update the background colour of the game. The
 	 * background colour will vary depending on the time of day.
 	 */
 	private void updateBackground() {
@@ -286,7 +294,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		} else if (state == DAWN) {
 			//go up to light blue
 			//we need to make sure we don't exceed the light blue colour for day time
-			
+
 			int red = (int) ((1+current.getRed())*1.001);
 			if (red > 120) {
 				red = current.getRed();
@@ -308,7 +316,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		this.setBackground(backgroundColour);
 	}
-	
+
 	public void drawNorthRoom(Graphics g){
 		if ((int) player.getCurrentRoom().getBoardPos().getX() != 0) {
 			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1,

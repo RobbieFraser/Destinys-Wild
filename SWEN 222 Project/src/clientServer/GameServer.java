@@ -1,6 +1,7 @@
 package clientServer;
 
 import game.Board;
+import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.items.Item;
@@ -27,6 +28,7 @@ import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
 import clientServer.packets.RemoveItemPacket;
 import clientServer.packets.Packet.PacketTypes;
+import clientServer.packets.TimePacket;
 
 public class GameServer extends Thread {
 	private DatagramSocket socket;
@@ -109,7 +111,15 @@ public class GameServer extends Thread {
 			packet = new RemoveItemPacket(data);
 			this.handleRemoveItemPacket((RemoveItemPacket) packet);
 			break;
+		case TIME:
+			packet = new TimePacket(data);
+			this.handleTimePacket((TimePacket)packet);
+			break;
 		}
+	}
+
+	public void handleTimePacket(TimePacket packet) {
+		//DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
 	}
 
 	/**

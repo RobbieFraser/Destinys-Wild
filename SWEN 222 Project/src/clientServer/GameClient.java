@@ -1,6 +1,7 @@
 package clientServer;
 
 import game.Board;
+import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.items.Item;
@@ -23,6 +24,7 @@ import clientServer.packets.DisconnectPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
+import clientServer.packets.TimePacket;
 import clientServer.packets.Packet.PacketTypes;
 import clientServer.packets.RemoveItemPacket;
 
@@ -106,9 +108,17 @@ public class GameClient extends Thread {
 			packet = new RemoveItemPacket(data);
 			handleRemoveItemPacket((RemoveItemPacket) packet);
 			break;
+		case TIME:
+			packet = new TimePacket(data);
+			this.handleTimePacket((TimePacket)packet);
+			break;
 		}
-
 	}
+
+	public void handleTimePacket(TimePacket packet) {
+		DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
+	}
+
 
 	/**
 	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
