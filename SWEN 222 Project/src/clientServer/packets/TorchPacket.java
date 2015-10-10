@@ -6,16 +6,19 @@ import clientServer.GameServer;
 public class TorchPacket extends Packet {
 
 	private int hasTorch;
+	private String userName;
 
 	public TorchPacket(byte[] data) {
-		super(06);
-		String dataString = readData(data);
-		this.hasTorch = Integer.parseInt(dataString);
+		super(05);
+		String[] dataString = readData(data).split(",");
+		this.userName = dataString[0];
+		this.hasTorch = Integer.parseInt(dataString[1]);
 
 	}
 
-	public TorchPacket(boolean hasTorch){
-		super(06);
+	public TorchPacket(String userName, boolean hasTorch){
+		super(05);
+		this.userName = userName;
 		this.hasTorch = boolToInt(hasTorch);
 	}
 
@@ -32,11 +35,15 @@ public class TorchPacket extends Packet {
 
 	@Override
 	public byte[] getData() {
-		return("06" + getHasTorch()).getBytes();
+		return("06" + getUserName() + "," + getHasTorch()).getBytes();
 	}
 
 	public int getHasTorch(){
-		return hasTorch;
+		return this.hasTorch;
+	}
+
+	public String getUserName(){
+		return this.userName;
 	}
 
 	/**

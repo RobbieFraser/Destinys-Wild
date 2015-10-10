@@ -29,6 +29,7 @@ import clientServer.packets.Packet;
 import clientServer.packets.RemoveItemPacket;
 import clientServer.packets.Packet.PacketTypes;
 import clientServer.packets.TimePacket;
+import clientServer.packets.TorchPacket;
 
 public class GameServer extends Thread {
 	private DatagramSocket socket;
@@ -115,7 +116,16 @@ public class GameServer extends Thread {
 			packet = new TimePacket(data);
 			this.handleTimePacket((TimePacket)packet);
 			break;
+		case TORCH:
+			packet = new TorchPacket(data);
+			this.handleTorchPacket((TorchPacket) packet);
+			break;
 		}
+	}
+
+	public void handleTorchPacket(TorchPacket packet) {
+		Player player = board.getPlayer(packet.getUserName());
+		player.setHasTorch(intToBool(packet.getHasTorch()));
 	}
 
 	public void handleTimePacket(TimePacket packet) {

@@ -25,6 +25,7 @@ import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
 import clientServer.packets.TimePacket;
+import clientServer.packets.TorchPacket;
 import clientServer.packets.Packet.PacketTypes;
 import clientServer.packets.RemoveItemPacket;
 
@@ -112,6 +113,10 @@ public class GameClient extends Thread {
 			packet = new TimePacket(data);
 			this.handleTimePacket((TimePacket)packet);
 			break;
+		case TORCH:
+			packet = new TorchPacket(data);
+			this.handleTorchPacket((TorchPacket) packet);
+			break;
 		}
 	}
 
@@ -119,6 +124,10 @@ public class GameClient extends Thread {
 		DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
 	}
 
+	public void handleTorchPacket(TorchPacket packet) {
+		Player player = board.getPlayer(packet.getUserName());
+		player.setHasTorch(intToBool(packet.getHasTorch()));
+	}
 
 	/**
 	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
