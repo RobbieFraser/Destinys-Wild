@@ -107,7 +107,7 @@ public class GameInterface{
 		inventoryPanel.add(keyBox);
 
 		frame.getContentPane().add(inventoryPanel);
-		
+
 		//intialise the selected item to be the first food slot as a default
 		updateSelectedSlot(0);
 
@@ -242,7 +242,7 @@ public class GameInterface{
 		if (index < 0 || index > 12) {
 			throw new Error("Invalid index exception");
 		}
-		
+
 		if (index < 5) {
 			return player.getInventory().get(index).getType() + "Icon";
 		} else if (index < 11) {
@@ -260,7 +260,7 @@ public class GameInterface{
 	public void changeTime(){
 		gamePanel.changeTime();
 	}
-	
+
 
 	/**
 	 * This method should be called when the user has
@@ -277,7 +277,7 @@ public class GameInterface{
 			System.exit(0);
 		}
 	}
-	
+
 
 	/**
 	 * This method should draw a blue border around the
@@ -333,7 +333,7 @@ public class GameInterface{
 		frame.revalidate();
 		frame.repaint();
 	}
-	
+
 
 	/**
 	 * This method should return the item in the inventory
@@ -476,7 +476,7 @@ public class GameInterface{
 			player.setWest(true);
 		}
 	}
-	
+
 
 	/**
 	 * This method should update the orientation field to be
@@ -512,9 +512,10 @@ public class GameInterface{
 				}
 			}
 		}
+		gamePanel.setViewDir(orientation);
 		System.out.println(orientation.toUpperCase());
 	}
-	
+
 
 
 	/**
@@ -552,7 +553,7 @@ public class GameInterface{
 			player.setWest(false);
 		}
 	}
-	
+
 
 	/**
 	 * This method should be called when an interface pops up
@@ -567,7 +568,7 @@ public class GameInterface{
 		player.setSouth(false);
 		player.setMoving(false);
 	}
-	
+
 
 	/**
 	 * This method should be called when the player has pressed 'p'
