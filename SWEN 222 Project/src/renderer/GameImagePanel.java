@@ -216,8 +216,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				for (Player player: board.getPlayers()) {
 					//only draw this player's torch if they are the current player's room
 					if (player != null && player.getCurrentRoom().equals(this.player.getCurrentRoom())) {
-						Point playerCoords = player.getCoords();
-						if (isPointInside(i*10, j*10+50, playerCoords)) {
+						if (isPointInside(i*10, j*10+50, player)) {
 							//this 10x10 square is inside the player's area
 							drawDarkness = false;
 						}
@@ -246,7 +245,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * @param point centre of circle
 	 * @return true if point is inside circle, otherwise false
 	 */
-	private boolean isPointInside(int x, int y, Point point) {
+	private boolean isPointInside(int x, int y, Player player) {
+		Point point = player.getCoords();
 		int radius = 50;
 
 		//check if the players inventory contains the torch
