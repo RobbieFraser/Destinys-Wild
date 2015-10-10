@@ -119,7 +119,7 @@ public class GameServer extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		//DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
+		DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
 	}
 
 	/**
