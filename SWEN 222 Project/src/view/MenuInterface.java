@@ -9,19 +9,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-
+import javax.swing.border.Border;
 import game.DestinysWild;
-import game.XMLParser;
 
 public class MenuInterface {
 	private JFrame frame;
@@ -61,52 +58,58 @@ public class MenuInterface {
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(new Color(0,0,0,0));
 		menuPanel.setOpaque(false);
-		menuPanel.setBounds(425, 240, 250, 400);
+		menuPanel.setBounds(400, 250, 250, 420);
+		Border blackLine = BorderFactory.createLineBorder(Color.DARK_GRAY,2);
+		menuPanel.setBorder(blackLine);
 
 		//New Game button
-		JButton btnNewGame = new JButton("Play Game");
+		ImageIcon newGameImage = new ImageIcon(loadImage("newgamebutton.png"));
+		JButton btnNewGame = new JButton(newGameImage);
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newGame();
 			}
 		});
-		btnNewGame.setBounds(0, 30, 200, 70);
+		btnNewGame.setBounds(25, 25, 200, 70);
 		addKeyListener(btnNewGame);
 		menuPanel.add(btnNewGame);
 
-		//Load Game button
-		JButton btnLoadGame = new JButton("Load Game");
-		btnLoadGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadGame();
-			}
-		});
-		btnLoadGame.setBounds(0, 130, 200, 70);
-		addKeyListener(btnLoadGame);
-		btnLoadGame.setOpaque(false);
-		menuPanel.add(btnLoadGame);
-		
 		//Join Game button
-		JButton btnJoinGame = new JButton("Join Game");
+		ImageIcon joinGameImage = new ImageIcon(loadImage("joingamebutton.png"));
+		JButton btnJoinGame = new JButton(joinGameImage);
 		btnJoinGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				joinGame();
 			}
 		});
-		btnJoinGame.setBounds(0, 230, 200, 70);
+		btnJoinGame.setBounds(25, 125, 200, 70);
 		addKeyListener(btnJoinGame);
 		btnJoinGame.setOpaque(false);
 		menuPanel.add(btnJoinGame);
 
+		//Load Game button
+		ImageIcon loadGameImage = new ImageIcon(loadImage("loadgamebutton.png"));
+		JButton btnLoadGame = new JButton(loadGameImage);
+		btnLoadGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadGame();
+			}
+		});
+		btnLoadGame.setBounds(25, 225, 200, 70);
+		addKeyListener(btnLoadGame);
+		btnLoadGame.setOpaque(false);
+		menuPanel.add(btnLoadGame);
+
 		//Quit Game button
-		JButton btnQuitGame = new JButton("Quit Game");
+		ImageIcon quitGameImage = new ImageIcon(loadImage("quitgamebutton.png"));
+		JButton btnQuitGame = new JButton(quitGameImage);
 		btnQuitGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				escapeGame();
 			}
 		});
 		addKeyListener(btnQuitGame);
-		btnQuitGame.setBounds(0, 330, 200, 70);
+		btnQuitGame.setBounds(25, 325, 200, 70);
 		menuPanel.add(btnQuitGame);
 
 		PlayMusic.playSound("DestinysWildOST.mp3");
@@ -221,3 +224,6 @@ public class MenuInterface {
 	}
 
 }
+
+
+
