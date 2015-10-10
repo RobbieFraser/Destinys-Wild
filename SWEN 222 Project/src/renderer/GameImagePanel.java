@@ -1,5 +1,13 @@
 package renderer;
 
+import game.Board;
+import game.Player;
+import game.Room;
+import game.Tile;
+import game.items.Item;
+import game.npcs.NPC;
+import game.obstacles.Breakable;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,13 +20,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-import game.Board;
-import game.Player;
-import game.Room;
-import game.items.Item;
-import game.npcs.NPC;
-import game.obstacles.Breakable;
 
 public class GameImagePanel extends JPanel implements MouseListener {
 
@@ -62,7 +63,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int charH = 16; //Player Height
 
 	private int cX = 950; //Compass x
-	private int cY = 50; //Compass y
+	private int cY = 375; //Compass y
 
 	private int wnX = gX-34; //Wall North x
 	private int wnY = gY-262; //Wall North y
@@ -70,7 +71,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private int weX = gX+340; //Wall North x
 	private int weY = gY-262; //Wall North y
 
-	private int viewDir = 0;
+	private String viewDir = "north";
 
 	private boolean hurt = false;
 
@@ -101,22 +102,22 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		//waterTest();
 	}
 
-	public void waterTest() {
-		while (true) {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					waterSprite = water.getSubimage(j*70, i*34, 70, 34);
-					this.repaint();
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	}
+//	public void waterTest() {
+//		while (true) {
+//			for (int i = 0; i < 4; i++) {
+//				for (int j = 0; j < 4; j++) {
+//					waterSprite = water.getSubimage(j*70, i*34, 70, 34);
+//					this.repaint();
+//					try {
+//						Thread.sleep(100);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	/*
 	 * Sets the default image
@@ -159,19 +160,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawScore(g);
 		drawDarkness(g);
 		updateBackground();
-
-		//g.drawImage(waterSprite, 384, 428, null);
-		//g.drawImage(waterSprite, 384+obW, 428+obH, null);
-		//g.drawImage(waterSprite, 384, 428+(obH*2), null);
-		//g.drawImage(waterSprite, 384-obW, 428+obH, null);
-	}
-
-	public void setTime(int newTime){
-		this.time = newTime;
-	}
-
-	public int getTime(){
-		return this.time;
 	}
 
 	/**
@@ -388,39 +376,97 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * -Calls the drawObject() method to draw each obstacle
 	 */
 	public void drawBoard(Graphics g){
-		for (int i = 0; i < 10; i++){
-			for (int j = 9; j >= 0; j--){
-				if (curRoom.getObstacles()[i][j] != null){
-					if(curRoom.getObstacles()[i][j] instanceof Breakable){
-						drawBreakable(g, curRoom.getObstacles()[i][j].getType(), j, i);
+		if(viewDir.equals("north")){
+			for (int i = 0; i < 10; i++){
+				for (int j = 9; j >= 0; j--){
+					if (curRoom.getObstacles()[i][j] != null){
+						if(curRoom.getObstacles()[i][j] instanceof Breakable){
+							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), j, i);
+						}
+						else{
+							drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+						}
 					}
-					else{
-						drawObject(g, curRoom.getObstacles()[i][j].getType(), j, i);
+					if (curRoom.getItems()[i][j] != null){
+						drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
 					}
-				}
-				if (curRoom.getItems()[i][j] != null){
-					drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
-				}
-				for(NPC npc : curRoom.getNpcs()){
-					if(npc.getRoomCoords().equals(new Point(i, j))){
-						drawEnemy(g, npc.getType(), (int)npc.getRealCoords().getX(), (int)npc.getRealCoords().getY());
+					for(NPC npc : curRoom.getNpcs()){
+						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+							drawEnemy(g, npc.getType(), (int)npc.getRealCoords().getX(), (int)npc.getRealCoords().getY());
+						}
 					}
-				}
-				for(Player p : board.getPlayers()){
-					if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
-						try{
-							if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
-								drawOtherPlayer(g, p);
+					for(Player p : board.getPlayers()){
+						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
+							try{
+								if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
+									drawOtherPlayer(g, p);
+								}
+							}
+							catch(NullPointerException e){
+								System.out.println("Error drawing other player");
 							}
 						}
-						catch(NullPointerException e){
-							System.out.println("Error drawing other player");
+					}
+					if (player != null && !hurt){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+							drawPlayer(g);
 						}
 					}
 				}
-				if (player != null && !hurt){
-					if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-						drawPlayer(g);
+			}
+		}
+		else if(viewDir.equals("east")){
+			for (int i = 0; i < 10; i++){
+				for (int j = 9; j >= 0; j--){
+					if (curRoom.getObstacles()[i][j] != null){
+						if(curRoom.getObstacles()[i][j] instanceof Breakable){
+							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), 9-i, j);
+						}
+						else{
+							drawObject(g, curRoom.getObstacles()[i][j].getType(), 9-i, j);
+						}
+					}
+					if (curRoom.getItems()[i][j] != null){
+						drawObject(g, curRoom.getItems()[i][j].getType(), 9-i, j);
+					}
+					if (player != null && !hurt){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(9-i, j))){
+							drawPlayer(g);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("south")){
+			for (int i = 9; i >= 0; i--){
+				for (int j = 9; j >= 0; j--){
+					if (curRoom.getObstacles()[i][j] != null){
+						if(curRoom.getObstacles()[i][j] instanceof Breakable){
+							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), 9-j, 9-i);
+						}
+						else{
+							drawObject(g, curRoom.getObstacles()[i][j].getType(), 9-j, 9-i);
+						}
+					}
+					if (curRoom.getItems()[i][j] != null){
+						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("west")){
+			for (int i = 9; i >= 0; i--){
+				for (int j = 0; j < 10; j++){
+					if (curRoom.getObstacles()[i][j] != null){
+						if(curRoom.getObstacles()[i][j] instanceof Breakable){
+							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), i, 9-j);
+						}
+						else{
+							drawObject(g, curRoom.getObstacles()[i][j].getType(), i, 9-j);
+						}
+					}
+					if (curRoom.getItems()[i][j] != null){
+						drawObject(g, curRoom.getItems()[i][j].getType(), i, 9-j);
 					}
 				}
 			}
@@ -436,6 +482,18 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.setColor(Color.black);
 		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
+		if(viewDir.equals("north")){
+
+		}
+		else if(viewDir.equalsIgnoreCase("east")){
+			Point oldPoint = player.getCurrentTile().getRoomCoords();
+			System.out.println((int)oldPoint.getX() + " | " + (int)oldPoint.getY());
+			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
+			System.out.println((int)newPoint.getX() + " | " + (int)newPoint.getY());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - 25;
+			newY = (int)newTile.getRealCoords().getY() - 80;
+		}
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
 		int len = (player.getName().length()*8)/2;
@@ -734,6 +792,18 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public Board getBoard(){
 		return board;
+	}
+
+	public void setViewDir(String dir){
+		this.viewDir = dir;
+	}
+
+	public void setTime(int newTime){
+		this.time = newTime;
+	}
+
+	public int getTime(){
+		return this.time;
 	}
 
 	@Override
