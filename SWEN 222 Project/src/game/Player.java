@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import clientServer.packets.TorchPacket;
 import game.items.Health;
 import game.items.Item;
 import game.items.Key;
@@ -455,6 +456,8 @@ public class Player implements Serializable {
 		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyPieces < 4) || item instanceof Tool) {
 			if (item.getType().equals("torch")) {
 				hasTorch = true;
+				TorchPacket torchPacket = new TorchPacket(this.getName(),true);
+				torchPacket.writeData(DestinysWild.getMultiplayer().getClient());
 			}
 			return inventory.add(item);
 		}
