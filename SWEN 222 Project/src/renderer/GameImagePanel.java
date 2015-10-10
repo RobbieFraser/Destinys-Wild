@@ -451,6 +451,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
 					}
+					if (player != null && !hurt){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(9-i, 9-j))){
+							drawPlayer(g);
+						}
+					}
 				}
 			}
 		}
@@ -468,6 +473,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), i, 9-j);
 					}
+					if (player != null && !hurt){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, 9-j))){
+							drawPlayer(g);
+						}
+					}
 				}
 			}
 		}
@@ -480,19 +490,31 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public void drawPlayer(Graphics g){
 		g.setColor(Color.black);
+		int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
+		int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
 		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
+		Point oldPoint = player.getCurrentTile().getRoomCoords();
 		if(viewDir.equals("north")){
 
 		}
-		else if(viewDir.equalsIgnoreCase("east")){
-			Point oldPoint = player.getCurrentTile().getRoomCoords();
-			System.out.println((int)oldPoint.getX() + " | " + (int)oldPoint.getY());
+		else if(viewDir.equals("east")){
 			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
-			System.out.println((int)newPoint.getX() + " | " + (int)newPoint.getY());
 			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
-			newX = (int)newTile.getRealCoords().getX() - 25;
-			newY = (int)newTile.getRealCoords().getY() - 80;
+			newX = (int)newTile.getRealCoords().getX() - 25 - (yDif*2);
+			newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
+		}
+		else if(viewDir.equals("south")){
+			Point newPoint = new Point((int)(9-oldPoint.getY()), 9-(int)oldPoint.getX());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
+			newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
+		}
+		else if(viewDir.equals("west")){
+			Point newPoint = new Point((int)(9-oldPoint.getY()), (int)oldPoint.getX());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
+			newY = (int)newTile.getRealCoords().getY() - 80 - (xDif/2);
 		}
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
