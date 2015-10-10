@@ -126,6 +126,7 @@ public class GameServer extends Thread {
 	public void handleTorchPacket(TorchPacket packet) {
 		Player player = getPlayer(packet.getUserName());
 		player.setHasTorch(intToBool(packet.getHasTorch()));
+		packet.writeData(this);
 	}
 
 	public void handleTimePacket(TimePacket packet) {
@@ -143,6 +144,7 @@ public class GameServer extends Thread {
 		if (itemToRemove != null) {
 			itemRoom.removeItems(itemToRemove);
 		}
+		packet.writeData(this);
 	}
 
 	/**

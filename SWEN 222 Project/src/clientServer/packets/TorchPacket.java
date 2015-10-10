@@ -35,7 +35,7 @@ public class TorchPacket extends Packet {
 
 	@Override
 	public byte[] getData() {
-		return("06" + getUserName() + "," + getHasTorch()).getBytes();
+		return("05" + getUserName() + "," + getHasTorch()).getBytes();
 	}
 
 	public int getHasTorch(){
