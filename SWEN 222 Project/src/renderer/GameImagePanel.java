@@ -216,7 +216,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				for (Player player: board.getPlayers()) {
 					//only draw this player's torch if they are the current player's room
 					if (player != null && player.getCurrentRoom().equals(this.player.getCurrentRoom())) {
-						if (isPointInside(i*10, j*10+50, player)) {
+						Point playerCoords = player.getCoords();
+						if (isPointInside(i*10, j*10+50, playerCoords)) {
 							//this 10x10 square is inside the player's area
 							drawDarkness = false;
 						}
@@ -245,8 +246,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * @param point centre of circle
 	 * @return true if point is inside circle, otherwise false
 	 */
-	private boolean isPointInside(int x, int y, Player player) {
-		Point point = player.getCoords();
+	private boolean isPointInside(int x, int y, Point point) {
 		int radius = 50;
 
 		//check if the players inventory contains the torch
@@ -306,21 +306,83 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public void drawNorthRoom(Graphics g){
-		if ((int) player.getCurrentRoom().getBoardPos().getX() != 0) {
-			Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1,
-					(int)player.getCurrentRoom().getBoardPos().getY());
-			BufferedImage ground = loadImage("ground.png");
-			g.drawImage(ground, gX-374, gY-176, null);
-			for (int i = 0; i < 10; i++){
-				for (int j = 9; j >= 0; j--){
-					if (northRoom.getObstacles()[i][j] != null){
-						drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
-					}
-					if (northRoom.getItems()[i][j] != null){
-						drawDistantObject(g, northRoom.getItems()[i][j].getType(), j, i, -1);
+		if(viewDir.equals("north")){
+			if ((int) player.getCurrentRoom().getBoardPos().getX() != 0) {
+				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()-1,
+						(int)player.getCurrentRoom().getBoardPos().getY());
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX-374, gY-176, null);
+				for (int i = 0; i < 10; i++){
+					for (int j = 9; j >= 0; j--){
+						if (northRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
+						}
+						if (northRoom.getItems()[i][j] != null){
+							drawDistantObject(g, northRoom.getItems()[i][j].getType(), j, i, -1);
+						}
 					}
 				}
 			}
+		}
+		else if(viewDir.equals("east")){
+			if ((int) player.getCurrentRoom().getBoardPos().getY() != 4) {
+				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
+						(int)player.getCurrentRoom().getBoardPos().getY()-1);
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX-374, gY-176, null);
+				for (int i = 0; i < 10; i++){
+					for (int j = 0; j < 10; j++){
+						if (northRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-i, j, -1);
+						}
+						if (northRoom.getItems()[i][j] != null){
+							drawDistantObject(g, northRoom.getItems()[i][j].getType(), 9-i, j, -1);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("south")){
+			if ((int) player.getCurrentRoom().getBoardPos().getX() != 4) {
+				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()+1,
+						(int)player.getCurrentRoom().getBoardPos().getY());
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX-374, gY-176, null);
+				for (int i = 9; i >= 0; i--){
+					for (int j = 0; j < 10; j++){
+						if (northRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-j, 9-i, -1);
+						}
+						if (northRoom.getItems()[i][j] != null){
+							drawDistantObject(g, northRoom.getItems()[i][j].getType(), 9-j, 9-i, -1);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("west")){
+			if ((int) player.getCurrentRoom().getBoardPos().getY() != 0) {
+				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
+						(int)player.getCurrentRoom().getBoardPos().getY()+1);
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX-374, gY-176, null);
+				for (int i = 9; i >= 0; i--){
+					for (int j = 9; j >= 0; j--){
+						if (northRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), i, 9-j, -1);
+						}
+						if (northRoom.getItems()[i][j] != null){
+							drawDistantObject(g, northRoom.getItems()[i][j].getType(), i, 9-j, -1);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("south")){
+
+		}
+		else if(viewDir.equals("west")){
+
 		}
 	}
 
@@ -417,7 +479,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		else if(viewDir.equals("east")){
 			for (int i = 0; i < 10; i++){
-				for (int j = 9; j >= 0; j--){
+				for (int j = 0; j < 10; j++){
 					if (curRoom.getObstacles()[i][j] != null){
 						if(curRoom.getObstacles()[i][j] instanceof Breakable){
 							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), 9-i, j);
@@ -430,7 +492,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-i, j);
 					}
 					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(9-i, j))){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 							drawPlayer(g);
 						}
 					}
@@ -439,7 +501,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		else if(viewDir.equals("south")){
 			for (int i = 9; i >= 0; i--){
-				for (int j = 9; j >= 0; j--){
+				for (int j = 0; j < 10; j++){
 					if (curRoom.getObstacles()[i][j] != null){
 						if(curRoom.getObstacles()[i][j] instanceof Breakable){
 							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), 9-j, 9-i);
@@ -452,7 +514,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
 					}
 					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(9-i, 9-j))){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 							drawPlayer(g);
 						}
 					}
@@ -461,7 +523,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		else if(viewDir.equals("west")){
 			for (int i = 9; i >= 0; i--){
-				for (int j = 0; j < 10; j++){
+				for (int j = 9; j >= 0; j--){
 					if (curRoom.getObstacles()[i][j] != null){
 						if(curRoom.getObstacles()[i][j] instanceof Breakable){
 							drawBreakable(g, curRoom.getObstacles()[i][j].getType(), i, 9-j);
@@ -474,7 +536,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						drawObject(g, curRoom.getItems()[i][j].getType(), i, 9-j);
 					}
 					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, 9-j))){
+						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 							drawPlayer(g);
 						}
 					}
@@ -505,10 +567,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
 		}
 		else if(viewDir.equals("south")){
-			Point newPoint = new Point((int)(9-oldPoint.getY()), 9-(int)oldPoint.getX());
+			Point newPoint = new Point((int)(9-oldPoint.getX()), 9-(int)oldPoint.getY());
 			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
-			newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
-			newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
+			newX = (int)newTile.getRealCoords().getX() - 25 - (xDif);
+			newY = (int)newTile.getRealCoords().getY() - 80 - (yDif);
 		}
 		else if(viewDir.equals("west")){
 			Point newPoint = new Point((int)(9-oldPoint.getY()), (int)oldPoint.getX());
@@ -556,16 +618,50 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public void drawNorthWall(Graphics g){
 		BufferedImage wall = loadImage("NorthTreesDoor.png");
-		if(curRoom.getNorth() == -1){
-			wall = loadImage("NorthTrees.png");
+		if(viewDir.equals("north")){
+			if(curRoom.getNorth() == -1){
+				wall = loadImage("NorthTrees.png");
+			}
+		}
+		else if(viewDir.equals("east")){
+			if(curRoom.getWest() == -1){
+				wall = loadImage("NorthTrees.png");
+			}
+		}
+		else if(viewDir.equals("south")){
+			if(curRoom.getSouth() == -1){
+				wall = loadImage("NorthTrees.png");
+			}
+		}
+		else if(viewDir.equals("west")){
+			if(curRoom.getEast() == -1){
+				wall = loadImage("NorthTrees.png");
+			}
 		}
 		g.drawImage(wall, wnX, wnY, null);
 	}
 
 	public void drawEastWall(Graphics g){
 		BufferedImage wall = loadImage("EastTreesDoor.png");
-		if(curRoom.getEast() == -1){
-			wall = loadImage("EastTrees.png");
+		if(viewDir.equals("north")){
+			if(curRoom.getEast() == -1){
+				wall = loadImage("EastTrees.png");
+			}
+		}
+		else if(viewDir.equals("east")){
+			if(curRoom.getNorth() == -1){
+				wall = loadImage("EastTrees.png");
+			}
+		}
+		else if(viewDir.equals("south")){
+			if(curRoom.getWest() == -1){
+				wall = loadImage("EastTrees.png");
+			}
+		}
+		else if(viewDir.equals("west")){
+			if(curRoom.getSouth() == -1){
+				wall = loadImage("EastTrees.png");
+			}
 		}
 		g.drawImage(wall, weX, weY, null);
 	}
