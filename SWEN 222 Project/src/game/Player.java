@@ -35,6 +35,7 @@ public class Player implements Serializable {
 	private int walkState = 0;
 	private int walkDelay = 0;
 	private boolean invincible;
+	private boolean hasTorch = false;
 	private int invincibleCount = 60;
 
 	public Player(){
@@ -91,6 +92,14 @@ public class Player implements Serializable {
 
 	public void setRoom(Room room){
 		this.currentRoom = room;
+	}
+
+	public boolean getHasTorch(){
+		return this.hasTorch;
+	}
+
+	public void setHasTorch(boolean b){
+		this.hasTorch = b;
 	}
 
 	/**
@@ -568,28 +577,28 @@ public class Player implements Serializable {
 	 */
 	public List<Item> getInventory() {
 		List<Item> sortedInventory = new ArrayList<Item>();
-		
+
 		//add health items
 		for (int i = 0; i < inventory.size(); ++i) {
 			if (inventory.get(i) instanceof Health) {
 				sortedInventory.add(inventory.get(i));
 			}
 		}
-		
+
 		//add tools
 		for (int i = 0; i < inventory.size(); ++i) {
 			if (inventory.get(i) instanceof Tool) {
 				sortedInventory.add(inventory.get(i));
 			}
 		}
-		
+
 		//finally, add key
 		for (int i = 0; i < inventory.size(); ++i) {
 			if (inventory.get(i) instanceof Key) {
 				sortedInventory.add(inventory.get(i));
 			}
 		}
-		
+
 		return sortedInventory;
 	}
 
