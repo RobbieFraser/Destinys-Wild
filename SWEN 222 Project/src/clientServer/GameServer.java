@@ -124,7 +124,7 @@ public class GameServer extends Thread {
 	}
 
 	public void handleTorchPacket(TorchPacket packet) {
-		Player player = board.getPlayer(packet.getUserName());
+		Player player = getPlayer(packet.getUserName());
 		player.setHasTorch(intToBool(packet.getHasTorch()));
 	}
 
