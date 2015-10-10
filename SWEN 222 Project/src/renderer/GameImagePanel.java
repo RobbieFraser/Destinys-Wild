@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -208,6 +209,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			//no need to draw the dark
 			return;
 		}
+		//TODO: Not quite in line
+		Rectangle scoreRectangle = new Rectangle(20, 535, 120, 28);
+
 		for (int i = 0; i < 110; ++i) {
 			for (int j = 0; j < 80; ++j) {
 				//initially assumed that black drawn
@@ -216,9 +220,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				for (Player player: board.getPlayers()) {
 					//only draw this player's torch if they are the current player's room
 					if (player != null && player.getCurrentRoom().equals(this.player.getCurrentRoom())) {
-						Point playerCoords = player.getCoords();
-						if (isPointInside(i*10, j*10+50, playerCoords)) {
+						if (isPointInside(i*10, j*10+50, player)) {
 							//this 10x10 square is inside the player's area
+							drawDarkness = false;
+						} else if (scoreRectangle.contains(i*10, j*10)) {
+							//the player should still be able to see their score
 							drawDarkness = false;
 						}
 					}
@@ -246,7 +252,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * @param point centre of circle
 	 * @return true if point is inside circle, otherwise false
 	 */
-	private boolean isPointInside(int x, int y, Point point) {
+	private boolean isPointInside(int x, int y, Player player) {
+		Point playerCoords = player.getCoords();
 		int radius = 50;
 
 		//check if the players inventory contains the torch
@@ -258,8 +265,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 
 		//use the pythagorean theorem
-		int xDiff = Math.abs(point.x - x);
-		int yDiff = Math.abs(point.y - y);
+		int xDiff = Math.abs(playerCoords.x - x);
+		int yDiff = Math.abs(playerCoords.y - y);
 		double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 		return distance <= radius;
 	}

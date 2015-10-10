@@ -32,6 +32,8 @@ public class Player implements Serializable {
 	private boolean south;
 	private boolean east;
 	private boolean west;
+	private int numKeyPieces = 0;
+
 	private int walkState = 0;
 	private int walkDelay = 0;
 	private boolean invincible;
@@ -450,7 +452,7 @@ public class Player implements Serializable {
 	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
-		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && canAddKeyItem()) || item instanceof Tool){
+		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyPieces < 4) || item instanceof Tool){
 			return inventory.add(item);
 		}
 		else if(item instanceof Score){
@@ -462,18 +464,6 @@ public class Player implements Serializable {
 		}
 	}
 
-	/**
-	 * Checks whether a Key item can be added to the inventory (Max of 1 Key item)
-	 * @return boolean true/false for above
-	 */
-	public boolean canAddKeyItem(){
-		for(Item item : inventory){
-			if(item instanceof Key){
-				return false;
-			}
-		}
-		return true;
-	}
 
 	/**
 	 * counts the number of health items in the player's inventory
@@ -680,6 +670,14 @@ public class Player implements Serializable {
 
 	public void setWest(boolean west) {
 		this.west = west;
+	}
+	
+	public int getNumKeyPieces() {
+		return numKeyPieces;
+	}
+
+	public void setKeyPieces(int keyPieces) {
+		this.numKeyPieces = keyPieces;
 	}
 
 	/////////////////////////////////ADDING IN PLAYER MULTI THINGS BELOW//////////////////////////////////

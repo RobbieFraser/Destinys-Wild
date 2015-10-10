@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -186,8 +187,8 @@ public class GameInterface{
 		}
 
 		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
-		boolean hasKey = !player.canAddKeyItem();
-		if (hasKey) {
+		int numKeyPieces = player.getNumKeyPieces();
+		if (numKeyPieces > 0) {
 			//need to draw players key
 			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
 		} else {
@@ -215,19 +216,48 @@ public class GameInterface{
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
 		//firstly, we set the background image to be the image in question
 		String imageName = getName(index);
-		Image itemImage = MenuInterface.loadImage(imageName+".png");
-		inventoryLabel.setIcon(new ImageIcon(itemImage));
+		Image itemImage = null;
+		
+		if (type.equals("keyBox")) {
+			//with keys, it is easier to draw the background first
+			Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
+			
+			//get graphics from background to draw with
+			Graphics g = slotBackgroundImage.getGraphics();
+			
+			//depending on the number of key pieces the player has picked
+			//up, different parts of the key should be drawn
+			BufferedImage keyImage = (BufferedImage) MenuInterface.loadImage("keyTest.png");
+			int numKeyPieces = player.getNumKeyPieces();
+			if (numKeyPieces == 1) {
+				itemImage = keyImage.getSubimage(0, 0, 28, 65);
+			} else if (numKeyPieces == 2) {
+				itemImage = keyImage.getSubimage(0, 0, 40, 65);
+			} else if (numKeyPieces == 3) {
+				itemImage = keyImage.getSubimage(0, 0, 53, 65);
+			} else {
+				//draw entire key
+				itemImage = keyImage.getSubimage(0, 0, 80, 65);
+			}
+			g.drawImage(itemImage, 10, 20, null);
+			
+			inventoryLabel.setIcon(new ImageIcon(slotBackgroundImage));
+		} 
+		else {
+			itemImage = MenuInterface.loadImage(imageName+".png");
+			inventoryLabel.setIcon(new ImageIcon(itemImage));
 
-		//now we will draw the border over the top of the image of the tool
-		Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
-		//get graphics from image to draw with
-		Graphics g = itemImage.getGraphics();
-		g.drawImage(slotBackgroundImage, 0, 0, null, null);
+			//now we will draw the border over the top of the image of the tool
+			Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
+			//get graphics from image to draw with
+			Graphics g = itemImage.getGraphics();
+			g.drawImage(slotBackgroundImage, 0, 0, null, null);
 
-		//update the panel description (hover over text)
-		if (type.equals("itemBox")) {
-			//1st - 5th slot
-			inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
+			//update the panel description (hover over text)
+			if (type.equals("itemBox")) {
+				//1st - 5th slot
+				inventoryLabel.setToolTipText(imageName+" - press "+(index+1)+" to select.");
+			}
 		}
 	}
 
@@ -256,7 +286,8 @@ public class GameInterface{
 			//System.out.println(index + " " +player.getInventory().get(toolNum+player.numHealthItems()).getType());
 			return "pickaxeIcon";
 		} else {
-			System.out.println(index + " " +player.getInventory().get(player.numToolItems()+player.numHealthItems()).getType());
+			
+			//System.out.println(index + " " +player.getInventory().get(player.numToolItems()+player.numHealthItems()).getType());
 			return "key";
 		}
 	}
@@ -264,7 +295,6 @@ public class GameInterface{
 	public void changeTime(){
 		gamePanel.changeTime();
 	}
-
 
 	/**
 	 * This method should be called when the user has
