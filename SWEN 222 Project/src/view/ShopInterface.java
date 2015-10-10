@@ -1,12 +1,12 @@
 package view;
 
-import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,17 +35,23 @@ public class ShopInterface {
 	 */
 	public ShopInterface() {
 		this.player = DestinysWild.getPlayer();
-		Tool[] weapons = {new Tool("machete", 10), new Tool("torch", 20), 
-				new Tool("pickaxe",30), new Tool("jetfuel", 40),
-				new Tool("bucket", 50), new Tool("spade", 60)};
+		Tool[] weapons = {new Tool("machete", 10),
+				new Tool("torch", 20), new Tool("pickaxe",30),
+				new Tool("jetfuel", 40), new Tool("bucket", 50),
+				new Tool("spade", 60)};
 		this.weapons = weapons;
 		initialiseInterface();
 	}
 	
+	/**
+	 * This method should set up the look of the shop interface.
+	 * All the tools should be added to the shop, along with the
+	 * 'buy' buttons underneath each tool.
+	 */
 	private void initialiseInterface() {
 		frame = new JFrame();
 		frame.setTitle("Shop");
-		frame.setBounds(400, 150, 400, 300);
+		frame.setBounds(400, 150, 330, 280);
 		frame.setResizable(false);
 		frame.setLayout(null);
 		frame.setAlwaysOnTop(true);
@@ -53,19 +59,27 @@ public class ShopInterface {
 		//we set up 6 panels which will each contain a tool
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 3; ++j) {
-				JLabel shopSlot = new JLabel(new ImageIcon(MenuInterface.loadImage("pickaxeIcon.png")));		
-				shopSlot.setBounds(73+88*j, 40+115*i, 78, 78);
-				shopSlot.setBorder(BorderFactory.createLineBorder(Color.RED));
+				
+				//set in the item box image in the background, then we drawn the
+				//individual tool on top
+				Image itemBoxImage = MenuInterface.loadImage("itemBox.png");
+				Graphics graphics = itemBoxImage.getGraphics();
+				//draw tool on top of the background image
+				
+				Image toolImage = MenuInterface.loadImage(getToolImageName(i*3+j));
+				graphics.drawImage(toolImage, 12, 12, null);
+				JLabel shopSlot = new JLabel(new ImageIcon(itemBoxImage));		
+				shopSlot.setBounds(36+88*j, 20+115*i, 78, 78);
 				frame.getContentPane().add(shopSlot);
 				
 				JButton buyItemButton = new JButton("Buy");
-				buyItemButton.setBounds(73 + 88*j, 118+115*i, 78, 20);
+				buyItemButton.setBounds(36+88*j, 103+115*i, 78, 20);
 				buyItemButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						buyTool(e);					
 					}
 				});
-				//focus will be on the buttons always, so we add the key listener here
+				//focus will always be on the buttons, so we add the key listener here
 				buyItemButton.addKeyListener(new KeyListener() {
 					@Override
 					public void keyPressed(KeyEvent arg0) {
@@ -80,7 +94,6 @@ public class ShopInterface {
 					public void keyTyped(KeyEvent arg0) {}
 				});
 				
-				
 				frame.getContentPane().add(buyItemButton);
 			}
 		}
@@ -88,6 +101,40 @@ public class ShopInterface {
 		frame.revalidate();
 		frame.repaint();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * This method should return a string containing
+	 * the name of the image that corresponds to a
+	 * certain slot in the shop.
+	 * @param index of tool that's image name should be returned
+	 * @return string of tool image name
+	 */
+	private String getToolImageName(int index) {
+		//TODO: Add in correct tool images
+		switch(index) {
+		case 0:
+			//machete
+			return "pickaxeIcon.png";
+		case 1:
+			//torch
+			return "pickaxeIcon.png";
+		case 2:
+			//pickaxe
+			return "pickaxeIcon.png";
+		case 3:
+			//jetfuel
+			return "pickaxeIcon.png";
+		case 4:
+			//bucket
+			return "pickaxeIcon.png";
+		case 5:
+			//spade
+			return "pickaxeIcon.png";
+		default:
+			//dead code, if we get here an error will be thrown
+			return null;
+		}
 	}
 	
 	/**
@@ -103,11 +150,11 @@ public class ShopInterface {
 				indexOfTool = i;
 			}
 		}
-		//int cost = indexOfTool * 100;
-		int cost = 0;
+		int cost = (indexOfTool * 50) + 50;
 		Tool tool = weapons[indexOfTool];
 		//capitalise first letter of tool's name
 		String toolName = tool.getType().substring(0, 1).toUpperCase() + tool.getType().substring(1);
+		
 		if (player.getInventory().contains(tool)) {
 			JOptionPane.showMessageDialog(frame, "You've already bought the "+toolName+".");
 		}
@@ -121,10 +168,10 @@ public class ShopInterface {
 					player.addInventoryItem(tool);
 					JOptionPane.showMessageDialog(frame, "The "+toolName+" has been added to your inventory.");
 					player.setScore(score - cost);
-					//player can no longer buy this tool
+					//player cannot buy this tool again
 				} else {
 					int difference = cost - score;
-					JOptionPane.showMessageDialog(frame, "You need "+difference+" more coins to buy the "+toolName);
+					JOptionPane.showMessageDialog(frame, "You need "+difference+" more coins to buy the "+toolName+".");
 				}
 			}
 		}
