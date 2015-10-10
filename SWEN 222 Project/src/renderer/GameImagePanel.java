@@ -210,7 +210,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			return;
 		}
 		//TODO: Not quite in line
-		Rectangle scoreRectangle = new Rectangle(20, 535, 120, 28);
+		//don't want to obscure the player's score
+		Rectangle scoreRectangle = new Rectangle(20, 530, 120, 28);
 
 		for (int i = 0; i < 110; ++i) {
 			for (int j = 0; j < 80; ++j) {
@@ -233,7 +234,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (state == NIGHT_TIME) {
 						g.setColor(new Color(0, 0, 0, 230));
 					} else if (state == DUSK) {
-						g.setColor(new Color(0, 0, 0, (time - 40) * 10));
+						//TODO: Check this
+						if ((time - 40) * 10 > 250) {
+							System.out.println((time - 40) * 10);
+						}
+						g.setColor(new Color(0, 0, 0, (time - 40) * 9));
 					} else if (state == DAWN) {
 						g.setColor(new Color(0, 0, 0, time*12));
 					}
@@ -257,11 +262,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int radius = 50;
 
 		//check if the players inventory contains the torch
-		for (Item item: player.getInventory()) {
-			if (item.getType().equals("torch")) {
-				//they can see more of the room
-				radius = 150;
-			}
+		if (player.getHasTorch()) {
+			radius = 150;
 		}
 
 		//use the pythagorean theorem
@@ -290,7 +292,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			//go up to light blue
 			//we need to make sure we don't exceed the light blue colour for day time
 
-			int red = (int) ((1+current.getRed())*1.001);
+			int red = (int) ((current.getRed())*1.001);
 			if (red > 120) {
 				red = current.getRed();
 			}
@@ -303,7 +305,12 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			if (blue >= 255) {
 				blue = current.getBlue();
 			}
-			backgroundColour = new Color(red, green, blue);
+			
+			int alpha = (int) (current.getAlpha()*1.0001);
+			if (alpha >= 255) {
+				alpha = current.getAlpha();
+			}
+			backgroundColour = new Color(red, green, blue, alpha);
 		}
 		else {
 			//night time

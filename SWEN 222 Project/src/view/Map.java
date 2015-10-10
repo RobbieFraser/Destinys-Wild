@@ -203,9 +203,6 @@ public class Map extends JComponent {
 		Iterator<Player> iterator = players.iterator();
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
-			if (player == null) {
-				throw new Error("Null player");
-			}
 			//now draw location of player
 			Room currentRoom = player.getCurrentRoom();
 			Point roomCoord = currentRoom.getBoardPos();
@@ -219,7 +216,11 @@ public class Map extends JComponent {
 				g.setColor(new Color(171, 150, 110));
 				//System.out.println("Other player is on :"+roomCoord.x + " " +roomCoord.y);
 			}
-			g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
+			//need to check if the players room is inside the current players visited rooms
+			//otherwise their dot will be floating in space
+			if ((this.player.getVisitedRooms().contains(currentRoom))) {
+				g.fillRect(roomCoord.y * 50 + coord.y * 5, roomCoord.x * 50 + coord.x * 5, 5, 5);
+			}
 		}
 	}
 

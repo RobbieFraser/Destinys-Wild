@@ -452,7 +452,10 @@ public class Player implements Serializable {
 	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
-		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyPieces < 4) || item instanceof Tool){
+		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyPieces < 4) || item instanceof Tool) {
+			if (item.getType().equals("torch")) {
+				hasTorch = true;
+			}
 			return inventory.add(item);
 		}
 		else if(item instanceof Score){
