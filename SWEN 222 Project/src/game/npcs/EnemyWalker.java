@@ -18,13 +18,15 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	private int speed;
 	private int damage;
 	private int health;
+	private int id;
 	private String strategy;
 	private Room currentRoom;
 	private Tile currentTile;
 	private int dir = 0;
 
-	public EnemyWalker(String type, Point roomCoords, int speed, int damage, Room currentRoom){
+	public EnemyWalker(String type, int id, Point roomCoords, int speed, int damage, Room currentRoom){
 		this.type = type;
+		this.id = id;
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
@@ -262,5 +264,11 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	public void interact() {
 		takeDamage(2);
 
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 }

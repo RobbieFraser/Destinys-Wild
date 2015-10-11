@@ -19,14 +19,16 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 
 	private int damage;
 	private int health;
+	private int id;
 
-	public EnemyStill(String type, Point roomCoords, int damage, Room currentRoom){
+	public EnemyStill(String type, int id, Point roomCoords, int damage, Room currentRoom){
 		this.type = type;
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
 		this.damage = damage;
 		this.health = damage;
+		this.id = id;
 	}
 
 	public boolean tryMove(){
@@ -103,6 +105,11 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 	public void interact() {
 		takeDamage(2);
 
+	}
+
+	@Override
+	public int getId() {
+		return id;
 	}
 
 }

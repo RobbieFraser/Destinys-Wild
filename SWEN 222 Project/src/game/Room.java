@@ -52,6 +52,15 @@ public class Room implements Serializable{
 		}
 		return null;
 	}
+	
+	public NPC getNpcFromId(int id){
+		for(NPC npc : npcs){
+			if(npc.getId() == id){
+				return npc;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Calculates which Tile the player is standing on
