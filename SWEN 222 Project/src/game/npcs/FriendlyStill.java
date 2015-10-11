@@ -1,5 +1,6 @@
 package game.npcs;
 
+import game.DestinysWild;
 import game.Interactable;
 import game.Room;
 import game.Tile;
@@ -16,13 +17,15 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	private Point realCoords;
 	private Room currentRoom;
 	private Tile currentTile;
+	private int id;
 
 	private boolean isTalking;
 
 	private String text;
 
-	public FriendlyStill(String type, Point roomCoords, Room currentRoom){
+	public FriendlyStill(String type, int id, Point roomCoords, Room currentRoom){
 		this.type = type;
+		this.id = id;
 		this.roomCoords = roomCoords;
 		this.realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		this.currentRoom = currentRoom;
@@ -87,35 +90,31 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 		isTalking = false;
 	}
 
-	/**
-	 * Honours this FriendlyStill with the power of free(ish) speech
-	 */
-	public void speak(){
-		if(type.equals("fladnag")){
-			text = "You shall not pass!!!!!";
-		}
-		if(type.equals("shopkeeper")){
-			text = "Shop is closed bruh";
-		}
-		isTalking = true;
-	}
-
-	@Override
 	public void interact() {
 		if(type.equals("shopkeeper")){
 			new ShopInterface();
 		}
 		else if(type.equals("fladnag")){
-			speak();
+			if(DestinysWild.getPlayer().tryMakeKey()){
+				DestinysWild.startTalking("I have used my wizardly prowess to craft this key! Use it wisely.");
+			}
+			else{
+				DestinysWild.startTalking("You shall not pass!!!!!");
+			}
 		}
 		else{
-			speak();
+			DestinysWild.startTalking("The shop is closed! Come back tomorrow.");
 		}
 
 	}
 
 	public Tile getCurrentTile(){
 		return currentTile;
+	}
+
+	@Override
+	public int getId() {
+		return id;
 	}
 
 

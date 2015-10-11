@@ -38,7 +38,7 @@ public class Key implements Item,Serializable{
 	}
 
 	public String toString(){
-		return "key";
+		return "key" + String.valueOf(id);
 	}
 
 }

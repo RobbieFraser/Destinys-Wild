@@ -273,9 +273,9 @@ public class Player implements Serializable {
 	 * The player has died. Reinitialises everything appropriately.
 	 */
 	public void partThisCruelWorldForAnother(){
+		resetInventory();
 		setCurrentRoom(DestinysWild.getBoard().getRoomFromCoords(2, 2));
 		setCoords(540, 325);
-		resetInventory();
 		setScore(0);
 		setHealth(100);
 	}
@@ -453,7 +453,7 @@ public class Player implements Serializable {
 	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
-		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyPieces < 4) || item instanceof Tool) {
+		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyItems() < 4) || item instanceof Tool) {
 			if (item.getType().equals("torch")) {
 				hasTorch = true;
 				TorchPacket torchPacket = new TorchPacket(this.getName(),true);
@@ -468,6 +468,18 @@ public class Player implements Serializable {
 			System.out.println("Too many " + item.toString() + " items in inventory!");
 			return false;
 		}
+	}
+	
+	public boolean tryMakeKey(){
+		if(numKeyItems() != 4){
+			return false;
+		}
+		for(Item item : inventory){
+			if(item instanceof Key){
+				removeInventoryItem(item);
+			}
+		}
+		return addInventoryItem(new Key(5, null));
 	}
 
 
@@ -499,6 +511,15 @@ public class Player implements Serializable {
 		return count;
 	}
 
+	public int numKeyItems(){
+		int count = 0;
+		for(Item item : inventory){
+			if(item instanceof Key){
+				count++;
+			}
+		}
+		return count;
+	}
 	/**
 	 * removes an item at 'index' from the player's inventory
 	 * @param index index of item to be removed

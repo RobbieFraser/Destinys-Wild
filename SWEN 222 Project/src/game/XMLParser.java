@@ -136,7 +136,13 @@ public class XMLParser {
 
 			int npcRow = Integer.valueOf(npc.getChildText("Row"));
 			int npcCol = Integer.valueOf(npc.getChildText("Col"));
-
+			int id = 0;
+			try{
+				id = Integer.valueOf(npc.getChildText("Id"));
+			}
+			catch(Exception e){
+				System.out.println("Didn't load NPC id because they're not implemented in xml file yet");
+			}
 			int damage = Integer.valueOf(npc.getChildText("Damage"));
 			int speed = Integer.valueOf(npc.getChildText("Speed")); //------
 
@@ -145,15 +151,15 @@ public class XMLParser {
 
 			switch (npcType){
 			case "enemywalker":
-				temp = new EnemyWalker(type, coords, speed, damage, currentRoom);
+				temp = new EnemyWalker(type, id, coords, speed, damage, currentRoom);
 				break;
 
 			case "enemystill":
-				temp = new EnemyStill(type, coords, damage, currentRoom);
+				temp = new EnemyStill(type, id, coords, damage, currentRoom);
 				break;
 
 			case "friendlystill":
-				temp = new FriendlyStill(type, coords, currentRoom);
+				temp = new FriendlyStill(type, id, coords, currentRoom);
 				break;
 
 			default:
@@ -410,6 +416,7 @@ public class XMLParser {
 			if(currNpc != null){
 				npc.addContent(new Element("Npctype").setText(currNpc.toString()));
 				npc.addContent(new Element("Type").setText(currNpc.getType()));
+				npc.addContent(new Element("Id").setText(String.valueOf(currNpc.getId())));
 				npc.addContent(new Element("Row").setText(String.valueOf(currNpc.getRoomCoords().x)));
 				npc.addContent(new Element("Col").setText(String.valueOf(currNpc.getRoomCoords().y)));
 				npc.addContent(new Element("Damage").setText(String.valueOf(currNpc.getDamage())));

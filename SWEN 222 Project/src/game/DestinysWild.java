@@ -37,6 +37,9 @@ public class DestinysWild implements Runnable {
 	private MenuInterface mainMenu;
 	private JFrame frame;
 	public int tickCount = 0;
+	private static boolean isTalking;
+	private static String text;
+	private int talkCount = 120;
 
 	public DestinysWild() {
 		mainMenu = new MenuInterface(this);
@@ -151,6 +154,7 @@ public class DestinysWild implements Runnable {
 
 	public void updateGame() {
 		//currentPlayer.updatePlayer();
+		updateTalking();
 		for (NPC enemy : currentPlayer.getCurrentRoom().getNpcs()) {
 			enemy.tryMove();
 		}
@@ -233,7 +237,30 @@ public class DestinysWild implements Runnable {
 	public static void setBoard(Board b) {
 		board = b;
 	}
-
+	
+	public static void startTalking(String talk){
+		text = talk;
+		isTalking = true;
+	}
+	
+	public void updateTalking(){
+		if(isTalking){
+			talkCount--;
+			if(talkCount == 0){
+				isTalking = false;
+				talkCount = 120;
+			}
+		}
+	}
+	
+	public boolean isTalking(){
+		return isTalking;
+	}
+	
+	public String getText(){
+		return text;
+	}
+	
 	public static GameInterface getGameInterface(){
 		return ui;
 	}

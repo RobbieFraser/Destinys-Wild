@@ -14,4 +14,5 @@ public interface NPC {
 	public String toString();
 	public boolean tryMove();
 	public void takeDamage(int damage);
+	public int getId();
 }
