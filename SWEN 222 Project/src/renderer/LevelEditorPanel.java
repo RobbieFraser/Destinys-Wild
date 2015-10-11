@@ -620,7 +620,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					break;
 				case "EnemyStill":
-					curRoom.addNpc(new EnemyStill(full, new Point(hoverY, hoverX), 10, curRoom));
+					curRoom.addNpc(new EnemyStill(full, Integer.valueOf(count + "" + curRoom.getId()), new Point(hoverY, hoverX), 10, curRoom));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					curRoom.getItems()[hoverY][hoverX] = null;
 					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyStill(full, new Point(hoverY, hoverX), 10);
@@ -636,13 +636,13 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 						speed = 2;
 						damage = 30;
 					}
-					curRoom.addNpc(new EnemyWalker(full, new Point(hoverY, hoverX), speed, damage, curRoom));
+					curRoom.addNpc(new EnemyWalker(full, Integer.valueOf(count + "" + curRoom.getId()), new Point(hoverY, hoverX), speed, damage, curRoom));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					curRoom.getItems()[hoverY][hoverX] = null;
 					//curRoom.getNpcs()[hoverY][hoverX] = new EnemyWalker(full, new Point(hoverY, hoverX), 10, 10);
 					break;
 				case "FriendlyStill":
-					curRoom.addNpc(new FriendlyStill(full, new Point(hoverY, hoverX), curRoom));
+					curRoom.addNpc(new FriendlyStill(full, Integer.valueOf(count + "" + curRoom.getId()), new Point(hoverY, hoverX), curRoom));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					curRoom.getItems()[hoverY][hoverX] = null;
 					break;
