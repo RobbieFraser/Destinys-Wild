@@ -392,12 +392,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				}
 			}
 		}
-		else if(viewDir.equals("south")){
-
-		}
-		else if(viewDir.equals("west")){
-
-		}
 	}
 
 	public void drawDistantObject(Graphics g, String file, int x, int y, int SorE){
@@ -421,18 +415,74 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public void drawEastRoom(Graphics g){
-		if((int)player.getCurrentRoom().getBoardPos().getY() != 4){
-			Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
-					(int)player.getCurrentRoom().getBoardPos().getY()+1);
-			BufferedImage ground = loadImage("ground.png");
-			g.drawImage(ground, gX+374, gY-176, null);
-			for (int i = 0; i < 10; i++){
-				for (int j = 9; j >= 0; j--){
-					if (eastRoom.getObstacles()[i][j] != null){
-						drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+		if(viewDir.equals("north")){
+			if((int)player.getCurrentRoom().getBoardPos().getY() != 4){
+				Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
+						(int)player.getCurrentRoom().getBoardPos().getY()+1);
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX+374, gY-176, null);
+				for (int i = 0; i < 10; i++){
+					for (int j = 9; j >= 0; j--){
+						if (eastRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+						}
+						if (eastRoom.getItems()[i][j] != null){
+							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), j, i, 1);
+						}
 					}
-					if (eastRoom.getItems()[i][j] != null){
-						drawDistantObject(g, eastRoom.getItems()[i][j].getType(), j, i, 1);
+				}
+			}
+		}
+		else if(viewDir.equals("east")){
+			if((int)player.getCurrentRoom().getBoardPos().getX() != 0){
+				Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX() - 1,
+						(int)player.getCurrentRoom().getBoardPos().getY());
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX+374, gY-176, null);
+				for (int i = 0; i < 10; i++){
+					for (int j = 0; j < 10; j++){
+						if (eastRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-i, j, 1);
+						}
+						if (eastRoom.getItems()[i][j] != null){
+							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), 9-i, j, 1);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("south")){
+			if((int)player.getCurrentRoom().getBoardPos().getY() != 0){
+				Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
+						(int)player.getCurrentRoom().getBoardPos().getY()-1);
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX+374, gY-176, null);
+				for (int i = 9; i >= 0; i--){
+					for (int j = 0; j < 10; j++){
+						if (eastRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-j, 9-i, 1);
+						}
+						if (eastRoom.getItems()[i][j] != null){
+							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), 9-i, 9-i, 1);
+						}
+					}
+				}
+			}
+		}
+		else if(viewDir.equals("west")){
+			if((int)player.getCurrentRoom().getBoardPos().getX() != 4){
+				Room eastRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX()+1,
+						(int)player.getCurrentRoom().getBoardPos().getY());
+				BufferedImage ground = loadImage("ground.png");
+				g.drawImage(ground, gX+374, gY-176, null);
+				for (int i = 9; i >= 0; i--){
+					for (int j = 9; j >= 0; j--){
+						if (eastRoom.getObstacles()[i][j] != null){
+							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), i, 9-j, 1);
+						}
+						if (eastRoom.getItems()[i][j] != null){
+							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), i, 9-j, 1);
+						}
 					}
 				}
 			}
