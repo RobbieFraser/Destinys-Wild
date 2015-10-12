@@ -40,7 +40,9 @@ public class GameServer extends Thread {
 	private Multiplayer multiplayer;
 
 	/**
-	 *Constructor for a GameServer which takes in a Board and a Multiplayer object
+	 * Constructor for a GameServer which takes in a Board and a Multiplayer
+	 * object
+	 * 
 	 * @param board
 	 * @param multiplayer
 	 */
@@ -73,9 +75,10 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 *This method receives an array of bytes, an InetAddress and a port number
-	 *and processes the array of bytes into the relevant packet. It then
-	 *performs a handle method based off the type of packet it is.
+	 * This method receives an array of bytes, an InetAddress and a port number
+	 * and processes the array of bytes into the relevant packet. It then
+	 * performs a handle method based off the type of packet it is.
+	 * 
 	 * @param data
 	 * @param address
 	 * @param port
@@ -116,14 +119,14 @@ public class GameServer extends Thread {
 			break;
 		case TIME:
 			packet = new TimePacket(data);
-			this.handleTimePacket((TimePacket)packet);
+			this.handleTimePacket((TimePacket) packet);
 			break;
 		case TORCH:
 			packet = new TorchPacket(data);
 			this.handleTorchPacket((TorchPacket) packet);
 			break;
 		case ENEMY:
-			packet  = new EnemyPacket(data);
+			packet = new EnemyPacket(data);
 			this.handleEnemyPacket((EnemyPacket) packet);
 			break;
 		}
@@ -131,9 +134,10 @@ public class GameServer extends Thread {
 
 	public void handleEnemyPacket(EnemyPacket packet) {
 		Room room = board.getRoomFromId(packet.getCurrentRoomID());
-		for(NPC npc : room.getNpcs()){
-			if(npc.getId()==packet.getID()){
-				Point point = new Point(packet.getRealCoordsX(),packet.getRealCoordsY());
+		for (NPC npc : room.getNpcs()) {
+			if (npc.getId() == packet.getID()) {
+				Point point = new Point(packet.getRealCoordsX(),
+						packet.getRealCoordsY());
 				npc.setRealCoords(point);
 				npc.setHealth(packet.getHealth());
 			}
@@ -147,12 +151,15 @@ public class GameServer extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
+		DestinysWild.getGameInterface().getGameImagePanel()
+				.setTime(packet.getNewTime());
 	}
 
 	/**
-	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
-	 *from the data stored inside it. It then removes the item from the room.
+	 * This method takes a RemoveItemPacket and obtains the Room and Item
+	 * objects from the data stored inside it. It then removes the item from the
+	 * room.
+	 * 
 	 * @param packet
 	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
@@ -165,9 +172,11 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 *This method takes a MovePacket and obtains the Player, their health and X and Y positions.
-	 *It then sets their room, co-ordinates and what direction(s) they are moving in. Once it has
-	 *done this, it updates the player and sets their current tile.
+	 * This method takes a MovePacket and obtains the Player, their health and X
+	 * and Y positions. It then sets their room, co-ordinates and what
+	 * direction(s) they are moving in. Once it has done this, it updates the
+	 * player and sets their current tile.
+	 * 
 	 * @param packet
 	 */
 	public void handleMove(MovePacket packet) {
@@ -187,7 +196,7 @@ public class GameServer extends Thread {
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
 				player.setSouth(intToBool(packet.getSouth()));
-				player.updatePlayer();
+				//player.updatePlayer();
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -196,8 +205,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 *Removes a player from the game by sending a DisconnectPacket
-	 *with the player's information
+	 * Removes a player from the game by sending a DisconnectPacket with the
+	 * player's information
+	 * 
 	 * @param packet
 	 */
 	public void removeConnection(DisconnectPacket packet) {
@@ -210,6 +220,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that gets the index of a player in the list
+	 * 
 	 * @param username
 	 * @return
 	 */
@@ -225,7 +236,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 * Gets a player from the set of connectedPlayers by searching for their name
+	 * Gets a player from the set of connectedPlayers by searching for their
+	 * name
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -239,11 +252,12 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 * Takes a Player and a LoginPacket amd checks if the Player is already in the
-	 * list of connected players. If it is, it is marked as connected and its port and
-	 * IP are set to to the matching player's port and IP. If it is not
-	 * in the list, a LoginPacket is sent out and it is added to the list of connected players
-	 * on the server and the list of players on the Board.
+	 * Takes a Player and a LoginPacket amd checks if the Player is already in
+	 * the list of connected players. If it is, it is marked as connected and
+	 * its port and IP are set to to the matching player's port and IP. If it is
+	 * not in the list, a LoginPacket is sent out and it is added to the list of
+	 * connected players on the server and the list of players on the Board.
+	 * 
 	 * @param player
 	 * @param packet
 	 */
@@ -282,7 +296,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 *Sends data in the form of a byte array to the desired InetAddress and port
+	 * Sends data in the form of a byte array to the desired InetAddress and
+	 * port
+	 * 
 	 * @param data
 	 * @param ipAddress
 	 * @param port
@@ -298,7 +314,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 * Sends data in the form of a byte array to all players in the connectedPlayers list
+	 * Sends data in the form of a byte array to all players in the
+	 * connectedPlayers list
+	 * 
 	 * @param data
 	 */
 	public void sendDataToAllClients(byte[] data) {
@@ -313,6 +331,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that represents a boolean as an int
+	 * 
 	 * @param bool
 	 * @return
 	 */
@@ -323,6 +342,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that represents an int as a boolean
+	 * 
 	 * @param i
 	 * @return
 	 */

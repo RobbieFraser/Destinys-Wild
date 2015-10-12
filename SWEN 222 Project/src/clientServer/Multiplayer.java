@@ -34,11 +34,9 @@ public class Multiplayer extends Canvas implements Runnable {
 	}
 
 	public void initialise() {
-		Room room = new Room(-1, -1, -1, -1, 0, new Point(3,3));
 //		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
 //					 new Point(500,300), room, null, -1);
 		//PlayerMulti player = new PlayerMulti(currentPlayer.getName(),currentPlayer.getCoords(),currentPlayer.getCurrentRoom(),null,-1);
-		
 		LoginPacket packet = new LoginPacket(currentPlayer.getName());
 		if (client != null) {
 			// client.sendData("ping".getBytes());

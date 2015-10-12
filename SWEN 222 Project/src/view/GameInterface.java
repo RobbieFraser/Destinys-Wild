@@ -22,6 +22,7 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import clientServer.packets.MovePacket;
 import renderer.GameImagePanel;
 import game.Board;
 import game.DestinysWild;
@@ -432,6 +433,13 @@ public class GameInterface{
 		switch (keyCode) {
 		case KeyEvent.VK_W:
 			setPlayerDirection(keyCode);
+			MovePacket movePacketN = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketN.writeData(game.getMultiplayer().getClient());
 			//player.setNorth(true);
 			//up one square
 			//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
@@ -439,6 +447,13 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_A:
 			setPlayerDirection(keyCode);
+			MovePacket movePacketW = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketW.writeData(game.getMultiplayer().getClient());
 			//player.setWest(true);
 			//left one square
 			//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
@@ -446,6 +461,13 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_S:
 			setPlayerDirection(keyCode);
+			MovePacket movePacketS = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketS.writeData(game.getMultiplayer().getClient());
 			//player.setSouth(true);
 			//moved down one
 			//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
@@ -453,6 +475,13 @@ public class GameInterface{
 			break;
 		case KeyEvent.VK_D:
 			setPlayerDirection(keyCode);
+			MovePacket movePacketE = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketE.writeData(game.getMultiplayer().getClient());
 			//player.setEast(true);
 			//moved right one
 			//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,

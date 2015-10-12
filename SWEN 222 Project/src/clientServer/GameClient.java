@@ -39,8 +39,9 @@ public class GameClient extends Thread {
 	private Multiplayer multiplayer;
 
 	/**
-	 *Constructor for GameClient which takes in a Board, IP Address in the form of a String
-	 *and a Multiplayer object
+	 * Constructor for GameClient which takes in a Board, IP Address in the form
+	 * of a String and a Multiplayer object
+	 * 
 	 * @param board
 	 * @param ipName
 	 * @param multiplayer
@@ -76,9 +77,10 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 *This method receives an array of bytes, an InetAddress and a port number
-	 *and processes the array of bytes into the relevant packet. It then
-	 *performs a handle method based off the type of packet it is.
+	 * This method receives an array of bytes, an InetAddress and a port number
+	 * and processes the array of bytes into the relevant packet. It then
+	 * performs a handle method based off the type of packet it is.
+	 * 
 	 * @param data
 	 * @param address
 	 * @param port
@@ -113,24 +115,25 @@ public class GameClient extends Thread {
 			break;
 		case TIME:
 			packet = new TimePacket(data);
-			this.handleTimePacket((TimePacket)packet);
+			this.handleTimePacket((TimePacket) packet);
 			break;
 		case TORCH:
 			packet = new TorchPacket(data);
 			this.handleTorchPacket((TorchPacket) packet);
 			break;
 		case ENEMY:
-			packet  = new EnemyPacket(data);
+			packet = new EnemyPacket(data);
 			this.handleEnemyPacket((EnemyPacket) packet);
 			break;
 		}
 	}
-	
+
 	public void handleEnemyPacket(EnemyPacket packet) {
 		Room room = board.getRoomFromId(packet.getCurrentRoomID());
-		for(NPC npc : room.getNpcs()){
-			if(npc.getId()==packet.getID()){
-				Point point = new Point(packet.getRealCoordsX(),packet.getRealCoordsY());
+		for (NPC npc : room.getNpcs()) {
+			if (npc.getId() == packet.getID()) {
+				Point point = new Point(packet.getRealCoordsX(),
+						packet.getRealCoordsY());
 				npc.setRealCoords(point);
 				npc.setHealth(packet.getHealth());
 			}
@@ -138,7 +141,8 @@ public class GameClient extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		DestinysWild.getGameInterface().getGameImagePanel().setTime(packet.getNewTime());
+		DestinysWild.getGameInterface().getGameImagePanel()
+				.setTime(packet.getNewTime());
 	}
 
 	public void handleTorchPacket(TorchPacket packet) {
@@ -147,8 +151,10 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 *This method takes a RemoveItemPacket and obtains the Room and Item objects
-	 *from the data stored inside it. It then removes the item from the room.
+	 * This method takes a RemoveItemPacket and obtains the Room and Item
+	 * objects from the data stored inside it. It then removes the item from the
+	 * room.
+	 * 
 	 * @param packet
 	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
@@ -158,9 +164,11 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 *This method takes a MovePacket and obtains the Player, their health and X and Y positions.
-	 *It then sets their room, co-ordinates and what direction(s) they are moving in. Once it has
-	 *done this, it updates the player and sets their current tile.
+	 * This method takes a MovePacket and obtains the Player, their health and X
+	 * and Y positions. It then sets their room, co-ordinates and what
+	 * direction(s) they are moving in. Once it has done this, it updates the
+	 * player and sets their current tile.
+	 * 
 	 * @param packet
 	 */
 	public void handleMovePacket(MovePacket packet) {
@@ -176,15 +184,17 @@ public class GameClient extends Thread {
 		player.setEast(intToBool(packet.getEast()));
 		player.setWest(intToBool(packet.getWest()));
 		player.setSouth(intToBool(packet.getSouth()));
-		player.updatePlayer();
+		//player.updatePlayer();
 		player.setCurrentTile(player.getCurrentRoom().calcTile(
 				player.getCoords()));
 	}
 
 	/**
-	 *This method deals with logging in and joining the server. It takes a LoginPacket,
-	 *an InetAddress and a port number. It creates a new Player object and adds it to the
-	 *Set of Players in Board and initialises their location to the home location.
+	 * This method deals with logging in and joining the server. It takes a
+	 * LoginPacket, an InetAddress and a port number. It creates a new Player
+	 * object and adds it to the Set of Players in Board and initialises their
+	 * location to the home location.
+	 * 
 	 * @param packet
 	 * @param address
 	 * @param port
@@ -204,6 +214,7 @@ public class GameClient extends Thread {
 
 	/**
 	 * This method sends data in the form of an array of bytes to the server.
+	 * 
 	 * @param data
 	 */
 	public void sendData(byte[] data) {
@@ -217,7 +228,9 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 * Helper method that represents a boolean as an int. (1 for true, 0 for false)
+	 * Helper method that represents a boolean as an int. (1 for true, 0 for
+	 * false)
+	 * 
 	 * @param bool
 	 * @return
 	 */
@@ -226,9 +239,9 @@ public class GameClient extends Thread {
 		return boolInt;
 	}
 
-
 	/**
 	 * This is another helper method, that represents an int as a boolean
+	 * 
 	 * @param i
 	 * @return
 	 */
