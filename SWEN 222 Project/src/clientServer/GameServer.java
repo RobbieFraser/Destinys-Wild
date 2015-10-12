@@ -25,6 +25,7 @@ import java.util.List;
 
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.EnemyPacket;
+import clientServer.packets.HealthPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
@@ -129,7 +130,16 @@ public class GameServer extends Thread {
 			packet = new EnemyPacket(data);
 			this.handleEnemyPacket((EnemyPacket) packet);
 			break;
+		case HEALTH:
+			packet = new HealthPacket(data);
+			this.handleHealthPacket((HealthPacket) packet);
+			break;
 		}
+	}
+
+	public void handleHealthPacket(HealthPacket packet) {
+		Player player = this.getPlayer(packet.getUserName());
+		player.setHealth(packet.getHealth());
 	}
 
 	public void handleEnemyPacket(EnemyPacket packet) {

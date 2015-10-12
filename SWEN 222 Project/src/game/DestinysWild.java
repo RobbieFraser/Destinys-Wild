@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
 import clientServer.packets.EnemyPacket;
+import clientServer.packets.HealthPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.TimePacket;
 import game.items.Health;
@@ -181,6 +182,8 @@ public class DestinysWild implements Runnable {
 			enemyPacket.writeData(multiplayer.getClient());
 		}
 		currentPlayer.updatePlayer();
+		HealthPacket healthPacket = new HealthPacket(currentPlayer.getName(),currentPlayer.getHealth());
+		healthPacket.writeData(multiplayer.getClient());
 		TimePacket timePacket = new TimePacket(getGameInterface()
 				.getGameImagePanel().getTime());
 		timePacket.writeData(multiplayer.getClient());
