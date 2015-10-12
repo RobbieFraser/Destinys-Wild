@@ -112,4 +112,9 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 		return id;
 	}
 
+	@Override
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
 }

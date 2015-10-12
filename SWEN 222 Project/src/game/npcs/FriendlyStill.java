@@ -79,6 +79,11 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 		return "friendlystill";
 	}
 
+	@Override
+	public void setHealth(int health) {
+		
+	}
+	
 	public void interact() {
 		if(type.equals("shopkeeper") && GameImagePanel.getState() == 0){
 			new ShopInterface();
