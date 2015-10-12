@@ -2,7 +2,13 @@ package game.items;
 
 import java.awt.Point;
 import java.io.Serializable;
-
+ 
+/**
+  * A score item is one which increases the player's score when picked up.
+  * The player's score is the form of currency in Destiny's Wild
+  * @author Rob
+  *
+  */
 public class Score implements Item,Serializable{
 
 	private String type;
@@ -13,6 +19,13 @@ public class Score implements Item,Serializable{
 
 	private int score; //score that will be gained upon pickup
 
+	/**
+	 * Creates a Score item
+	 * @param type of score item
+	 * @param coords of this item
+	 * @param score that the player will gain from this item
+	 * @param id of this item
+	 */
 	public Score(String type, Point coords, int score, int id){
 		this.type = type;
 		this.coords = coords;
@@ -27,6 +40,9 @@ public class Score implements Item,Serializable{
 		return score;
 	}
 
+	/**
+	 * @return id of this item
+	 */
 	public int getId(){
 		return id;
 	}
@@ -69,11 +85,16 @@ public class Score implements Item,Serializable{
 		this.type = type;
 	}
 
-	@Override
+	/**
+	 * Implemented from interface. No purpose for Score
+	 */
 	public int getHealth() {
 		return 0;
 	}
 
+	/**
+	 * returns the type of item - Score
+	 */
 	public String toString(){
 		return "score";
 	}

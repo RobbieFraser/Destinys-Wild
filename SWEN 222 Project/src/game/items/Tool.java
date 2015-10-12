@@ -3,12 +3,23 @@ package game.items;
 import java.awt.Point;
 import java.io.Serializable;
 
+/**
+ * Tools are used throughout the world to break corresponding breakables obstructing ares of the map.
+ * They can be bought at the Store.
+ * @author Rob
+ *
+ */
 public class Tool implements Item,Serializable{
 
 	private String type;
 	private int id;
 	private String breakable; //the breakable that this tool can remove
 
+	/**
+	 * Constructs a Tool and assigns the appropriate breakable to it.
+	 * @param type of tool
+	 * @param id of tool
+	 */
 	public Tool(String type, int id){
 		this.id = id;
 		this.type = type;
@@ -46,7 +57,9 @@ public class Tool implements Item,Serializable{
 		return type;
 	}
 
-	@Override
+	/**
+	 * Hashcode which uses the id of the tool
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -55,7 +68,9 @@ public class Tool implements Item,Serializable{
 		return result;
 	}
 
-	@Override
+	/**
+	 * Equals method based on type and id of the Tool
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -74,6 +89,9 @@ public class Tool implements Item,Serializable{
 		return true;
 	}
 
+	/**
+	 * @return id of tool
+	 */
 	public int getId(){
 		return id;
 	}
@@ -93,24 +111,30 @@ public class Tool implements Item,Serializable{
 		return breakable;
 	}
 
-	@Override
+	/**
+	 * Implemented from interface. No purpose for Tool
+	 */
 	public int getScore() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	/**
+	 * Implemented from interface. No purpose for Key
+	 */
 	public Point getCoords() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	/**
+	 * Implemented from interface. No purpose for Key
+	 */
 	public int getHealth() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	/**
+	 * @return the type of Item this is - Tool
+	 */
 	public String toString(){
 		return "tool";
 	}

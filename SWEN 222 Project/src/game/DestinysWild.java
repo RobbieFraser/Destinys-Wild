@@ -1,12 +1,7 @@
 package game;
 
 import java.awt.Point;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -20,7 +15,6 @@ import clientServer.packets.MovePacket;
 import clientServer.packets.TimePacket;
 import game.items.Health;
 import game.items.Item;
-import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 import view.GameInterface;
 import view.MenuInterface;
@@ -39,7 +33,9 @@ public class DestinysWild implements Runnable {
 	public int tickCount = 0;
 	private static boolean isTalking;
 	private static String text;
-	private int talkCount = 120;
+	private static int talkCount = 150;
+	private boolean prompted = false;
+	private int promptCount = -1;
 
 	public DestinysWild() {
 		mainMenu = new MenuInterface(this);
@@ -58,6 +54,31 @@ public class DestinysWild implements Runnable {
 		Thread thread = new Thread(this);
 		thread.start();
 	}
+	
+	public void startUpPrompt(){
+		if(promptCount == 0){
+			startTalking("Welcome to Destiny's Wild! Move around using WASD");
+		}
+		else if(promptCount == 1){
+			startTalking("Change view by using the LEFT or RIGHT arrow key");
+		}
+		else if(promptCount == 2){
+			startTalking("Navigate your inventory by using Q and E");
+		}
+		else if(promptCount == 3){
+			startTalking("Use a selected inventory item by pressing SHIFT");
+		}
+		else if(promptCount == 4){
+			startTalking("Interact with objects or attack enemies using SPACE");
+		}
+		else if(promptCount == 5){
+			startTalking("Press P to pause, and M to toggle the (awesome) music");
+		}
+		else if(promptCount == 6){
+			startTalking("And finally: Have fun, and good luck - you'll need it");
+			prompted = true;
+		}
+	}
 
 	public void newGame(String playerName, JFrame frame) {
 		this.frame = frame;
@@ -65,6 +86,7 @@ public class DestinysWild implements Runnable {
 		setPlayer(new Player(playerName, new Point(500, 300),
 				board.getRoomFromCoords(2, 2)));
 		setUpGame(true);
+		promptCount = 0;
 	}
 
 	public void joinGame(String playerName, JFrame frame) {
@@ -73,12 +95,14 @@ public class DestinysWild implements Runnable {
 		setPlayer(new Player(playerName, new Point(500, 300),
 				board.getRoomFromCoords(2, 2)));
 		setUpGame(false);
+		promptCount = 0;
 	}
 
 	public void loadGame(File currentPlayerFile, JFrame frame) {
 		this.frame = frame;
 		XMLParser.loadGame(currentPlayerFile);
 		setUpGame(true);
+		prompted = true;
 	}
 
 	public void setUpUI() {
@@ -89,7 +113,6 @@ public class DestinysWild implements Runnable {
 				ui = new GameInterface(currentPlayer, game, board, latch);
 			}
 		});
-		// ui.setInterface(currentPlayer, game, board, latch);
 	}
 
 	public void disconnect() {
@@ -103,17 +126,14 @@ public class DestinysWild implements Runnable {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// System.out.println("Running");
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000D / 30D;
 		int ticks = 0;
 		double diff = 0;
 		long lastTimer = System.currentTimeMillis();
 		while (running) {
-			// if(!paused){
 			long now = System.nanoTime();
 			diff += ((now - lastTime) / nsPerTick);
 			lastTime = now;
@@ -129,12 +149,9 @@ public class DestinysWild implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				//System.out.println("Daytime changed");
-				// System.out.println("Ticks: " + ticks);
 				ui.changeTime();
 				ticks = 0;
 			}
-			// }
 		}
 	}
 
@@ -148,8 +165,10 @@ public class DestinysWild implements Runnable {
 	}
 
 	public void updateGame() {
-		//currentPlayer.updatePlayer();
 		updateTalking();
+		if(!prompted){
+			startUpPrompt();
+		}
 		for (NPC enemy : currentPlayer.getCurrentRoom().getNpcs()) {
 			enemy.tryMove();
 		}
@@ -199,12 +218,6 @@ public class DestinysWild implements Runnable {
 		System.out.println("Parser loadGame good");
 		System.out.println("Name: " + getPlayer().getName());
 		System.out.println("Score: " + getPlayer().getScore());
-		// System.out.println("Tile's real coords: " +
-		// getPlayer().calcTile().getRealCoords().getX() + ", " +
-		// getPlayer().calcTile().getRealCoords().getY());
-		// System.out.println("Tile's room coords: " +
-		// getPlayer().calcTile().getRoomCoords().getX() + ", " +
-		// getPlayer().calcTile().getRoomCoords().getY());
 		System.out.println("Inventory size: "
 				+ getPlayer().getInventory().size());
 	}
@@ -244,6 +257,9 @@ public class DestinysWild implements Runnable {
 			if(talkCount == 0){
 				isTalking = false;
 				talkCount = 120;
+				if(!prompted){
+					promptCount++;
+				}
 			}
 		}
 	}

@@ -189,7 +189,7 @@ public class GameInterface{
 		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 		Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
 		
-		int numKeyItems = player.numKeyItems();
+		int numKeyItems = 4;
 		keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		if (numKeyItems == 5) {
 			//player has all pieces of the key, and the key itself

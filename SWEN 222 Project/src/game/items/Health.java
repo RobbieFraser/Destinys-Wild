@@ -3,6 +3,11 @@ package game.items;
 import java.awt.Point;
 import java.io.Serializable;
 
+/**
+ * A class for Health item types
+ * @author Rob
+ *
+ */
 public class Health implements Item,Serializable{
 
 	private String type;
@@ -13,6 +18,13 @@ public class Health implements Item,Serializable{
 
 	private int health; //health that will be restored upon use
 
+	/**
+	 * A Health item is an item the player can store in their inventory to later use.
+	 * @param type type of item, eg apple, for rendering
+	 * @param coords coords at which the item is located
+	 * @param health amount of health this item heals
+	 * @param id the id of this item
+	 */
 	public Health(String type, Point coords, int health, int id){
 		this.type = type;
 		this.id = id;
@@ -21,12 +33,14 @@ public class Health implements Item,Serializable{
 	}
 
 	/**
-	 * @return the type
+	 * @return the type of this item
 	 */
 	public String getType() {
 		return type;
 	}
-
+	/**
+	 *@return the id of this item 
+	 */
 	public int getId(){
 		return id;
 	}
@@ -66,11 +80,16 @@ public class Health implements Item,Serializable{
 		this.health = health;
 	}
 
-	@Override
+	/**
+	 * Required because of interface. No use in this class
+	 */
 	public int getScore() {
 		return 0;
 	}
 
+	/**
+	 * @return the type of Item this is
+	 */
 	public String toString(){
 		return "health";
 	}

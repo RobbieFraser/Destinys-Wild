@@ -3,10 +3,10 @@
   <Name>Robbie</Name>
   <Posx>572</Posx>
   <Posy>355</Posy>
-  <Health>99</Health>
+  <Health>100</Health>
   <Currentroom>0</Currentroom>
   <Score>10079</Score>
-  <Speed>2</Speed>
+  <Speed>4</Speed>
   <Visitedrooms>
     <Roomid>0</Roomid>
     <Roomid>1</Roomid>
