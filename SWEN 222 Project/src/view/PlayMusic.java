@@ -54,11 +54,12 @@ public class PlayMusic {
 
 	public static void tick() throws JavaLayerException {
 		//System.out.println(playMP3.isComplete());
-		//System.out.println(isFinished);
 		if(playMP3.isComplete()){
 			isFinished = true;
 		}
 		if(isFinished == playMP3.isComplete()){
+			startPlaying();
+			//playSound("DestinysWildOST.mp3");
 			playSound("DestinysWildOST.mp3");
 		}
 			//playMP3.play();
@@ -103,6 +104,7 @@ public class PlayMusic {
 	public static void toggleMusic() {
 		if (isPlaying) {
 			stopPlaying();
+			isFinished = true;
 		} else {
 			playSound("DestinysWildOST.mp3");
 		}

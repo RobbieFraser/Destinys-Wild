@@ -119,6 +119,7 @@ public class MenuInterface {
 		toggleMusicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlayMusic.toggleMusic();
+				//PlayMusic.stopPlaying();
 			}
 		});
 		addKeyListener(toggleMusicButton);
