@@ -168,12 +168,13 @@ public class GameClient extends Thread {
 	 * @param packet
 	 */
 	public void handleTimePacket(TimePacket packet) {
-		try {
+		if (packet.getNewTime() > 63) {
+			DestinysWild.getGameInterface().getGameImagePanel().setTime(63);
+		} else {
 			DestinysWild.getGameInterface().getGameImagePanel()
 					.setTime(packet.getNewTime());
-		} catch (NullPointerException e) {
-
 		}
+		
 	}
 
 	/**

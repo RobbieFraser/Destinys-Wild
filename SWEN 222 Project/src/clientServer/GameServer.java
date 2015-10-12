@@ -136,21 +136,23 @@ public class GameServer extends Thread {
 			break;
 		}
 	}
-	
+
 	/**
-	 * This method takes a HealthPacket, obtains the relevant Player
-	 * and sets their health to the value in the packet
+	 * This method takes a HealthPacket, obtains the relevant Player and sets
+	 * their health to the value in the packet
+	 * 
 	 * @param packet
 	 */
 	public void handleHealthPacket(HealthPacket packet) {
 		Player player = this.getPlayer(packet.getUserName());
 		player.setHealth(packet.getHealth());
 	}
-	
+
 	/**
-	 * This method takes an EnemyPacket, finds the relevant NPC by using
-	 * the ID in the packet and adjusts their health and co-ordinates to
-	 * those in the packet.
+	 * This method takes an EnemyPacket, finds the relevant NPC by using the ID
+	 * in the packet and adjusts their health and co-ordinates to those in the
+	 * packet.
+	 * 
 	 * @param packet
 	 */
 	public void handleEnemyPacket(EnemyPacket packet) {
@@ -166,8 +168,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 * This method takes a TimePacket and obtains the time 
-	 * from it and sets the current time to it
+	 * This method takes a TimePacket and obtains the time from it and sets the
+	 * current time to it
+	 * 
 	 * @param packet
 	 */
 	public void handleTorchPacket(TorchPacket packet) {
@@ -177,8 +180,13 @@ public class GameServer extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		DestinysWild.getGameInterface().getGameImagePanel()
-				.setTime(packet.getNewTime());
+		System.out.println(packet.getNewTime());
+		if (packet.getNewTime() > 63) {
+			DestinysWild.getGameInterface().getGameImagePanel().setTime(63);
+		} else {
+			DestinysWild.getGameInterface().getGameImagePanel()
+					.setTime(packet.getNewTime());
+		}
 		packet.writeData(this);
 	}
 
@@ -223,7 +231,7 @@ public class GameServer extends Thread {
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
 				player.setSouth(intToBool(packet.getSouth()));
-				//player.updatePlayer();
+				// player.updatePlayer();
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {
