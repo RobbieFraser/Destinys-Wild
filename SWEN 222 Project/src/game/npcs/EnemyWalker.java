@@ -240,6 +240,11 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	public void setRealCoords(Point coords) {
 		this.realCoords = coords;
 	}
+	
+	@Override
+	public void setHealth(int health) {
+		this.health = health;
+	}
 
 	/**
 	 * returns this npc's room coords

@@ -5,6 +5,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.items.Item;
+import game.npcs.NPC;
 
 import java.awt.Point;
 import java.io.ByteArrayInputStream;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clientServer.packets.DisconnectPacket;
+import clientServer.packets.EnemyPacket;
 import clientServer.packets.LoginPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.Packet;
@@ -120,6 +122,21 @@ public class GameServer extends Thread {
 			packet = new TorchPacket(data);
 			this.handleTorchPacket((TorchPacket) packet);
 			break;
+		case ENEMY:
+			packet  = new EnemyPacket(data);
+			this.handleEnemyPacket((EnemyPacket) packet);
+			break;
+		}
+	}
+
+	public void handleEnemyPacket(EnemyPacket packet) {
+		Room room = board.getRoomFromId(packet.getCurrentRoomID());
+		for(NPC npc : room.getNpcs()){
+			if(npc.getId()==packet.getID()){
+				Point point = new Point(packet.getRealCoordsX(),packet.getRealCoordsY());
+				npc.setRealCoords(point);
+				npc.setHealth(packet.getHealth());
+			}
 		}
 	}
 
