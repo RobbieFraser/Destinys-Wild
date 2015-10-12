@@ -56,8 +56,8 @@ public class DestinysWild implements Runnable {
 		Thread thread = new Thread(this);
 		thread.start();
 	}
-	
-	public Player getCurrentPlayer(){
+
+	public Player getCurrentPlayer() {
 		return this.currentPlayer;
 	}
 
@@ -158,11 +158,11 @@ public class DestinysWild implements Runnable {
 	private void tick() {
 		tickCount++;
 		updateGame();
-		//	System.out.println("test");
-//			for(Player player : board.getPlayers()){
-//				player.updatePlayer();
-//			}
-			//currentPlayer.updatePlayer();
+		// System.out.println("test");
+		// for(Player player : board.getPlayers()){
+		// player.updatePlayer();
+		// }
+		// currentPlayer.updatePlayer();
 	}
 
 	public static Multiplayer getMultiplayer() {
@@ -181,8 +181,12 @@ public class DestinysWild implements Runnable {
 					enemy.getHealth(), enemy.getId());
 			enemyPacket.writeData(multiplayer.getClient());
 		}
-		currentPlayer.updatePlayer();
-		HealthPacket healthPacket = new HealthPacket(currentPlayer.getName(),currentPlayer.getHealth());
+		// currentPlayer.updatePlayer();
+		for (Player player : board.getPlayers()) {
+			player.updatePlayer();
+		}
+		HealthPacket healthPacket = new HealthPacket(currentPlayer.getName(),
+				currentPlayer.getHealth());
 		healthPacket.writeData(multiplayer.getClient());
 		TimePacket timePacket = new TimePacket(getGameInterface()
 				.getGameImagePanel().getTime());

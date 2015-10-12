@@ -614,24 +614,52 @@ public class GameInterface{
 				|| keyCode == KeyEvent.VK_S && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("west")) {
 			player.setNorth(false);
+			MovePacket movePacketN = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketN.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("west")) {
 			player.setEast(false);
+			MovePacket movePacketE = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketE.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_D && orientation.equals("west")) {
 			player.setSouth(false);
+			MovePacket movePacketS = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketS.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_D && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("west")) {
 			player.setWest(false);
+			MovePacket movePacketW = new MovePacket(game.getCurrentPlayer().getName(),
+					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+					game.getCurrentPlayer().getCurrentRoom().getId(),
+					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			movePacketW.writeData(game.getMultiplayer().getClient());
 		}
 	}
 
