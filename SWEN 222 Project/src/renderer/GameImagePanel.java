@@ -1,13 +1,5 @@
 package renderer;
 
-import game.Board;
-import game.Player;
-import game.Room;
-import game.Tile;
-import game.items.Item;
-import game.npcs.NPC;
-import game.obstacles.Breakable;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -21,6 +13,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import game.Board;
+import game.DestinysWild;
+import game.Player;
+import game.Room;
+import game.Tile;
+import game.npcs.NPC;
+import game.obstacles.Breakable;
 
 public class GameImagePanel extends JPanel implements MouseListener {
 
@@ -161,6 +161,18 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawScore(g);
 		drawDarkness(g);
 		updateBackground();
+		drawText(g);
+	}
+	
+	public void drawText(Graphics g){
+		if(DestinysWild.isTalking()){
+			g.setColor(new Color(150, 150, 150, 150));
+			g.fillRect(300, 100, 500, 50);
+			String text = DestinysWild.getText();
+			g.setFont(new Font("Courier new", 20, 15));
+			g.setColor(Color.WHITE);
+			g.drawString(text, 320, 125);
+		}
 	}
 
 	/**

@@ -578,6 +578,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					}
 				}
 			}
+			count += curRoom.getNpcs().size();
 			switch(objectType){
 				case "Block":
 					curRoom.getObstacles()[hoverY][hoverX] = new Block(full, new Point(hoverY, hoverX));

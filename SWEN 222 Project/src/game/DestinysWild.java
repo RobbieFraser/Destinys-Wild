@@ -248,11 +248,11 @@ public class DestinysWild implements Runnable {
 		}
 	}
 	
-	public boolean isTalking(){
+	public static boolean isTalking(){
 		return isTalking;
 	}
 	
-	public String getText(){
+	public static String getText(){
 		return text;
 	}
 	
