@@ -10,7 +10,7 @@ public abstract class Packet {
 	 * and the int that represents them
 	 */
 	public static enum PacketTypes{
-		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), REMOVEITEM(03), TIME(04), TORCH(05);
+		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), REMOVEITEM(03), TIME(04), TORCH(05), ENEMY(06);
 		private int packetID;
 		private PacketTypes(int packetID){
 			this.packetID = packetID;
