@@ -158,6 +158,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>1</Row>
         <Col>7</Col>
         <Damage>10</Damage>
@@ -166,6 +167,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>2</Row>
         <Col>1</Col>
         <Damage>10</Damage>
@@ -174,6 +176,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>8</Row>
         <Col>2</Col>
         <Damage>10</Damage>
@@ -182,6 +185,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>3</Col>
         <Damage>30</Damage>
@@ -190,6 +194,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>5</Row>
         <Col>0</Col>
         <Damage>10</Damage>
@@ -198,6 +203,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>0</Row>
         <Col>4</Col>
         <Damage>10</Damage>
@@ -206,6 +212,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>1</Row>
         <Col>2</Col>
         <Damage>10</Damage>
@@ -214,6 +221,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>1</Row>
         <Col>1</Col>
         <Damage>10</Damage>
@@ -222,6 +230,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>0</Col>
         <Damage>10</Damage>
@@ -230,6 +239,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>0</Col>
         <Damage>10</Damage>
@@ -238,6 +248,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>7</Row>
         <Col>0</Col>
         <Damage>10</Damage>
@@ -246,6 +257,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>9</Col>
         <Damage>10</Damage>
@@ -286,6 +298,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>6</Col>
         <Damage>30</Damage>
@@ -294,6 +307,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>8</Row>
         <Col>0</Col>
         <Damage>30</Damage>
@@ -302,6 +316,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>1</Row>
         <Col>9</Col>
         <Damage>30</Damage>
@@ -310,6 +325,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>0</Row>
         <Col>3</Col>
         <Damage>30</Damage>
@@ -435,6 +451,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>3</Row>
         <Col>9</Col>
         <Damage>15</Damage>
@@ -512,6 +529,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>9</Col>
         <Damage>15</Damage>
@@ -520,6 +538,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>0</Col>
         <Damage>15</Damage>
@@ -528,6 +547,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>5</Col>
         <Damage>10</Damage>
@@ -536,6 +556,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>4</Col>
         <Damage>10</Damage>
@@ -578,7 +599,7 @@
     <Col>2</Col>
     <North>-1</North>
     <East>-1</East>
-    <South>-1</South>
+    <South>0</South>
     <West>-1</West>
     <Obstacles />
     <Npcs />
@@ -807,6 +828,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>0</Row>
         <Col>0</Col>
         <Damage>15</Damage>
@@ -815,6 +837,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>0</Row>
         <Col>9</Col>
         <Damage>15</Damage>
@@ -823,6 +846,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>9</Col>
         <Damage>15</Damage>
@@ -831,6 +855,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>0</Col>
         <Damage>15</Damage>
@@ -839,6 +864,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>3</Row>
         <Col>6</Col>
         <Damage>10</Damage>
@@ -847,6 +873,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>6</Col>
         <Damage>10</Damage>
@@ -855,6 +882,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>5</Row>
         <Col>6</Col>
         <Damage>10</Damage>
@@ -863,6 +891,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>6</Col>
         <Damage>10</Damage>
@@ -871,6 +900,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>5</Col>
         <Damage>10</Damage>
@@ -879,6 +909,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>4</Col>
         <Damage>10</Damage>
@@ -887,6 +918,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>3</Col>
         <Damage>10</Damage>
@@ -895,6 +927,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>5</Row>
         <Col>3</Col>
         <Damage>10</Damage>
@@ -903,6 +936,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>3</Col>
         <Damage>10</Damage>
@@ -911,6 +945,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>3</Row>
         <Col>3</Col>
         <Damage>10</Damage>
@@ -960,7 +995,7 @@
     <Id>0</Id>
     <Row>2</Row>
     <Col>2</Col>
-    <North>-1</North>
+    <North>1</North>
     <East>13</East>
     <South>17</South>
     <West>-1</West>
@@ -1048,6 +1083,7 @@
       <Npc>
         <Npctype>friendlystill</Npctype>
         <Type>shopkeeper</Type>
+        <Id>0</Id>
         <Row>7</Row>
         <Col>7</Col>
         <Damage>0</Damage>
@@ -1069,6 +1105,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>3</Row>
         <Col>0</Col>
         <Damage>30</Damage>
@@ -1077,6 +1114,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>6</Col>
         <Damage>30</Damage>
@@ -1085,6 +1123,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>4</Row>
         <Col>5</Col>
         <Damage>10</Damage>
@@ -1093,6 +1132,7 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
+        <Id>0</Id>
         <Row>5</Row>
         <Col>5</Col>
         <Damage>10</Damage>
@@ -1278,6 +1318,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>2</Row>
         <Col>4</Col>
         <Damage>30</Damage>
@@ -1286,6 +1327,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>3</Row>
         <Col>5</Col>
         <Damage>30</Damage>
@@ -1294,6 +1336,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>4</Col>
         <Damage>30</Damage>
@@ -1302,6 +1345,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>7</Row>
         <Col>5</Col>
         <Damage>30</Damage>
@@ -1698,6 +1742,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>9</Row>
         <Col>3</Col>
         <Damage>30</Damage>
@@ -1706,6 +1751,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>6</Row>
         <Col>4</Col>
         <Damage>30</Damage>
@@ -1714,6 +1760,7 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
+        <Id>0</Id>
         <Row>5</Row>
         <Col>8</Col>
         <Damage>30</Damage>

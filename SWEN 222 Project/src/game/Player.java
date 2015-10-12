@@ -369,11 +369,14 @@ public class Player implements Serializable {
 				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("north")){
 					if(currentRoom.getId() == 0 && !allowGate){
+						setCoords(getCoords().x, getCoords().y + speed/2);
+						currentTile = prevTile;
 						DestinysWild.startTalking("You must unlock this door first!");
-						return false;
 					}
-					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
-					changeRoom(prevTile);
+					else{
+						currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
+						changeRoom(prevTile);
+					}
 				}
 				else if(!currentRoom.currTileIsInRoom(currentTile) || !canChangeTile()){
 					setCoords(getCoords().x, getCoords().y + speed/2);
