@@ -136,7 +136,7 @@ public class GameClient extends Thread {
 	public void handleHealthPacket(HealthPacket packet) {
 		Player player = board.getPlayer(packet.getUserName());
 		player.setHealth(packet.getHealth());
-		
+
 	}
 
 	public void handleEnemyPacket(EnemyPacket packet) {
@@ -152,8 +152,12 @@ public class GameClient extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		DestinysWild.getGameInterface().getGameImagePanel()
-				.setTime(packet.getNewTime());
+		try {
+			DestinysWild.getGameInterface().getGameImagePanel()
+					.setTime(packet.getNewTime());
+		} catch (NullPointerException e) {
+
+		}
 	}
 
 	public void handleTorchPacket(TorchPacket packet) {
@@ -197,7 +201,7 @@ public class GameClient extends Thread {
 		player.setSouth(intToBool(packet.getSouth()));
 		player.setCurrentTile(player.getCurrentRoom().calcTile(
 				player.getCoords()));
-		//player.updatePlayer();
+		// player.updatePlayer();
 	}
 
 	/**
