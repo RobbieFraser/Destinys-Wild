@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import clientServer.Multiplayer;
 import clientServer.packets.DisconnectPacket;
+import clientServer.packets.EnemyPacket;
 import clientServer.packets.MovePacket;
 import clientServer.packets.TimePacket;
 import game.items.Health;
@@ -54,27 +55,21 @@ public class DestinysWild implements Runnable {
 		Thread thread = new Thread(this);
 		thread.start();
 	}
-	
-	public void startUpPrompt(){
-		if(promptCount == 0){
+
+	public void startUpPrompt() {
+		if (promptCount == 0) {
 			startTalking("Welcome to Destiny's Wild! Move around using WASD");
-		}
-		else if(promptCount == 1){
+		} else if (promptCount == 1) {
 			startTalking("Change view by using the LEFT or RIGHT arrow key");
-		}
-		else if(promptCount == 2){
+		} else if (promptCount == 2) {
 			startTalking("Navigate your inventory by using Q and E");
-		}
-		else if(promptCount == 3){
+		} else if (promptCount == 3) {
 			startTalking("Use a selected inventory item by pressing SHIFT");
-		}
-		else if(promptCount == 4){
+		} else if (promptCount == 4) {
 			startTalking("Interact with objects or attack enemies using SPACE");
-		}
-		else if(promptCount == 5){
+		} else if (promptCount == 5) {
 			startTalking("Press P to pause, and M to toggle the (awesome) music");
-		}
-		else if(promptCount == 6){
+		} else if (promptCount == 6) {
 			startTalking("And finally: Have fun, and good luck - you'll need it");
 			prompted = true;
 		}
@@ -160,26 +155,31 @@ public class DestinysWild implements Runnable {
 		updateGame();
 	}
 
-	public static Multiplayer getMultiplayer(){
+	public static Multiplayer getMultiplayer() {
 		return multiplayer;
 	}
 
 	public void updateGame() {
 		updateTalking();
-		if(!prompted){
+		if (!prompted) {
 			startUpPrompt();
 		}
 		for (NPC enemy : currentPlayer.getCurrentRoom().getNpcs()) {
 			enemy.tryMove();
+			EnemyPacket enemyPacket = new EnemyPacket(enemy.getRealCoords().x,
+					enemy.getRealCoords().y, enemy.getCurrentRoom().getId(),
+					enemy.getHealth(), enemy.getId());
+			enemyPacket.writeData(multiplayer.getClient());
 		}
-		TimePacket timePacket = new TimePacket(getGameInterface().getGameImagePanel().getTime());
+		TimePacket timePacket = new TimePacket(getGameInterface()
+				.getGameImagePanel().getTime());
 		timePacket.writeData(multiplayer.getClient());
 		MovePacket movePacket = new MovePacket(currentPlayer.getName(),
 				currentPlayer.getCoords().x, currentPlayer.getCoords().y,
 				currentPlayer.getCurrentRoom().getId(),
 				currentPlayer.getHealth(), currentPlayer.isNorth(),
 				currentPlayer.isEast(), currentPlayer.isSouth(),
-				currentPlayer.isWest(),currentPlayer.getWalkState());
+				currentPlayer.isWest(), currentPlayer.getWalkState());
 		movePacket.writeData(multiplayer.getClient());
 	}
 
@@ -245,34 +245,34 @@ public class DestinysWild implements Runnable {
 	public static void setBoard(Board b) {
 		board = b;
 	}
-	
-	public static void startTalking(String talk){
+
+	public static void startTalking(String talk) {
 		text = talk;
 		isTalking = true;
 	}
-	
-	public void updateTalking(){
-		if(isTalking){
+
+	public void updateTalking() {
+		if (isTalking) {
 			talkCount--;
-			if(talkCount == 0){
+			if (talkCount == 0) {
 				isTalking = false;
 				talkCount = 120;
-				if(!prompted){
+				if (!prompted) {
 					promptCount++;
 				}
 			}
 		}
 	}
-	
-	public static boolean isTalking(){
+
+	public static boolean isTalking() {
 		return isTalking;
 	}
-	
-	public static String getText(){
+
+	public static String getText() {
 		return text;
 	}
-	
-	public static GameInterface getGameInterface(){
+
+	public static GameInterface getGameInterface() {
 		return ui;
 	}
 

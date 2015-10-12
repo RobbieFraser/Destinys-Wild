@@ -1,5 +1,6 @@
 package game.npcs;
 
+import game.Room;
 import game.Tile;
 
 import java.awt.Point;
@@ -14,7 +15,9 @@ public interface NPC {
 	public Point getRealCoords();
 	public void setRealCoords(Point coords);
 	public String toString();
+	public Room getCurrentRoom();
 	public boolean tryMove();
 	public void takeDamage(int damage);
 	public int getId();
+	public int getHealth();
 }

@@ -169,6 +169,10 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	public int getSpeed() {
 		return speed;
 	}
+	
+	public int getHealth(){
+		return health;
+	}
 
 	public void setSpeed(int speed) {
 		this.speed = speed;

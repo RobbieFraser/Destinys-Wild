@@ -116,5 +116,14 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 	public void setHealth(int health) {
 		this.health = health;
 	}
+	
+	@Override
+	public Room getCurrentRoom(){
+		return currentRoom;
+	}
+	
+	public int getHealth(){
+		return health;
+	}
 
 }

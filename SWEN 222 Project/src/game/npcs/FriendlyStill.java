@@ -36,6 +36,14 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public void takeDamage(int damage){
 
 	}
+	
+	public int getHealth(){
+		return 0;
+	}
+	
+	public Room getCurrentRoom(){
+		return currentRoom;
+	}
 
 	/**
 	 * @return the realCoords
