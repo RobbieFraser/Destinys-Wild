@@ -75,8 +75,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private String viewDir = "north";
 
 	private boolean hurt = false;
-
-	private boolean up = true;
+	
+	private boolean north = false;
+	private boolean east = false;
+	private boolean south = false;
+	private boolean west = false;
 
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 
@@ -142,7 +145,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
 		super.paintComponent(g);
-
+		
+		updatePlayerDirs();
+		
 		//If the player is hurt, increase the hurt int every time this -
 		//method is called until they are no longer invincible
 		if (player.isInvincible()){
@@ -162,6 +167,33 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawDarkness(g);
 		updateBackground();
 		drawText(g);
+	}
+	
+	public void updatePlayerDirs(){
+		if(viewDir.equals("north")){
+			north = player.isNorth();
+			east = player.isEast();
+			south = player.isSouth();
+			west = player.isWest();
+		}
+		else if(viewDir.equals("east")){
+			north = player.isWest();
+			east = player.isNorth();
+			south = player.isEast();
+			west = player.isSouth();
+		}
+		else if(viewDir.equals("south")){
+			north = player.isSouth();
+			east = player.isWest();
+			south = player.isNorth();
+			west = player.isEast();
+		}
+		else if(viewDir.equals("west")){
+			north = player.isEast();
+			east = player.isSouth();
+			south = player.isWest();
+			west = player.isNorth();
+		}
 	}
 	
 	public void drawText(Graphics g){
@@ -925,56 +957,56 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	public void updatePlayerImage(){
 		BufferedImage sheet = loadImage("playerSpriteSheetWalking.png");
 		BufferedImage playerImage = playerIMG;
-		if(player.isNorth()){
-			if(player.isEast() && player.isWest()){
+		if(north){
+			if(east && west){
 				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isWest()){
+			else if(west){
 				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isEast()){
+			else if(east){
 				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
 			}
 			else{
 				playerImage = sheet.getSubimage(0, 82*player.getWalkState(), 50, 82);
 			}
 		}
-		else if(player.isEast()){
-			if(player.isNorth() && player.isSouth()){
+		else if(east){
+			if(north && south){
 				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isNorth()){
+			else if(north){
 				playerImage = sheet.getSubimage(350, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isSouth()){
+			else if(south){
 				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
 			}
 			else{
 				playerImage = sheet.getSubimage(300, 82*player.getWalkState(), 50, 82);
 			}
 		}
-		else if(player.isSouth()){
-			if(player.isEast() && player.isWest()){
+		else if(south){
+			if(east && west){
 				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isWest()){
+			else if(west){
 				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isEast()){
+			else if(east){
 				playerImage = sheet.getSubimage(250, 82*player.getWalkState(), 50, 82);
 			}
 			else{
 				playerImage = sheet.getSubimage(200, 82*player.getWalkState(), 50, 82);
 			}
 		}
-		else if(player.isWest()){
-			if(player.isNorth() && player.isSouth()){
+		else if(west){
+			if(north && south){
 				playerImage = sheet.getSubimage(100, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isNorth()){
+			else if(north){
 				playerImage = sheet.getSubimage(50, 82*player.getWalkState(), 50, 82);
 			}
-			else if(player.isSouth()){
+			else if(south){
 				playerImage = sheet.getSubimage(150, 82*player.getWalkState(), 50, 82);
 			}
 			else{
