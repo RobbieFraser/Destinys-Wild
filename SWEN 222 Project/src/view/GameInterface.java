@@ -187,13 +187,21 @@ public class GameInterface{
 		}
 
 		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
-		int numKeyPieces = player.getNumKeyPieces();
-		if (numKeyPieces > 0) {
-			//need to draw players key
-			drawBackgroundImage(keyLabel, "keyBox", MAX_FOOD + MAX_TOOLS);
-		} else {
-			Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
-			keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
+		Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
+		
+		int numKeyItems = player.numKeyItems();
+		keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
+		if (numKeyItems == 5) {
+			//player has all pieces of the key, and the key itself
+			//only the key should be drawn
+			drawBackgroundImage(keyLabel, "keyBox", numKeyItems+MAX_FOOD+MAX_TOOLS);
+		}
+		//player has some key pieces
+		else if (numKeyItems > 0) {
+			for (int i = 0; i < numKeyItems; ++i) {
+				//need to draw each key piece individually
+				drawBackgroundImage(keyLabel, "keyBox", i+MAX_FOOD+MAX_TOOLS);
+			}
 		}
 
 		//the interface should be updated
@@ -215,35 +223,45 @@ public class GameInterface{
 	 */
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
 		//firstly, we set the background image to be the image in question
-		String imageName = getName(index);
 		Image itemImage = null;
 		
 		if (type.equals("keyBox")) {
-			//with keys, it is easier to draw the background first
-			Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
+			//first of all, we want to extract the current background image
+			//Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
+			Image currentBackgroundImage = ((ImageIcon) inventoryLabel.getIcon()).getImage();
 			
 			//get graphics from background to draw with
-			Graphics g = slotBackgroundImage.getGraphics();
+			Graphics g = currentBackgroundImage.getGraphics();
 			
 			//depending on the number of key pieces the player has picked
 			//up, different parts of the key should be drawn
 			BufferedImage keyImage = (BufferedImage) MenuInterface.loadImage("keyTest.png");
-			int numKeyPieces = player.getNumKeyPieces();
-			if (numKeyPieces == 1) {
-				itemImage = keyImage.getSubimage(0, 0, 28, 65);
-			} else if (numKeyPieces == 2) {
-				itemImage = keyImage.getSubimage(0, 0, 40, 65);
-			} else if (numKeyPieces == 3) {
-				itemImage = keyImage.getSubimage(0, 0, 53, 65);
+			if (index == 11) {
+				//draw piece 1
+				itemImage = keyImage.getSubimage(0, 24, 27, 40);
+				g.drawImage(itemImage, 7, 1, null);
+			} else if (index == 12) {
+				//draw piece 2
+				itemImage = keyImage.getSubimage(27, 30, 15, 35);
+				g.drawImage(itemImage, 60, 15, null);
+			} else if (index == 13) {
+				//draw piece 3
+				itemImage = keyImage.getSubimage(39, 0, 15, 65);
+				g.drawImage(itemImage, 20, 40, null);
+			} else if (index == 14) {
+				//draw piece 4
+				itemImage = keyImage.getSubimage(53, 0, 27, 65);
+				g.drawImage(itemImage, 60, 55, null);
 			} else {
 				//draw entire key
-				itemImage = keyImage.getSubimage(0, 0, 80, 65);
+				g.drawImage(keyImage, 8, 18, null);
 			}
-			g.drawImage(itemImage, 10, 20, null);
-			
-			inventoryLabel.setIcon(new ImageIcon(slotBackgroundImage));
+
+			//update background image
+			inventoryLabel.setIcon(new ImageIcon(currentBackgroundImage));
 		} 
 		else {
+			String imageName = getName(index);
 			itemImage = MenuInterface.loadImage(imageName+".png");
 			inventoryLabel.setIcon(new ImageIcon(itemImage));
 
@@ -273,7 +291,7 @@ public class GameInterface{
 	 */
 	private String getName(int index) {
 		//first, sanity check
-		if (index < 0 || index > 12) {
+		if (index < 0 || index > 16) {
 			throw new Error("Invalid index exception");
 		}
 
