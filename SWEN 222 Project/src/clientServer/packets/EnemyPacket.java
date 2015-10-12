@@ -18,7 +18,13 @@ public class EnemyPacket extends Packet {
 	private int damage;
 	private int health;
 	private int id;
-
+	
+	/**
+	 * Constructor for EnemyPacket when using an array of bytes.
+	 * From the array, it obtains the co-ordinates, room ID, health and
+	 * NPC ID.
+	 * @param data
+	 */
 	public EnemyPacket(byte[] data) {
 		super(06);
 		String[] dataArray = readData(data).split(",");
@@ -29,6 +35,15 @@ public class EnemyPacket extends Packet {
 		this.id = Integer.parseInt(dataArray[4]);
 	}
 
+	/**
+	 * Constructor for EnemyPacket when it is being passed an NPC's co-ordinates,
+	 * current room, health and ID.
+	 * @param realCoordsX
+	 * @param realCoordsY
+	 * @param currentRoomID
+	 * @param health
+	 * @param id
+	 */
 	public EnemyPacket(int realCoordsX, int realCoordsY, int currentRoomID,
 			int health, int id) {
 		super(06);
@@ -38,19 +53,29 @@ public class EnemyPacket extends Packet {
 		this.health = health;
 		this.id = id;
 	}
-
+	
+	/**
+	 * Writes data to the GameClient, sending it to the server
+	 */
 	@Override
 	public void writeData(GameClient client) {
 		client.sendData(getData());
 
 	}
 
+	/**
+	 * Writes data to the GameServer, which then sends it to all the clients connected
+	 * to that server
+	 */
 	@Override
 	public void writeData(GameServer server) {
 		server.sendDataToAllClients(getData());
 
 	}
 
+	/**
+	 * Returns a byte array of the items contained in this packet
+	 */
 	@Override
 	public byte[] getData() {
 		return ("06" + this.getRealCoordsX() + "," + this.getRealCoordsY()

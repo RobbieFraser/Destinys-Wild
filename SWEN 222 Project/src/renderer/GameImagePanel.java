@@ -218,7 +218,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		if (time < 0 || time > 63) {
 			throw new Error("Invalid time value");
 		}
-
 		if (timeUp) {
 			time++;
 			if (time == 40) {

@@ -136,12 +136,23 @@ public class GameServer extends Thread {
 			break;
 		}
 	}
-
+	
+	/**
+	 * This method takes a HealthPacket, obtains the relevant Player
+	 * and sets their health to the value in the packet
+	 * @param packet
+	 */
 	public void handleHealthPacket(HealthPacket packet) {
 		Player player = this.getPlayer(packet.getUserName());
 		player.setHealth(packet.getHealth());
 	}
-
+	
+	/**
+	 * This method takes an EnemyPacket, finds the relevant NPC by using
+	 * the ID in the packet and adjusts their health and co-ordinates to
+	 * those in the packet.
+	 * @param packet
+	 */
 	public void handleEnemyPacket(EnemyPacket packet) {
 		Room room = board.getRoomFromId(packet.getCurrentRoomID());
 		for (NPC npc : room.getNpcs()) {
@@ -154,6 +165,11 @@ public class GameServer extends Thread {
 		}
 	}
 
+	/**
+	 * This method takes a TimePacket and obtains the time 
+	 * from it and sets the current time to it
+	 * @param packet
+	 */
 	public void handleTorchPacket(TorchPacket packet) {
 		Player player = getPlayer(packet.getUserName());
 		player.setHasTorch(intToBool(packet.getHasTorch()));
