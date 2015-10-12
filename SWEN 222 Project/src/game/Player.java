@@ -34,6 +34,7 @@ public class Player implements Serializable {
 	private boolean east;
 	private boolean west;
 	private int numKeyPieces = 0;
+	private boolean allowGate = false;
 
 	private int walkState = 0;
 	private int walkDelay = 0;
@@ -146,6 +147,18 @@ public class Player implements Serializable {
 		Tile west = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol-1));
 
 		Object occupant;
+		
+		//Special case for locked gate at home
+		if(currentRoom.getId() == 0 && (currentTile.getRoomCoords().equals(new Point(0, 4)) || currentTile.getRoomCoords().equals(new Point(0, 5)))){
+			if(hasKey()){
+				DestinysWild.startTalking("You've unlocked the gate!!!");
+				allowGate = true;
+			}
+			else{
+				DestinysWild.startTalking("Come back when you have the complete key!");
+			}
+		}
+		//------------------------------------
 
 		if(north != null && north.isOccupied()){
 			occupant = currentRoom.getTileOccupant(north);
@@ -172,6 +185,15 @@ public class Player implements Serializable {
 			}
 		}
 		return occupants;
+	}
+	
+	public boolean hasKey(){
+		for(Item item : inventory){
+			if(item instanceof Key && item.getId() == 5){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void updatePlayer(){
@@ -276,7 +298,7 @@ public class Player implements Serializable {
 		resetInventory();
 		setCurrentRoom(DestinysWild.getBoard().getRoomFromCoords(2, 2));
 		setCoords(540, 325);
-		setScore(0);
+		setScore(getScore()-100);
 		setHealth(100);
 		DestinysWild.startTalking("Oh dear, you have died!");
 	}
@@ -287,7 +309,7 @@ public class Player implements Serializable {
 	public void resetInventory(){
 		List<Item> toRemove = new ArrayList<>();
 		for(Item item : inventory){
-			if(item instanceof Key){
+			if(item instanceof Key && item.getId() == 5){
 				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
 				toRemove.add(item);
 			}
@@ -346,6 +368,10 @@ public class Player implements Serializable {
 				setCoords(getCoords().x, getCoords().y - speed/2);
 				currentTile = currentRoom.calcTile(coords);
 				if(!currentRoom.currTileIsInRoom(currentTile) && prevTile.isDoorMat().equals("north")){
+					if(currentRoom.getId() == 0 && !allowGate){
+						DestinysWild.startTalking("You must unlock this door first!");
+						return false;
+					}
 					currentRoom = DestinysWild.getBoard().getRoomFromId(currentRoom.getNorth());
 					changeRoom(prevTile);
 				}
