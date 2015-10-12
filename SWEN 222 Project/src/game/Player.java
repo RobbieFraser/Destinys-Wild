@@ -455,7 +455,6 @@ public class Player implements Serializable {
 			newPoint = currentRoom.getTileFromRoomCoords(new Point(previousTile.getRoomCoords().x, 0)).getRealCoords();
 			setCoords(newPoint.x, newPoint.y);
 		}
-
 		currentTile = currentRoom.calcTile(coords);
 	}
 
@@ -501,11 +500,6 @@ public class Player implements Serializable {
 	public boolean tryMakeKey(){
 		if(numKeyItems() != 4){
 			return false;
-		}
-		for(Item item : inventory){
-			if(item instanceof Key){
-				removeInventoryItem(item);
-			}
 		}
 		return addInventoryItem(new Key(5, null));
 	}
