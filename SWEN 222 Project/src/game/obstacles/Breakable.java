@@ -47,7 +47,7 @@ public class Breakable implements Obstacle, Interactable,Serializable{
 			}
 		}
 		else{
-			System.out.println("You don't have the correct tool for the job ;)");
+			DestinysWild.startTalking("You don't have the correct tool for the job!");
 		}
 	}
 

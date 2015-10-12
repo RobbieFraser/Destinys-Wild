@@ -42,7 +42,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private int time = 0;
-	private int state = DAY_TIME;
+	private static int state = DAY_TIME;
 	private boolean timeUp = true;
 
 	private static int gX = 200; //Ground x
@@ -974,6 +974,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public Board getBoard(){
 		return board;
+	}
+	
+	public static int getState(){
+		return state;
 	}
 
 	public void setViewDir(String dir){

@@ -19,10 +19,6 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	private Tile currentTile;
 	private int id;
 
-	private boolean isTalking;
-
-	private String text;
-
 	public FriendlyStill(String type, int id, Point roomCoords, Room currentRoom){
 		this.type = type;
 		this.id = id;
@@ -83,27 +79,20 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 		return "friendlystill";
 	}
 
-	/**
-	 * Makes this FriendlyStill shut their mouth
-	 */
-	public void shutUp(){
-		isTalking = false;
-	}
-
 	public void interact() {
-		if(type.equals("shopkeeper")){
+		if(type.equals("shopkeeper") && GameImagePanel.getState() == 0){
 			new ShopInterface();
 		}
 		else if(type.equals("fladnag")){
 			if(DestinysWild.getPlayer().tryMakeKey()){
-				DestinysWild.startTalking("I have used my wizardly prowess to craft this key! Use it wisely.");
+				DestinysWild.startTalking("I have used my advanced wizardry to craft this key! Use it wisely.");
 			}
 			else{
 				DestinysWild.startTalking("You shall not pass!!!!!");
 			}
 		}
-		else{
-			DestinysWild.startTalking("The shop is closed! Come back tomorrow.");
+		else if(type.equals("shopkeeper")){
+			DestinysWild.startTalking("The shop is closed. Please come back tomorrow.");
 		}
 
 	}

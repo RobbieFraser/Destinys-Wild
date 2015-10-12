@@ -43,11 +43,6 @@ public class DestinysWild implements Runnable {
 
 	public DestinysWild() {
 		mainMenu = new MenuInterface(this);
-		// mainMenu = new MenuInterface(this);
-		// newGame("guy");
-		// loadGame(new File("data/savegames/Robbie.xml"));
-		// board = XMLParser.initialiseBoard("data/board.xml");
-		// initialiseTestPlayer();
 	}
 
 	public void setUpGame(boolean startServer) {

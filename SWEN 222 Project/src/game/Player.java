@@ -278,6 +278,7 @@ public class Player implements Serializable {
 		setCoords(540, 325);
 		setScore(0);
 		setHealth(100);
+		DestinysWild.startTalking("Oh dear, you have died!");
 	}
 
 	/**
@@ -285,7 +286,6 @@ public class Player implements Serializable {
 	 */
 	public void resetInventory(){
 		List<Item> toRemove = new ArrayList<>();
-		System.out.println("Health items before death: "+ numHealthItems());
 		for(Item item : inventory){
 			if(item instanceof Key){
 				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
@@ -298,7 +298,6 @@ public class Player implements Serializable {
 		for(Item item : toRemove){
 			inventory.remove(item);
 		}
-		System.out.println("Health item in inv after death: "+ numHealthItems());
 	}
 
 	/**
@@ -337,7 +336,7 @@ public class Player implements Serializable {
 	 * Where the game logic player movement is done. The player will be moved onto a tile,
 	 * then that tile is tested for an occupant. If occupied, the movement is reversed.
 	 * @param direction the direction the player is trying to move
-	 * @return boolean whether the player move is succesfful or not
+	 * @return boolean whether the player move is successful or not
 	 */
 	public boolean tryMove(String direction){
 		orientation = direction;
@@ -465,7 +464,7 @@ public class Player implements Serializable {
 			return true;
 		}
 		else{
-			System.out.println("Too many " + item.toString() + " items in inventory!");
+			DestinysWild.startTalking("Too many " + item.toString() + " items in your inventory!");
 			return false;
 		}
 	}
