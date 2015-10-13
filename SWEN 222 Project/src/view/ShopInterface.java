@@ -28,18 +28,18 @@ import game.DestinysWild;
 public class ShopInterface {
 	private JFrame frame;
 	private Player player;
-	private Tool[] weapons;
+	private Tool[] tools;
 	
 	/**
 	 * Create a new instance of ShopInterface.
 	 */
 	public ShopInterface() {
 		this.player = DestinysWild.getPlayer();
-		Tool[] weapons = {new Tool("machete", 10),
+		Tool[] tools = {new Tool("machete", 10),
 				new Tool("torch", 20), new Tool("pickaxe",30),
 				new Tool("jetfuel", 40), new Tool("bucket", 50),
 				new Tool("spade", 60)};
-		this.weapons = weapons;
+		this.tools = tools;
 		initialiseInterface();
 	}
 	
@@ -111,35 +111,14 @@ public class ShopInterface {
 	 * @return string of tool image name
 	 */
 	private String getToolImageName(int index) {
-		//TODO: Add in correct tool images
-		switch(index) {
-		case 0:
-			//machete
-			return "pickaxeIcon.png";
-		case 1:
-			//torch
-			return "pickaxeIcon.png";
-		case 2:
-			//pickaxe
-			return "pickaxeIcon.png";
-		case 3:
-			//jetfuel
-			return "pickaxeIcon.png";
-		case 4:
-			//bucket
-			return "pickaxeIcon.png";
-		case 5:
-			//spade
-			return "pickaxeIcon.png";
-		default:
-			//dead code, if we get here an error will be thrown
-			return null;
-		}
+		Tool tool = tools[index];
+		return tool.getType()+"Icon.png";
 	}
 	
 	/**
 	 * This method should be called when the user has clicked
-	 * on the buy button underneath a tool.
+	 * on the buy button underneath a tool. The user should be
+	 * guided through buying the respective tool.
 	 */
 	private void buyTool(ActionEvent e) {	
 		//first we get the index of the button that was pressed
@@ -150,9 +129,9 @@ public class ShopInterface {
 				indexOfTool = i;
 			}
 		}
-		//int cost = (indexOfTool * 50) + 50;
 		int cost = 0;
-		Tool tool = weapons[indexOfTool];
+		//int cost = (indexOfTool * 50) + 50;
+		Tool tool = tools[indexOfTool];
 		//capitalise first letter of tool's name
 		String toolName = tool.getType().substring(0, 1).toUpperCase() + tool.getType().substring(1);
 		

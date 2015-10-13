@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
 import clientServer.packets.MovePacket;
 import renderer.GameImagePanel;
 import game.Board;
@@ -29,6 +27,7 @@ import game.DestinysWild;
 import game.Player;
 import game.items.Health;
 import game.items.Item;
+import game.items.Tool;
 
 public class GameInterface{
 	private static final int MAX_FOOD = 5;
@@ -55,10 +54,6 @@ public class GameInterface{
 		updateUI();
 		frame.setVisible(true);
 		latch.countDown();
-	}
-
-	public GameImagePanel getGameImagePanel(){
-		return gamePanel;
 	}
 
 	/**
@@ -228,7 +223,6 @@ public class GameInterface{
 		
 		if (type.equals("keyBox")) {
 			//first of all, we want to extract the current background image
-			//Image slotBackgroundImage = MenuInterface.loadImage(type+".png");
 			Image currentBackgroundImage = ((ImageIcon) inventoryLabel.getIcon()).getImage();
 			
 			//get graphics from background to draw with
@@ -262,6 +256,7 @@ public class GameInterface{
 			inventoryLabel.setIcon(new ImageIcon(currentBackgroundImage));
 		} 
 		else {
+			//food or tool slot
 			String imageName = getName(index);
 			itemImage = MenuInterface.loadImage(imageName+".png");
 			inventoryLabel.setIcon(new ImageIcon(itemImage));
@@ -292,22 +287,17 @@ public class GameInterface{
 	 */
 	private String getName(int index) {
 		//first, sanity check
-		if (index < 0 || index > 16) {
+		if (index < 0 || index > 11) {
 			throw new Error("Invalid index exception");
 		}
 
 		if (index < 5) {
-			return player.getInventory().get(index).getType() + "Icon";
-		} else if (index < 11) {
-			//say we are given an index of 5
-			//then we want the first item
-			//int toolNum = index - MAX_FOOD;
-			//System.out.println(index + " " +player.getInventory().get(toolNum+player.numHealthItems()).getType());
-			return "pickaxeIcon";
+			//health
+			String healthItemName = player.getInventory().get(index).getType();
+			return healthItemName + "Icon";
 		} else {
-			
-			//System.out.println(index + " " +player.getInventory().get(player.numToolItems()+player.numHealthItems()).getType());
-			return "key";
+			String toolItemName = ((Tool) player.getInventory().get(index - MAX_FOOD + player.numHealthItems())).getType();
+			return toolItemName + "Icon";
 		}
 	}
 
@@ -392,7 +382,7 @@ public class GameInterface{
 	 * This method should return the item in the inventory
 	 * that is currently "selected". If an empty slot is
 	 * currently selected, null is returned.
-	 * @return Name of currently selected item
+	 * @return Item that is currently selected
 	 */
 	public Item getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
@@ -402,13 +392,8 @@ public class GameInterface{
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
-				//need to access player's inventory
-				//eg: pickaxe, apple, machete, apple
-				for (Item item: player.getInventory()) {
-					if (item instanceof Health) {
-						return item;
-					}
-				}
+				//get the ith item
+				return player.getInventory().get(i);
 			}
 		}
 		return null;
@@ -421,7 +406,7 @@ public class GameInterface{
 	 * Otherwise, the function is exited.
 	 * @param arg0 - Keyevent of the keypress
 	 */
-	protected void handleKeyPress(KeyEvent arg0, Set<Character> chars) {
+	public void handleKeyPress(KeyEvent arg0, Set<Character> chars) {
 		int keyCode = arg0.getKeyCode();
 
 		//handle number presses
@@ -432,60 +417,24 @@ public class GameInterface{
 
 		switch (keyCode) {
 		case KeyEvent.VK_W:
+			//player moved up one square
 			setPlayerDirection(keyCode);
-			MovePacket movePacketN = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketN.writeData(game.getMultiplayer().getClient());
-			//player.setNorth(true);
-			//up one square
-			//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
-			//						player.getCoords().y);
+			createMovePacket();
 			break;
 		case KeyEvent.VK_A:
+			//player moved left one square
 			setPlayerDirection(keyCode);
-			MovePacket movePacketW = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketW.writeData(game.getMultiplayer().getClient());
-			//player.setWest(true);
-			//left one square
-			//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
-			//					player.getCoords().y);
+			createMovePacket();
 			break;
 		case KeyEvent.VK_S:
+			//player moved down one square
 			setPlayerDirection(keyCode);
-			MovePacket movePacketS = new MovePacket(game.getCurrentPlayer().getName(),
-			game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-			game.getCurrentPlayer().getCurrentRoom().getId(),
-			game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-			game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-			game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketS.writeData(game.getMultiplayer().getClient());
-			//player.setSouth(true);
-			//moved down one
-			//			MovePacket downPacket = new MovePacket(player.getName(),player.getCoords().x,
-			//					player.getCoords().y);
+			createMovePacket();
 			break;
 		case KeyEvent.VK_D:
+			//player moved right one square
 			setPlayerDirection(keyCode);
-			MovePacket movePacketE = new MovePacket(game.getCurrentPlayer().getName(),
-			game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-			game.getCurrentPlayer().getCurrentRoom().getId(),
-			game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-			game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-			game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketE.writeData(game.getMultiplayer().getClient());
-			//player.setEast(true);
-			//moved right one
-			//			MovePacket rightPacket = new MovePacket(player.getName(),player.getCoords().x,
-			//					player.getCoords().y);;
+			createMovePacket();
 			break;
 		case KeyEvent.VK_SHIFT:
 			Item selectedItem = getSelectedItem();
@@ -521,8 +470,28 @@ public class GameInterface{
 			setNextOrientation(CYCLE_RIGHT);
 			break;
 		}
-		//update the interface (in particular, the mini map)
-		//updateUI();
+	}
+	
+	/**
+	 * This method should be called whenever a played has moved.
+	 * It should extract the player's current state, and create
+	 * a movePacket out of these, which should be sent to the
+	 * server.
+	 */
+	private void createMovePacket() {
+		String name = game.getCurrentPlayer().getName();
+		int xCoord = game.getCurrentPlayer().getCoords().x;
+		int yCoord = game.getCurrentPlayer().getCoords().y;
+		int id = game.getCurrentPlayer().getCurrentRoom().getId();
+		int health = game.getCurrentPlayer().getHealth();
+		boolean isNorth = game.getCurrentPlayer().isNorth();
+		boolean isEast = game.getCurrentPlayer().isEast();
+		boolean isSouth = game.getCurrentPlayer().isSouth();
+		boolean isWest = game.getCurrentPlayer().isWest();
+		int walkState = game.getCurrentPlayer().getWalkState();
+		MovePacket movePacket = new MovePacket(name, xCoord, yCoord,
+				id, health, isNorth, isEast, isSouth, isWest, walkState);
+		movePacket.writeData(DestinysWild.getMultiplayer().getClient());
 	}
 
 	/**
@@ -557,7 +526,6 @@ public class GameInterface{
 			player.setWest(true);
 		}
 	}
-
 
 	/**
 	 * This method should update the orientation field to be
@@ -594,10 +562,7 @@ public class GameInterface{
 			}
 		}
 		gamePanel.setViewDir(orientation);
-		System.out.println(orientation.toUpperCase());
 	}
-
-
 
 	/**
 	 * This method should be called when the KeyListener
@@ -614,55 +579,32 @@ public class GameInterface{
 				|| keyCode == KeyEvent.VK_S && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("west")) {
 			player.setNorth(false);
-			MovePacket movePacketN = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketN.writeData(game.getMultiplayer().getClient());
+			createMovePacket();
 		}
 		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("west")) {
 			player.setEast(false);
-			MovePacket movePacketE = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketE.writeData(game.getMultiplayer().getClient());
+			createMovePacket();
+
 		}
 		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_D && orientation.equals("west")) {
 			player.setSouth(false);
-			MovePacket movePacketS = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketS.writeData(game.getMultiplayer().getClient());
+			createMovePacket();
+
 		}
 		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_D && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("west")) {
 			player.setWest(false);
-			MovePacket movePacketW = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-					movePacketW.writeData(game.getMultiplayer().getClient());
+			createMovePacket();
 		}
 	}
-
 
 	/**
 	 * This method should be called when an interface pops up
@@ -677,7 +619,6 @@ public class GameInterface{
 		player.setSouth(false);
 		player.setMoving(false);
 	}
-
 
 	/**
 	 * This method should be called when the player has pressed 'p'
@@ -705,5 +646,9 @@ public class GameInterface{
 			//dead code
 			throw new Error("Invalid pause menu option.");
 		}
+	}
+
+	public GameImagePanel getGameImagePanel(){
+		return gamePanel;
 	}
 }

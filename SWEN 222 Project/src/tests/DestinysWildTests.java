@@ -8,6 +8,7 @@ import org.junit.Test;
 import game.DestinysWild;
 import game.Room;
 import game.XMLParser;
+
 public class DestinysWildTests {
 	private DestinysWild game = new DestinysWild();
 	private JFrame frame = new JFrame();
