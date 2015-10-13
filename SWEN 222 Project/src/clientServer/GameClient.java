@@ -157,17 +157,17 @@ public class GameClient extends Thread {
 	 * @param packet
 	 */
 	public void handleEnemyPacket(EnemyPacket packet) {
-		Room room = board.getRoomFromId(packet.getCurrentRoomID());
-		for (NPC npc : room.getNpcs()) {
-			if (npc.getId() == packet.getID() && npc instanceof EnemyWalker) {
-				Point point = new Point(packet.getRealCoordsX(),
-						packet.getRealCoordsY());
-				npc.setRealCoords(point);
-				Point roomPoint = new Point(packet.getRoomCoordsX(),packet.getRoomCoordsY());
-				npc.setHealth(packet.getHealth());
-				npc.setCurrentTile(room.calcTile(point));
-			}
-		}
+//		Room room = board.getRoomFromId(packet.getCurrentRoomID());
+//		for (NPC npc : room.getNpcs()) {
+//			if (npc.getId() == packet.getID() && npc instanceof EnemyWalker) {
+//				Point point = new Point(packet.getRealCoordsX(),
+//						packet.getRealCoordsY());
+//				npc.setRealCoords(point);
+//				Point roomPoint = new Point(packet.getRoomCoordsX(),packet.getRoomCoordsY());
+//				npc.setHealth(packet.getHealth());
+//				npc.setCurrentTile(room.calcTile(point));
+//			}
+//		}
 	}
 
 	/**
