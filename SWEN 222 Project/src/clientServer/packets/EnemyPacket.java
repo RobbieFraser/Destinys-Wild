@@ -13,6 +13,8 @@ public class EnemyPacket extends Packet {
 	private Point realCoords;
 	private int realCoordsX;
 	private int realCoordsY;
+	private int roomCoordsX;
+	private int roomCoordsY;
 	private Room currentRoom;
 	private int currentRoomID;
 	private int damage;
@@ -33,6 +35,8 @@ public class EnemyPacket extends Packet {
 		this.currentRoomID = Integer.parseInt(dataArray[2]);
 		this.health = Integer.parseInt(dataArray[3]);
 		this.id = Integer.parseInt(dataArray[4]);
+		this.roomCoordsX = Integer.parseInt(dataArray[5]);
+		this.roomCoordsY = Integer.parseInt(dataArray[6]);
 	}
 
 	/**
@@ -45,13 +49,15 @@ public class EnemyPacket extends Packet {
 	 * @param id
 	 */
 	public EnemyPacket(int realCoordsX, int realCoordsY, int currentRoomID,
-			int health, int id) {
+			int health, int id, int roomCoordsX, int roomCoordsY) {
 		super(06);
 		this.realCoordsX = realCoordsX;
 		this.realCoordsY = realCoordsY;
 		this.currentRoomID = currentRoomID;
 		this.health = health;
 		this.id = id;
+		this.roomCoordsX = roomCoordsX;
+		this.roomCoordsY = roomCoordsY;
 	}
 	
 	/**
@@ -80,7 +86,7 @@ public class EnemyPacket extends Packet {
 	public byte[] getData() {
 		return ("06" + this.getRealCoordsX() + "," + this.getRealCoordsY()
 				+ "," + this.getCurrentRoomID() + "," + this.getHealth() + "," + this
-					.getID()).getBytes();
+					.getID() + "," + this.getRoomCoordsX() + "," + this.getRoomCoordsY()).getBytes();
 	}
 
 	public int getRealCoordsX() {
@@ -101,6 +107,14 @@ public class EnemyPacket extends Packet {
 
 	public int getID() {
 		return this.id;
+	}
+	
+	public int getRoomCoordsX(){
+		return this.roomCoordsX;
+	}
+	
+	public int getRoomCoordsY(){
+		return this.roomCoordsY;
 	}
 
 }

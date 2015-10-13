@@ -35,7 +35,12 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 
 	public void takeDamage(int damage){
 
+	}	
+	
+	public void setCurrentTile(Tile tile){
+		
 	}
+	
 	
 	public int getHealth(){
 		return 0;

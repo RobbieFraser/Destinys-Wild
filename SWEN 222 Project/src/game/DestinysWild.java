@@ -170,6 +170,10 @@ public class DestinysWild implements Runnable {
 	}
 
 	public void updateGame() {
+		TimePacket timePacket = new TimePacket(getGameInterface()
+				.getGameImagePanel().getTime());
+		// System.out.println("TimePacket: " + timePacket);
+		timePacket.writeData(multiplayer.getClient());
 		updateTalking();
 		if (!prompted) {
 			startUpPrompt();
@@ -178,7 +182,8 @@ public class DestinysWild implements Runnable {
 			enemy.tryMove();
 			EnemyPacket enemyPacket = new EnemyPacket(enemy.getRealCoords().x,
 					enemy.getRealCoords().y, enemy.getCurrentRoom().getId(),
-					enemy.getHealth(), enemy.getId());
+					enemy.getHealth(), enemy.getId(), enemy.getRoomCoords().x,
+					enemy.getRoomCoords().y);
 			enemyPacket.writeData(multiplayer.getClient());
 		}
 		// currentPlayer.updatePlayer();
@@ -188,9 +193,6 @@ public class DestinysWild implements Runnable {
 		HealthPacket healthPacket = new HealthPacket(currentPlayer.getName(),
 				currentPlayer.getHealth());
 		healthPacket.writeData(multiplayer.getClient());
-		TimePacket timePacket = new TimePacket(getGameInterface()
-				.getGameImagePanel().getTime());
-		timePacket.writeData(multiplayer.getClient());
 	}
 
 	public void updateUI() {

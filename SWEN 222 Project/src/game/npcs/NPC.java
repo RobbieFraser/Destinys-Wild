@@ -20,4 +20,6 @@ public interface NPC {
 	public void takeDamage(int damage);
 	public int getId();
 	public int getHealth();
+	public void setCurrentTile(Tile tile);
+	public void setRoomCoords(Point point);
 }

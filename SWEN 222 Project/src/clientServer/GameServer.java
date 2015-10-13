@@ -5,6 +5,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.items.Item;
+import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 
 import java.awt.Point;
@@ -120,6 +121,7 @@ public class GameServer extends Thread {
 			break;
 		case TIME:
 			packet = new TimePacket(data);
+			//System.out.println(packet);
 			this.handleTimePacket((TimePacket) packet);
 			break;
 		case TORCH:
@@ -162,7 +164,10 @@ public class GameServer extends Thread {
 				Point point = new Point(packet.getRealCoordsX(),
 						packet.getRealCoordsY());
 				npc.setRealCoords(point);
+				Point roomPoint = new Point(packet.getRoomCoordsX(),packet.getRoomCoordsY());
+				npc.setRoomCoords(roomPoint);
 				npc.setHealth(packet.getHealth());
+				npc.setCurrentTile(room.calcTile(point));
 			}
 		}
 	}
@@ -180,7 +185,7 @@ public class GameServer extends Thread {
 	}
 
 	public void handleTimePacket(TimePacket packet) {
-		System.out.println(packet.getNewTime());
+		//System.out.println(packet.getNewTime());
 		if (packet.getNewTime() > 63) {
 			DestinysWild.getGameInterface().getGameImagePanel().setTime(63);
 		} else {

@@ -36,6 +36,10 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 		return false;
 	}
 
+	public void setCurrentTile(Tile tile){
+		
+	}
+	
 	public void takeDamage(int damage){
 		health = health - damage;
 		if(!checkPulse()){

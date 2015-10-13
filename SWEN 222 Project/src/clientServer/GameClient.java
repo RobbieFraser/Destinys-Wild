@@ -72,8 +72,10 @@ public class GameClient extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			this.parsePacket(packet.getData(), packet.getAddress(),
-					packet.getPort());
+			if (packet != null) {
+				this.parsePacket(packet.getData(), packet.getAddress(),
+						packet.getPort());
+			}
 		}
 	}
 
@@ -116,6 +118,7 @@ public class GameClient extends Thread {
 			break;
 		case TIME:
 			packet = new TimePacket(data);
+			//System.out.println(packet);
 			this.handleTimePacket((TimePacket) packet);
 			break;
 		case TORCH:
@@ -134,8 +137,9 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 * This method takes a HealthPacket, obtains the relevant Player
-	 * and sets their health to the value in the packet
+	 * This method takes a HealthPacket, obtains the relevant Player and sets
+	 * their health to the value in the packet
+	 * 
 	 * @param packet
 	 */
 	public void handleHealthPacket(HealthPacket packet) {
@@ -145,9 +149,10 @@ public class GameClient extends Thread {
 	}
 
 	/**
-	 * This method takes an EnemyPacket, finds the relevant NPC by using
-	 * the ID in the packet and adjusts their health and co-ordinates to
-	 * those in the packet.
+	 * This method takes an EnemyPacket, finds the relevant NPC by using the ID
+	 * in the packet and adjusts their health and co-ordinates to those in the
+	 * packet.
+	 * 
 	 * @param packet
 	 */
 	public void handleEnemyPacket(EnemyPacket packet) {
@@ -157,29 +162,25 @@ public class GameClient extends Thread {
 				Point point = new Point(packet.getRealCoordsX(),
 						packet.getRealCoordsY());
 				npc.setRealCoords(point);
+				Point roomPoint = new Point(packet.getRoomCoordsX(),packet.getRoomCoordsY());
 				npc.setHealth(packet.getHealth());
+				npc.setCurrentTile(room.calcTile(point));
 			}
 		}
 	}
 
 	/**
-	 * This method takes a TimePacket and obtains the time 
-	 * from it and sets the current time to it
+	 * This method takes a TimePacket and obtains the time from it and sets the
+	 * current time to it
+	 * 
 	 * @param packet
 	 */
 	public void handleTimePacket(TimePacket packet) {
-		if (packet.getNewTime() > 63) {
-			DestinysWild.getGameInterface().getGameImagePanel().setTime(63);
-		} else {
-			DestinysWild.getGameInterface().getGameImagePanel()
-					.setTime(packet.getNewTime());
-		}
-		
 	}
 
 	/**
-	 * This method takes a TorchPacket and sets whether or not
-	 * the player has a Torch or not
+	 * This method takes a TorchPacket and sets whether or not the player has a
+	 * Torch or not
 	 * @param packet
 	 */
 	public void handleTorchPacket(TorchPacket packet) {
@@ -195,9 +196,9 @@ public class GameClient extends Thread {
 	 * @param packet
 	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
-		Room itemRoom = board.getRoomFromId(packet.getRoomID());
-		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
-		itemRoom.removeItems(itemToRemove);
+//		Room itemRoom = board.getRoomFromId(packet.getRoomID());
+//		Item itemToRemove = itemRoom.getItemFromId(packet.getItemID());
+//		itemRoom.removeItems(itemToRemove);
 	}
 
 	/**

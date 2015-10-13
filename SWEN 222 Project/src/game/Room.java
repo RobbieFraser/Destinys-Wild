@@ -143,6 +143,8 @@ public class Room implements Serializable{
 	 */
 	public Object getTileOccupant(Tile tile){
 		for(NPC npc : npcs){
+			System.out.println("Tile coords: " + tile.getRoomCoords());
+			System.out.println("NPC coords: " + npc.getCurrentTile().getRoomCoords());
 			if(tile.getRoomCoords().equals(npc.getCurrentTile().getRoomCoords())){
 				return npc;
 			}
