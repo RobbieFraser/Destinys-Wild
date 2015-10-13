@@ -481,8 +481,8 @@ public class Player implements Serializable {
 	 * @return boolean successful
 	 */
 	public boolean addInventoryItem(Item item){
-		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyItems() < 4) || item instanceof Tool) {
-			if (item.getType().equals("torch")) {
+		if((item instanceof Health && numHealthItems()<5) || (item instanceof Key && numKeyItems() < 5) || item instanceof Tool) {
+			if (item.getType() != null && item.getType().equals("torch")) {
 				hasTorch = true;
 				TorchPacket torchPacket = new TorchPacket(this.getName(),true);
 				torchPacket.writeData(DestinysWild.getMultiplayer().getClient());
