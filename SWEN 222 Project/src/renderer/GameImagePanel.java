@@ -19,6 +19,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.Tile;
+import game.npcs.EnemyStill;
 import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 import game.obstacles.Breakable;
@@ -688,7 +689,13 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public void drawEnemy(Graphics g, NPC npc){
-		BufferedImage enemyIMG = loadEnemyImage(npc.getType(), npc.getDir());
+		BufferedImage enemyIMG;
+		if(npc instanceof EnemyStill){
+			enemyIMG = loadImage(npc.getType() + ".png");
+		}
+		else{
+			enemyIMG = loadEnemyImage(npc.getType(), npc.getDir());
+		}
 		int xDif = (int)(npc.getRealCoords().getX() - npc.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(npc.getRealCoords().getY() - npc.getCurrentTile().getRealCoords().getY());
 		int newX = (int)npc.getRealCoords().getX() - (obW);
@@ -779,8 +786,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.setColor(Color.black);
 		g.fillRect(x+10, y-10, 50, 5);
 		g.setColor(Color.green);
-		int health = npc.getHealth()/npc.getDamage();
-		g.fillRect(x+10, y-10, health*50, 5);
+		double health = ((double)npc.getHealth())/((double)npc.getDamage());
+		g.fillRect(x+10, y-10, (int)(health*50), 5);
 	}
 
 	public void drawScore(Graphics g) {
