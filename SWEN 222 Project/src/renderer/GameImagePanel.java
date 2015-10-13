@@ -163,12 +163,12 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawEastRoom(g);
 		drawEastWall(g);
 		drawGround(g);
-		drawCompass(g);
 		drawBoard(g);
-		drawScore(g);
 		drawDarkness(g);
 		updateBackground();
+		drawCompass(g);
 		drawText(g);
+		drawScore(g);
 	}
 	
 	public void updatePlayerDirs(){
@@ -254,9 +254,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			//no need to draw the dark
 			return;
 		}
-		//TODO: Not quite in line
-		//don't want to obscure the player's score
-		Rectangle scoreRectangle = new Rectangle(20, 530, 120, 28);
 
 		for (int i = 0; i < 110; ++i) {
 			for (int j = 0; j < 80; ++j) {
@@ -269,9 +266,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 						if (isPointInside(i*10, j*10+50, player)) {
 							//this 10x10 square is inside the player's area
 							drawDarkness = false;
-						} else if (scoreRectangle.contains(i*10, j*10)) {
-							//the player should still be able to see their score
-							drawDarkness = false;
 						}
 					}
 				}
@@ -279,10 +273,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (state == NIGHT_TIME) {
 						g.setColor(new Color(0, 0, 0, 230));
 					} else if (state == DUSK) {
-						//TODO: Check this
-						if ((time - 40) * 10 > 250) {
-							System.out.println((time - 40) * 10);
-						}
 						g.setColor(new Color(0, 0, 0, (time - 40) * 9));
 					} else if (state == DAWN) {
 						g.setColor(new Color(0, 0, 0, time*12));
@@ -331,8 +321,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			backgroundColour = new Color(120, 201, 255);
 		} else if (state == DUSK) {
 			//slowly approach 0
-			backgroundColour = new Color((int) (current.getRed()*0.99999999999),
-					(int) (current.getGreen()*0.99999999999),  (int) (current.getBlue()*0.99999999999));
+			backgroundColour = new Color((int) (current.getRed()*0.9999999999),
+					(int) (current.getGreen()*0.9999999999),  (int) (current.getBlue()*0.9999999999));
 		} else if (state == DAWN) {
 			//go up to light blue
 			//we need to make sure we don't exceed the light blue colour for day time
@@ -351,7 +341,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 				blue = current.getBlue();
 			}
 			
-			int alpha = (int) (current.getAlpha()*1.0001);
+			int alpha = (int) (current.getAlpha()*1.00000001);
 			if (alpha >= 255) {
 				alpha = current.getAlpha();
 			}
@@ -359,7 +349,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 		else {
 			//night time
-			backgroundColour = new Color(0, 0, 0, 240);
+			backgroundColour = new Color(0, 0, 0, 230);
 		}
 		this.setBackground(backgroundColour);
 	}
