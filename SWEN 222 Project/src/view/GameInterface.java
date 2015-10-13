@@ -190,7 +190,7 @@ public class GameInterface{
 		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 		Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
 		
-		int numKeyItems = 4;
+		int numKeyItems = player.numKeyItems();
 		keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		if (numKeyItems == 5) {
 			//player has all pieces of the key, and the key itself
@@ -439,7 +439,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketN.writeData(game.getMultiplayer().getClient());
+					movePacketN.writeData(game.getMultiplayer().getClient());
 			//player.setNorth(true);
 			//up one square
 			//			MovePacket upPacket = new MovePacket(player.getName(),player.getCoords().x,
@@ -453,7 +453,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketW.writeData(game.getMultiplayer().getClient());
+					movePacketW.writeData(game.getMultiplayer().getClient());
 			//player.setWest(true);
 			//left one square
 			//			MovePacket leftPacket = new MovePacket(player.getName(),player.getCoords().x,
@@ -462,11 +462,11 @@ public class GameInterface{
 		case KeyEvent.VK_S:
 			setPlayerDirection(keyCode);
 			MovePacket movePacketS = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+			game.getCurrentPlayer().getCurrentRoom().getId(),
+			game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+			game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+			game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
 			movePacketS.writeData(game.getMultiplayer().getClient());
 			//player.setSouth(true);
 			//moved down one
@@ -476,11 +476,11 @@ public class GameInterface{
 		case KeyEvent.VK_D:
 			setPlayerDirection(keyCode);
 			MovePacket movePacketE = new MovePacket(game.getCurrentPlayer().getName(),
-					game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
-					game.getCurrentPlayer().getCurrentRoom().getId(),
-					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
-					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
-					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
+			game.getCurrentPlayer().getCoords().x, game.getCurrentPlayer().getCoords().y,
+			game.getCurrentPlayer().getCurrentRoom().getId(),
+			game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
+			game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
+			game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
 			movePacketE.writeData(game.getMultiplayer().getClient());
 			//player.setEast(true);
 			//moved right one
@@ -620,7 +620,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketN.writeData(game.getMultiplayer().getClient());
+					movePacketN.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
@@ -633,7 +633,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketE.writeData(game.getMultiplayer().getClient());
+					movePacketE.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("east")
@@ -646,7 +646,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketS.writeData(game.getMultiplayer().getClient());
+					movePacketS.writeData(game.getMultiplayer().getClient());
 		}
 		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("east")
@@ -659,7 +659,7 @@ public class GameInterface{
 					game.getCurrentPlayer().getHealth(), game.getCurrentPlayer().isNorth(),
 					game.getCurrentPlayer().isEast(), game.getCurrentPlayer().isSouth(),
 					game.getCurrentPlayer().isWest(), game.getCurrentPlayer().getWalkState());
-			movePacketW.writeData(game.getMultiplayer().getClient());
+					movePacketW.writeData(game.getMultiplayer().getClient());
 		}
 	}
 

@@ -1,3 +1,4 @@
+
 package game;
 
 import java.io.Serializable;
@@ -5,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import game.items.Item;
 
 public class Board implements Serializable{
@@ -28,9 +28,10 @@ public class Board implements Serializable{
 
 	public Item getOffItemFromId(int id){
 		for(Item item : offBoardItems){
+			System.out.println(item.getId());
 			if(item.getId() == id){
 				return item;
-			}
+			}	
 		}
 		System.out.println("No such Item in offBoardItem list");
 		return null;
@@ -98,9 +99,9 @@ public class Board implements Serializable{
 	}
 
 	public Player getPlayer(String userName){
-		for(Player player : this.players){
-		//	System.out.println(player.getName() + " is in the board");
-			if(player.getName().equalsIgnoreCase(userName)){
+		for (Player player : this.players){
+			//	System.out.println(player.getName() + " is in the board");
+			if (player.getName().equalsIgnoreCase(userName)){
 				return player;
 			}
 		}
@@ -111,6 +112,5 @@ public class Board implements Serializable{
 	public void removePlayers(Player player){
 		players.remove(player);
 	}
-
 
 }
