@@ -1,26 +1,20 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-
 import game.Board;
 import game.Player;
 import game.Room;
-import game.obstacles.Block;
-import game.obstacles.Breakable;
+import game.npcs.EnemyStill;
+import game.npcs.NPC;
 import game.obstacles.Obstacle;
 
 /**
@@ -110,6 +104,14 @@ public class Map extends JComponent {
 					graphics.setColor(new Color(172,211,115));
 					graphics.fillRect(j, i, 1, 1);
 				}
+			}
+		}
+		
+		//draw in all spikes on the minimap
+		for (NPC npc: room.getNpcs()) {
+			if (npc instanceof EnemyStill) {
+				graphics.setColor(new Color(143, 143, 143));
+				graphics.fillRect(yCoord+npc.getRoomCoords().y*5, xCoord+npc.getRoomCoords().x*5, 5, 5);
 			}
 		}
 
@@ -270,3 +272,4 @@ public class Map extends JComponent {
 		}
 	}
 }
+
