@@ -6,6 +6,12 @@ import java.io.Serializable;
 import renderer.GameImagePanel;
 import renderer.GameImagePanel;
 
+/**
+ * A Tile is represented by a single ground square in the game. It is used to represent
+ * Locations of npcs, players, obstacles and items.
+ * @author Rob
+ *
+ */
 public class Tile implements Serializable{
 	private Point realCoords; //centre of the tile relative to the game window
 	private Point roomCoords; //coords relative to the Room
@@ -45,6 +51,10 @@ public class Tile implements Serializable{
 		this.occupied = occupied;
 	}
 
+	/**
+	 * Calculates whether this tile is a doormat or not. (The two tiles in front of any doorway)
+	 * @return Direction of the door from this doormat. If not a doormat, returns a useless string
+	 */
 	public String isDoorMat(){
 		if(room.getNorth() != -1 && (roomCoords.equals(new Point(0,4)) || roomCoords.equals(new Point(0,5)))){
 			return "north";
