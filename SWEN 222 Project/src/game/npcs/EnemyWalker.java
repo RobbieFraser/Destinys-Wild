@@ -11,6 +11,12 @@ import java.io.Serializable;
 
 import renderer.GameImagePanel;
 
+/**
+ * An EnemyWalker is an NPC that causes harm to the player on impact, can be killed by the player, 
+ * and moves around the board. It has a strategy field which dictates the type of movement.
+ * @author Rob
+ *
+ */
 public class EnemyWalker implements NPC, Serializable, Interactable {
 	private String type;
 	private Point roomCoords; //room coords
@@ -24,6 +30,16 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	private Tile currentTile;
 	private int dir = 0;
 
+	/**
+	 * Constructs a new EnemyWalker, setting its strategy based on its type, 
+	 * and calculating it's real coordinates.
+	 * @param type of this enemy walker
+	 * @param id of this enemy walker
+	 * @param roomCoords of this enemy walker
+	 * @param speed of this enemy walker
+	 * @param damage of this enemy walker 
+	 * @param currentRoom of this enemy walker
+	 */
 	public EnemyWalker(String type, int id, Point roomCoords, int speed, int damage, Room currentRoom){
 		this.type = type;
 		this.id = id;
@@ -120,6 +136,15 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		return true;
 	}
 
+	/**
+	 * Acts as collision detection for this walker. This includes triggering damage to the player
+	 * upon impact via the following method: checkHitPlayer(). If the walker cannot change tile,
+	 * it is moved back to the tile it came from.
+	 * 
+	 * @param x the x position that the walker is trying to move to
+	 * @param y the y position that the walker is trying to move to
+	 * @return boolean if can change tile
+	 */
 	public boolean tryChangeTile(int x, int y){
 		currentTile.setOccupied(false);
 		currentTile = currentRoom.calcTile(realCoords);
@@ -139,6 +164,10 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		return true;
 	}
 
+	/**
+	 * Checks whether this walker has come into contact with a player. If so, the 
+	 * appropriate amount of damage is done to the player.
+	 */
 	public void checkHitPlayer(){
 		for(Player player : DestinysWild.getBoard().getPlayers()){
 			if(currentTile.getRoomCoords().equals(player.getCurrentTile().getRoomCoords())){
@@ -147,6 +176,10 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		}
 	}
 
+	/**
+	 * Called when the player attacks this walker. Lowers this walker's health accordingly,
+	 * and checks if it is still alive. If not, handles death.
+	 */
 	public void takeDamage(int damage){
 		health = health - damage;
 		if(!checkPulse()){
@@ -155,6 +188,10 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		}
 	}
 
+	/**
+	 * checks whether this walker is still alive after taking damage
+	 * @return boolean has a pulse
+	 */
 	public boolean checkPulse(){
 		if(health <= 0){
 			return false;
@@ -162,18 +199,30 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		return true;
 	}
 
+	/**
+	 * resets the walker to its original place
+	 */
 	public void resetPos(){
 		realCoords = GameImagePanel.calcRealCoords(roomCoords);
 	}
 
+	/**
+	 * @return the speed of this walker
+	 */
 	public int getSpeed() {
 		return speed;
 	}
 	
+	/**
+	 * @return the health of this walker
+	 */
 	public int getHealth(){
 		return health;
 	}
 
+	/**
+	 * @param the speed of this walker to be set
+	 */
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
@@ -221,31 +270,52 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		this.currentTile = currentTile;
 	}
 
+	/**
+	 * @return the damage of this walker
+	 */
 	public int getDamage() {
 		return damage;
 	}
 
+	/**
+	 * @param the damage of this walker to be set
+	 */
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
 
+	/**
+	 * @return the type of this walker
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * 
+	 * @param type of this walker to be set
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * @return the real coordinates of this walker
+	 */
 	public Point getRealCoords() {
 		return realCoords;
 	}
 
+	/**
+	 * @param the real coords of this walker to be set
+	 */
 	public void setRealCoords(Point coords) {
 		this.realCoords = coords;
 	}
 	
-	@Override
+	/**
+	 * @param the health of this walker to be set
+	 */
 	public void setHealth(int health) {
 		this.health = health;
 	}
@@ -265,19 +335,25 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		this.roomCoords = coords;
 	}
 
+	/**
+	 * @return the type of NPC thos is - enemywalker
+	 */
 	public String toString(){
 		return "enemywalker";
 	}
 
-	@Override
+	/**
+	 * Inherited from the Interactable interface. Deals with being attacked by the player.
+	 */
 	public void interact() {
 		takeDamage(2);
 
 	}
 
-	@Override
+	/**
+	 * @return the id of this walker
+	 */
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 }

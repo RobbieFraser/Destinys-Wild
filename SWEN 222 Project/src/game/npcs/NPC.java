@@ -5,6 +5,11 @@ import game.Tile;
 
 import java.awt.Point;
 
+/**
+ * An interface for all NPC's in the game
+ * @author Rob
+ *
+ */
 public interface NPC {
 	public int getDamage();
 	public void setHealth(int health);
