@@ -178,4 +178,12 @@ public class EnemyStill implements NPC, Serializable, Interactable{
 		
 	}
 
+	/**
+	 * @return the direction of the npc
+	 */
+	@Override
+	public int getDir() {
+		return -1;
+	}
+
 }

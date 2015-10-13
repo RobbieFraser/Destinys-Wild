@@ -356,4 +356,12 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	public int getId() {
 		return id;
 	}
+
+	/**
+	 * @return the direction of the npc
+	 */
+	@Override
+	public int getDir() {
+		return dir;
+	}
 }

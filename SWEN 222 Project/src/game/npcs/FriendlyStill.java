@@ -184,6 +184,14 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public int getId() {
 		return id;
 	}
+	
+	/**
+	 * @return the direction of the npc
+	 */
+	@Override
+	public int getDir() {
+		return -1;
+	}
 
 
 }

@@ -27,4 +27,5 @@ public interface NPC {
 	public int getHealth();
 	public void setCurrentTile(Tile tile);
 	public void setRoomCoords(Point point);
+	public int getDir();
 }
