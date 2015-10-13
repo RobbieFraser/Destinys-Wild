@@ -298,9 +298,9 @@ public class Player implements Serializable {
 		resetInventory();
 		setCurrentRoom(DestinysWild.getBoard().getRoomFromCoords(2, 2));
 		setCoords(540, 325);
-		setScore((int)(getScore()*0.4));
+		setScore((int)(getScore()*0.6));
 		setHealth(100);
-		DestinysWild.startTalking("Oh dear, you have died! Your medical bill was $" + ((int)((getScore()/0.4)-getScore())));
+		DestinysWild.startTalking("Oh dear, you have died! Your medical bill was $" + ((int)((getScore()/0.6)-getScore())));
 	}
 
 	/**
