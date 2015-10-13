@@ -51,6 +51,10 @@ public class Key implements Item,Serializable{
 	public Point getCoords() {
 		return coords;
 	}
+	
+	public void setCoords(Point coords){
+		this.coords = coords;
+	}
 
 	/**
 	 * Implemented from interface. No purpose for Key

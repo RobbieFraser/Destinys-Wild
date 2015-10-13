@@ -298,9 +298,9 @@ public class Player implements Serializable {
 		resetInventory();
 		setCurrentRoom(DestinysWild.getBoard().getRoomFromCoords(2, 2));
 		setCoords(540, 325);
-		setScore(getScore()-100);
+		setScore((int)(getScore()*0.4));
 		setHealth(100);
-		DestinysWild.startTalking("Oh dear, you have died!");
+		DestinysWild.startTalking("Oh dear, you have died! Your medical bill was $" + ((int)((getScore()/0.4)-getScore())));
 	}
 
 	/**
@@ -311,6 +311,7 @@ public class Player implements Serializable {
 		for(Item item : inventory){
 			if(item instanceof Key && item.getId() == 5){
 				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
+				((Key)item).setCoords(new Point(prevTile.getRoomCoords()));
 				toRemove.add(item);
 			}
 			else if(item instanceof Health){
