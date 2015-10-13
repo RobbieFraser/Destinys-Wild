@@ -5,6 +5,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.items.Item;
+import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 
 import java.awt.Point;
@@ -158,7 +159,7 @@ public class GameClient extends Thread {
 	public void handleEnemyPacket(EnemyPacket packet) {
 		Room room = board.getRoomFromId(packet.getCurrentRoomID());
 		for (NPC npc : room.getNpcs()) {
-			if (npc.getId() == packet.getID()) {
+			if (npc.getId() == packet.getID() && npc instanceof EnemyWalker) {
 				Point point = new Point(packet.getRealCoordsX(),
 						packet.getRealCoordsY());
 				npc.setRealCoords(point);

@@ -160,7 +160,7 @@ public class GameServer extends Thread {
 	public void handleEnemyPacket(EnemyPacket packet) {
 		Room room = board.getRoomFromId(packet.getCurrentRoomID());
 		for (NPC npc : room.getNpcs()) {
-			if (npc.getId() == packet.getID()) {
+			if (npc.getId() == packet.getID() && npc instanceof EnemyWalker) {
 				Point point = new Point(packet.getRealCoordsX(),
 						packet.getRealCoordsY());
 				npc.setRealCoords(point);
