@@ -126,7 +126,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 				dir = 1;
 			}
 		}
-		else if(dir == 1){
+		else if(dir == 2){
 			//move south
 			realCoords.translate(0, speed);
 			if(!tryChangeTile(0, speed)){

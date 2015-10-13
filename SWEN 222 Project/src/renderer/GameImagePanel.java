@@ -19,6 +19,7 @@ import game.DestinysWild;
 import game.Player;
 import game.Room;
 import game.Tile;
+import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 import game.obstacles.Breakable;
 
@@ -561,7 +562,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					}
 					for(NPC npc : curRoom.getNpcs()){
 						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawEnemy(g, npc.getType(), (int)npc.getRealCoords().getX(), (int)npc.getRealCoords().getY());
+							drawEnemy(g, npc);
 						}
 					}
 					for(Player p : board.getPlayers()){
@@ -598,6 +599,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-i, j);
 					}
+					for(NPC npc : curRoom.getNpcs()){
+						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+							drawEnemy(g, npc);
+						}
+					}
 					if (player != null && !hurt){
 						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 							drawPlayer(g);
@@ -619,6 +625,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					}
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
+					}
+					for(NPC npc : curRoom.getNpcs()){
+						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+							drawEnemy(g, npc);
+						}
 					}
 					if (player != null && !hurt){
 						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
@@ -642,6 +653,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), i, 9-j);
 					}
+					for(NPC npc : curRoom.getNpcs()){
+						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+							drawEnemy(g, npc);
+						}
+					}
 					if (player != null && !hurt){
 						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 							drawPlayer(g);
@@ -651,10 +667,57 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
+	
+	public BufferedImage loadEnemyImage(String type, int dir){
+		BufferedImage sheet = loadImage(type + "SpriteSheet.png");
+		BufferedImage enemyImage;
+		if(viewDir.equals("east")){
+			dir = (dir+=1)%4;
+		}
+		else if(viewDir.equals("south")){
+			dir = (dir+=2)%4;
+		}
+		else if(viewDir.equals("west")){
+			dir = (dir+=3)%4;
+		}
+		if(type.equals("snail")){
+			enemyImage = sheet.getSubimage(dir*70, 0, 70, 72);
+			return enemyImage;
+		}
+		return defaultCube;
+	}
 
-	public void drawEnemy(Graphics g, String filename, int x, int y){
-		BufferedImage enemyIMG = loadImage(filename + ".png");
-		g.drawImage(enemyIMG, x - (obW), y - (obH*2)-22, null);
+	public void drawEnemy(Graphics g, NPC npc){
+		BufferedImage enemyIMG = loadEnemyImage(npc.getType(), npc.getDir());
+		int xDif = (int)(npc.getRealCoords().getX() - npc.getCurrentTile().getRealCoords().getX());
+		int yDif = (int)(npc.getRealCoords().getY() - npc.getCurrentTile().getRealCoords().getY());
+		int newX = (int)npc.getRealCoords().getX() - (obW);
+		int newY = (int)npc.getRealCoords().getY() - (obH*2)-22;
+		Point oldPoint = npc.getCurrentTile().getRoomCoords();
+		
+		if(viewDir.equals("east")){
+			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - obW - (yDif*2);
+			newY = (int)newTile.getRealCoords().getY() - ((obH*2)-22) - (-xDif/2)-(obH*3)+4;
+		}
+		else if(viewDir.equals("south")){
+			Point newPoint = new Point((int)(9-oldPoint.getX()), 9-(int)oldPoint.getY());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - obW - (xDif);
+			newY = (int)newTile.getRealCoords().getY() - ((obH*2)-22) - (yDif)-(obH*3)+4;
+		}
+		else if(viewDir.equals("west")){
+			Point newPoint = new Point((int)(9-oldPoint.getY()), (int)oldPoint.getX());
+			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+			newX = (int)newTile.getRealCoords().getX() - obW - (-yDif*2);
+			newY = (int)newTile.getRealCoords().getY() - ((obH*2)-22) - (xDif/2)-(obH*3)+4;
+		}
+		
+		g.drawImage(enemyIMG, newX, newY, null);
+		if(npc instanceof EnemyWalker){
+			drawEnemyHealth(g, newX, newY, npc);
+		}
 	}
 
 	public void drawPlayer(Graphics g){
@@ -710,6 +773,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.fillRect(x, y-10, 50, 5);
 		g.setColor(Color.green);
 		g.fillRect(x, y-10, p.getHealth()/2, 5);
+	}
+	
+	public void drawEnemyHealth(Graphics g, int x, int y, NPC npc){
+		g.setColor(Color.black);
+		g.fillRect(x+10, y-10, 50, 5);
+		g.setColor(Color.green);
+		int health = npc.getHealth()/npc.getDamage();
+		g.fillRect(x+10, y-10, health*50, 5);
 	}
 
 	public void drawScore(Graphics g) {
