@@ -7,31 +7,53 @@ import game.DestinysWild;
 import game.Interactable;
 import game.Player;
 
+/**
+ * a Breakable obstacle is one which can be destroyed if the player contains
+ * the correct tool in their inventory
+ * @author Rob
+ *
+ */
 public class Breakable implements Obstacle, Interactable,Serializable{
 
 	private String type;
 	private Point coords;
 
+	/**
+	 * Creates a breakable obstacle
+	 * @param type of breakable
+	 * @param coords of the breakable
+	 */
 	public Breakable(String type, Point coords) {
 		this.type = type;
 		this.coords = coords;
 	}
 
-	@Override
+	/**
+	 * @return type of breakable
+	 */
 	public String getType() {
 		return type;
 	}
 
-	@Override
+	/**
+	 * @return room coords of this breakable
+	 */
 	public Point getCoords() {
 		return coords;
 	}
 
+	/**
+	 * @return the type of obstacle - breakable
+	 */
 	public String toString(){
 		return "breakable";
 	}
 
-	@Override
+	/**
+	 * Inherited from the Interactable interface. Performs the necessary actions when
+	 * a player interacts with this breakable. In this case, change the state of this
+	 * breakable if the player has the corresponding tool in their inventory.
+	 */
 	public void interact() {
 		Player player = DestinysWild.getPlayer();
 		int typeLen = type.length();
