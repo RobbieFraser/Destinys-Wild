@@ -29,6 +29,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	private Room currentRoom;
 	private Tile currentTile;
 	private int dir = 0;
+	private int animationState = 0;
 
 	/**
 	 * Constructs a new EnemyWalker, setting its strategy based on its type, 
@@ -83,6 +84,10 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	 * @return boolean if can move
 	 */
 	public boolean tryFollow(){
+		animationState++;
+		if(animationState == 20){
+			animationState = 0;
+		}
 		Player nearestPlayer = null;
 		for(Player player : DestinysWild.getBoard().getPlayers()){
 			if(nearestPlayer == null || player.getCoords().distance(realCoords) < nearestPlayer.getCoords().distance(realCoords)){
@@ -92,21 +97,25 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		checkHitPlayer();
 		if(nearestPlayer != null && nearestPlayer.getCoords().x > realCoords.x){
 			if(nearestPlayer.getCoords().y > realCoords.y){
+				dir = 2;
 				realCoords.translate(speed, speed);
 				tryChangeTile(speed, speed);
 			}
 			else{
+				dir = 1;
 				realCoords.translate(speed, -speed);
 				tryChangeTile(speed, -speed);
 			}
 			return true;
 		}
 		else if(nearestPlayer != null && nearestPlayer.getCoords().y > realCoords.y){
+			dir = 3;
 			realCoords.translate(-speed, speed);
 			tryChangeTile(-speed, speed);
 			return true;
 		}
 		else if(nearestPlayer != null && !(nearestPlayer.getCoords().equals(realCoords))){
+			dir = 0;
 			realCoords.translate(-speed, -speed);
 			tryChangeTile(-speed, -speed);
 			return true;
@@ -363,5 +372,13 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	@Override
 	public int getDir() {
 		return dir;
+	}
+	
+	/**
+	 * @return the animationState of the npc
+	 */
+	@Override
+	public int getAnimationState() {
+		return animationState;
 	}
 }

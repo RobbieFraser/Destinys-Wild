@@ -192,6 +192,12 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public int getDir() {
 		return -1;
 	}
-
-
+	
+	/**
+	 * @return the animationState of the npc
+	 */
+	@Override
+	public int getAnimationState() {
+		return 0;
+	}
 }

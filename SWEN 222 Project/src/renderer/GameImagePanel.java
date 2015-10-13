@@ -659,7 +659,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 	}
 	
-	public BufferedImage loadEnemyImage(String type, int dir){
+	public BufferedImage loadEnemyImage(String type, int dir, int state){
 		BufferedImage sheet = loadImage(type + "SpriteSheet.png");
 		BufferedImage enemyImage;
 		if(viewDir.equals("east")){
@@ -671,11 +671,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		else if(viewDir.equals("west")){
 			dir = (dir+=3)%4;
 		}
-		if(type.equals("snail")){
-			enemyImage = sheet.getSubimage(dir*70, 0, 70, 72);
-			return enemyImage;
-		}
-		return defaultCube;
+		enemyImage = sheet.getSubimage(dir*70, (state/5)*72, 70, 72);
+		return enemyImage;
 	}
 
 	public void drawEnemy(Graphics g, NPC npc){
@@ -683,8 +680,11 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		if(npc instanceof EnemyStill){
 			enemyIMG = loadImage(npc.getType() + ".png");
 		}
+		else if(npc instanceof EnemyWalker){
+			enemyIMG = loadEnemyImage(npc.getType(), npc.getDir(), npc.getAnimationState());
+		}
 		else{
-			enemyIMG = loadEnemyImage(npc.getType(), npc.getDir());
+			enemyIMG = defaultCube;
 		}
 		int xDif = (int)(npc.getRealCoords().getX() - npc.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(npc.getRealCoords().getY() - npc.getCurrentTile().getRealCoords().getY());

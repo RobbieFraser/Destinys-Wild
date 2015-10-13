@@ -28,4 +28,5 @@ public interface NPC {
 	public void setCurrentTile(Tile tile);
 	public void setRoomCoords(Point point);
 	public int getDir();
+	public int getAnimationState();
 }

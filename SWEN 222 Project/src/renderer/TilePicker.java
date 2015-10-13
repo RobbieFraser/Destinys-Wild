@@ -36,11 +36,14 @@ public class TilePicker {
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "cobble", "cobblestone1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "vine", "vine1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "fire", "fire1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "dirt", "dirt1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "steelbeams", "stealbeams1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin1", "coins1", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin2", "coins1", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin3", "coins2", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Gem", "gem", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
+		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "KeyPc", "key", new Color(255, 215, 0), new Color(205, 173, 0)), "Key"));
 
 		healthSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Apple", "apple", new Color(255, 59, 59), new Color(156, 38, 38)), "Health"));
 		healthSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Potion", "potion", new Color(255, 59, 59), new Color(156, 38, 38)), "Health"));
@@ -50,6 +53,7 @@ public class TilePicker {
 		enemySelects.add(new EditorTileSelect(new EditorTile(99, 99, "Bats", "bats", new Color(167, 167, 167), new Color(210, 210, 210)), "EnemyWalker"));
 
 		npcSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Shop", "shopkeeper", new Color(167, 167, 167), new Color(210, 210, 210)), "FriendlyStill"));
+		npcSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Fldng", "fladnag", new Color(167, 167, 167), new Color(210, 210, 210)), "FriendlyStill"));
 	}
 
 	/*
