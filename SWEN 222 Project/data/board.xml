@@ -1615,6 +1615,12 @@
         <Obstype>block</Obstype>
         <Type>mossyStone1</Type>
         <Row>0</Row>
+        <Col>3</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>mossyStone1</Type>
+        <Row>0</Row>
         <Col>7</Col>
       </Obstacle>
       <Obstacle>
@@ -2156,26 +2162,17 @@
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
-    </Npcs>
-    <Items>
-      <Item>
-        <Itemtype>score</Itemtype>
-        <Type>gem</Type>
-        <Id>111</Id>
-        <Row>0</Row>
-        <Col>3</Col>
-        <Health>0</Health>
-        <Score>100</Score>
-      </Item>
-      <Item>
-        <Itemtype>score</Itemtype>
-        <Type>gem</Type>
-        <Id>311</Id>
+      <Npc>
+        <Npctype>friendlystill</Npctype>
+        <Type>fladnag</Type>
+        <Id>2711</Id>
         <Row>0</Row>
         <Col>4</Col>
-        <Health>0</Health>
-        <Score>100</Score>
-      </Item>
+        <Damage>0</Damage>
+        <Speed>0</Speed>
+      </Npc>
+    </Npcs>
+    <Items>
       <Item>
         <Itemtype>score</Itemtype>
         <Type>gem</Type>
@@ -2461,10 +2458,40 @@
         <Col>0</Col>
       </Obstacle>
       <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>stealbeams1</Type>
+        <Row>7</Row>
+        <Col>0</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>stealbeams1</Type>
+        <Row>7</Row>
+        <Col>1</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>stealbeams1</Type>
+        <Row>7</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>stealbeams1</Type>
+        <Row>8</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
         <Obstype>block</Obstype>
         <Type>stoneblock</Type>
         <Row>8</Row>
         <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>stealbeams1</Type>
+        <Row>9</Row>
+        <Col>2</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
@@ -2502,6 +2529,42 @@
         <Col>9</Col>
         <Health>0</Health>
         <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>gem</Type>
+        <Id>40</Id>
+        <Row>8</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>100</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>gem</Type>
+        <Id>50</Id>
+        <Row>8</Row>
+        <Col>1</Col>
+        <Health>0</Health>
+        <Score>100</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>gem</Type>
+        <Id>70</Id>
+        <Row>9</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>100</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>gem</Type>
+        <Id>60</Id>
+        <Row>9</Row>
+        <Col>1</Col>
+        <Health>0</Health>
+        <Score>100</Score>
       </Item>
     </Items>
   </Room>
