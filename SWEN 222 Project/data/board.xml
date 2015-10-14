@@ -82,7 +82,7 @@
       <Item>
         <Itemtype>score</Itemtype>
         <Type>gem</Type>
-        <Id>12</Id>
+        <Id>72</Id>
         <Row>0</Row>
         <Col>4</Col>
         <Health>0</Health>
@@ -600,6 +600,15 @@
         <Health>0</Health>
         <Score>10</Score>
       </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins2</Type>
+        <Id>75</Id>
+        <Row>9</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>20</Score>
+      </Item>
     </Items>
   </Room>
   <Room>
@@ -699,6 +708,15 @@
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>
+        <Id>126</Id>
+        <Row>0</Row>
+        <Col>2</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
         <Id>86</Id>
         <Row>2</Row>
         <Col>7</Col>
@@ -717,9 +735,45 @@
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>
+        <Id>136</Id>
+        <Row>4</Row>
+        <Col>6</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>156</Id>
+        <Row>5</Row>
+        <Col>5</Col>
+        <Health>15</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
         <Id>76</Id>
         <Row>5</Row>
         <Col>8</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>166</Id>
+        <Row>7</Row>
+        <Col>2</Col>
+        <Health>15</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>146</Id>
+        <Row>7</Row>
+        <Col>5</Col>
         <Health>0</Health>
         <Score>10</Score>
       </Item>
@@ -1099,6 +1153,24 @@
         <Id>88</Id>
         <Row>1</Row>
         <Col>1</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>108</Id>
+        <Row>1</Row>
+        <Col>4</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>98</Id>
+        <Row>3</Row>
+        <Col>5</Col>
         <Health>0</Health>
         <Score>10</Score>
       </Item>
@@ -2493,6 +2565,15 @@
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>
+        <Id>1013</Id>
+        <Row>4</Row>
+        <Col>4</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
         <Id>713</Id>
         <Row>4</Row>
         <Col>6</Col>
@@ -2505,6 +2586,15 @@
         <Id>813</Id>
         <Row>5</Row>
         <Col>4</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>913</Id>
+        <Row>5</Row>
+        <Col>6</Col>
         <Health>0</Health>
         <Score>10</Score>
       </Item>
@@ -3377,6 +3467,12 @@
         <Col>3</Col>
       </Obstacle>
       <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>dirt1</Type>
+        <Row>3</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
         <Obstype>block</Obstype>
         <Type>mossyStone1</Type>
         <Row>3</Row>
@@ -3492,6 +3588,60 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
+        <Type>stump</Type>
+        <Row>0</Row>
+        <Col>6</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>0</Row>
+        <Col>7</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>0</Row>
+        <Col>8</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>0</Row>
+        <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>1</Row>
+        <Col>8</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>1</Row>
+        <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>stump</Type>
+        <Row>2</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>2</Row>
+        <Col>8</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>2</Row>
+        <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
         <Type>mossyStone1</Type>
         <Row>3</Row>
         <Col>2</Col>
@@ -3510,9 +3660,21 @@
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>3</Row>
+        <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
         <Type>mossyStone1</Type>
         <Row>4</Row>
         <Col>4</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>breakable</Obstype>
+        <Type>dirt1</Type>
+        <Row>5</Row>
+        <Col>0</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
