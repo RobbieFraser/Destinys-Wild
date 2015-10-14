@@ -92,7 +92,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		}
 		Player nearestPlayer = null;
 		for(Player player : DestinysWild.getBoard().getPlayers()){
-			if(nearestPlayer == null || (player.getCurrentRoom() == getCurrentRoom() && player.getCoords().distance(realCoords) < nearestPlayer.getCoords().distance(realCoords))){
+			if((nearestPlayer == null && player.getCurrentRoom() == getCurrentRoom()) || ((nearestPlayer != null) && player.getCurrentRoom() == getCurrentRoom() && (player.getCoords().distance(realCoords) < nearestPlayer.getCoords().distance(realCoords)))){
 				nearestPlayer = player;
 			}
 		}
