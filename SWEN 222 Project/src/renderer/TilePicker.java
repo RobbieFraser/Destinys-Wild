@@ -37,7 +37,7 @@ public class TilePicker {
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "vine", "vine1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "fire", "fire1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "dirt", "dirt1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
-		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "steelbeams", "stealbeams1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
+		breakSelects.add(new EditorTileSelect(new EditorTile(99, 99, "steelbeams", "steelbeams1", new Color(194, 194, 194), new Color(143, 143, 143)), "Breakable"));
 
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin1", "coins1", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));
 		scoreSelects.add(new EditorTileSelect(new EditorTile(99, 99, "Coin2", "coins1", new Color(255, 215, 0), new Color(205, 173, 0)), "Score"));

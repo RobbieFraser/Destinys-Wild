@@ -28,6 +28,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	private String strategy;
 	private Room currentRoom;
 	private Tile currentTile;
+	private Tile prevTile;
 	private int dir = 0;
 	private int animationState = 0;
 
@@ -67,6 +68,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	 * @return boolean if move occurs
 	 */
 	public boolean tryMove(){
+		prevTile = currentTile;
 		currentTile = currentRoom.calcTile(realCoords);
 		switch(strategy){
 			case "follow":
@@ -90,7 +92,7 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 		}
 		Player nearestPlayer = null;
 		for(Player player : DestinysWild.getBoard().getPlayers()){
-			if(nearestPlayer != null && (player.getCurrentRoom() == getCurrentRoom()) && player.getCoords().distance(realCoords) < nearestPlayer.getCoords().distance(realCoords)){
+			if(nearestPlayer == null || (player.getCurrentRoom() == getCurrentRoom() && player.getCoords().distance(realCoords) < nearestPlayer.getCoords().distance(realCoords))){
 				nearestPlayer = player;
 			}
 		}
@@ -212,9 +214,11 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	 * resets the walker to its original place
 	 */
 	public void resetPos(){
+		if(prevTile != null){
+			prevTile.setOccupied(false);
+		}
 		realCoords = GameImagePanel.calcRealCoords(roomCoords);
 		currentTile = currentRoom.calcTile(realCoords);
-		currentTile.setOccupied(true);
 	}
 
 	/**

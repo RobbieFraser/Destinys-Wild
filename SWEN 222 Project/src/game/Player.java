@@ -87,7 +87,7 @@ public class Player implements Serializable {
 
 	public boolean hasTool(String breakable){
 		for(Item item : inventory){
-			if(item instanceof Tool && ((Tool)item).getBreakable().equals(breakable)){
+			if(item instanceof Tool && (((Tool)item).getBreakable().equals(breakable)) || breakable.equals("steelbeams")){
 				return true;
 			}
 		}

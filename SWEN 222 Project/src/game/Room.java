@@ -165,13 +165,6 @@ public class Room implements Serializable{
 	 * @return An OBJECT type which will either be NPC, Item, Obstacle or null
 	 */
 	public Object getTileOccupant(Tile tile){
-		for(NPC npc : npcs){
-			//System.out.println("Tile coords: " + tile.getRoomCoords());
-			//System.out.println("NPC coords: " + npc.getCurrentTile().getRoomCoords());
-			if(tile.getRoomCoords().equals(npc.getCurrentTile().getRoomCoords())){
-				return npc;
-			}
-		}
 		for(int row=0; row<tiles.length; row++){
 			for(int col=0; col<tiles[0].length; col++){
 				if(tile.getRoomCoords().equals(new Point(row, col))){
@@ -182,6 +175,13 @@ public class Room implements Serializable{
 						return items[row][col];
 					}
 				}
+			}
+		}
+		for(NPC npc : npcs){
+			//System.out.println("Tile coords: " + tile.getRoomCoords());
+			//System.out.println("NPC coords: " + npc.getCurrentTile().getRoomCoords());
+			if(tile.getRoomCoords().equals(npc.getCurrentTile().getRoomCoords())){
+				return npc;
 			}
 		}
 		//shouldn't happen
