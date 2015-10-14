@@ -1,6 +1,7 @@
 package game;
 
 import game.items.Item;
+import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 import game.obstacles.Obstacle;
 
@@ -60,6 +61,28 @@ public class Room implements Serializable{
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Checks whether this player is the only player in this room
+	 * @param thisPlayerName Name of the player checking
+	 * @return whether this room has no other players or not
+	 */
+	public boolean hasNoOtherPlayers(String thisPlayerName){
+		for(Player player : DestinysWild.getBoard().getPlayers()){
+			if(player.getName() != thisPlayerName){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void resetNpcs(){
+		for(NPC npc : npcs){
+			if(npc instanceof EnemyWalker){
+				((EnemyWalker)npc).resetPos();
+			}
+		}
 	}
 
 	/**
