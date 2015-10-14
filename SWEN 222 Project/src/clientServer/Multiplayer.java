@@ -33,6 +33,9 @@ public class Multiplayer extends Canvas implements Runnable {
 		System.out.println("Current Player is: " + currentPlayer.getName());
 	}
 
+	/**
+	 * Initialises a login packet and writes the data to the client, using the current player's username
+	 */
 	public void initialise() {
 //		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
 //					 new Point(500,300), room, null, -1);
@@ -47,7 +50,10 @@ public class Multiplayer extends Canvas implements Runnable {
 			packet.writeData(client);
 		}
 	}
-	
+
+	/**
+	 * Starts up the GameServer and the GameClient
+	 */
 	public synchronized void startServer() {
 		running = true;
 		server = new GameServer(board,this);
@@ -65,7 +71,10 @@ public class Multiplayer extends Canvas implements Runnable {
 		client.start();
 		initialise();
 	}
-	
+
+	/**
+	 * Allows a Client to join a Server, if you provide the IP address
+	 */
 	public synchronized void joinServer() {
 		running = true;
 		String ipAddress = JOptionPane.showInputDialog(null,"Enter the server's IP Address");
@@ -81,7 +90,7 @@ public class Multiplayer extends Canvas implements Runnable {
 	public synchronized void stop() {
 		running = false;
 	}
-	
+
 	public Player getCurrentPlayer(){
 		return currentPlayer;
 	}

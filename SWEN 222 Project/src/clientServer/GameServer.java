@@ -44,7 +44,7 @@ public class GameServer extends Thread {
 	/**
 	 * Constructor for a GameServer which takes in a Board and a Multiplayer
 	 * object
-	 * 
+	 *
 	 * @param board
 	 * @param multiplayer
 	 */
@@ -80,7 +80,7 @@ public class GameServer extends Thread {
 	 * This method receives an array of bytes, an InetAddress and a port number
 	 * and processes the array of bytes into the relevant packet. It then
 	 * performs a handle method based off the type of packet it is.
-	 * 
+	 *
 	 * @param data
 	 * @param address
 	 * @param port
@@ -142,7 +142,7 @@ public class GameServer extends Thread {
 	/**
 	 * This method takes a HealthPacket, obtains the relevant Player and sets
 	 * their health to the value in the packet
-	 * 
+	 *
 	 * @param packet
 	 */
 	public void handleHealthPacket(HealthPacket packet) {
@@ -154,7 +154,7 @@ public class GameServer extends Thread {
 	 * This method takes an EnemyPacket, finds the relevant NPC by using the ID
 	 * in the packet and adjusts their health and co-ordinates to those in the
 	 * packet.
-	 * 
+	 *
 	 * @param packet
 	 */
 	public void handleEnemyPacket(EnemyPacket packet) {
@@ -173,9 +173,9 @@ public class GameServer extends Thread {
 	}
 
 	/**
-	 * This method takes a TimePacket and obtains the time from it and sets the
-	 * current time to it
-	 * 
+	 * This method takes a TorchPacket and sets whether or not the player has a
+	 * Torch or not
+	 *
 	 * @param packet
 	 */
 	public void handleTorchPacket(TorchPacket packet) {
@@ -184,6 +184,11 @@ public class GameServer extends Thread {
 		packet.writeData(this);
 	}
 
+	/**
+	 * This method takes a TimePacket and obtains the time from it and sets the
+	 * current time to it
+	 * @param packet
+	 */
 	public void handleTimePacket(TimePacket packet) {
 		//System.out.println(packet.getNewTime());
 		if (packet.getNewTime() > 63) {
@@ -199,7 +204,7 @@ public class GameServer extends Thread {
 	 * This method takes a RemoveItemPacket and obtains the Room and Item
 	 * objects from the data stored inside it. It then removes the item from the
 	 * room.
-	 * 
+	 *
 	 * @param packet
 	 */
 	public void handleRemoveItemPacket(RemoveItemPacket packet) {
@@ -216,7 +221,7 @@ public class GameServer extends Thread {
 	 * and Y positions. It then sets their room, co-ordinates and what
 	 * direction(s) they are moving in. Once it has done this, it updates the
 	 * player and sets their current tile.
-	 * 
+	 *
 	 * @param packet
 	 */
 	public void handleMove(MovePacket packet) {
@@ -247,7 +252,7 @@ public class GameServer extends Thread {
 	/**
 	 * Removes a player from the game by sending a DisconnectPacket with the
 	 * player's information
-	 * 
+	 *
 	 * @param packet
 	 */
 	public void removeConnection(DisconnectPacket packet) {
@@ -260,7 +265,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that gets the index of a player in the list
-	 * 
+	 *
 	 * @param username
 	 * @return
 	 */
@@ -278,7 +283,7 @@ public class GameServer extends Thread {
 	/**
 	 * Gets a player from the set of connectedPlayers by searching for their
 	 * name
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -297,7 +302,7 @@ public class GameServer extends Thread {
 	 * its port and IP are set to to the matching player's port and IP. If it is
 	 * not in the list, a LoginPacket is sent out and it is added to the list of
 	 * connected players on the server and the list of players on the Board.
-	 * 
+	 *
 	 * @param player
 	 * @param packet
 	 */
@@ -338,7 +343,7 @@ public class GameServer extends Thread {
 	/**
 	 * Sends data in the form of a byte array to the desired InetAddress and
 	 * port
-	 * 
+	 *
 	 * @param data
 	 * @param ipAddress
 	 * @param port
@@ -356,7 +361,7 @@ public class GameServer extends Thread {
 	/**
 	 * Sends data in the form of a byte array to all players in the
 	 * connectedPlayers list
-	 * 
+	 *
 	 * @param data
 	 */
 	public void sendDataToAllClients(byte[] data) {
@@ -371,7 +376,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that represents a boolean as an int
-	 * 
+	 *
 	 * @param bool
 	 * @return
 	 */
@@ -382,7 +387,7 @@ public class GameServer extends Thread {
 
 	/**
 	 * Helper method that represents an int as a boolean
-	 * 
+	 *
 	 * @param i
 	 * @return
 	 */

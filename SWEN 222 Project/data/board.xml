@@ -2953,164 +2953,224 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
+        <Row>0</Row>
+        <Col>1</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>0</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
         <Row>0</Row>
         <Col>3</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>0</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
+        <Row>1</Row>
+        <Col>0</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>1</Row>
+        <Col>1</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>1</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
         <Row>1</Row>
         <Col>3</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>1</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
+        <Row>2</Row>
+        <Col>0</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>2</Row>
+        <Col>1</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>2</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
         <Row>2</Row>
         <Col>3</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>2</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
+        <Row>3</Row>
+        <Col>0</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>3</Row>
+        <Col>1</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
+        <Row>3</Row>
+        <Col>2</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>water</Type>
         <Row>3</Row>
         <Col>3</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>3</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>4</Row>
-        <Col>3</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>4</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>5</Row>
-        <Col>3</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>5</Row>
         <Col>6</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>6</Row>
-        <Col>3</Col>
+        <Col>5</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>6</Row>
-        <Col>6</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>7</Row>
-        <Col>3</Col>
+        <Col>4</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>7</Row>
-        <Col>6</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
+        <Type>water</Type>
         <Row>8</Row>
         <Col>3</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>8</Row>
-        <Col>6</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>9</Row>
-        <Col>3</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stoneblock</Type>
-        <Row>9</Row>
-        <Col>6</Col>
       </Obstacle>
     </Obstacles>
     <Npcs>
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>snail</Type>
-        <Id>80</Id>
-        <Row>2</Row>
-        <Col>4</Col>
+        <Id>318</Id>
+        <Row>9</Row>
+        <Col>6</Col>
         <Damage>30</Damage>
         <Speed>2</Speed>
       </Npc>
       <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>snail</Type>
-        <Id>90</Id>
-        <Row>3</Row>
-        <Col>5</Col>
-        <Damage>30</Damage>
-        <Speed>2</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>snail</Type>
-        <Id>100</Id>
-        <Row>6</Row>
-        <Col>4</Col>
-        <Damage>30</Damage>
-        <Speed>2</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>snail</Type>
-        <Id>1</Id>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Id>918</Id>
         <Row>7</Row>
-        <Col>5</Col>
-        <Damage>30</Damage>
-        <Speed>2</Speed>
+        <Col>6</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
       </Npc>
     </Npcs>
     <Items>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>gem</Type>
+        <Id>218</Id>
+        <Row>0</Row>
+        <Col>0</Col>
+        <Health>0</Health>
+        <Score>100</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>1018</Id>
+        <Row>0</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>1118</Id>
+        <Row>1</Row>
+        <Col>8</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>718</Id>
+        <Row>2</Row>
+        <Col>7</Col>
+        <Health>15</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>health</Itemtype>
+        <Type>apple</Type>
+        <Id>818</Id>
+        <Row>3</Row>
+        <Col>7</Col>
+        <Health>15</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>618</Id>
+        <Row>8</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>
@@ -3123,9 +3183,18 @@
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>
-        <Id>618</Id>
+        <Id>518</Id>
         <Row>9</Row>
-        <Col>5</Col>
+        <Col>8</Col>
+        <Health>0</Health>
+        <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>score</Itemtype>
+        <Type>coins1</Type>
+        <Id>418</Id>
+        <Row>9</Row>
+        <Col>9</Col>
         <Health>0</Health>
         <Score>10</Score>
       </Item>
