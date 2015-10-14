@@ -97,7 +97,7 @@ public class MovePacket extends Packet {
 	}
 	
 	public int getAllowGate(){
-		return this.allowGate;
+		return allowGate;
 	}
 
 	public int getNorth() {

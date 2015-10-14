@@ -206,7 +206,7 @@ public class GameClient extends Thread {
 	 * This method takes a MovePacket and obtains the Player, their health and X
 	 * and Y positions. It then sets their room, co-ordinates and what
 	 * direction(s) they are moving in. Once it has done this, it updates the
-	 * player and sets their current tile.
+	 * player and sets their current tile.	
 	 * 
 	 * @param packet
 	 */
@@ -223,7 +223,12 @@ public class GameClient extends Thread {
 		player.setEast(intToBool(packet.getEast()));
 		player.setWest(intToBool(packet.getWest()));
 		player.setSouth(intToBool(packet.getSouth()));
-		player.setAllowGate(intToBool(packet.getAllowGate()));
+		if(packet.getAllowGate()==1){
+			for(Player p : board.getPlayers()){
+				p.setAllowGate(true);
+			}
+		}
+		System.out.println(player.getName() + player.getAllowGate());
 		player.setCurrentTile(player.getCurrentRoom().calcTile(
 				player.getCoords()));
 		// player.updatePlayer();

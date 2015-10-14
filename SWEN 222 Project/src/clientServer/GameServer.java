@@ -239,10 +239,15 @@ public class GameServer extends Thread {
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
 				player.setSouth(intToBool(packet.getSouth()));
-				player.setAllowGate(intToBool(packet.getAllowGate()));
+				if(packet.getAllowGate()==1){
+					for(Player p : board.getPlayers()){
+						p.setAllowGate(true);
+					}
+				}
 				player.setCurrentTile(player.getCurrentRoom().calcTile(
 						player.getCoords()));
 				// player.updatePlayer();
+				System.out.println(player.getName() + player.getAllowGate());
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {

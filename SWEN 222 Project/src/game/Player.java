@@ -154,6 +154,7 @@ public class Player implements Serializable {
 				DestinysWild.startTalking("You've unlocked the gate!!!");
 				for(Player player : DestinysWild.getBoard().getPlayers()){
 					player.setAllowGate(true);
+					
 				}
 			}
 			else{
