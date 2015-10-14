@@ -21,6 +21,12 @@ import game.npcs.NPC;
 import view.GameInterface;
 import view.MenuInterface;
 
+/**
+ * Main game class. This is run in order to start the game. Firstly it opens the Menu interface which then
+ * continues on appropriately.
+ * @author Rob
+ *
+ */
 public class DestinysWild implements Runnable {
 	private static Board board;
 	private static Player currentPlayer;
@@ -39,10 +45,17 @@ public class DestinysWild implements Runnable {
 	private boolean prompted = false;
 	private int promptCount = -1;
 
+	/**
+	 * Constructor
+	 */
 	public DestinysWild() {
 		mainMenu = new MenuInterface(this);
 	}
 
+	/**
+	 * Sets up the game according to whether this is a host or a client
+	 * @param startServer whether to start the server or not
+	 */
 	public void setUpGame(boolean startServer) {
 		multiplayer = new Multiplayer(this, board, currentPlayer);
 		if (startServer) {
@@ -61,6 +74,9 @@ public class DestinysWild implements Runnable {
 		return this.currentPlayer;
 	}
 
+	/**
+	 * The list of instructions and comments that appear when a new player joins the game
+	 */
 	public void startUpPrompt() {
 		if (promptCount == 0) {
 			startTalking("Welcome to Destiny's Wild! Move around using WASD");
@@ -80,6 +96,11 @@ public class DestinysWild implements Runnable {
 		}
 	}
 
+	/**
+	 * Creates a new player for a new host game.
+	 * @param playerName name of the player
+	 * @param frame JFrame to be set
+	 */
 	public void newGame(String playerName, JFrame frame) {
 		this.frame = frame;
 		setBoard(XMLParser.initialiseBoard("data/board.xml"));
@@ -89,6 +110,11 @@ public class DestinysWild implements Runnable {
 		promptCount = 0;
 	}
 
+	/**
+	 * Creates a new player for a new client which will join a host
+	 * @param playerName name of the player
+	 * @param frame JFrame to be set
+	 */
 	public void joinGame(String playerName, JFrame frame) {
 		this.frame = frame;
 		setBoard(XMLParser.initialiseBoard("data/board.xml"));
@@ -98,6 +124,11 @@ public class DestinysWild implements Runnable {
 		promptCount = 0;
 	}
 
+	/**
+	 * sets up the game with an existing player file
+	 * @param currentPlayerFile the file of the player to be loaded
+	 * @param frame JFrame to be set
+	 */
 	public void loadGame(File currentPlayerFile, JFrame frame) {
 		this.frame = frame;
 		XMLParser.loadGame(currentPlayerFile);
@@ -105,6 +136,9 @@ public class DestinysWild implements Runnable {
 		prompted = true;
 	}
 
+	/**
+	 * initialises the user interface for the game
+	 */
 	public void setUpUI() {
 		System.out.println("Setting up UI");
 		SwingUtilities.invokeLater(new Runnable() {
@@ -115,6 +149,9 @@ public class DestinysWild implements Runnable {
 		});
 	}
 
+	/**
+	 * disconnects a user from the server
+	 */
 	public void disconnect() {
 		DisconnectPacket disconnect = new DisconnectPacket(
 				currentPlayer.getName());
@@ -122,6 +159,9 @@ public class DestinysWild implements Runnable {
 		XMLParser.saveGame();
 	}
 
+	/**
+	 * the main game loop. Used to restrict the game speed for each user to a standard rate
+	 */
 	public void gameLoop() {
 		try {
 			latch.await();
@@ -155,6 +195,9 @@ public class DestinysWild implements Runnable {
 		}
 	}
 
+	/**
+	 * Updates the game per each tick
+	 */
 	private void tick() {
 		tickCount++;
 		updateGame();
@@ -169,6 +212,9 @@ public class DestinysWild implements Runnable {
 		return multiplayer;
 	}
 
+	/**
+	 * Updates the game. Including talking count, sending multiplayer packets, and updating the player's info
+	 */
 	public void updateGame() {
 		TimePacket timePacket = new TimePacket(getGameInterface()
 				.getGameImagePanel().getTime());
@@ -195,6 +241,9 @@ public class DestinysWild implements Runnable {
 		healthPacket.writeData(multiplayer.getClient());
 	}
 
+	/**
+	 * calls to update the user interface
+	 */
 	public void updateUI() {
 		ui.updateUI();
 	}
@@ -203,10 +252,16 @@ public class DestinysWild implements Runnable {
 		this.paused = paused;
 	}
 
+	/**
+	 * Test method that tests the save game function of XMLParser.java
+	 */
 	public void testSaveGame() {
 		XMLParser.saveGame();
 	}
 
+	/**
+	 * Test method that initialises a new player ready for use
+	 */
 	public static void initialiseTestPlayer() {
 		List<Item> inv = new ArrayList<>();
 		inv.add(new Health("apple", new Point(5, 5), 10, 555)); // item 1, room
@@ -225,6 +280,9 @@ public class DestinysWild implements Runnable {
 				roomsV, inv, 9999);
 	}
 
+	/**
+	 * Test method that tests the load game function of XMLParser.java
+	 */
 	public void testLoadGame() {
 		XMLParser.loadGame(new File("data/savegames/Robbie.xml"));
 		System.out.println("Parser loadGame good");
@@ -234,10 +292,16 @@ public class DestinysWild implements Runnable {
 				+ getPlayer().getInventory().size());
 	}
 
+	/**
+	 * Test method that tests the save player function of XMLParser.java
+	 */
 	public void testPlayerSave() {
 		XMLParser.savePlayer();
 	}
 
+	/**
+	 * Test method that tests the initialisation of the board by printing out a text representation
+	 */
 	public void testBoardInitialisation() {
 		board.printBoard();
 		System.out.println();
@@ -258,11 +322,18 @@ public class DestinysWild implements Runnable {
 		board = b;
 	}
 
+	/**
+	 * Starts the talking process for the game to display text
+	 * @param talk speech to be displayed
+	 */
 	public static void startTalking(String talk) {
 		text = talk;
 		isTalking = true;
 	}
 
+	/**
+	 * updates the talking timer
+	 */
 	public void updateTalking() {
 		if (isTalking) {
 			talkCount--;
@@ -292,14 +363,18 @@ public class DestinysWild implements Runnable {
 		currentPlayer = player;
 	}
 
-	@Override
+	/**
+	 * Initially calls the game loop. Implemented as part of the thread.
+	 */
 	public void run() {
 		gameLoop();
 	}
 
+	/**
+	 * main method to initialise the game
+	 * @param args 
+	 */
 	public static void main(String[] args) {
 		DestinysWild game = new DestinysWild();
-		// game.testLoadGame();
-		// game.testSaveGame();
 	}
 }

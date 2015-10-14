@@ -16,6 +16,11 @@ import game.npcs.EnemyStill;
 import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 
+/**
+ * A Player is the character controlled by the user. 
+ * @author Rob
+ *
+ */
 public class Player implements Serializable {
 	private String name;
 	private Point coords; //Coords relative to the game window
@@ -85,6 +90,11 @@ public class Player implements Serializable {
 		this.ipAddress = null;
 	}
 
+	/**
+	 * Checks whether this player has the corresponding tool for a given breakable obstacle
+	 * @param breakable obstacle
+	 * @return boolean has tool or not
+	 */
 	public boolean hasTool(String breakable){
 		for(Item item : inventory){
 			if(item instanceof Tool && (((Tool)item).getBreakable().equals(breakable)) || breakable.equals("steelbeams")){
@@ -94,16 +104,28 @@ public class Player implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Sets the player's current room
+	 * @param room to be set
+	 */
 	public void setRoom(Room room){
 		this.currentRoom = room;
 	}
 
+	/**
+	 * Gets whether the player has a torch or not
+	 * @return boolean has torch or not
+	 */
 	public boolean getHasTorch(){
 		return this.hasTorch;
 	}
 
-	public void setHasTorch(boolean b){
-		this.hasTorch = b;
+	/**
+	 * sets whether the player has a torch or not
+	 * @param torch to be set 
+	 */
+	public void setHasTorch(boolean torch){
+		this.hasTorch = torch;
 	}
 
 	/**
@@ -120,6 +142,9 @@ public class Player implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Updates the player's walk cycle. Used for rendering the player movement animations
+	 */
 	public void updateWalkCycle(){
 		walkState++;
 		if(walkState == 8){
@@ -127,6 +152,10 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * gets the player's walk state
+	 * @return int walk state
+	 */
 	public int getWalkState(){
 		return walkState;
 	}
@@ -190,6 +219,10 @@ public class Player implements Serializable {
 		return occupants;
 	}
 
+	/**
+	 * Checks whether the player has a complete key or not
+	 * @return boolean has key or not
+	 */
 	public boolean hasKey(){
 		for(Item item : inventory){
 			if(item instanceof Key && item.getId() == 5){
@@ -214,6 +247,9 @@ public class Player implements Serializable {
 		return allowGate;
 	}
 
+	/**
+	 * Updates the Player. Including inviniciblity, animation state and movement
+	 */
 	public void updatePlayer(){
 		updateInvincibility();
 		int count = 0;
@@ -248,6 +284,9 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * The Player becomes invincible for a certain time after taking damage. This method updates the timer
+	 */
 	public void updateInvincibility(){
 		if(invincible){
 			invincibleCount--;
@@ -258,6 +297,10 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * Makes the player take the given amount of damage and handles death if they are to be so unfortunate
+	 * @param damage to be taken
+	 */
 	public void takeDamage(int damage){
 		if(!invincible){
 			setHealth(getHealth()-damage);
@@ -524,6 +567,12 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * Tries to make the complete key for the Player. This is called after interacting with
+	 * fladnag. To make the key, the players in the room must collectively have the 4 pieces 
+	 * scattered around the map.
+	 * @return boolean success 
+	 */
 	public boolean tryMakeKey(){
 		int keyCount = 0;
 		List<Player> inRoom = new ArrayList<>();
@@ -598,6 +647,10 @@ public class Player implements Serializable {
 		return count;
 	}
 
+	/**
+	 * gets the number of key items a player has in their inventory
+	 * @return int num key items
+	 */
 	public int numKeyItems(){
 		int count = 0;
 		for(Item item : inventory){
@@ -639,10 +692,19 @@ public class Player implements Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * gets the coordinates of this player
+	 * @return coords of this player
+	 */
 	public Point getCoords() {
 		return coords;
 	}
 
+	/**
+	 * sets the coordinates of this player
+	 * @param x coord of player to be set
+	 * @param y coord of player to be set
+	 */
 	public void setCoords(int x, int y) {
 		if(coords == null){
 			coords = new Point(x, y);
@@ -652,22 +714,42 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * gets the players current health level
+	 * @return int health
+	 */
 	public int getHealth() {
 		return health;
 	}
 
+	/**
+	 * sets the player's current health level
+	 * @param health to be set
+	 */
 	public void setHealth(int health) {
 		this.health = health;
 	}
 
+	/**
+	 * gets the current room of the player
+	 * @return current room of player
+	 */
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
 
+	/**
+	 * sets the current room of the player
+	 * @param currentRoom to be set
+	 */
 	public void setCurrentRoom(Room currentRoom) {
 		this.currentRoom = currentRoom;
 	}
 
+	/**
+	 * gets the list of rooms that the player has visited
+	 * @return List<Room> list of rooms
+	 */
 	public List<Room> getVisitedRooms() {
 		return visitedRooms;
 	}
@@ -798,6 +880,14 @@ public class Player implements Serializable {
 	private InetAddress ipAddress;
 	private int port;
 
+	/**
+	 * Player constructor for multi player
+	 * @param name
+	 * @param coords
+	 * @param currentRoom
+	 * @param ipAddress
+	 * @param port
+	 */
 	public Player(String name, Point coords, Room currentRoom, InetAddress ipAddress, int port){
 		this.name = name;
 		this.coords = coords;
