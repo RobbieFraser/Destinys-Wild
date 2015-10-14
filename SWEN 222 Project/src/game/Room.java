@@ -52,7 +52,7 @@ public class Room implements Serializable{
 		}
 		return null;
 	}
-	
+
 	public NPC getNpcFromId(int id){
 		for(NPC npc : npcs){
 			if(npc.getId() == id){
@@ -143,8 +143,8 @@ public class Room implements Serializable{
 	 */
 	public Object getTileOccupant(Tile tile){
 		for(NPC npc : npcs){
-			System.out.println("Tile coords: " + tile.getRoomCoords());
-			System.out.println("NPC coords: " + npc.getCurrentTile().getRoomCoords());
+			//System.out.println("Tile coords: " + tile.getRoomCoords());
+			//System.out.println("NPC coords: " + npc.getCurrentTile().getRoomCoords());
 			if(tile.getRoomCoords().equals(npc.getCurrentTile().getRoomCoords())){
 				return npc;
 			}

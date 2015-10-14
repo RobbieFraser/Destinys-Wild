@@ -28,7 +28,7 @@ public class TimePacket extends Packet{
 	}
 
 	/**
-	 * Writes data to the GameClient, sending it to the server 
+	 * Writes data to the GameClient, sending it to the server
 	 */
 	@Override
 	public void writeData(GameClient client) {
@@ -44,7 +44,7 @@ public class TimePacket extends Packet{
 		server.sendDataToAllClients(getData());
 
 	}
-	
+
 	/**
 	 * Returns a byte array of the items contained in this packet
 	 */
