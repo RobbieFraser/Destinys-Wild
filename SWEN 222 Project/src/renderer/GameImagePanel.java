@@ -685,12 +685,12 @@ public class GameImagePanel extends JPanel {
 	 * @param j
 	 */
 	private void drawPlayersAndNPCs(Graphics g, int i, int j) {
-		for(NPC npc : curRoom.getNpcs()){
-			if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+		for (NPC npc : curRoom.getNpcs()){
+			if (npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 				drawEnemy(g, npc);
 			}
 		}
-		if (player != null && !hurt){
+		if (player != null && !hurt && player.getCurrentTile() != null){
 			if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
 				drawPlayer(g);
 			}
@@ -770,6 +770,14 @@ public class GameImagePanel extends JPanel {
 	}
 
 	private int[] calculatePlayerCoords(Player player) {
+		//TODO: Review
+		if (player.getCoords() == null) {
+			System.exit(0);
+		} else if (player.getCurrentTile() == null) {
+			System.exit(0);
+		} else if (player.getCurrentTile().getRealCoords() == null) {
+			System.exit(0);
+		}
 		int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
 		int newX = (int)player.getCoords().getX() - 25;

@@ -1,5 +1,6 @@
 package game.npcs;
 
+import game.Board;
 import game.DestinysWild;
 import game.Interactable;
 import game.Player;
@@ -156,14 +157,17 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	 * @param y the y position that the walker is trying to move to
 	 * @return boolean if can change tile
 	 */
-	public boolean tryChangeTile(int x, int y){
-		currentTile.setOccupied(false);
+	public boolean tryChangeTile(int x, int y) {
+		if (currentRoom.getObstacles()[currentTile.getRoomCoords().x][currentTile.getRoomCoords().y] == null) {
+			//set the old tile to be unoccupied only if there isn't another block there
+			currentTile.setOccupied(false);		
+		}
 		currentTile = currentRoom.calcTile(realCoords);
 		boolean loop = false;
 		if(strategy == "loop"){
 			loop = true;
 		}
-		if(currentTile == null || (currentTile.isOccupied() && loop)){
+		if (currentTile == null || (currentTile.isOccupied() && loop)){
 			realCoords.translate(-x, -y);
 			currentTile = currentRoom.calcTile(realCoords);
 			currentTile.setOccupied(true);
