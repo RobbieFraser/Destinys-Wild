@@ -228,7 +228,6 @@ public class GameClient extends Thread {
 				p.setAllowGate(true);
 			}
 		}
-		System.out.println(player.getName() + player.getAllowGate());
 		player.setCurrentTile(player.getCurrentRoom().calcTile(
 				player.getCoords()));
 		// player.updatePlayer();
