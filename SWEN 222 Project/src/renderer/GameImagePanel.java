@@ -84,6 +84,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private boolean west = false;
 
 	private int waterstate = 0;
+	private int firestate = 0;
 
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 
@@ -147,7 +148,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 
-		updateWater();
+		updateStates();
 
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
@@ -176,10 +177,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawScore(g);
 	}
 
-	public void updateWater(){
+	public void updateStates(){
 		waterstate++;
 		if(waterstate == 16){
 			waterstate = 0;
+		}
+		firestate++;
+		if(firestate == 8){
+			firestate = 0;
 		}
 	}
 
@@ -985,11 +990,17 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		else if(file.contains("vine")){
 			subY = 1;
 		}
-		else if(file.contains("fire")){
+		else if(file.contains("steelbeams")){
 			subY = 2;
 		}
-		else{
+		else if(file.contains("dirt")){
 			subY = 3;
+		}
+		else if(file.contains("fire")){
+			subY = 4;
+		}
+		else{
+			subY = 0;
 		}
 
 		int subX = Integer.valueOf(String.valueOf(file.charAt(file.length()-1))) - 1;
@@ -1004,6 +1015,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
+
+		if(subY == 4){
+			subY = subY+firestate;
+		}
 
 		g.drawImage(breakablesIMG.getSubimage(subX*70, subY*72, 70, 72), newX, newY, null);
 	}

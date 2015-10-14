@@ -58,7 +58,12 @@ public class Breakable implements Obstacle, Interactable,Serializable{
 		Player player = DestinysWild.getPlayer();
 		int typeLen = type.length();
 		if(player.hasTool(type.substring(0, typeLen-1))){
-			if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 3){
+			if(type.contains("fire")){
+				if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 1){
+					DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
+				}
+			}
+			else if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 3){
 				DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
 
 			}
