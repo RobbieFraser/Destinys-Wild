@@ -538,6 +538,12 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>1</Row>
+        <Col>4</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
         <Type>stoneblock</Type>
         <Row>2</Row>
         <Col>8</Col>
@@ -583,6 +589,12 @@
         <Type>stoneblock</Type>
         <Row>7</Row>
         <Col>9</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>8</Row>
+        <Col>6</Col>
       </Obstacle>
     </Obstacles>
     <Npcs>
@@ -1131,6 +1143,12 @@
     <West>10</West>
     <Obstacles>
       <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>1</Row>
+        <Col>8</Col>
+      </Obstacle>
+      <Obstacle>
         <Obstype>breakable</Obstype>
         <Type>fire1</Type>
         <Row>4</Row>
@@ -1141,6 +1159,12 @@
         <Type>fire1</Type>
         <Row>5</Row>
         <Col>0</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>7</Row>
+        <Col>5</Col>
       </Obstacle>
     </Obstacles>
     <Npcs>
@@ -2691,12 +2715,6 @@
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stump</Type>
-        <Row>0</Row>
-        <Col>9</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
         <Type>water</Type>
         <Row>1</Row>
         <Col>0</Col>
@@ -3955,6 +3973,12 @@
         <Col>1</Col>
       </Obstacle>
       <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>4</Row>
+        <Col>7</Col>
+      </Obstacle>
+      <Obstacle>
         <Obstype>breakable</Obstype>
         <Type>vine1</Type>
         <Row>5</Row>
@@ -4052,12 +4076,6 @@
     <Obstacles>
       <Obstacle>
         <Obstype>block</Obstype>
-        <Type>stump</Type>
-        <Row>0</Row>
-        <Col>6</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
         <Type>water</Type>
         <Row>0</Row>
         <Col>7</Col>
@@ -4085,12 +4103,6 @@
         <Type>water</Type>
         <Row>1</Row>
         <Col>9</Col>
-      </Obstacle>
-      <Obstacle>
-        <Obstype>block</Obstype>
-        <Type>stump</Type>
-        <Row>2</Row>
-        <Col>2</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>block</Obstype>
@@ -4157,6 +4169,12 @@
         <Type>mossyStone1</Type>
         <Row>5</Row>
         <Col>4</Col>
+      </Obstacle>
+      <Obstacle>
+        <Obstype>block</Obstype>
+        <Type>hole</Type>
+        <Row>8</Row>
+        <Col>8</Col>
       </Obstacle>
     </Obstacles>
     <Npcs>
