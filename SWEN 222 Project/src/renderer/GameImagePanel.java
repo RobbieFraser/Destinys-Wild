@@ -750,16 +750,6 @@ public class GameImagePanel extends JPanel {
 	}
 
 	public void drawEnemy(Graphics g, NPC npc){
-		BufferedImage enemyIMG;
-		if(npc instanceof EnemyStill){
-			enemyIMG = loadImage(npc.getType() + ".png");
-		}
-		else if(npc instanceof EnemyWalker){
-			enemyIMG = loadEnemyImage(npc.getType(), npc.getDir(), npc.getAnimationState());
-		}
-		else{
-			enemyIMG = defaultCube;
-		}
 		int xDif = (int)(npc.getRealCoords().getX() - npc.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(npc.getRealCoords().getY() - npc.getCurrentTile().getRealCoords().getY());
 		int newX = (int)npc.getRealCoords().getX() - (obW);
@@ -785,6 +775,26 @@ public class GameImagePanel extends JPanel {
 			newY = (int)newTile.getRealCoords().getY() - ((obH*2)-22) - (xDif/2)-(obH*3)+4;
 		}
 
+		BufferedImage enemyIMG;
+		if(npc instanceof EnemyStill){
+			enemyIMG = loadImage(npc.getType() + ".png");
+		}
+		else if(npc instanceof EnemyWalker){
+			enemyIMG = loadEnemyImage(npc.getType(), npc.getDir(), npc.getAnimationState());
+		}
+		else if(npc.getType().contains("fladnag")){
+			enemyIMG = loadImage(npc.getType() + ".png");
+			newX += 14;
+			newY -= 38;
+		}
+		else if(npc.getType().contains("shopkeeper")){
+			enemyIMG = loadImage(npc.getType() + ".png");
+			newY -= 24;
+		}
+		else{
+			enemyIMG = defaultCube;
+		}
+		
 		g.drawImage(enemyIMG, newX, newY, null);
 		if(npc instanceof EnemyWalker){
 			drawEnemyHealth(g, newX, newY, npc);
