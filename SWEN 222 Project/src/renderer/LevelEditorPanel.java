@@ -556,6 +556,19 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 	 * Add a tile to the tiles array, with the location of the mouse
 	 */
 	public void createTile(){
+		int keyCount = 0;
+		for(int i = 0; i < 5; i++){
+			for(int j = 0; j < 5; j++){
+				Room room = board.getRoomFromCoords(i, j);
+				for(int k = 0; k < 10; k++){
+					for(int h = 0; h < 10; h++){
+						if(room.getItems()[k][h].getType().contains("key")){
+							keyCount++;
+						}
+					}
+				}
+			}
+		}
 		if(erase){
 			curRoom.getObstacles()[hoverY][hoverX] = null;
 			curRoom.getItems()[hoverY][hoverX] = null;
@@ -617,7 +630,7 @@ public class LevelEditorPanel extends JPanel implements MouseListener, MouseMoti
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					break;
 				case "Key":
-					curRoom.getItems()[hoverY][hoverX] = new Key(99, new Point(hoverY, hoverX));
+					curRoom.getItems()[hoverY][hoverX] = new Key(keyCount+1, new Point(hoverY, hoverX));
 					curRoom.getObstacles()[hoverY][hoverX] = null;
 					break;
 				case "EnemyStill":
