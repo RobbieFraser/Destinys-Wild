@@ -26,8 +26,8 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 
 	/**
 	 * Creates a new FriendlyStill
-	 * @param type of friendly 
-	 * @param id of the friendly 
+	 * @param type of friendly
+	 * @param id of the friendly
 	 * @param roomCoords of the friendly
 	 * @param currentRoom of the friendly
 	 */
@@ -54,22 +54,22 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	 */
 	public void takeDamage(int damage){
 
-	}	
-	
+	}
+
 	/**
 	 * Inherited from NPC interface, no use for FriendlyStill
 	 */
 	public void setCurrentTile(Tile tile){
-		
+
 	}
-	
+
 	/**
 	 * Inherited from NPC interface, no use for FriendlyStill
 	 */
 	public int getHealth(){
 		return 0;
 	}
-	
+
 	/**
 	 * @return the current room of this FriendlyStill
 	 */
@@ -90,7 +90,7 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public void setRealCoords(Point realCoords) {
 		this.realCoords = realCoords;
 	}
-	
+
 	/**
 	 * @return the type of this FriendlyStill
 	 */
@@ -144,22 +144,22 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	 * Inherited from NPC interface, no use for FriendlyStill
 	 */
 	public void setHealth(int health) {
-		
+
 	}
-	
+
 	/**
 	 * Inherited from the Interactable Interface. Performs different operations based on which Friendly this is
 	 * shopkeeper - Opens the shop if it is day time.
 	 * fladnag - Tries to create the complete key from the 4 pieces
 	 */
 	public void interact() {
-		if(type.equals("shopkeeper") && GameImagePanel.getState() == 0){
+		if(type.equals("shopkeeper") && (GameImagePanel.getState() == 0 || GameImagePanel.getState() == 3)){
 			new ShopInterface();
 		}
 		else if(type.equals("fladnag")){
 			if(DestinysWild.getPlayer().tryMakeKey()){
 				DestinysWild.startTalking("You shall not pass!!! (until you have all 4 key pieces)");
-				
+
 			}
 			else{
 				DestinysWild.startTalking("I have used my wizardry to craft this key! Here you go!");
@@ -184,7 +184,7 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public int getId() {
 		return id;
 	}
-	
+
 	/**
 	 * @return the direction of the npc
 	 */
@@ -192,7 +192,7 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 	public int getDir() {
 		return -1;
 	}
-	
+
 	/**
 	 * @return the animationState of the npc
 	 */

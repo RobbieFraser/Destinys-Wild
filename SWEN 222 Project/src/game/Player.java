@@ -147,7 +147,7 @@ public class Player implements Serializable {
 		Tile west = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol-1));
 
 		Object occupant;
-		
+
 		//Special case for locked gate at home
 		if(currentRoom.getId() == 0 && (currentTile.getRoomCoords().equals(new Point(0, 4)) || currentTile.getRoomCoords().equals(new Point(0, 5)))){
 			if(hasKey()){
@@ -186,7 +186,7 @@ public class Player implements Serializable {
 		}
 		return occupants;
 	}
-	
+
 	public boolean hasKey(){
 		for(Item item : inventory){
 			if(item instanceof Key && item.getId() == 5){
@@ -435,6 +435,10 @@ public class Player implements Serializable {
 			addCurrentRoom();
 		}
 
+		if(currentRoom.hasNoOtherPlayers(getName())){
+			currentRoom.resetNpcs();
+		}
+
 		int prevX = previousTile.getRoomCoords().x;
 		int prevY = previousTile.getRoomCoords().y;
 
@@ -497,7 +501,7 @@ public class Player implements Serializable {
 			return false;
 		}
 	}
-	
+
 	public boolean tryMakeKey(){
 		if(numKeyItems() != 4){
 			return false;
@@ -721,7 +725,7 @@ public class Player implements Serializable {
 	public void setWest(boolean west) {
 		this.west = west;
 	}
-	
+
 	public int getNumKeyPieces() {
 		return numKeyPieces;
 	}
