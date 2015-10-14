@@ -25,6 +25,11 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+/**
+ * XMLParser deals with all file interactions like loading board, saving board, loading player and saving player
+ * @author Rob
+ *
+ */
 public class XMLParser {
 
 	private static String LOCAL_SAVESTATE = "data/savestate.xml"; //The file path at which the changed game board will be saved
@@ -88,6 +93,11 @@ public class XMLParser {
 
 	}
 
+	/**
+	 * Loads in all the obstacles in the given room
+	 * @param room XML element that contains all the obstacle info for this room
+	 * @param currentRoom in use
+	 */
 	private static void initialiseObstacles(Element room, Room currentRoom) {
 		if (room.getChild("Obstacles") == null) {
 			return;
@@ -122,6 +132,11 @@ public class XMLParser {
 		}
 	}
 
+	/**
+	 * Loads in all the NPC's in the given room
+	 * @param room XML element that contains all the NPC info for this room
+	 * @param currentRoom in use
+	 */
 	private static void initialiseNPCS(Element room, Room currentRoom) {
 		if (room.getChild("Npcs") == null) {
 			return;
@@ -136,13 +151,7 @@ public class XMLParser {
 
 			int npcRow = Integer.valueOf(npc.getChildText("Row"));
 			int npcCol = Integer.valueOf(npc.getChildText("Col"));
-			int id = 0;
-			try{
-				id = Integer.valueOf(npc.getChildText("Id"));
-			}
-			catch(Exception e){
-				System.out.println("Didn't load NPC id because they're not implemented in xml file yet");
-			}
+			int id = Integer.valueOf(npc.getChildText("Id"));
 			int damage = Integer.valueOf(npc.getChildText("Damage"));
 			int speed = Integer.valueOf(npc.getChildText("Speed")); //------
 
@@ -169,6 +178,12 @@ public class XMLParser {
 		}
 	}
 
+	
+	/**
+	 * gathers on board items to be initialised and sends them to initialiseItems
+	 * @param rootNode the XML element that contains the list of on board items
+	 * @param board the board
+	 */
 	private static void initialiseOnBoardItems(Element room, Room currentRoom, Board board) {
 		if (room.getChild("Items") == null) {
 			return;
@@ -180,6 +195,11 @@ public class XMLParser {
 
 	}
 
+	/**
+	 * gathers off board items to be initialised and sends them to initialiseItems
+	 * @param rootNode the XML element that contains the list of off board items
+	 * @param board the board
+	 */
 	public static void initialiseOffBoardItems(Element rootNode, Board board){
 		if(rootNode.getChild("Offitems") == null){
 			System.out.println("No offboard items found");
@@ -194,6 +214,12 @@ public class XMLParser {
 
 	}
 
+	/**
+	 * Loads in all the Items in the given room
+	 * @param itemList items to be initialised
+	 * @param room XML element that contains all the Items info for this room
+	 * @param currentRoom in use
+	 */
 	public static void initialiseItems(List<Element> itemList, Room currentRoom, Board board){
 		for (Element item : itemList){ // Initialising Items
 			String itemType = item.getChildText("Itemtype");
@@ -237,6 +263,7 @@ public class XMLParser {
 
 	/**
 	 * Loads save states for the current game
+	 * @param playerFile to be loaded. Null if new game
 	 */
 	public static void loadGame(File playerFile){
 		if(playerFile == null){
@@ -249,6 +276,10 @@ public class XMLParser {
 		}
 	}
 
+	/**
+	 * Loads a player from their xml file
+	 * @param playerFile to be loaded
+	 */
 	public static void loadPlayer(File playerFile){
 		try{
 			SAXBuilder builder = new SAXBuilder();
@@ -324,6 +355,11 @@ public class XMLParser {
 		saveBoard(SAVE_FILE, board);
 	}
 
+	/**
+	 * Saves the board to savestate.xml save file.
+	 * @param filename name of the file to be saved
+	 * @param board game board
+	 */
 	public static void saveBoard(String filename, Board board){
 		try{
 			Element boardTag = new Element("Board"); //Root element name
@@ -389,6 +425,11 @@ public class XMLParser {
 		}
 	}
 
+	/**
+	 * creates a list of the obstacle elements to be saved to the file for the given room
+	 * @param current room that's being saved
+	 * @return the List of elements to be saved
+	 */
 	public static List<Element> saveObstacles(Room current){
 		List<Element> obstacleList = new ArrayList<>();
 		for(int i=0; i<current.getObstacles().length; i++){
@@ -407,6 +448,11 @@ public class XMLParser {
 		return obstacleList;
 	}
 
+	/**
+	 * creates a list of the NPC elements to be saved to the file for the given room
+	 * @param current room that's being saved
+	 * @return the List of elements to be saved
+	 */
 	public static List<Element> saveNpcs(Room current){
 
 		List<Element> npcList = new ArrayList<>();
@@ -427,6 +473,11 @@ public class XMLParser {
 		return npcList;
 	}
 
+	/**
+	 * creates a list of the Item elements to be saved to the file for the given room
+	 * @param current room that's being saved
+	 * @return the List of elements to be saved
+	 */
 	public static List<Element> saveItems(Room current){
 
 		List<Element> itemList = new ArrayList<>();
@@ -450,6 +501,9 @@ public class XMLParser {
 		return itemList;
 	}
 
+	/**
+	 * Saves the current player to an xml file that can then be loaded in the future
+	 */
 	public static void savePlayer(){
 		Player player = DestinysWild.getPlayer();
 
