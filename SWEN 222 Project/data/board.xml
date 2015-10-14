@@ -1145,9 +1145,27 @@
     </Obstacles>
     <Npcs>
       <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Id>59</Id>
+        <Row>4</Row>
+        <Col>4</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Id>69</Id>
+        <Row>4</Row>
+        <Col>5</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+      <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
-        <Id>0</Id>
+        <Id>79</Id>
         <Row>9</Row>
         <Col>9</Col>
         <Damage>15</Damage>
@@ -1156,29 +1174,11 @@
       <Npc>
         <Npctype>enemywalker</Npctype>
         <Type>bats</Type>
-        <Id>0</Id>
+        <Id>89</Id>
         <Row>9</Row>
         <Col>0</Col>
         <Damage>15</Damage>
         <Speed>1</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemystill</Npctype>
-        <Type>spike</Type>
-        <Id>0</Id>
-        <Row>4</Row>
-        <Col>5</Col>
-        <Damage>10</Damage>
-        <Speed>0</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemystill</Npctype>
-        <Type>spike</Type>
-        <Id>0</Id>
-        <Row>4</Row>
-        <Col>4</Col>
-        <Damage>10</Damage>
-        <Speed>0</Speed>
       </Npc>
     </Npcs>
     <Items>
@@ -2491,90 +2491,45 @@
     </Obstacles>
     <Npcs>
       <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>bats</Type>
-        <Id>0</Id>
-        <Row>0</Row>
-        <Col>0</Col>
-        <Damage>15</Damage>
-        <Speed>1</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>bats</Type>
-        <Id>0</Id>
-        <Row>0</Row>
-        <Col>9</Col>
-        <Damage>15</Damage>
-        <Speed>1</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>bats</Type>
-        <Id>0</Id>
-        <Row>9</Row>
-        <Col>9</Col>
-        <Damage>15</Damage>
-        <Speed>1</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemywalker</Npctype>
-        <Type>bats</Type>
-        <Id>0</Id>
-        <Row>9</Row>
-        <Col>0</Col>
-        <Damage>15</Damage>
-        <Speed>1</Speed>
-      </Npc>
-      <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>512</Id>
         <Row>3</Row>
-        <Col>6</Col>
+        <Col>3</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>612</Id>
         <Row>4</Row>
-        <Col>6</Col>
+        <Col>3</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>712</Id>
         <Row>5</Row>
-        <Col>6</Col>
+        <Col>3</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>812</Id>
         <Row>6</Row>
-        <Col>6</Col>
+        <Col>3</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
-        <Row>6</Row>
-        <Col>5</Col>
-        <Damage>10</Damage>
-        <Speed>0</Speed>
-      </Npc>
-      <Npc>
-        <Npctype>enemystill</Npctype>
-        <Type>spike</Type>
-        <Id>0</Id>
+        <Id>912</Id>
         <Row>6</Row>
         <Col>4</Col>
         <Damage>10</Damage>
@@ -2583,38 +2538,83 @@
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>1012</Id>
         <Row>6</Row>
-        <Col>3</Col>
+        <Col>5</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>1112</Id>
+        <Row>6</Row>
+        <Col>6</Col>
+        <Damage>10</Damage>
+        <Speed>0</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemystill</Npctype>
+        <Type>spike</Type>
+        <Id>1212</Id>
         <Row>5</Row>
-        <Col>3</Col>
+        <Col>6</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>1312</Id>
         <Row>4</Row>
-        <Col>3</Col>
+        <Col>6</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
       </Npc>
       <Npc>
         <Npctype>enemystill</Npctype>
         <Type>spike</Type>
-        <Id>0</Id>
+        <Id>1412</Id>
         <Row>3</Row>
-        <Col>3</Col>
+        <Col>6</Col>
         <Damage>10</Damage>
         <Speed>0</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemywalker</Npctype>
+        <Type>bats</Type>
+        <Id>1512</Id>
+        <Row>0</Row>
+        <Col>0</Col>
+        <Damage>15</Damage>
+        <Speed>1</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemywalker</Npctype>
+        <Type>bats</Type>
+        <Id>1612</Id>
+        <Row>0</Row>
+        <Col>9</Col>
+        <Damage>15</Damage>
+        <Speed>1</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemywalker</Npctype>
+        <Type>bats</Type>
+        <Id>1712</Id>
+        <Row>9</Row>
+        <Col>9</Col>
+        <Damage>15</Damage>
+        <Speed>1</Speed>
+      </Npc>
+      <Npc>
+        <Npctype>enemywalker</Npctype>
+        <Type>bats</Type>
+        <Id>1812</Id>
+        <Row>9</Row>
+        <Col>0</Col>
+        <Damage>15</Damage>
+        <Speed>1</Speed>
       </Npc>
     </Npcs>
     <Items>
