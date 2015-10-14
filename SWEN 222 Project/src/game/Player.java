@@ -514,7 +514,10 @@ public class Player implements Serializable {
 			keyCount += player.numKeyItems();
 		}
 		if(keyCount == 4){
-			return addInventoryItem(new Key(5, null));
+			for(int i = 5; i<5 + (5-numKeyPieces); i++){
+				addInventoryItem(new Key(i, null));
+			}
+			return true;
 		}
 		else{
 			return false;
