@@ -160,8 +160,11 @@ public class FriendlyStill implements NPC, Interactable,Serializable{
 			if(DestinysWild.getPlayer().tryMakeKey()){
 				DestinysWild.startTalking("I have used my powers to craft this key! Here you go!");
 			}
+			else if(DestinysWild.getPlayer().getNumKeyPieces() > 4){
+				DestinysWild.startTalking("You may now pass :)");
+			}
 			else{
-				DestinysWild.startTalking("You shall not pass!!! (until you have all 4 key pieces)");
+				DestinysWild.startTalking("You shall not pass! (until you have all 4 key pieces)");
 			}
 		}
 		else if(type.equals("shopkeeper")){

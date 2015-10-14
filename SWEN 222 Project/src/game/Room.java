@@ -12,6 +12,11 @@ import java.util.List;
 
 import clientServer.packets.RemoveItemPacket;
 
+/**
+ * A Room is represented by a 10x10 array of Tiles. It contains collections of the Obstacles, NPC's and Items in it.
+ * @author fraserrobb
+ *
+ */
 public class Room implements Serializable{
 
 	private int ROOM_SIZE = 10; //the length of a room, size x size
@@ -42,6 +47,11 @@ public class Room implements Serializable{
 		this.boardPos = boardPos;
 	}
 
+	/**
+	 * Gets an item in this room by its id
+	 * @param id of item reqested
+	 * @return Item requested
+	 */
 	public Item getItemFromId(int id){
 		for (int row = 0; row < getItems().length; ++row) {
 			for (int col = 0; col < getItems()[0].length; ++col) {
@@ -54,6 +64,11 @@ public class Room implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets an NPC in this room by its id
+	 * @param id of NPC reqested
+	 * @return NPC requested
+	 */
 	public NPC getNpcFromId(int id){
 		for(NPC npc : npcs){
 			if(npc.getId() == id){
@@ -77,6 +92,9 @@ public class Room implements Serializable{
 		return true;
 	}
 
+	/**
+	 * Resets the positions of each NPC in this room. Intended use is upon entering a room.
+	 */
 	public void resetNpcs(){
 		for(NPC npc : npcs){
 			if(npc instanceof EnemyWalker){
@@ -112,6 +130,9 @@ public class Room implements Serializable{
 		return true;
 	}
 
+	/**
+	 * Empty constructor for initialisation from file
+	 */
 	public Room(){
 
 	}
@@ -188,6 +209,11 @@ public class Room implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets a Tile in this room by its coordinates
+	 * @param coordinates of Tile reqested
+	 * @return Tile requested
+	 */
 	public Tile getTileFromRoomCoords(Point tileCoords){
 		for(int row=0; row<tiles.length; row++){
 			for(int col=0; col<tiles[0].length; col++){
@@ -199,30 +225,58 @@ public class Room implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Adds an obstacle at a given point
+	 * @param obs to be added
+	 * @param x row at which the obstacle is to be added
+	 * @param y col of which the obstacle is to be added
+	 */
 	public void addObstacle(Obstacle obs, int x, int y){
 		obstacles[x][y] = obs;
 	}
 
+	/**
+	 * Adds an npc to the arrayList of Npc's in this room
+	 * @param npc to be added
+	 */
 	public void addNpc(NPC npc){
 		npcs.add(npc);
 	}
 
+	/**
+	 * Adds an Item at a given point
+	 * @param item to be added
+	 * @param x row at which the Item is to be added
+	 * @param y col of which the Item is to be added
+	 */
 	public void addItem(Item item, int x, int y){
 		items[x][y] = item;
 	}
 
+	/**
+	 * Removes an obstacle from this room
+	 * @param obs to be removed
+	 */
 	public void removeObstacle(Obstacle obs){
 		obstacles[obs.getCoords().x][obs.getCoords().y] = null;
 		Tile tile = getTileFromRoomCoords(new Point(obs.getCoords().x, obs.getCoords().y));
 		tile.setOccupied(false);
 	}
 
+	/**
+	 * Removes an NPC from this room
+	 * @param npc to be removed
+	 */
 	public void removeNpcs(NPC npc){
 		npcs.remove(npc);
 		Tile tile = getTileFromRoomCoords(new Point(npc.getRoomCoords().x, npc.getRoomCoords().y));
 		tile.setOccupied(false);
 	}
 
+	/**
+	 * Removes an item from this room
+	 * @param item to be removed
+	 */
 	public void removeItems(Item item){
 		RemoveItemPacket removePacket = new RemoveItemPacket(this.getId(),item.getId());
 		removePacket.writeData(DestinysWild.getMultiplayer().getClient());
@@ -231,18 +285,34 @@ public class Room implements Serializable{
 		tile.setOccupied(false);
 	}
 
+	/**
+	 * gets the array of Items in this room
+	 * @return Item[][] array
+	 */
 	public Item[][] getItems(){
 		return items;
 	}
 
+	/**
+	 * gets the position of this room on the board
+	 * @return Point coords of room on board
+	 */
 	public Point getBoardPos() {
 		return boardPos;
 	}
 
+	/**
+	 * sets the board position of this room
+	 * @param boardPos of this room
+	 */
 	public void setBoardPos(Point boardPos) {
 		this.boardPos.setLocation(boardPos);
 	}
 
+	/**
+	 * gets the array of Tiles in this room
+	 * @return Tile[][] array
+	 */
 	public Tile[][] getTiles() {
 		return tiles;
 	}

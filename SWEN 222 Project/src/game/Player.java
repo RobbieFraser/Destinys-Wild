@@ -309,12 +309,12 @@ public class Player implements Serializable {
 	public void resetInventory(){
 		List<Item> toRemove = new ArrayList<>();
 		for(Item item : inventory){
-			if(item instanceof Key && item.getId() == 5){
-				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
-				((Key)item).setCoords(new Point(prevTile.getRoomCoords()));
-				toRemove.add(item);
-			}
-			else if(item instanceof Health){
+//			if(item instanceof Key && item.getId() == 5){
+//				getCurrentRoom().addItem(item, prevTile.getRoomCoords().x, prevTile.getRoomCoords().y);
+//				((Key)item).setCoords(new Point(prevTile.getRoomCoords()));
+//				toRemove.add(item);
+//			}
+			if(item instanceof Health){
 				toRemove.add(item);
 			}
 		}
@@ -490,6 +490,10 @@ public class Player implements Serializable {
 				hasTorch = true;
 				TorchPacket torchPacket = new TorchPacket(this.getName(),true);
 				torchPacket.writeData(DestinysWild.getMultiplayer().getClient());
+			}
+			if(item instanceof Key){
+				numKeyPieces++;
+				System.out.println(numKeyPieces);
 			}
 			return inventory.add(item);
 		}
