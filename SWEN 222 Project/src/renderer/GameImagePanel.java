@@ -459,13 +459,16 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		newY = newY + gY + obY + (obH*y);
 
 		BufferedImage object;
-		try {
-			object = ImageIO.read(new File("data/images/" + file + ".png"));
-			g.drawImage(object, newX, newY, null);
-		} catch (IOException e) {
-			//e.printStackTrace();
-			g.drawImage(defaultCube, newX, newY, null);
+
+		if(file.contains("water")){
+			BufferedImage sheet = loadImage("waterSpriteSheet.png");
+			object = sheet.getSubimage(((waterstate)%4)*70, ((waterstate)/4)*34, 70, 34);
+			newY+=40;
 		}
+		else{
+			object = loadImage(file + ".png");
+		}
+		g.drawImage(object, newX, newY, null);
 	}
 
 	public void drawEastRoom(Graphics g){
@@ -546,6 +549,47 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	public void drawGround(Graphics g){
 		BufferedImage ground = loadImage("ground.png");
 		g.drawImage(ground, gX, gY, null);
+		BufferedImage stone = loadImage("stoneblock.png");
+		if(viewDir.equals("north")){
+			if(curRoom.getWest() != -1){
+				g.drawImage(stone, 302, 404, null);
+				g.drawImage(stone, 302+obW, 404+obH, null);
+			}
+			if(curRoom.getSouth() != -1){
+				g.drawImage(stone, 710, 404, null);
+				g.drawImage(stone, 710-obW, 404+obH, null);
+			}
+		}
+		else if(viewDir.equals("east")){
+			if(curRoom.getSouth() != -1){
+				g.drawImage(stone, 302, 404, null);
+				g.drawImage(stone, 302+obW, 404+obH, null);
+			}
+			if(curRoom.getEast() != -1){
+				g.drawImage(stone, 710, 404, null);
+				g.drawImage(stone, 710-obW, 404+obH, null);
+			}
+		}
+		else if(viewDir.equals("south")){
+			if(curRoom.getEast() != -1){
+				g.drawImage(stone, 302, 404, null);
+				g.drawImage(stone, 302+obW, 404+obH, null);
+			}
+			if(curRoom.getNorth() != -1){
+				g.drawImage(stone, 710, 404, null);
+				g.drawImage(stone, 710-obW, 404+obH, null);
+			}
+		}
+		else if(viewDir.equals("west")){
+			if(curRoom.getNorth() != -1){
+				g.drawImage(stone, 302, 404, null);
+				g.drawImage(stone, 302+obW, 404+obH, null);
+			}
+			if(curRoom.getWest() != -1){
+				g.drawImage(stone, 710, 404, null);
+				g.drawImage(stone, 710-obW, 404+obH, null);
+			}
+		}
 	}
 
 	/*
