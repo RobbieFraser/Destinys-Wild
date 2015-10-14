@@ -1,13 +1,13 @@
 package game.npcs;
 
-import game.DestinysWild;
-import game.Interactable;
-import game.Room;
-import game.Tile;
-
 import java.awt.Point;
 import java.io.Serializable;
 
+import game.DestinysWild;
+import game.Interactable;
+import game.Player;
+import game.Room;
+import game.Tile;
 import renderer.GameImagePanel;
 import view.ShopInterface;
 

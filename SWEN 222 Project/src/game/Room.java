@@ -14,7 +14,7 @@ import clientServer.packets.RemoveItemPacket;
 
 /**
  * A Room is represented by a 10x10 array of Tiles. It contains collections of the Obstacles, NPC's and Items in it.
- * @author fraserrobb
+ * @author Rob
  *
  */
 public class Room implements Serializable{
