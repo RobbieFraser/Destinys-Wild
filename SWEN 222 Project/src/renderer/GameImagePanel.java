@@ -77,7 +77,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private String viewDir = "north";
 
 	private boolean hurt = false;
-	
+
 	private boolean north = false;
 	private boolean east = false;
 	private boolean south = false;
@@ -147,9 +147,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
 		super.paintComponent(g);
-		
+
 		updatePlayerDirs();
-		
+
 		//If the player is hurt, increase the hurt int every time this -
 		//method is called until they are no longer invincible
 		if (player.isInvincible()){
@@ -170,7 +170,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawText(g);
 		drawScore(g);
 	}
-	
+
 	public void updatePlayerDirs(){
 		if(viewDir.equals("north")){
 			north = player.isNorth();
@@ -197,7 +197,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			west = player.isNorth();
 		}
 	}
-	
+
 	public void drawText(Graphics g){
 		if(DestinysWild.isTalking()){
 			g.setColor(new Color(150, 150, 150, 150));
@@ -299,7 +299,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int[] playerCoords = calculatePlayerCoords(player);
 		int xCoord = playerCoords[0] + 20;
 		int yCoord = playerCoords[1] + 80;
-		
+
 		int radius = 50;
 		//check if the players inventory contains the torch
 		if (player.getHasTorch()) {
@@ -347,7 +347,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			if (blue >= 255) {
 				blue = current.getBlue();
 			}
-			
+
 			int alpha = (int) (current.getAlpha()*1.00000001);
 			if (alpha >= 255) {
 				alpha = current.getAlpha();
@@ -665,7 +665,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
+
 	public BufferedImage loadEnemyImage(String type, int dir, int state){
 		BufferedImage sheet = loadImage(type + "SpriteSheet.png");
 		BufferedImage enemyImage;
@@ -698,7 +698,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int newX = (int)npc.getRealCoords().getX() - (obW);
 		int newY = (int)npc.getRealCoords().getY() - (obH*2)-22;
 		Point oldPoint = npc.getCurrentTile().getRoomCoords();
-		
+
 		if(viewDir.equals("east")){
 			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
 			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
@@ -717,7 +717,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			newX = (int)newTile.getRealCoords().getX() - obW - (-yDif*2);
 			newY = (int)newTile.getRealCoords().getY() - ((obH*2)-22) - (xDif/2)-(obH*3)+4;
 		}
-		
+
 		g.drawImage(enemyIMG, newX, newY, null);
 		if(npc instanceof EnemyWalker){
 			drawEnemyHealth(g, newX, newY, npc);
@@ -729,7 +729,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		int[] playerCoords = calculatePlayerCoords(this.player);
 		int newX = playerCoords[0];
 		int newY = playerCoords[1];
-		
+
 		updatePlayerImage();
 		g.drawImage(playerIMG, newX, newY, null);
 		int len = (player.getName().length()*8)/2;
@@ -737,14 +737,14 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.drawString(player.getName(), (newX-len)+25, newY - 20);
 		drawHealth(g, newX, newY, player);
 	}
-	
+
 	private int[] calculatePlayerCoords(Player player) {
 		int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
 		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
 		Point oldPoint = player.getCurrentTile().getRoomCoords();
-		
+
 		//if the view direction is north, we don't need to change anything
 		if(viewDir.equals("east")){
 			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
@@ -786,7 +786,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.setColor(Color.green);
 		g.fillRect(x, y-10, p.getHealth()/2, 5);
 	}
-	
+
 	public void drawEnemyHealth(Graphics g, int x, int y, NPC npc){
 		g.setColor(Color.black);
 		g.fillRect(x+10, y-10, 50, 5);
@@ -857,13 +857,20 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public void drawCompass(Graphics g){
-		BufferedImage compass;
-		try {
-			compass = ImageIO.read(new File("data/images/compassNorth.png"));
-			g.drawImage(compass, cX, cY, null);
-		} catch (IOException e) {
-			e.printStackTrace();
+		g.setColor(new Color(150, 150, 150, 150));
+		g.fillRect(cX-10, cY-10, 96, 70);
+		BufferedImage sheet = loadImage("compassSpriteSheet.png");
+		BufferedImage compass = sheet.getSubimage(0, 0, 76, 50);
+		if(viewDir.equals("east")){
+			compass = sheet.getSubimage(76, 0, 76, 50);
 		}
+		else if(viewDir.equals("south")){
+			compass = sheet.getSubimage(152, 0, 76, 50);
+		}
+		else if(viewDir.equals("west")){
+			compass = sheet.getSubimage(228, 0, 76, 50);
+		}
+		g.drawImage(compass, cX, cY, null);
 	}
 
 	public void drawCharacter(Graphics g, String file, int x, int y){
@@ -1101,7 +1108,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	public Board getBoard(){
 		return board;
 	}
-	
+
 	public static int getState(){
 		return state;
 	}
