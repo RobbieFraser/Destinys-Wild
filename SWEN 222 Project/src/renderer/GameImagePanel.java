@@ -24,7 +24,7 @@ import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 import game.obstacles.Breakable;
 
-public class GameImagePanel extends JPanel implements MouseListener {
+public class GameImagePanel extends JPanel {
 
 	private Board board; //The main Board object given from the main Game class
 	private Player player; //The player that the user controls
@@ -40,8 +40,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
-	private BufferedImage playerIMG = loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
-	private BufferedImage playerOtherIMG = loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
+	private BufferedImage playerIMG = 
+			loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
+	private BufferedImage playerOtherIMG = 
+			loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private int time = 0;
 	private static int state = DAY_TIME;
@@ -83,52 +85,20 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private boolean south = false;
 	private boolean west = false;
 
-	private int waterstate = 0;
-	private int firestate = 0;
+	private int waterState = 0;
+	private int fireState = 0;
 
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
-
-//	public GameImagePanel(Board board){
-//		red = 120;
-//		green = 201;
-//		blue = 255;
-//		this.setBackground(new Color(red, green, blue));
-//		this.board = board;
-//		curRoom = board.getBoard()[(int)curRoomCoords.getX()][(int)curRoomCoords.getY()];
-//		player = new Player("Matt", new Point(546, 287), curRoom);
-//		setDefault();
-//		addMouseListener(this);
-//		//waterTest();
-//	}
 
 	public GameImagePanel(Board board, Player player){
 		this.board = board;
 		this.player = player;
 		curRoom = player.getCurrentRoom();
 		setDefault();
-		addMouseListener(this);
 		updateBackground();
-		//waterTest();
 	}
 
-//	public void waterTest() {
-//		while (true) {
-//			for (int i = 0; i < 4; i++) {
-//				for (int j = 0; j < 4; j++) {
-//					waterSprite = water.getSubimage(j*70, i*34, 70, 34);
-//					this.repaint();
-//					try {
-//						Thread.sleep(100);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}
-//	}
-
-	/*
+	/**
 	 * Sets the default image
 	 *
 	 * -The default image is used when a file cannot be found in the data folder
@@ -177,37 +147,42 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawScore(g);
 	}
 
-	public void updateStates(){
-		waterstate++;
-		if(waterstate == 16){
-			waterstate = 0;
-		}
-		firestate++;
-		if(firestate == 8){
-			firestate = 0;
-		}
+	/**
+	 * The water should cycle through animation
+	 * states, and this method should cycle the
+	 * waterState counter.
+	 */
+	public void updateStates() {
+		waterState = (waterState + 1) % 16;
+		fireState = (fireState + 1) % 8;
 	}
 
+	/**
+	 * This method should be called to update
+	 * the north, east, south and west fields. 
+	 * Which field corresponds to which will depend
+	 * on the current orientation of the board.
+	 */
 	public void updatePlayerDirs(){
-		if(viewDir.equals("north")){
+		if (viewDir.equals("north")){
 			north = player.isNorth();
 			east = player.isEast();
 			south = player.isSouth();
 			west = player.isWest();
 		}
-		else if(viewDir.equals("east")){
+		else if (viewDir.equals("east")){
 			north = player.isWest();
 			east = player.isNorth();
 			south = player.isEast();
 			west = player.isSouth();
 		}
-		else if(viewDir.equals("south")){
+		else if (viewDir.equals("south")){
 			north = player.isSouth();
 			east = player.isWest();
 			south = player.isNorth();
 			west = player.isEast();
 		}
-		else if(viewDir.equals("west")){
+		else if (viewDir.equals("west")){
 			north = player.isEast();
 			east = player.isSouth();
 			south = player.isWest();
@@ -215,8 +190,15 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		}
 	}
 
-	public void drawText(Graphics g){
-		if(DestinysWild.isTalking()){
+	/**
+	 * This method should be called when the game is displaying
+	 * a message to the user. The text should be retrieved from
+	 * the game, and drawn on the top part of the screen.
+	 * @param g
+	 */
+	public void drawText(Graphics g) {
+		//only draw text is there is a message
+		if (DestinysWild.isTalking()){
 			g.setColor(new Color(150, 150, 150, 150));
 			g.fillRect(300, 100, 500, 50);
 			String text = DestinysWild.getText();
@@ -242,6 +224,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			if (time == 40) {
 				state = DUSK;
 			} else if (time == 63) {
+				//come back down now
 				timeUp = false;
 				state = NIGHT_TIME;
 			}
@@ -263,7 +246,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * not DAY_TIME. This method should iterate through every
 	 * 10x10 area of pixels on the game panel, and draw variable
 	 * levels of darkness depending on the time of day. A circle
-	 * of light should be left around the player.
+	 * of light should be left around all players.
 	 * @param g graphics that are doing the drawing
 	 */
 	private void drawDarkness(Graphics g) {
@@ -287,16 +270,15 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					}
 				}
 				if (drawDarkness) {
+					//should determine what colour darkness to draw
 					if (state == NIGHT_TIME) {
 						g.setColor(new Color(0, 0, 0, 230));
 					} else if (state == DUSK) {
-						if ((time-39)*9 > 255 || (time-39)*9 < 0) {
-							throw new Error((time-40)*9 +" uh oh");
-						}
 						g.setColor(new Color(0, 0, 0, (time - 39) * 9));
 					} else if (state == DAWN) {
 						g.setColor(new Color(0, 0, 0, time*12));
 					}
+					//draw the darkness in
 					g.fillRect(i*10, j*10, 10, 10);
 				}
 			}
@@ -348,9 +330,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			backgroundColour = new Color((int) (current.getRed()*0.9999999999),
 					(int) (current.getGreen()*0.9999999999),  (int) (current.getBlue()*0.9999999999));
 		} else if (state == DAWN) {
-			//go up to light blue
-			//we need to make sure we don't exceed the light blue colour for day time
-
+			//the background colour is coming from black to light blue
+			//we need to ensure that none of the three colour values exceed
+			//their values in light blue, otherwise we will end up with white
+			//instead of light blue
 			int red = (int) ((current.getRed())*1.001);
 			if (red > 120) {
 				red = current.getRed();
@@ -364,7 +347,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			if (blue >= 255) {
 				blue = current.getBlue();
 			}
-
+			
+			//transparency should slowly decrease
 			int alpha = (int) (current.getAlpha()*1.00000001);
 			if (alpha >= 255) {
 				alpha = current.getAlpha();
@@ -375,6 +359,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			//night time
 			backgroundColour = new Color(0, 0, 0, 230);
 		}
+		//update the background colour
 		this.setBackground(backgroundColour);
 	}
 
@@ -467,7 +452,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 		if(file.contains("water")){
 			BufferedImage sheet = loadImage("waterSpriteSheet.png");
-			object = sheet.getSubimage(((waterstate)%4)*70, ((waterstate)/4)*34, 70, 34);
+			object = sheet.getSubimage(((waterState)%4)*70, ((waterState)/4)*34, 70, 34);
 			newY+=40;
 		}
 		else{
@@ -619,11 +604,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
 					}
-					for(NPC npc : curRoom.getNpcs()){
-						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawEnemy(g, npc);
-						}
-					}
+					
 					for(Player p : board.getPlayers()){
 						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
 							try{
@@ -636,11 +617,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 							}
 						}
 					}
-					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawPlayer(g);
-						}
-					}
+					drawPlayersAndNPCs(g, i, j);
 				}
 			}
 		}
@@ -658,16 +635,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-i, j);
 					}
-					for(NPC npc : curRoom.getNpcs()){
-						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawEnemy(g, npc);
-						}
-					}
-					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawPlayer(g);
-						}
-					}
+					drawPlayersAndNPCs(g, i, j);
 				}
 			}
 		}
@@ -685,16 +653,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
 					}
-					for(NPC npc : curRoom.getNpcs()){
-						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawEnemy(g, npc);
-						}
-					}
-					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawPlayer(g);
-						}
-					}
+					drawPlayersAndNPCs(g, i, j);
 				}
 			}
 		}
@@ -712,17 +671,28 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), i, 9-j);
 					}
-					for(NPC npc : curRoom.getNpcs()){
-						if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawEnemy(g, npc);
-						}
-					}
-					if (player != null && !hurt){
-						if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-							drawPlayer(g);
-						}
-					}
+					drawPlayersAndNPCs(g, i, j);
 				}
+			}
+		}
+	}
+	
+	/**
+	 * This method should draw the current room's NPC's
+	 * and players onto the board at the given coordinates.
+	 * @param g
+	 * @param i
+	 * @param j
+	 */
+	private void drawPlayersAndNPCs(Graphics g, int i, int j) {
+		for(NPC npc : curRoom.getNpcs()){
+			if(npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+				drawEnemy(g, npc);
+			}
+		}
+		if (player != null && !hurt){
+			if (player.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+				drawPlayer(g);
 			}
 		}
 	}
@@ -837,7 +807,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		g.drawImage(otherPlayerImage, newX, newY, null);
 		int len = (p.getName().length()*4);
 		g.drawString(p.getName(), (newX-len)+13, newY - 20);
-		g.drawString(String.valueOf(p.getWalkState()), (newX-len)+13, newY - 30);
 		drawHealth(g, newX, newY, p);
 	}
 
@@ -972,7 +941,7 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 		if(file.contains("water")){
 			BufferedImage sheet = loadImage("waterSpriteSheet.png");
-			object = sheet.getSubimage(((waterstate)%4)*70, ((waterstate)/4)*34, 70, 34);
+			object = sheet.getSubimage(((waterState)%4)*70, ((waterState)/4)*34, 70, 34);
 			newY+=40;
 		}
 		else{
@@ -993,13 +962,12 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		else if(file.contains("steelbeams")){
 			subY = 2;
 		}
-		else if(file.contains("dirt")){
+		else if (file.contains("dirt")) {
 			subY = 3;
-		}
-		else if(file.contains("fire")){
+		} 
+		else if (file.contains("fire")) {
 			subY = 4;
-		}
-		else{
+		} else {
 			subY = 0;
 		}
 
@@ -1015,9 +983,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
-
-		if(subY == 4){
-			subY = subY+firestate;
+		
+		if (subY == 4) {
+			subY = subY + fireState;
 		}
 
 		g.drawImage(breakablesIMG.getSubimage(subX*70, subY*72, 70, 72), newX, newY, null);
@@ -1197,39 +1165,5 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		return this.time;
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		System.out.println("\nx: " + e.getX() + "\ny: " + e.getY());
-		if (tile.isOn(e.getX(), e.getY())){
-			System.out.println("Inside");
-		}
-		else{
-			System.out.println("Outside");
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
+
