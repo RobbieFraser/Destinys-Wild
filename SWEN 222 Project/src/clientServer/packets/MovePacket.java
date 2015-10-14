@@ -14,6 +14,7 @@ public class MovePacket extends Packet {
 	private int east;
 	private int west;
 	private int walkstate;
+	private int allowGate;
 
 	/**
 	 *Constructor for a MovePacket when it is passed a byte array. The byte array
@@ -34,6 +35,7 @@ public class MovePacket extends Packet {
 		this.south = Integer.parseInt(dataArray[7]);
 		this.west = Integer.parseInt(dataArray[8]);
 		this.walkstate = Integer.parseInt(dataArray[9]);
+		this.allowGate = Integer.parseInt(dataArray[10]);
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class MovePacket extends Packet {
 	 * @param walkstate
 	 */
 	public MovePacket(String userName, int x, int y, int roomID, int health,
-			boolean north, boolean east, boolean south, boolean west, int walkstate) {
+			boolean north, boolean east, boolean south, boolean west, int walkstate,boolean allowGate) {
 		super(02);
 		this.userName = userName;
 		this.x = x;
@@ -61,6 +63,8 @@ public class MovePacket extends Packet {
 		this.west = boolToInt(west);
 		this.east = boolToInt(east);
 		this.south = boolToInt(south);
+		this.walkstate = walkstate;
+		this.allowGate = boolToInt(allowGate);
 	}
 
 	/**
@@ -89,7 +93,11 @@ public class MovePacket extends Packet {
 		return ("02" + this.userName + "," + this.getX() + "," + this.getY()
 				+ "," + this.getRoomID() + "," + this.getHealth() + ","
 				+ this.getNorth() + "," + this.getEast() + ","
-				+ this.getSouth() + "," + this.getWest() +"," + this.getWalkstate()).getBytes();
+				+ this.getSouth() + "," + this.getWest() +"," + this.getWalkstate() + "," + this.getAllowGate()).getBytes();
+	}
+	
+	public int getAllowGate(){
+		return this.allowGate;
 	}
 
 	public int getNorth() {

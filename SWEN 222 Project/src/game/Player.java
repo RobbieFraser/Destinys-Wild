@@ -152,7 +152,9 @@ public class Player implements Serializable {
 		if(currentRoom.getId() == 0 && (currentTile.getRoomCoords().equals(new Point(0, 4)) || currentTile.getRoomCoords().equals(new Point(0, 5)))){
 			if(hasKey()){
 				DestinysWild.startTalking("You've unlocked the gate!!!");
-				allowGate = true;
+				for(Player player : DestinysWild.getBoard().getPlayers()){
+					player.setAllowGate(true);
+				}
 			}
 			else{
 				DestinysWild.startTalking("Come back when you have the complete key!");
@@ -194,6 +196,21 @@ public class Player implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * sets whether this player is allowed through the end gate or not
+	 */
+	public void setAllowGate(boolean allow){
+		allowGate = allow;
+	}
+	
+	/**
+	 * gets the state of allowGate for this player
+	 * @return boolean allowGate
+	 */
+	public boolean getAllowGate(){
+		return allowGate;
 	}
 
 	public void updatePlayer(){
@@ -518,8 +535,13 @@ public class Player implements Serializable {
 			keyCount += player.numKeyItems();
 		}
 		if(keyCount == 4){
-			for(int i = 5; i<5 + (5-numKeyPieces); i++){
-				addInventoryItem(new Key(i, null));
+			for(int i = 5; i<5 + (5-this.numKeyPieces+1); i++){
+				this.addInventoryItem(new Key(i, null));
+			}
+			for(Player player : inRoom){
+				if(player != this){
+					player.removeKeys();
+				}
 			}
 			return true;
 		}
@@ -528,6 +550,24 @@ public class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * Removes key pieces from inventory. Intended for use when another player 
+	 * creates the key using some or all of your pieces
+	 */
+	public void removeKeys(){
+		List<Item> toRemove = new ArrayList<>();
+		for(Item item : inventory){
+			if(item instanceof Key){
+				toRemove.add(item);
+			}
+		}
+		for(Item item : toRemove){
+			if(item instanceof Key){
+				removeInventoryItem(item);
+				numKeyPieces--;
+			}
+		}
+	}
 
 	/**
 	 * counts the number of health items in the player's inventory

@@ -235,12 +235,13 @@ public class GameServer extends Thread {
 				player.setCoords(playerX, playerY);
 				Room newRoom = board.getRoomFromId(packet.getRoomID());
 				player.setRoom(newRoom);
-				player.setCurrentTile(player.getCurrentRoom().calcTile(
-						player.getCoords()));
 				player.setNorth(intToBool(packet.getNorth()));
 				player.setEast(intToBool(packet.getEast()));
 				player.setWest(intToBool(packet.getWest()));
 				player.setSouth(intToBool(packet.getSouth()));
+				player.setAllowGate(intToBool(packet.getAllowGate()));
+				player.setCurrentTile(player.getCurrentRoom().calcTile(
+						player.getCoords()));
 				// player.updatePlayer();
 				packet.writeData(this);
 			}
