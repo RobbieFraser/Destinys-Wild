@@ -83,6 +83,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	private boolean south = false;
 	private boolean west = false;
 
+	private int waterstate = 0;
+
 	private TileTest tile = new TileTest(70, 34, new Point(500,200));
 
 //	public GameImagePanel(Board board){
@@ -144,6 +146,9 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	@Override
 	protected void paintComponent(Graphics g) {
+
+		updateWater();
+
 		curRoom = player.getCurrentRoom();
 		curRoomCoords = curRoom.getBoardPos();
 		super.paintComponent(g);
@@ -169,6 +174,13 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		drawCompass(g);
 		drawText(g);
 		drawScore(g);
+	}
+
+	public void updateWater(){
+		waterstate++;
+		if(waterstate == 16){
+			waterstate = 0;
+		}
 	}
 
 	public void updatePlayerDirs(){
@@ -857,8 +869,6 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	}
 
 	public void drawCompass(Graphics g){
-		g.setColor(new Color(150, 150, 150, 150));
-		g.fillRect(cX-10, cY-10, 96, 70);
 		BufferedImage sheet = loadImage("compassSpriteSheet.png");
 		BufferedImage compass = sheet.getSubimage(0, 0, 76, 50);
 		if(viewDir.equals("east")){
@@ -910,13 +920,16 @@ public class GameImagePanel extends JPanel implements MouseListener {
 		newY = newY + gY + obY + (obH*y);
 
 		BufferedImage object;
-		try {
-			object = ImageIO.read(new File("data/images/" + file + ".png"));
-			g.drawImage(object, newX, newY, null);
-		} catch (IOException e) {
-			//e.printStackTrace();
-			g.drawImage(defaultCube, newX, newY, null);
+
+		if(file.contains("water")){
+			BufferedImage sheet = loadImage("waterSpriteSheet.png");
+			object = sheet.getSubimage(((waterstate)%4)*70, ((waterstate)/4)*34, 70, 34);
+			newY+=40;
 		}
+		else{
+			object = loadImage(file + ".png");
+		}
+		g.drawImage(object, newX, newY, null);
 	}
 
 	public void drawBreakable(Graphics g, String file, int x, int y){
