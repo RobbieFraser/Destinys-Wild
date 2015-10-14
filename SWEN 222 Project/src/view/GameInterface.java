@@ -489,8 +489,9 @@ public class GameInterface{
 		boolean isSouth = game.getCurrentPlayer().isSouth();
 		boolean isWest = game.getCurrentPlayer().isWest();
 		int walkState = game.getCurrentPlayer().getWalkState();
+		boolean allowGate = game.getCurrentPlayer().getAllowGate();
 		MovePacket movePacket = new MovePacket(name, xCoord, yCoord,
-				id, health, isNorth, isEast, isSouth, isWest, walkState);
+				id, health, isNorth, isEast, isSouth, isWest, walkState,allowGate);
 		movePacket.writeData(DestinysWild.getMultiplayer().getClient());
 	}
 
