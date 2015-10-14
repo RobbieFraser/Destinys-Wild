@@ -74,7 +74,7 @@ public class Breakable implements Obstacle, Interactable,Serializable{
 			}
 		}
 		else if(player.hasTool(type.substring(0, typeLen-1)) && type.equals("steelbeams1")){
-			DestinysWild.startTalking("Hmmmm I would appear that jet fuel can't melt steel beams...");
+			DestinysWild.startTalking("It would appear that jet fuel can't melt steel beams");
 		}
 		else{
 			DestinysWild.startTalking("You don't have the correct tool for the job!");

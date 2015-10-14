@@ -2784,8 +2784,53 @@
         <Damage>0</Damage>
         <Speed>0</Speed>
       </Npc>
+      <Npc>
+        <Npctype>friendlystill</Npctype>
+        <Type>fladnag</Type>
+        <Id>120</Id>
+        <Row>8</Row>
+        <Col>6</Col>
+        <Damage>0</Damage>
+        <Speed>0</Speed>
+      </Npc>
     </Npcs>
     <Items>
+      <Item>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>4</Id>
+        <Row>1</Row>
+        <Col>7</Col>
+        <Health>0</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>3</Id>
+        <Row>2</Row>
+        <Col>7</Col>
+        <Health>0</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>2</Id>
+        <Row>3</Row>
+        <Col>7</Col>
+        <Health>0</Health>
+        <Score>0</Score>
+      </Item>
+      <Item>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>1</Id>
+        <Row>4</Row>
+        <Col>7</Col>
+        <Health>0</Health>
+        <Score>0</Score>
+      </Item>
       <Item>
         <Itemtype>score</Itemtype>
         <Type>coins1</Type>

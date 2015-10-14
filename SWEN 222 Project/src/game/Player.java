@@ -503,10 +503,22 @@ public class Player implements Serializable {
 	}
 
 	public boolean tryMakeKey(){
-		if(numKeyItems() != 4){
+		int keyCount = 0;
+		List<Player> inRoom = new ArrayList<>();
+		for(Player player : DestinysWild.getBoard().getPlayers()){
+			if(player.getCurrentRoom().equals(this.getCurrentRoom())){
+				inRoom.add(player);
+			}
+		}
+		for(Player player : inRoom){
+			keyCount += player.numKeyItems();
+		}
+		if(keyCount == 4){
+			return addInventoryItem(new Key(5, null));
+		}
+		else{
 			return false;
 		}
-		return addInventoryItem(new Key(5, null));
 	}
 
 
