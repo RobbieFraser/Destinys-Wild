@@ -129,8 +129,7 @@ public class ShopInterface {
 				indexOfTool = i;
 			}
 		}
-		int cost = 0;
-		//int cost = (indexOfTool * 50) + 50;
+		int cost = (indexOfTool * 50) + 50;
 		Tool tool = tools[indexOfTool];
 		//capitalise first letter of tool's name
 		String toolName = tool.getType().substring(0, 1).toUpperCase() + tool.getType().substring(1);
