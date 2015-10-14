@@ -599,6 +599,9 @@ public class LevelEditorPanel extends JPanel implements MouseListener,
 					}
 				}
 			}
+			for(NPC npc : curRoom.getNpcs()){
+				System.out.println(npc.getId());
+			}
 			count += curRoom.getNpcs().size();
 			switch (objectType) {
 			case "Block":

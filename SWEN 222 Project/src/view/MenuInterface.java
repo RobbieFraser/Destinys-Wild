@@ -63,7 +63,7 @@ public class MenuInterface {
 		menuPanel.setBorder(blackLine);
 
 		//New Game button
-		ImageIcon newGameImage = new ImageIcon(loadImage("newgamebutton.png"));
+		ImageIcon newGameImage = new ImageIcon(loadImage("newGame.png"));
 		JButton btnNewGame = new JButton(newGameImage);
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -75,7 +75,7 @@ public class MenuInterface {
 		menuPanel.add(btnNewGame);
 
 		//Join Game button
-		ImageIcon joinGameImage = new ImageIcon(loadImage("joingamebutton.png"));
+		ImageIcon joinGameImage = new ImageIcon(loadImage("joinGame.png"));
 		JButton btnJoinGame = new JButton(joinGameImage);
 		btnJoinGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -88,7 +88,7 @@ public class MenuInterface {
 		menuPanel.add(btnJoinGame);
 
 		//Load Game button
-		ImageIcon loadGameImage = new ImageIcon(loadImage("loadgamebutton.png"));
+		ImageIcon loadGameImage = new ImageIcon(loadImage("loadGame.png"));
 		JButton btnLoadGame = new JButton(loadGameImage);
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +101,7 @@ public class MenuInterface {
 		menuPanel.add(btnLoadGame);
 
 		//Quit Game button
-		ImageIcon quitGameImage = new ImageIcon(loadImage("quitgamebutton.png"));
+		ImageIcon quitGameImage = new ImageIcon(loadImage("quitGame.png"));
 		JButton btnQuitGame = new JButton(quitGameImage);
 		btnQuitGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

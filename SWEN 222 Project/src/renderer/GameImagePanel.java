@@ -635,6 +635,18 @@ public class GameImagePanel extends JPanel {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-i, j);
 					}
+					for(Player p : board.getPlayers()){
+						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
+							try{
+								if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
+									drawOtherPlayer(g, p);
+								}
+							}
+							catch(NullPointerException e){
+								System.out.println("Error drawing other player");
+							}
+						}
+					}
 					drawPlayersAndNPCs(g, i, j);
 				}
 			}
@@ -653,6 +665,18 @@ public class GameImagePanel extends JPanel {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), 9-j, 9-i);
 					}
+					for(Player p : board.getPlayers()){
+						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
+							try{
+								if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
+									drawOtherPlayer(g, p);
+								}
+							}
+							catch(NullPointerException e){
+								System.out.println("Error drawing other player");
+							}
+						}
+					}
 					drawPlayersAndNPCs(g, i, j);
 				}
 			}
@@ -666,6 +690,18 @@ public class GameImagePanel extends JPanel {
 						}
 						else{
 							drawObject(g, curRoom.getObstacles()[i][j].getType(), i, 9-j);
+						}
+					}
+					for(Player p : board.getPlayers()){
+						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
+							try{
+								if (p.getCurrentRoom().calcTile(p.getCoords()).getRoomCoords().equals(new Point(i, j))){
+									drawOtherPlayer(g, p);
+								}
+							}
+							catch(NullPointerException e){
+								System.out.println("Error drawing other player");
+							}
 						}
 					}
 					if (curRoom.getItems()[i][j] != null){
@@ -801,8 +837,9 @@ public class GameImagePanel extends JPanel {
 
 	public void drawOtherPlayer(Graphics g, Player p){
 		g.setColor(Color.black);
-		int newX = (int)p.getCoords().getX() - 25;
-		int newY = (int)p.getCoords().getY() - 80;
+		int[] playerCoords = calculatePlayerCoords(p);
+		int newX = playerCoords[0];
+		int newY = playerCoords[1];
 		BufferedImage otherPlayerImage = getOtherPlayerImage(p);
 		g.drawImage(otherPlayerImage, newX, newY, null);
 		int len = (p.getName().length()*4);
