@@ -57,7 +57,7 @@ public class Breakable implements Obstacle, Interactable,Serializable{
 	public void interact() {
 		Player player = DestinysWild.getPlayer();
 		int typeLen = type.length();
-		if(player.hasTool(type.substring(0, typeLen-1))){
+		if(player.hasTool(type.substring(0, typeLen-1)) && !type.equals("steelbeams1")){
 			if(type.contains("fire")){
 				if(Integer.valueOf(String.valueOf(type.charAt(typeLen-1))) >= 1){
 					DestinysWild.getPlayer().getCurrentRoom().removeObstacle(this);
@@ -72,6 +72,9 @@ public class Breakable implements Obstacle, Interactable,Serializable{
 				String newType = type.substring(0, typeLen-1) + String.valueOf(newStage);
 				type = newType;
 			}
+		}
+		else if(player.hasTool(type.substring(0, typeLen-1)) && type.equals("steelbeams1")){
+			DestinysWild.startTalking("Hmmmm I would appear that jet fuel can't melt steel beams...");
 		}
 		else{
 			DestinysWild.startTalking("You don't have the correct tool for the job!");

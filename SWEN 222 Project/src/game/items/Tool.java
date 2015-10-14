@@ -45,7 +45,7 @@ public class Tool implements Item,Serializable{
 				break;
 
 			case "spade":
-				breakable = "mound";
+				breakable = "dirt";
 				break;
 		}
 	}

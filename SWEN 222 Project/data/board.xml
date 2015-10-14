@@ -2459,25 +2459,25 @@
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>stealbeams1</Type>
+        <Type>steelbeams1</Type>
         <Row>7</Row>
         <Col>0</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>stealbeams1</Type>
+        <Type>steelbeams1</Type>
         <Row>7</Row>
         <Col>1</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>stealbeams1</Type>
+        <Type>steelbeams1</Type>
         <Row>7</Row>
         <Col>2</Col>
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>stealbeams1</Type>
+        <Type>steelbeams1</Type>
         <Row>8</Row>
         <Col>2</Col>
       </Obstacle>
@@ -2489,7 +2489,7 @@
       </Obstacle>
       <Obstacle>
         <Obstype>breakable</Obstype>
-        <Type>stealbeams1</Type>
+        <Type>steelbeams1</Type>
         <Row>9</Row>
         <Col>2</Col>
       </Obstacle>
