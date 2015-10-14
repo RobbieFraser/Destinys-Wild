@@ -34,7 +34,8 @@ public class Multiplayer extends Canvas implements Runnable {
 	}
 
 	/**
-	 * Initialises a login packet and writes the
+	 * Initialises a login packet and writes the players username to it. If the server is not null,
+	 * then it should add the current player to the server's list of connected players
 	 */
 	public void initialise() {
 //		PlayerMulti player = new PlayerMulti(JOptionPane.showInputDialog(null, "Please enter a username"),
