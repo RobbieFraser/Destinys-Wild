@@ -273,7 +273,10 @@ public class GameImagePanel extends JPanel implements MouseListener {
 					if (state == NIGHT_TIME) {
 						g.setColor(new Color(0, 0, 0, 230));
 					} else if (state == DUSK) {
-						g.setColor(new Color(0, 0, 0, (time - 40) * 9));
+						if ((time-39)*9 > 255 || (time-39)*9 < 0) {
+							throw new Error((time-40)*9 +" uh oh");
+						}
+						g.setColor(new Color(0, 0, 0, (time - 39) * 9));
 					} else if (state == DAWN) {
 						g.setColor(new Color(0, 0, 0, time*12));
 					}
@@ -293,17 +296,21 @@ public class GameImagePanel extends JPanel implements MouseListener {
 	 * @return true if point is inside circle, otherwise false
 	 */
 	private boolean isPointInside(int x, int y, Player player) {
-		Point playerCoords = player.getCoords();
+		int[] playerCoords = calculatePlayerCoords(player);
+		int xCoord = playerCoords[0] + 20;
+		int yCoord = playerCoords[1] + 80;
+		
 		int radius = 50;
-
 		//check if the players inventory contains the torch
 		if (player.getHasTorch()) {
-			radius = 150;
+			//alter y coordinate slightly so that torch is centred correctly
+			yCoord -= 15;
+			radius = 120;
 		}
 
 		//use the pythagorean theorem
-		int xDiff = Math.abs(playerCoords.x - x);
-		int yDiff = Math.abs(playerCoords.y - y);
+		int xDiff = Math.abs(xCoord - x);
+		int yDiff = Math.abs(yCoord - y);
 		double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 		return distance <= radius;
 	}
@@ -719,15 +726,27 @@ public class GameImagePanel extends JPanel implements MouseListener {
 
 	public void drawPlayer(Graphics g){
 		g.setColor(Color.black);
+		int[] playerCoords = calculatePlayerCoords(this.player);
+		int newX = playerCoords[0];
+		int newY = playerCoords[1];
+		
+		updatePlayerImage();
+		g.drawImage(playerIMG, newX, newY, null);
+		int len = (player.getName().length()*8)/2;
+		g.setFont(new Font("Courier new", 20, 15));
+		g.drawString(player.getName(), (newX-len)+25, newY - 20);
+		drawHealth(g, newX, newY, player);
+	}
+	
+	private int[] calculatePlayerCoords(Player player) {
 		int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
 		int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
 		int newX = (int)player.getCoords().getX() - 25;
 		int newY = (int)player.getCoords().getY() - 80;
 		Point oldPoint = player.getCurrentTile().getRoomCoords();
-		if(viewDir.equals("north")){
-
-		}
-		else if(viewDir.equals("east")){
+		
+		//if the view direction is north, we don't need to change anything
+		if(viewDir.equals("east")){
 			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
 			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
 			newX = (int)newTile.getRealCoords().getX() - 25 - (yDif*2);
@@ -745,12 +764,8 @@ public class GameImagePanel extends JPanel implements MouseListener {
 			newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
 			newY = (int)newTile.getRealCoords().getY() - 80 - (xDif/2);
 		}
-		updatePlayerImage();
-		g.drawImage(playerIMG, newX, newY, null);
-		int len = (player.getName().length()*8)/2;
-		g.setFont(new Font("Courier new", 20, 15));
-		g.drawString(player.getName(), (newX-len)+25, newY - 20);
-		drawHealth(g, newX, newY, player);
+		int[] newCoords = {newX, newY};
+		return newCoords;
 	}
 
 	public void drawOtherPlayer(Graphics g, Player p){
