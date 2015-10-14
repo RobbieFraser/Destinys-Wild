@@ -247,7 +247,6 @@ public class GameServer extends Thread {
 				player.setCurrentTile(player.getCurrentRoom().calcTile(
 						player.getCoords()));
 				// player.updatePlayer();
-				System.out.println(player.getName() + player.getAllowGate());
 				packet.writeData(this);
 			}
 		} catch (IndexOutOfBoundsException e) {
