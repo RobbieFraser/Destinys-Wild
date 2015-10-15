@@ -373,7 +373,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 0; i < 10; i++){
 					for (int j = 9; j >= 0; j--){
 						if (northRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
+							if(northRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
+							}
+							else{
+								drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), j, i, -1);
+							}
 						}
 						if (northRoom.getItems()[i][j] != null){
 							drawDistantObject(g, northRoom.getItems()[i][j].getType(), j, i, -1);
@@ -391,7 +396,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 0; i < 10; i++){
 					for (int j = 0; j < 10; j++){
 						if (northRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-i, j, -1);
+							if(northRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, northRoom.getObstacles()[i][j].getType(), 9-i, j, -1);
+							}
+							else{
+								drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-i, j, -1);
+							}
 						}
 						if (northRoom.getItems()[i][j] != null){
 							drawDistantObject(g, northRoom.getItems()[i][j].getType(), 9-i, j, -1);
@@ -409,7 +419,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 9; i >= 0; i--){
 					for (int j = 0; j < 10; j++){
 						if (northRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-j, 9-i, -1);
+							if(northRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, northRoom.getObstacles()[i][j].getType(), 9-j, 9-i, -1);
+							}
+							else{
+								drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), 9-j, 9-i, -1);
+							}
 						}
 						if (northRoom.getItems()[i][j] != null){
 							drawDistantObject(g, northRoom.getItems()[i][j].getType(), 9-j, 9-i, -1);
@@ -427,7 +442,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 9; i >= 0; i--){
 					for (int j = 9; j >= 0; j--){
 						if (northRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), i, 9-j, -1);
+							if(northRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, northRoom.getObstacles()[i][j].getType(), i, 9-j, -1);
+							}
+							else{
+								drawDistantObject(g, northRoom.getObstacles()[i][j].getType(), i, 9-j, -1);
+							}
 						}
 						if (northRoom.getItems()[i][j] != null){
 							drawDistantObject(g, northRoom.getItems()[i][j].getType(), i, 9-j, -1);
@@ -461,6 +481,47 @@ public class GameImagePanel extends JPanel {
 		g.drawImage(object, newX, newY, null);
 	}
 
+	public void drawDistantBreakable(Graphics g, String file, int x, int y, int SorE){
+		BufferedImage breakablesIMG = loadImage("BreakablesSheet.png");
+		int subY = 0;
+		if(file.contains("cobblestone")){
+			subY = 0;
+		}
+		else if(file.contains("vine")){
+			subY = 1;
+		}
+		else if(file.contains("steelbeams")){
+			subY = 2;
+		}
+		else if (file.contains("dirt")) {
+			subY = 3;
+		}
+		else if (file.contains("fire")) {
+			subY = 4;
+		} else {
+			subY = 0;
+		}
+
+		int subX = Integer.valueOf(String.valueOf(file.charAt(file.length()-1))) - 1;
+
+		//System.out.println(subX + " | " + subY);
+
+		int newX = 374*SorE;
+		int newY = -176;
+
+		newX = newX + gX + obX + (obW*x);
+		newY = newY - (obH*x);
+
+		newX = newX + (obW*y);
+		newY = newY + gY + obY + (obH*y);
+
+		if (subY == 4) {
+			subY = subY + fireState;
+		}
+
+		g.drawImage(breakablesIMG.getSubimage(subX*70, subY*72, 70, 72), newX, newY, null);
+	}
+
 	public void drawEastRoom(Graphics g){
 		if(viewDir.equals("north")){
 			if((int)player.getCurrentRoom().getBoardPos().getY() != 4){
@@ -471,7 +532,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 0; i < 10; i++){
 					for (int j = 9; j >= 0; j--){
 						if (eastRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+							if(eastRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+							}
+							else{
+								drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), j, i, 1);
+							}
 						}
 						if (eastRoom.getItems()[i][j] != null){
 							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), j, i, 1);
@@ -489,7 +555,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 0; i < 10; i++){
 					for (int j = 0; j < 10; j++){
 						if (eastRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-i, j, 1);
+							if(eastRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, eastRoom.getObstacles()[i][j].getType(), 9-i, j, 1);
+							}
+							else{
+								drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-i, j, 1);
+							}
 						}
 						if (eastRoom.getItems()[i][j] != null){
 							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), 9-i, j, 1);
@@ -507,7 +578,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 9; i >= 0; i--){
 					for (int j = 0; j < 10; j++){
 						if (eastRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-j, 9-i, 1);
+							if(eastRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, eastRoom.getObstacles()[i][j].getType(), 9-j, 9-i, 1);
+							}
+							else{
+								drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), 9-j, 9-i, 1);
+							}
 						}
 						if (eastRoom.getItems()[i][j] != null){
 							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), 9-i, 9-i, 1);
@@ -525,7 +601,12 @@ public class GameImagePanel extends JPanel {
 				for (int i = 9; i >= 0; i--){
 					for (int j = 9; j >= 0; j--){
 						if (eastRoom.getObstacles()[i][j] != null){
-							drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), i, 9-j, 1);
+							if(eastRoom.getObstacles()[i][j] instanceof Breakable){
+								drawDistantBreakable(g, eastRoom.getObstacles()[i][j].getType(), i, 9-j, 1);
+							}
+							else{
+								drawDistantObject(g, eastRoom.getObstacles()[i][j].getType(), i, 9-j, 1);
+							}
 						}
 						if (eastRoom.getItems()[i][j] != null){
 							drawDistantObject(g, eastRoom.getItems()[i][j].getType(), i, 9-j, 1);
