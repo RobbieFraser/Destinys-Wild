@@ -184,7 +184,7 @@ public class GameInterface{
 
 		JLabel keyLabel = (JLabel) inventoryPanel.getComponent(MAX_FOOD + MAX_TOOLS);
 		Image keySlotBackgroundImage = MenuInterface.loadImage("keyBox.png");
-		
+
 		int numKeyItems = player.numKeyItems();
 		keyLabel.setIcon(new ImageIcon(keySlotBackgroundImage));
 		if (numKeyItems == 5) {
@@ -220,14 +220,14 @@ public class GameInterface{
 	private void drawBackgroundImage(JLabel inventoryLabel, String type, int index) {
 		//firstly, we set the background image to be the image in question
 		Image itemImage = null;
-		
+
 		if (type.equals("keyBox")) {
 			//first of all, we want to extract the current background image
 			Image currentBackgroundImage = ((ImageIcon) inventoryLabel.getIcon()).getImage();
-			
+
 			//get graphics from background to draw with
 			Graphics g = currentBackgroundImage.getGraphics();
-			
+
 			//depending on the number of key pieces the player has picked
 			//up, different parts of the key should be drawn
 			BufferedImage keyImage = (BufferedImage) MenuInterface.loadImage("keyTest.png");
@@ -254,7 +254,7 @@ public class GameInterface{
 
 			//update background image
 			inventoryLabel.setIcon(new ImageIcon(currentBackgroundImage));
-		} 
+		}
 		else {
 			//food or tool slot
 			String imageName = getName(index);
@@ -419,22 +419,22 @@ public class GameInterface{
 		case KeyEvent.VK_W:
 			//player moved up one square
 			setPlayerDirection(keyCode);
-			createMovePacket();
+			//createMovePacket();
 			break;
 		case KeyEvent.VK_A:
 			//player moved left one square
 			setPlayerDirection(keyCode);
-			createMovePacket();
+			//createMovePacket();
 			break;
 		case KeyEvent.VK_S:
 			//player moved down one square
 			setPlayerDirection(keyCode);
-			createMovePacket();
+			//createMovePacket();
 			break;
 		case KeyEvent.VK_D:
 			//player moved right one square
 			setPlayerDirection(keyCode);
-			createMovePacket();
+			//createMovePacket();
 			break;
 		case KeyEvent.VK_SHIFT:
 			Item selectedItem = getSelectedItem();
@@ -471,14 +471,14 @@ public class GameInterface{
 			break;
 		}
 	}
-	
+
 	/**
 	 * This method should be called whenever a played has moved.
 	 * It should extract the player's current state, and create
 	 * a movePacket out of these, which should be sent to the
 	 * server.
 	 */
-	private void createMovePacket() {
+	public void createMovePacket() {
 		String name = game.getCurrentPlayer().getName();
 		int xCoord = game.getCurrentPlayer().getCoords().x;
 		int yCoord = game.getCurrentPlayer().getCoords().y;
@@ -580,14 +580,14 @@ public class GameInterface{
 				|| keyCode == KeyEvent.VK_S && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("west")) {
 			player.setNorth(false);
-			createMovePacket();
+			//createMovePacket();
 		}
 		if (keyCode == KeyEvent.VK_D && orientation.equals("north")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("east")
 				|| keyCode == KeyEvent.VK_A && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_W && orientation.equals("west")) {
 			player.setEast(false);
-			createMovePacket();
+			//createMovePacket();
 
 		}
 		if (keyCode == KeyEvent.VK_S && orientation.equals("north")
@@ -595,7 +595,7 @@ public class GameInterface{
 				|| keyCode == KeyEvent.VK_W && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_D && orientation.equals("west")) {
 			player.setSouth(false);
-			createMovePacket();
+			//createMovePacket();
 
 		}
 		if (keyCode == KeyEvent.VK_A && orientation.equals("north")
@@ -603,8 +603,9 @@ public class GameInterface{
 				|| keyCode == KeyEvent.VK_D && orientation.equals("south")
 				|| keyCode == KeyEvent.VK_S && orientation.equals("west")) {
 			player.setWest(false);
-			createMovePacket();
+			//createMovePacket();
 		}
+		//createMovePacket();
 	}
 
 	/**

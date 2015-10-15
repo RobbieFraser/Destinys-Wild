@@ -239,6 +239,7 @@ public class DestinysWild implements Runnable {
 		HealthPacket healthPacket = new HealthPacket(currentPlayer.getName(),
 				currentPlayer.getHealth());
 		healthPacket.writeData(multiplayer.getClient());
+		ui.createMovePacket();
 	}
 
 	/**
@@ -372,7 +373,7 @@ public class DestinysWild implements Runnable {
 
 	/**
 	 * main method to initialise the game
-	 * @param args 
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		DestinysWild game = new DestinysWild();
