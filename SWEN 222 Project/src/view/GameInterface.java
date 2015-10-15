@@ -562,6 +562,7 @@ public class GameInterface{
 				}
 			}
 		}
+		clearKeysPressed();
 		gamePanel.setViewDir(orientation);
 	}
 
