@@ -4,6 +4,7 @@ import game.items.Health;
 import game.items.Item;
 import game.items.Key;
 import game.items.Score;
+import game.items.Tool;
 import game.npcs.EnemyStill;
 import game.npcs.EnemyWalker;
 import game.npcs.FriendlyStill;
@@ -178,7 +179,7 @@ public class XMLParser {
 		}
 	}
 
-	
+
 	/**
 	 * gathers on board items to be initialised and sends them to initialiseItems
 	 * @param rootNode the XML element that contains the list of on board items
@@ -308,14 +309,47 @@ public class XMLParser {
 
 			System.out.println(DestinysWild.getBoard().getOffBoardItems().size() + " <-- offBoardItems size");
 
-			if(!DestinysWild.getBoard().getOffBoardItems().isEmpty()){
-				for(Element invItem : inventory){
-					int itemId = Integer.valueOf(invItem.getText());
-					Item tempItem = board.getOffItemFromId(itemId); //Depends on initialised board from savestate.xml
-					System.out.println("Added to inventory: " + tempItem.toString());
-					player.addInventoryItem(tempItem);
+			for(Element invItem : inventory){
+				int itemId = Integer.valueOf(invItem.getText());
+				Item tempItem = null;
+				try{tempItem = board.getOffItemFromId(itemId);}//Depends on initialised board from savestate.xml
+				catch(NullPointerException e){
+					if(itemId < 10){ //must be a key
+						tempItem = new Key(itemId, null);
+					}
+					else{
+						String toolName;
+						switch(itemId){
+							case 10:
+								toolName = "machete";
+								break;
+							case 20:
+								toolName = "torch";
+								break;
+							case 30:
+								toolName = "pickaxe";
+								break;
+							case 40:
+								toolName = "jetfuel";
+								break;
+							case 50:
+								toolName = "bucket";
+								break;
+							case 60:
+								toolName = "spade";
+								break;
+							default:
+								toolName = "error";
+								System.out.println("Misidentified Tool");
+								break;
+						}
+						tempItem = new Tool(toolName, itemId);
+					}
 				}
+				System.out.println("Added to inventory: " + tempItem.toString());
+				player.addInventoryItem(tempItem);
 			}
+
 
 			List<Element> visitedRooms = playerTag.getChild("Visitedrooms").getChildren("Roomid");
 

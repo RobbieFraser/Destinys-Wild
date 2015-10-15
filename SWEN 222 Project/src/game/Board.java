@@ -49,13 +49,12 @@ public class Board implements Serializable{
 	 */
 	public Item getOffItemFromId(int id){
 		for(Item item : offBoardItems){
-			System.out.println(item.getId());
 			if(item.getId() == id){
 				return item;
 			}
 		}
 		System.out.println("No such Item in offBoardItem list");
-		return null;
+		throw new NullPointerException();
 	}
 
 	/**

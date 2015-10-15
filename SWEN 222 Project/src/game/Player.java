@@ -17,7 +17,7 @@ import game.npcs.EnemyWalker;
 import game.npcs.NPC;
 
 /**
- * A Player is the character controlled by the user. 
+ * A Player is the character controlled by the user.
  * @author Rob
  *
  */
@@ -122,7 +122,7 @@ public class Player implements Serializable {
 
 	/**
 	 * sets whether the player has a torch or not
-	 * @param torch to be set 
+	 * @param torch to be set
 	 */
 	public void setHasTorch(boolean torch){
 		this.hasTorch = torch;
@@ -183,7 +183,7 @@ public class Player implements Serializable {
 				DestinysWild.startTalking("You've unlocked the gate!!!");
 				for(Player player : DestinysWild.getBoard().getPlayers()){
 					player.setAllowGate(true);
-					
+
 				}
 			}
 			else{
@@ -231,14 +231,14 @@ public class Player implements Serializable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * sets whether this player is allowed through the end gate or not
 	 */
 	public void setAllowGate(boolean allow){
 		allowGate = allow;
 	}
-	
+
 	/**
 	 * gets the state of allowGate for this player
 	 * @return boolean allowGate
@@ -550,11 +550,12 @@ public class Player implements Serializable {
 			if (item.getType() != null && item.getType().equals("torch")) {
 				hasTorch = true;
 				TorchPacket torchPacket = new TorchPacket(this.getName(),true);
-				torchPacket.writeData(DestinysWild.getMultiplayer().getClient());
+				if(DestinysWild.getMultiplayer() != null){
+					torchPacket.writeData(DestinysWild.getMultiplayer().getClient());
+				}
 			}
 			if(item instanceof Key){
 				numKeyPieces++;
-				System.out.println(numKeyPieces);
 			}
 			return inventory.add(item);
 		}
@@ -569,9 +570,9 @@ public class Player implements Serializable {
 
 	/**
 	 * Tries to make the complete key for the Player. This is called after interacting with
-	 * fladnag. To make the key, the players in the room must collectively have the 4 pieces 
+	 * fladnag. To make the key, the players in the room must collectively have the 4 pieces
 	 * scattered around the map.
-	 * @return boolean success 
+	 * @return boolean success
 	 */
 	public boolean tryMakeKey(){
 		int keyCount = 0;
@@ -601,7 +602,7 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * Removes key pieces from inventory. Intended for use when another player 
+	 * Removes key pieces from inventory. Intended for use when another player
 	 * creates the key using some or all of your pieces
 	 */
 	public void removeKeys(){
