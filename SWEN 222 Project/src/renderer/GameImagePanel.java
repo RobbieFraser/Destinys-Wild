@@ -40,9 +40,9 @@ public class GameImagePanel extends JPanel {
 	private BufferedImage defaultCube; //The default image
 	private BufferedImage waterSprite; //Testing
 	private BufferedImage water; //Testing
-	private BufferedImage playerIMG = 
+	private BufferedImage playerIMG =
 			loadImage("playerSpriteSheetWalking.png").getSubimage(104, 0, 26, 82); //The image that is drawn for the player
-	private BufferedImage playerOtherIMG = 
+	private BufferedImage playerOtherIMG =
 			loadImage("otherSpriteSheetWalking.png").getSubimage(104, 0, 26, 82);
 
 	private int time = 0;
@@ -159,7 +159,7 @@ public class GameImagePanel extends JPanel {
 
 	/**
 	 * This method should be called to update
-	 * the north, east, south and west fields. 
+	 * the north, east, south and west fields.
 	 * Which field corresponds to which will depend
 	 * on the current orientation of the board.
 	 */
@@ -347,7 +347,7 @@ public class GameImagePanel extends JPanel {
 			if (blue >= 255) {
 				blue = current.getBlue();
 			}
-			
+
 			//transparency should slowly decrease
 			int alpha = (int) (current.getAlpha()*1.00000001);
 			if (alpha >= 255) {
@@ -383,7 +383,7 @@ public class GameImagePanel extends JPanel {
 			}
 		}
 		else if(viewDir.equals("east")){
-			if ((int) player.getCurrentRoom().getBoardPos().getY() != 4) {
+			if ((int) player.getCurrentRoom().getBoardPos().getY() != 0) {
 				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
 						(int)player.getCurrentRoom().getBoardPos().getY()-1);
 				BufferedImage ground = loadImage("ground.png");
@@ -419,7 +419,7 @@ public class GameImagePanel extends JPanel {
 			}
 		}
 		else if(viewDir.equals("west")){
-			if ((int) player.getCurrentRoom().getBoardPos().getY() != 0) {
+			if ((int) player.getCurrentRoom().getBoardPos().getY() != 4) {
 				Room northRoom = board.getRoomFromCoords((int)player.getCurrentRoom().getBoardPos().getX(),
 						(int)player.getCurrentRoom().getBoardPos().getY()+1);
 				BufferedImage ground = loadImage("ground.png");
@@ -604,7 +604,7 @@ public class GameImagePanel extends JPanel {
 					if (curRoom.getItems()[i][j] != null){
 						drawObject(g, curRoom.getItems()[i][j].getType(), j, i);
 					}
-					
+
 					for(Player p : board.getPlayers()){
 						if(p != null && p != player && p.getCurrentRoom() == player.getCurrentRoom()){
 							try{
@@ -712,7 +712,7 @@ public class GameImagePanel extends JPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method should draw the current room's NPC's
 	 * and players onto the board at the given coordinates.
@@ -794,7 +794,7 @@ public class GameImagePanel extends JPanel {
 		else{
 			enemyIMG = defaultCube;
 		}
-		
+
 		g.drawImage(enemyIMG, newX, newY, null);
 		if(npc instanceof EnemyWalker){
 			drawEnemyHealth(g, newX, newY, npc);
@@ -1011,7 +1011,7 @@ public class GameImagePanel extends JPanel {
 		}
 		else if (file.contains("dirt")) {
 			subY = 3;
-		} 
+		}
 		else if (file.contains("fire")) {
 			subY = 4;
 		} else {
@@ -1030,7 +1030,7 @@ public class GameImagePanel extends JPanel {
 
 		newX = newX + (obW*y);
 		newY = newY + gY + obY + (obH*y);
-		
+
 		if (subY == 4) {
 			subY = subY + fireState;
 		}

@@ -122,13 +122,13 @@
     </Npcs>
     <Items>
       <Item>
-        <Itemtype>score</Itemtype>
-        <Type>gem</Type>
-        <Id>72</Id>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>1</Id>
         <Row>0</Row>
         <Col>4</Col>
         <Health>0</Health>
-        <Score>100</Score>
+        <Score>0</Score>
       </Item>
       <Item>
         <Itemtype>health</Itemtype>
@@ -779,6 +779,15 @@
         <Col>2</Col>
         <Health>0</Health>
         <Score>10</Score>
+      </Item>
+      <Item>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>2</Id>
+        <Row>0</Row>
+        <Col>9</Col>
+        <Health>0</Health>
+        <Score>0</Score>
       </Item>
       <Item>
         <Itemtype>score</Itemtype>
@@ -4290,13 +4299,13 @@
     </Npcs>
     <Items>
       <Item>
-        <Itemtype>score</Itemtype>
-        <Type>gem</Type>
-        <Id>220</Id>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>4</Id>
         <Row>4</Row>
         <Col>3</Col>
         <Health>0</Health>
-        <Score>100</Score>
+        <Score>0</Score>
       </Item>
       <Item>
         <Itemtype>health</Itemtype>
@@ -5296,13 +5305,13 @@
         <Score>10</Score>
       </Item>
       <Item>
-        <Itemtype>score</Itemtype>
-        <Type>gem</Type>
-        <Id>424</Id>
+        <Itemtype>key</Itemtype>
+        <Type>key</Type>
+        <Id>3</Id>
         <Row>9</Row>
         <Col>9</Col>
         <Health>0</Health>
-        <Score>100</Score>
+        <Score>0</Score>
       </Item>
     </Items>
   </Room>
