@@ -158,7 +158,8 @@ public class EnemyWalker implements NPC, Serializable, Interactable {
 	 * @return boolean if can change tile
 	 */
 	public boolean tryChangeTile(int x, int y) {
-		if (currentRoom.getObstacles()[currentTile.getRoomCoords().x][currentTile.getRoomCoords().y] == null) {
+		if (currentRoom.getObstacles()[currentTile.getRoomCoords().x][currentTile.getRoomCoords().y] == null
+				|| currentRoom.getItems()[currentTile.getRoomCoords().x][currentTile.getRoomCoords().y] == null) {
 			//set the old tile to be unoccupied only if there isn't another block there
 			currentTile.setOccupied(false);		
 		}
