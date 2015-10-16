@@ -819,8 +819,10 @@ public class GameImagePanel extends JPanel {
 	 */
 	private void drawPlayersAndNPCs(Graphics g, int i, int j) {
 		for (NPC npc : curRoom.getNpcs()){
-			if (npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
-				drawEnemy(g, npc);
+			if(npc != null && npc.getCurrentTile() != null){
+				if (npc.getCurrentTile().getRoomCoords().equals(new Point(i, j))){
+					drawEnemy(g, npc);
+				}
 			}
 		}
 		if (player != null && !hurt && player.getCurrentTile() != null){
@@ -913,33 +915,40 @@ public class GameImagePanel extends JPanel {
 	}
 
 	private int[] calculatePlayerCoords(Player player) {
-		int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
-		int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
-		int newX = (int)player.getCoords().getX() - 25;
-		int newY = (int)player.getCoords().getY() - 80;
-		Point oldPoint = player.getCurrentTile().getRoomCoords();
+		try{
+			int xDif = (int)(player.getCoords().getX() - player.getCurrentTile().getRealCoords().getX());
+			int yDif = (int)(player.getCoords().getY() - player.getCurrentTile().getRealCoords().getY());
+			int newX = (int)player.getCoords().getX() - 25;
+			int newY = (int)player.getCoords().getY() - 80;
+			Point oldPoint = player.getCurrentTile().getRoomCoords();
 
-		//if the view direction is north, we don't need to change anything
-		if(viewDir.equals("east")){
-			Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
-			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
-			newX = (int)newTile.getRealCoords().getX() - 25 - (yDif*2);
-			newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
+			//if the view direction is north, we don't need to change anything
+			if(viewDir.equals("east")){
+				Point newPoint = new Point((int)(oldPoint.getY()), 9-(int)oldPoint.getX());
+				Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+				newX = (int)newTile.getRealCoords().getX() - 25 - (yDif*2);
+				newY = (int)newTile.getRealCoords().getY() - 80 - (-xDif/2);
+			}
+			else if(viewDir.equals("south")){
+				Point newPoint = new Point((int)(9-oldPoint.getX()), 9-(int)oldPoint.getY());
+				Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+				newX = (int)newTile.getRealCoords().getX() - 25 - (xDif);
+				newY = (int)newTile.getRealCoords().getY() - 80 - (yDif);
+			}
+			else if(viewDir.equals("west")){
+				Point newPoint = new Point((int)(9-oldPoint.getY()), (int)oldPoint.getX());
+				Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
+				newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
+				newY = (int)newTile.getRealCoords().getY() - 80 - (xDif/2);
+			}
+			int[] newCoords = {newX, newY};
+			return newCoords;
 		}
-		else if(viewDir.equals("south")){
-			Point newPoint = new Point((int)(9-oldPoint.getX()), 9-(int)oldPoint.getY());
-			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
-			newX = (int)newTile.getRealCoords().getX() - 25 - (xDif);
-			newY = (int)newTile.getRealCoords().getY() - 80 - (yDif);
+		catch(Exception e){
+
 		}
-		else if(viewDir.equals("west")){
-			Point newPoint = new Point((int)(9-oldPoint.getY()), (int)oldPoint.getX());
-			Tile newTile = curRoom.getTileFromRoomCoords(newPoint);
-			newX = (int)newTile.getRealCoords().getX() - 25 - (-yDif*2);
-			newY = (int)newTile.getRealCoords().getY() - 80 - (xDif/2);
-		}
-		int[] newCoords = {newX, newY};
-		return newCoords;
+		int[] temp = {(int)player.getCoords().getX(), (int)player.getCoords().getY()};
+		return temp;
 	}
 
 	public void drawOtherPlayer(Graphics g, Player p){
