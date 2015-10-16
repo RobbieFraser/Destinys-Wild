@@ -387,8 +387,11 @@ public class GameInterface{
 	public Item getSelectedItem() {
 		ImagePanel inventoryPanel = (ImagePanel) frame.getContentPane().getComponent(0);
 
-		for (int i = 0; i < 5; ++i) {
+		for (int i = 0; i < player.getInventory().size(); ++i) {
 			//only food can be selected
+			if(i > 4){
+				return null;
+			}
 			JLabel tempLabel = (JLabel) inventoryPanel.getComponent(i);
 			if (!(tempLabel.getBorder() instanceof EmptyBorder)) {
 				//this label must contain the selected item
