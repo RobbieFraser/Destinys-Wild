@@ -174,6 +174,7 @@ public class Player implements Serializable {
 		Tile east = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol+1));
 		Tile south = currentRoom.getTileFromRoomCoords(new Point(currTileRow+1, currTileCol));
 		Tile west = currentRoom.getTileFromRoomCoords(new Point(currTileRow, currTileCol-1));
+		Tile current = currentTile;
 
 		Object occupant;
 
@@ -212,6 +213,12 @@ public class Player implements Serializable {
 		}
 		if(west != null && west.isOccupied()){
 			occupant = currentRoom.getTileOccupant(west);
+			if(occupant instanceof Interactable){
+				occupants.add(occupant);
+			}
+		}
+		if(current != null && current.isOccupied()){
+			occupant = currentRoom.getTileOccupant(current);
 			if(occupant instanceof Interactable){
 				occupants.add(occupant);
 			}
