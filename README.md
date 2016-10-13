@@ -41,20 +41,33 @@ wish to connect to.
 **************CONTROLS***********************
 
 W = Move up
+
 S = Move down
+
 A = Move left
+
 D = Move right
+
 Q = Cycle left through your inventory
+
 E = Cycle right through your inventory
+
 P = Pause the game
+
 M = Toggle music 
+
 1-5 = Select item in slot 1-5, corresponding to what 
       button you press
+      
 SHIFT = Use selected item in inventory
+
 Left Direction Key = Shift perspective to the left
+
 Right Direction Key = Shift perspective to the right
+
 SPACE = Interact with friendly or object/attack enemy/break obstacle(provided
 	you have the correct tool)
+	
 Escape = Attempt to quit the game
 
 *********************************************
@@ -93,7 +106,7 @@ four key pieces.
 
 Coins & Gems give you a varying amount of score and can be spent to purchase items
 
-Apples & Poitions restore your health when used
+Apples & Potions restore your health when used
 
 Machete allows you to cut through vines
 
